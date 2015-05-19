@@ -25,6 +25,8 @@ public interface PatientService {
      *
      * @param id uuid of the patient
      * @return patient resource and will return null if patient not found for the given id
+     *
+     * @should not return null value
      */
     Map<String, Object> getPatient(String id);
 

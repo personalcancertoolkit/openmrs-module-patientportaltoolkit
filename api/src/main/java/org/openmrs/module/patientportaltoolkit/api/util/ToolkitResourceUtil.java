@@ -37,7 +37,7 @@ public class ToolkitResourceUtil {
         for (PersonAddress pa : person.getAddresses()) {
             if (personAddress.isBlank())
                 personAddress = pa;
-            else if (pa.getDateCreated().after(personAddress.getDateCreated()))
+            else if (pa.isPreferred())
                 personAddress = pa;
         }
         Map<String, Object> personAddressObject = new HashMap<String, Object>();
@@ -58,8 +58,10 @@ public class ToolkitResourceUtil {
 
         personObject.put("DOB",new Date(person.getBirthdate().getTime())) ;
         personObject.put("Gender", person.getGender());
+        if (person.getAttribute(PHONE_NUMBER_ATTRIBUTE) != null)
         personObject.put("Phone", person.getAttribute(PHONE_NUMBER_ATTRIBUTE).getValue());
-        //personObject.put("Email", person.getAttribute(EMAIL_ATTRIBUTE).getValue());
+        if (person.getAttribute(EMAIL_ATTRIBUTE) != null)
+        personObject.put("Email", person.getAttribute(EMAIL_ATTRIBUTE).getValue());
         personObject.put("Address", personAddressObject);
 
         return personObject;
