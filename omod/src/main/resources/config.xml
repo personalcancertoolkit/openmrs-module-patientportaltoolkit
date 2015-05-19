@@ -25,7 +25,22 @@
 		<point>org.openmrs.admin.list</point>
 		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
 	</extension>
-	
+
+	<filter>
+		<filter-name>Patient Portal Web Service Authorization</filter-name>
+		<filter-class>org.openmrs.module.patientportaltoolkit.web.filter.AuthorizationFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Patient Portal Web Service Authorization</filter-name>
+		<url-pattern>/ws/patientportaltoolkit/*</url-pattern>
+	</filter-mapping>
+	<require_modules>
+		<require_module>
+			org.openmrs.module.uiframework
+		</require_module>
+	</require_modules>
+
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
 				
