@@ -6,7 +6,7 @@
 	<artifactId>patientportaltoolkit</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Patient Portal Toolkit Module Module</name>
+	<name>Patient Portal Toolkit Module</name>
 	<description>A disease specific patient portal</description>
 	<url>https://wiki.openmrs.org/display/docs/Patient+Portal+Toolkit+Module+Module+Module</url>
 	

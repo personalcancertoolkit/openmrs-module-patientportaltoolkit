@@ -6,6 +6,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.PatientService;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -42,5 +43,11 @@ public class PatientServiceTest extends BaseModuleContextSensitiveTest {
         Map<String, Object> patientObject = getService().getPatient(patientUuid);
         assertNotNull(patientObject);
         assertEquals(patientObject.get("id"), patientUuid);
+    }
+
+    @Test
+    public void getAllPatients_shouldNotReturnNullValue() throws Exception {
+        List<Object> patientObjects = getService().getAllPatients();
+        assertNotNull(patientObjects);
     }
 }

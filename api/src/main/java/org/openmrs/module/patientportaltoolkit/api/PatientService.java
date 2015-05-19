@@ -13,6 +13,7 @@
 
 package org.openmrs.module.patientportaltoolkit.api;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,5 +30,15 @@ public interface PatientService {
      * @should not return null value
      */
     Map<String, Object> getPatient(String id);
+
+    /**
+     * get all patient resources
+     *
+     *
+     * @return list of all patients
+     *
+     * @should not return null value
+     */
+    List<Object> getAllPatients() ;
 
 }

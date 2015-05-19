@@ -56,6 +56,7 @@ public class ToolkitResourceUtil {
         personObject.put("FamilyName", person.getFamilyName());
         personObject.put("Age", person.getAge());
 
+        if(person.getBirthdate() != null)
         personObject.put("DOB",new Date(person.getBirthdate().getTime())) ;
         personObject.put("Gender", person.getGender());
         if (person.getAttribute(PHONE_NUMBER_ATTRIBUTE) != null)

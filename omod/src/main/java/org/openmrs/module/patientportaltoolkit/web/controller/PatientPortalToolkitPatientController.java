@@ -15,7 +15,6 @@ package org.openmrs.module.patientportaltoolkit.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.PatientService;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +46,16 @@ public class PatientPortalToolkitPatientController {
 
     }
 
+    @RequestMapping( value = "/patientportaltoolkit/getallpatients")
+    @ResponseBody
+    public Object getAllPatientPortalPatient()
+            throws Exception
+    {
+        PatientService patientService = Context.getService(PatientService.class);
+        List<Object> patientObjects = patientService.getAllPatients();
+        return patientObjects;
+
+    }
     @RequestMapping( value = "/patientportaltoolkit/getuser")
     @ResponseBody
     public Object getPatientPortalUser()
