@@ -42,4 +42,16 @@ public class PersonServiceTest extends BaseModuleContextSensitiveTest {
 		assertNotNull(personObject);
 		assertEquals(personObject.get("id"), personUuid);
     }
+
+    /**
+     * @verifies return proper formatted date
+     * @see PersonService#getPerson(String)
+     */
+    @Test
+    public void getPerson_shouldNReturnProperDate() throws Exception {
+        String personUuid = "dagh524f-27ce-4bb2-86d6-6d1d05312bd5";
+        Map<String, Object> personObject = getService().getPerson(personUuid);
+        assertNotNull(personObject);
+        assertEquals(personObject.get("DOB").toString(), "Tue Apr 08 00:00:00 EST 1975");
+    }
 }

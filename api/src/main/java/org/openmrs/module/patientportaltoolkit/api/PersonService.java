@@ -27,6 +27,7 @@ public interface PersonService {
      * @return patient resource and will return null if patient not found for the given id
      *
      * @should not return null value
+     * @should return proper formatted date
      */
 
     Map<String, Object> getPerson(String id);
