@@ -48,10 +48,37 @@ public class PersonServiceTest extends BaseModuleContextSensitiveTest {
      * @see PersonService#getPerson(String)
      */
     @Test
-    public void getPerson_shouldNReturnProperDate() throws Exception {
+    public void getPerson_shouldReturnProperDate() throws Exception {
         String personUuid = "dagh524f-27ce-4bb2-86d6-6d1d05312bd5";
         Map<String, Object> personObject = getService().getPerson(personUuid);
         assertNotNull(personObject);
         assertEquals(personObject.get("DOB").toString(), "Tue Apr 08 00:00:00 EST 1975");
+    }
+
+    @Test
+    public void updatePerson_shouldNotReturnNull() throws Exception {
+        String json= "{\n" +
+                "\"id\": \"dagh524f-27ce-4bb2-86d6-6d1d05312bd5\",\n" +
+                "\"GivenName\": \"Alomnaa\",\n" +
+                "\"MiddleName\": null,\n" +
+                "\"FamilyName\": \"Pacinoo\",\n" +
+                "\"Age\": 22,\n" +
+                "\"Gender\": \"M\",\n" +
+                "\"Phone\": \"11111111\",\n" +
+                "\"DOB\": null,\n" +
+                "\"Email\": null,\n" +
+                "\"Address\": {\n" +
+                //"\"id\": \"76ce88d3-4b09-42ee-8188-40f69379872b\",\n" +
+                "\"Address1\": \"address 1\",\n" +
+                "\"Address2\": \"Address 23\",\n" +
+                "\"City/Village\": \"Indianapolis\",\n" +
+                "\"State/Province\": \"Indiana\",\n" +
+                "\"Country\": \"United States of America\",\n" +
+                "\"PostalCode\": \"46202\"\n" +
+                "}\n" +
+                "}";
+        Map<String, Object> personObject = (Map<String, Object>) getService().updatePerson(json);
+        assertNotNull(personObject);
+        assertEquals(personObject.get("id"), "dagh524f-27ce-4bb2-86d6-6d1d05312bd5");
     }
 }

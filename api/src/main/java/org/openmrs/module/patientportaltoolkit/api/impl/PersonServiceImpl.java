@@ -35,4 +35,9 @@ public class PersonServiceImpl extends BaseOpenmrsService implements PersonServi
 
         return null;
     }
+
+    @Override
+    public Object updatePerson(String personJson) {
+        return ToolkitResourceUtil.updatePerson(personJson);
+    }
 }

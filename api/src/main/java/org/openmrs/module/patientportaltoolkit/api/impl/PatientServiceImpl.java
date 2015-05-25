@@ -21,7 +21,6 @@ import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by maurya.
@@ -29,10 +28,10 @@ import java.util.Map;
 public class PatientServiceImpl extends BaseOpenmrsService implements PatientService {
 
     @Override
-    public Map<String, Object> getPatient(String patientId){
+    public  Object getPatient(String patientId){
         Patient patient= Context.getPatientService().getPatientByUuid(patientId);
         if (patient != null)
-            return ToolkitResourceUtil.generatePatient(patient);
+            return ToolkitResourceUtil.generatePerson(patient);
 
         return null;
     }
@@ -45,6 +44,11 @@ public class PatientServiceImpl extends BaseOpenmrsService implements PatientSer
             patientPortalPatients.add(getPatient(p.getUuid()));
         }
         return patientPortalPatients;
+    }
+
+    @Override
+    public Object updatePatient(String patientJson) {
+        return ToolkitResourceUtil.updatePatient(patientJson);
     }
 }
 

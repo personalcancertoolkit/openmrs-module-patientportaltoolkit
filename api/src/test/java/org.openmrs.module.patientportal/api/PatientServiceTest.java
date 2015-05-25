@@ -27,9 +27,8 @@ public class PatientServiceTest extends BaseModuleContextSensitiveTest {
     public void runBeforeEachTest() throws Exception {
         executeDataSet(PAT_SEARCH_DATA_XML);
     }
-
     @Test
-    public void shouldSetupContext() {
+    public void shouldSetupContext(){
         assertNotNull(getService());
     }
 
@@ -40,7 +39,7 @@ public class PatientServiceTest extends BaseModuleContextSensitiveTest {
     @Test
     public void getPatient_shouldNotReturnNullValue() throws Exception {
         String patientUuid = "61b38324-e2fd-4feb-95b7-9e9a2a4400df";
-        Map<String, Object> patientObject = getService().getPatient(patientUuid);
+        Map<String, Object> patientObject = (Map<String, Object>) getService().getPatient(patientUuid);
         assertNotNull(patientObject);
         assertEquals(patientObject.get("id"), patientUuid);
     }
@@ -50,4 +49,31 @@ public class PatientServiceTest extends BaseModuleContextSensitiveTest {
         List<Object> patientObjects = getService().getAllPatients();
         assertNotNull(patientObjects);
     }
+
+//    @Test
+//    public void updatePatient_shouldNotReturnNullValue() throws Exception {
+//        String json= "{\n" +
+//                "\"id\": \"256ccf6d-6b41-455c-9be2-51ff4386ae76\",\n" +
+//                "\"GivenName\": \"Alomnaa\",\n" +
+//                "\"MiddleName\": null,\n" +
+//                "\"FamilyName\": \"Pacinoo\",\n" +
+//                "\"Age\": 22,\n" +
+//                "\"Gender\": \"M\",\n" +
+//                "\"Phone\": \"11111111\",\n" +
+//                "\"DOB\": null,\n" +
+//                "\"Email\": null,\n" +
+//                "\"Address\": {\n" +
+//               // "\"id\": \"76ce88d3-4b09-42ee-8188-40f69379872b\",\n" +
+//                "\"Address1\": \"address 1\",\n" +
+//                "\"Address2\": \"Address 23\",\n" +
+//                "\"City/Village\": \"Indianapolis\",\n" +
+//                "\"State/Province\": \"Indiana\",\n" +
+//                "\"Country\": \"United States of America\",\n" +
+//                "\"PostalCode\": \"46202\"\n" +
+//                "}\n" +
+//                "}";
+//        Map<String, Object> patientObject = (Map<String, Object>) getService().updatePatient(json);
+//        assertNotNull(patientObject);
+//        assertEquals(patientObject.get("id"), "256ccf6d-6b41-455c-9be2-51ff4386ae76");
+//    }
 }

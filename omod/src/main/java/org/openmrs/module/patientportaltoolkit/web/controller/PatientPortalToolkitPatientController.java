@@ -41,7 +41,7 @@ public class PatientPortalToolkitPatientController {
     {
 
         PatientService patientService = Context.getService(PatientService.class);
-        Map<String, Object> patientObject = patientService.getPatient(patientId);
+        Map<String, Object> patientObject = (Map<String, Object>) patientService.getPatient(patientId);
         return patientObject;
 
     }

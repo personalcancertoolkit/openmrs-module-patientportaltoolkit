@@ -31,4 +31,12 @@ public interface PersonService {
      */
 
     Map<String, Object> getPerson(String id);
+
+    /**
+     * update person object
+     *
+     * @param personJson json provided by the client
+     * @return person resource and will return null if patient not found for the given id
+     */
+    Object updatePerson(String personJson);
 }
