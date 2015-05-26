@@ -19,9 +19,7 @@ import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.PatientService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -67,5 +65,16 @@ public class PatientPortalToolkitPatientController {
         authenticatedUser.put("Name", user.getDisplayString());
 
         return authenticatedUser;
+    }
+
+    @RequestMapping( value = "/patientportaltoolkit/updatepatient", method = RequestMethod.POST)
+    @ResponseBody
+    public Object updatePatientPortalPatient(@RequestBody String patientObject)
+            throws Exception
+    {
+        PatientService patientService = Context.getService(PatientService.class);
+        Object updatedPatientObject = patientService.updatePatient(patientObject);
+        return updatedPatientObject;
+
     }
 }

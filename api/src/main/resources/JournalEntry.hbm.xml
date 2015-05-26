@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.openmrs.module.patientportaltoolkit">
+    <class table="patientportal_journal_entry" name="JournalEntry">
+        <id name="entryId" type="int" column="entry_id"  unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="parentEntryId" type="int" column="parent_entry_id"   not-null="false" />
+        <property name="uuid" type="string" length="38" not-null="true" />
+
+        <property name="title" type="java.lang.String"/>
+        <property name="content" type="text"/>
+        <many-to-one name="creator" class="org.openmrs.Person" lazy="false" not-null="true"/>
+        <property name="dateCreated" column="date_created" type="java.util.Date" length="19"/>
+        <property name="deleted" type="boolean" length="1"/>
+        <property name="dateDeleted" column="date_deleted" type="java.util.Date" length="19"/>
+    </class>
+</hibernate-mapping>
