@@ -43,7 +43,8 @@
 
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
-	JournalEntry.hbm.xml
+		JournalEntry.hbm.xml
+		PatientPortalRelation.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->

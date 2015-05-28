@@ -40,6 +40,17 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     private static final String STATUS_NOT_ACCEPTED_YET="Not yet";
 
 
+    public PatientPortalRelation(Patient patient, Person person) {
+        super();
+        this.patient = patient;
+        this.relatedPerson = person;
+        this.startDate = new Date();
+    }
+
+    public PatientPortalRelation(Patient patient, Person person, String shareType) {
+        this(patient,person);
+        this.shareType=shareType;
+    }
     @Override
     public int compareTo(PatientPortalRelation patientPortalRelation) {
         return patientPortalRelation.getId().compareTo(this.id);

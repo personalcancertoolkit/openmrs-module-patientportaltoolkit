@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.openmrs.module.patientportaltoolkit">
+    <class name="PatientPortalRelation" table="patientportal_relation">
+
+    <id name="id" type="int" column="id" unsaved-value="0">
+        <generator class="native" />
+    </id>
+
+    <property name="shareType" type="java.lang.String" column="share_type"/>
+
+    <many-to-one name="patient" class="org.openmrs.Patient" not-null="true" column="patient_id" />
+
+    <many-to-one name="relatedPerson" class="org.openmrs.Person" not-null="false" column="relationship_person_id" />
+
+    <property name="relatedPersonName" type="java.lang.String" column="relationship_person_name"/>
+
+    <property name="relatedPersonEmail" type="java.lang.String" column="relationship_person_email"/>
+
+    <property name="relationType" type="java.lang.String" column="relationship_type"/>
+
+    <property name="startDate" type="java.util.Date" column="share_start_date" not-null="true"
+              length="19" />
+
+    <property name="activateDate" type="java.util.Date" column="share_activate_date" not-null="false"
+              length="19" />
+
+    <property name="expireDate" type="java.util.Date" column="share_expire_date" not-null="true"
+              length="19" />
+
+
+    <!--  Standard Openmrs MetaData -->
+    <many-to-one name="creator" class="org.openmrs.User" not-null="true" />
+
+    <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true"
+              length="19" />
+
+    <many-to-one name="changedBy" column="changed_by" class="org.openmrs.User" not-null="false" />
+
+    <property name="dateChanged" type="java.util.Date" column="date_changed" not-null="false"
+              length="19" />
+
+    <property name="retired" type="boolean" not-null="false" />
+
+    <property name="uuid" type="string" length="38" not-null="false" />
+
+    <many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" />
+
+    <property name="dateRetired" type="java.util.Date" column="date_retired" />
+
+    <property name="retireReason" type="string" column="retire_reason" />
+
+</class>
+</hibernate-mapping>
