@@ -28,7 +28,7 @@ public class HibernateJournalEntryDAO implements JournalEntryDAO {
     }
 
     /**
-     * @see org.openmrs.module.phrjournal.db.JournalEntryDAO#getAllJournalEntries()
+     *
      */
     public List<JournalEntry> getAllJournalEntries() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(JournalEntry.class);
@@ -36,30 +36,30 @@ public class HibernateJournalEntryDAO implements JournalEntryDAO {
     }
 
     /**
-     * @see org.openmrs.module.phrjournal.db.JournalEntryDAO#getJournalEntry(java.lang.Integer)
+     *
      */
-    public JournalEntry getJournalEntry(Integer entryId) {
+    public JournalEntry getJournalEntry(String uuid) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(JournalEntry.class);
-        c.add(Restrictions.eq("entryId", entryId));
+        c.add(Restrictions.eq("uuid", uuid));
         return (JournalEntry) c.uniqueResult();
     }
 
     /**
-     * @see org.openmrs.module.phrjournal.db.JournalEntryDAO#saveJournalEntry(org.openmrs.module.phrjournal.domain.JournalEntry)
+     *
      */
     public void saveJournalEntry(JournalEntry entry) {
         sessionFactory.getCurrentSession().saveOrUpdate(entry);
     }
 
     /**
-     * @see org.openmrs.module.phrjournal.db.JournalEntryDAO#deleteJournalEntry(org.openmrs.module.phrjournal.domain.JournalEntry)
+     *
      */
     public void deleteJournalEntry(JournalEntry entry) {
         sessionFactory.getCurrentSession().delete(entry);
     }
 
     /**
-     * @see org.openmrs.module.phrjournal.db.JournalEntryDAO#getJournalEntryForPerson(org.openmrs.Person)
+     *
      */
     public List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(JournalEntry.class);

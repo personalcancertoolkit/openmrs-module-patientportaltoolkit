@@ -20,14 +20,12 @@ import org.openmrs.Person;
 import org.openmrs.PersonAddress;
 import org.openmrs.PersonName;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.JournalEntry;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by maurya.
@@ -65,7 +63,7 @@ public class ToolkitResourceUtil {
         personObject.put("Age", person.getAge());
 
         if(person.getBirthdate() != null)
-        personObject.put("DOB",new Date(person.getBirthdate().getTime())) ;
+        personObject.put("DOB",new SimpleDateFormat().format(new Date(person.getBirthdate().getTime()))) ;
         personObject.put("Gender", person.getGender());
         if (person.getAttribute(PHONE_NUMBER_ATTRIBUTE) != null)
         personObject.put("Phone", person.getAttribute(PHONE_NUMBER_ATTRIBUTE).getValue());
@@ -253,6 +251,58 @@ public class ToolkitResourceUtil {
             patient.setAddresses(personAddresses);
         }
         return generatePerson(Context.getPatientService().savePatient(patient));
+
+    }
+
+    public static Object generateJournals (List<JournalEntry> journalEntries) {
+
+        List<Object>journalEntriesMap = new ArrayList<Object>();
+        for(JournalEntry journalEntry: journalEntries) {
+            journalEntriesMap.add(generateJournal(journalEntry));
+        }
+        return journalEntriesMap;
+    }
+
+    public static Object generateJournal (JournalEntry journalEntry) {
+
+
+            Map<String, Object> personMap = generatePerson(journalEntry.getCreator());
+
+            Map<String, Object> journalEntryMap = new HashMap<String, Object>();
+            journalEntryMap.put("id", journalEntry.getUuid());
+            journalEntryMap.put("Title", journalEntry.getTitle());
+            journalEntryMap.put("Content", journalEntry.getContent());
+            journalEntryMap.put("Date", new SimpleDateFormat().format(new Date(journalEntry.getDateCreated().getTime())));
+            journalEntryMap.put("Creator", personMap);
+
+        return journalEntryMap;
+    }
+
+    public static JournalEntry transformJournal (String json) {
+        String title=null;
+        String content=null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+
+            //convert JSON string to Map
+            map = mapper.readValue(json,
+                    new TypeReference<HashMap<String,Object>>(){});
+
+            System.out.println(map);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(map.get("title")!= null)
+            title = map.get("title").toString();
+        if(map.get("content")!= null)
+            content = map.get("content").toString();
+
+        if(content!=null && title!=null)
+        return new JournalEntry(title,content);
+
+        return null;
 
     }
 }

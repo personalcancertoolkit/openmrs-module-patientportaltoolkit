@@ -18,7 +18,7 @@ public interface JournalEntryService extends OpenmrsService {
      * @should return all journal entries
      */
     @Transactional(readOnly = true)
-    public List<JournalEntry> getAllJournalEntries();
+    public Object getAllJournalEntries();
 
     /**
      * @param entryId
@@ -26,7 +26,7 @@ public interface JournalEntryService extends OpenmrsService {
      * @should return entry with given id
      */
     @Transactional(readOnly = true)
-    public JournalEntry getJournalEntry(Integer entryId);
+    public JournalEntry getJournalEntry(String uuid);
 
     /**
      * @param p the person who wrote the journal entries
@@ -35,7 +35,7 @@ public interface JournalEntryService extends OpenmrsService {
      * @should return entries ordered by date
      */
     @Transactional(readOnly = true)
-    public List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc);
+    public Object getJournalEntryForPerson(Person p, Boolean orderByDateDesc);
 
     /**
      * @param p the person who wrote the journal entries

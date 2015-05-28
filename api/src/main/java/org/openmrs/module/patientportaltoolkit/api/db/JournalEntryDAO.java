@@ -14,7 +14,7 @@ public interface JournalEntryDAO {
 
     public List<JournalEntry> getAllJournalEntries();
 
-    public JournalEntry getJournalEntry(Integer entryId);
+    public JournalEntry getJournalEntry(String uuid);
 
     public void saveJournalEntry(JournalEntry entry);
 

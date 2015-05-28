@@ -8,6 +8,7 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
 import org.openmrs.module.patientportaltoolkit.api.JournalEntryService;
 import org.openmrs.module.patientportaltoolkit.api.db.JournalEntryDAO;
+import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 
 import java.util.List;
 
@@ -36,42 +37,43 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
 
 
     /**
-     * @see org.openmrs.module.phrjournal.JournalEntryService#deleteJournalEntry(org.openmrs.module.phrjournal.domain.JournalEntry)
+     *
      */
     public void deleteJournalEntry(JournalEntry entry) throws APIException {
         dao.deleteJournalEntry(entry);
     }
 
     /**
-     * @see org.openmrs.module.phrjournal.JournalEntryService#getAllJournalEntries()
+     *
      */
-    public List<JournalEntry> getAllJournalEntries() {
-        return dao.getAllJournalEntries();
+    public Object getAllJournalEntries() {
+
+        return ToolkitResourceUtil.generateJournals(dao.getAllJournalEntries());
     }
 
     /**
-     * @see org.openmrs.module.phrjournal.JournalEntryService#getJournalEntry(java.lang.Integer)
+     *
      */
-    public JournalEntry getJournalEntry(Integer entryId) {
-        return dao.getJournalEntry(entryId);
+    public JournalEntry getJournalEntry(String uuid) {
+        return dao.getJournalEntry(uuid);
     }
 
     /**
-     * @see org.openmrs.module.phrjournal.JournalEntryService#saveJournalEntry(org.openmrs.module.phrjournal.domain.JournalEntry)
+     *
      */
     public void saveJournalEntry(JournalEntry entry) throws APIException {
         dao.saveJournalEntry(entry);
     }
 
     /**
-     * @see org.openmrs.module.phrjournal.JournalEntryService#getJournalEntryForPerson(org.openmrs.Person)
+     *
      */
-    public List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc ) {
-        return dao.getJournalEntryForPerson(p, orderByDateDesc);
+    public Object getJournalEntryForPerson(Person p, Boolean orderByDateDesc ) {
+        return ToolkitResourceUtil.generateJournals(dao.getJournalEntryForPerson(p, orderByDateDesc));
     }
 
     /**
-     * @see org.openmrs.module.phrjournal.JournalEntryService#findEntries(java.lang.String, org.openmrs.Person, java.lang.Boolean)
+     *
      */
     public List<JournalEntry> findEntries(String searchText, Person p, Boolean orderByDateDesc) {
         return dao.findEntries(searchText,p,orderByDateDesc);
