@@ -15,8 +15,6 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     /** Unique identifying id */
     private Integer id;
 
-    private String sharingToken;
-
     private Patient patient;
 
     private Person relatedPerson;
@@ -64,24 +62,6 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     @Override
     public void setId(final Integer id) {
         this.id = id;
-    }
-
-    /**
-     * Get sharing token
-     *
-     * @return a sharing token
-     */
-    public String getSharingToken() {
-        return this.sharingToken;
-    }
-
-    /**
-     * Set sharing token
-     *
-     * @param sharingToken a sharing token
-     */
-    public void setSharingToken(final String sharingToken) {
-        this.sharingToken = sharingToken;
     }
 
     /**

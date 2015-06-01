@@ -6,6 +6,8 @@ import org.openmrs.User;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
+import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalRelationDAO;
+import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 
 import java.util.List;
 
@@ -13,14 +15,26 @@ import java.util.List;
  * Created by Maurya.
  */
 public class PatientPortalRelationServiceImpl extends BaseOpenmrsService implements PatientPortalRelationService {
-    @Override
-    public PatientPortalRelation getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User user) {
-        return null;
+
+    PatientPortalRelationDAO dao;
+
+    public void setDao(PatientPortalRelationDAO dao) {
+        this.dao = dao;
     }
 
     @Override
-    public List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient) {
-        return null;
+    public Object getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User user) {
+        return ToolkitResourceUtil.generateRelation(dao.getPatientPortalRelation(requestedPatient, requestedPerson, user));
+    }
+
+    @Override
+    public Object getAllPatientPortalRelations() {
+        return ToolkitResourceUtil.generateRelations(dao.getAllPatientPortalRelation());
+    }
+
+    @Override
+    public Object getPatientPortalRelationByPatient(Patient patient) {
+        return ToolkitResourceUtil.generateRelations(dao.getPatientPortalRelationByPatient(patient));
     }
 
     @Override

@@ -49,7 +49,7 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     @Override
     public List<PatientPortalRelation> getAllPatientPortalRelation() {
         final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
-        crit.addOrder(Order.asc("patient_id"));
+        crit.addOrder(Order.asc("patient"));
         this.log.debug("HibernatePatientPortalRelationDAO:getAllPatientPortalRelation->" + " | token count=" + crit.list().size());
         return crit.list();
     }

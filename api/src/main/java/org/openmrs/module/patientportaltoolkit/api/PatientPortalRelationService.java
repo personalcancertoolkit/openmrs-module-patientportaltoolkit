@@ -16,10 +16,13 @@ import java.util.List;
 public interface PatientPortalRelationService extends OpenmrsService {
 
     @Transactional(readOnly = true)
-    public PatientPortalRelation getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User user);
+    public Object getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User user);
 
     @Transactional(readOnly = true)
-    public List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient);
+    public Object getAllPatientPortalRelations();
+
+    @Transactional(readOnly = true)
+    public Object getPatientPortalRelationByPatient(Patient patient);
 
     @Transactional(readOnly = true)
     public List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person);

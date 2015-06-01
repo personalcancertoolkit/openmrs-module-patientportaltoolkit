@@ -108,7 +108,7 @@
 					<property name="target">
 						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.PatientPortalRelationServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernatePatientPortalRelationEntryDAO">
+								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernatePatientPortalRelationDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>

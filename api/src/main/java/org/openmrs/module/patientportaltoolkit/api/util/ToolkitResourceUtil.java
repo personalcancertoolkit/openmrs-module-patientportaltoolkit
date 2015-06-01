@@ -21,6 +21,7 @@ import org.openmrs.PersonAddress;
 import org.openmrs.PersonName;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
+import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -270,10 +271,10 @@ public class ToolkitResourceUtil {
 
             Map<String, Object> journalEntryMap = new HashMap<String, Object>();
             journalEntryMap.put("id", journalEntry.getUuid());
-            journalEntryMap.put("Title", journalEntry.getTitle());
-            journalEntryMap.put("Content", journalEntry.getContent());
-            journalEntryMap.put("Date", new SimpleDateFormat().format(new Date(journalEntry.getDateCreated().getTime())));
-            journalEntryMap.put("Creator", personMap);
+            journalEntryMap.put("title", journalEntry.getTitle());
+            journalEntryMap.put("content", journalEntry.getContent());
+            journalEntryMap.put("date", new SimpleDateFormat().format(new Date(journalEntry.getDateCreated().getTime())));
+            journalEntryMap.put("creator", personMap);
 
         return journalEntryMap;
     }
@@ -304,5 +305,32 @@ public class ToolkitResourceUtil {
 
         return null;
 
+    }
+
+    public static Object generateRelations (List<PatientPortalRelation> patientPortalRelations) {
+
+        List<Object>patientRelationsMap = new ArrayList<Object>();
+        for(PatientPortalRelation patientRelation: patientPortalRelations) {
+            patientRelationsMap.add(generateRelation(patientRelation));
+        }
+        return patientRelationsMap;
+    }
+    public static Object generateRelation (PatientPortalRelation patientPortalRelation) {
+
+
+        Map<String, Object> relatedPersonMap = generatePerson(patientPortalRelation.getRelatedPerson());
+        Map<String, Object> creatorPersonMap = generatePerson(patientPortalRelation.getCreator().getPerson());
+        Map<String, Object> patientPersonMap = generatePerson(patientPortalRelation.getPatient());
+
+        Map<String, Object> patientRelationMap = new HashMap<String, Object>();
+        patientRelationMap.put("id", patientPortalRelation.getUuid());
+        patientRelationMap.put("relationType", patientPortalRelation.getRelationType());
+        patientRelationMap.put("shareType", patientPortalRelation.getShareType());
+        patientRelationMap.put("dateStarted", new SimpleDateFormat().format(new Date(patientPortalRelation.getStartDate().getTime())));
+        patientRelationMap.put("patient", patientPersonMap);
+        patientRelationMap.put("creator", creatorPersonMap);
+        patientRelationMap.put("relatedPerson", relatedPersonMap);
+
+        return patientRelationMap;
     }
 }
