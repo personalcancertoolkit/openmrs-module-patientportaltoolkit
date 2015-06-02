@@ -15,12 +15,10 @@ package org.openmrs.module.patientportaltoolkit.api.util;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.openmrs.Patient;
-import org.openmrs.Person;
-import org.openmrs.PersonAddress;
-import org.openmrs.PersonName;
+import org.openmrs.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
+import org.openmrs.module.patientportaltoolkit.PatientPortalForm;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 
 import java.text.DateFormat;
@@ -63,56 +61,57 @@ public class ToolkitResourceUtil {
         personObject.put("FamilyName", person.getFamilyName());
         personObject.put("Age", person.getAge());
 
-        if(person.getBirthdate() != null)
-        personObject.put("DOB",new SimpleDateFormat().format(new Date(person.getBirthdate().getTime()))) ;
+        if (person.getBirthdate() != null)
+            personObject.put("DOB", new SimpleDateFormat().format(new Date(person.getBirthdate().getTime())));
         personObject.put("Gender", person.getGender());
         if (person.getAttribute(PHONE_NUMBER_ATTRIBUTE) != null)
-        personObject.put("Phone", person.getAttribute(PHONE_NUMBER_ATTRIBUTE).getValue());
+            personObject.put("Phone", person.getAttribute(PHONE_NUMBER_ATTRIBUTE).getValue());
         if (person.getAttribute(EMAIL_ATTRIBUTE) != null)
-        personObject.put("Email", person.getAttribute(EMAIL_ATTRIBUTE).getValue());
+            personObject.put("Email", person.getAttribute(EMAIL_ATTRIBUTE).getValue());
         personObject.put("Address", personAddressObject);
 
         return personObject;
     }
 
     public static Object updatePerson(String json) {
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         ObjectMapper mapper = new ObjectMapper();
         try {
 
             //convert JSON string to Map
             map = mapper.readValue(json,
-                    new TypeReference<HashMap<String,Object>>(){});
+                    new TypeReference<HashMap<String, Object>>() {
+                    });
 
             System.out.println(map);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(!map.containsKey("id") || map.get("id") == null)
-            return  null;
+        if (!map.containsKey("id") || map.get("id") == null)
+            return null;
         String personId = map.get("id").toString();
-        Person person =  Context.getPersonService().getPersonByUuid(personId);
+        Person person = Context.getPersonService().getPersonByUuid(personId);
 
-        if(map.get("GivenName")!= null || map.get("MiddleName")!= null || map.get("FamilyName")!= null){
+        if (map.get("GivenName") != null || map.get("MiddleName") != null || map.get("FamilyName") != null) {
 
             PersonName personName = new PersonName();
-            if(map.get("GivenName")!= null)
+            if (map.get("GivenName") != null)
                 personName.setGivenName(map.get("GivenName").toString());
-            if(map.get("MiddleName")!= null)
+            if (map.get("MiddleName") != null)
                 personName.setMiddleName(map.get("MiddleName").toString());
-            if(map.get("FamilyName")!= null)
+            if (map.get("FamilyName") != null)
                 personName.setFamilyName(map.get("FamilyName").toString());
             Set<PersonName> personNames = person.getNames();
-            boolean personNameExists=false;
+            boolean personNameExists = false;
 
-            for (PersonName pn: personNames){
-                if(pn.equalsContent(personName))
-                    personNameExists=true;
+            for (PersonName pn : personNames) {
+                if (pn.equalsContent(personName))
+                    personNameExists = true;
             }
-            if(!personNameExists){
-                for (PersonName pn: personNames){
-                    if(pn.getPreferred())
+            if (!personNameExists) {
+                for (PersonName pn : personNames) {
+                    if (pn.getPreferred())
                         pn.setPreferred(false);
                 }
                 personName.setPreferred(true);
@@ -121,7 +120,7 @@ public class ToolkitResourceUtil {
 
             person.setNames(personNames);
         }
-        if(map.get("DOB") != null){
+        if (map.get("DOB") != null) {
             DateFormat df = new SimpleDateFormat();
             try {
                 person.setBirthdate(df.parse(map.get("DOB").toString()));
@@ -129,7 +128,7 @@ public class ToolkitResourceUtil {
                 e.printStackTrace();
             }
         }
-        if(map.get("Gender") != null)
+        if (map.get("Gender") != null)
             person.setGender(map.get("Gender").toString());
         if (person.getAttribute(PHONE_NUMBER_ATTRIBUTE) != null) {
             if (map.get("Phone") != null)
@@ -140,8 +139,8 @@ public class ToolkitResourceUtil {
                 person.getAttribute("Email").setValue(map.get("Email").toString());
 
         }
-        if(map.get("Address") != null) {
-            Map<String,Object> addressMap = (Map<String, Object>) map.get("Address");
+        if (map.get("Address") != null) {
+            Map<String, Object> addressMap = (Map<String, Object>) map.get("Address");
             PersonAddress personAddress = new PersonAddress();
             personAddress.setAddress1(addressMap.get("Address1").toString());
             personAddress.setAddress2(addressMap.get("Address2").toString());
@@ -149,14 +148,14 @@ public class ToolkitResourceUtil {
             personAddress.setStateProvince(addressMap.get("State/Province").toString());
             personAddress.setCountry(addressMap.get("Country").toString());
             personAddress.setPostalCode(addressMap.get("PostalCode").toString());
-            boolean addressExists=false;
+            boolean addressExists = false;
             Set<PersonAddress> personAddresses = person.getAddresses();
 
-            for (PersonAddress pa: personAddresses){
-                if(pa.equalsContent(personAddress))
-                    addressExists=true;
+            for (PersonAddress pa : personAddresses) {
+                if (pa.equalsContent(personAddress))
+                    addressExists = true;
             }
-            if(!addressExists)
+            if (!addressExists)
                 personAddresses.add(personAddress);
 
             person.setAddresses(personAddresses);
@@ -166,43 +165,44 @@ public class ToolkitResourceUtil {
     }
 
     public static Object updatePatient(String json) {
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         ObjectMapper mapper = new ObjectMapper();
         try {
 
             //convert JSON string to Map
             map = mapper.readValue(json,
-                    new TypeReference<HashMap<String,Object>>(){});
+                    new TypeReference<HashMap<String, Object>>() {
+                    });
 
             System.out.println(map);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(!map.containsKey("id") || map.get("id") == null)
-            return  null;
+        if (!map.containsKey("id") || map.get("id") == null)
+            return null;
         String patientId = map.get("id").toString();
-        Patient patient =  Context.getPatientService().getPatientByUuid(patientId);
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
 
-        if(map.get("GivenName")!= null || map.get("MiddleName")!= null || map.get("FamilyName")!= null){
+        if (map.get("GivenName") != null || map.get("MiddleName") != null || map.get("FamilyName") != null) {
 
             PersonName personName = new PersonName();
-            if(map.get("GivenName")!= null)
+            if (map.get("GivenName") != null)
                 personName.setGivenName(map.get("GivenName").toString());
-            if(map.get("MiddleName")!= null)
+            if (map.get("MiddleName") != null)
                 personName.setMiddleName(map.get("MiddleName").toString());
-            if(map.get("FamilyName")!= null)
+            if (map.get("FamilyName") != null)
                 personName.setFamilyName(map.get("FamilyName").toString());
             Set<PersonName> personNames = patient.getNames();
-            boolean personNameExists=false;
+            boolean personNameExists = false;
 
-            for (PersonName pn: personNames){
-                if(pn.equalsContent(personName))
-                    personNameExists=true;
+            for (PersonName pn : personNames) {
+                if (pn.equalsContent(personName))
+                    personNameExists = true;
             }
-            if(!personNameExists){
-                for (PersonName pn: personNames){
-                    if(pn.getPreferred())
+            if (!personNameExists) {
+                for (PersonName pn : personNames) {
+                    if (pn.getPreferred())
                         pn.setPreferred(false);
                 }
                 personName.setPreferred(true);
@@ -211,7 +211,7 @@ public class ToolkitResourceUtil {
 
             patient.setNames(personNames);
         }
-        if(map.get("DOB") != null){
+        if (map.get("DOB") != null) {
             DateFormat df = new SimpleDateFormat();
             try {
                 patient.setBirthdate(df.parse(map.get("DOB").toString()));
@@ -219,7 +219,7 @@ public class ToolkitResourceUtil {
                 e.printStackTrace();
             }
         }
-        if(map.get("Gender") != null)
+        if (map.get("Gender") != null)
             patient.setGender(map.get("Gender").toString());
         if (patient.getAttribute(PHONE_NUMBER_ATTRIBUTE) != null) {
             if (map.get("Phone") != null)
@@ -230,8 +230,8 @@ public class ToolkitResourceUtil {
                 patient.getAttribute("Email").setValue(map.get("Email").toString());
 
         }
-        if(map.get("Address") != null) {
-            Map<String,Object> addressMap = (Map<String, Object>) map.get("Address");
+        if (map.get("Address") != null) {
+            Map<String, Object> addressMap = (Map<String, Object>) map.get("Address");
             PersonAddress personAddress = new PersonAddress();
             personAddress.setAddress1(addressMap.get("Address1").toString());
             personAddress.setAddress2(addressMap.get("Address2").toString());
@@ -239,14 +239,14 @@ public class ToolkitResourceUtil {
             personAddress.setStateProvince(addressMap.get("State/Province").toString());
             personAddress.setCountry(addressMap.get("Country").toString());
             personAddress.setPostalCode(addressMap.get("PostalCode").toString());
-            boolean addressExists=false;
+            boolean addressExists = false;
             Set<PersonAddress> personAddresses = patient.getAddresses();
 
-            for (PersonAddress pa: personAddresses){
-                if(pa.equalsContent(personAddress))
-                    addressExists=true;
+            for (PersonAddress pa : personAddresses) {
+                if (pa.equalsContent(personAddress))
+                    addressExists = true;
             }
-            if(!addressExists)
+            if (!addressExists)
                 personAddresses.add(personAddress);
 
             patient.setAddresses(personAddresses);
@@ -255,67 +255,69 @@ public class ToolkitResourceUtil {
 
     }
 
-    public static Object generateJournals (List<JournalEntry> journalEntries) {
+    public static Object generateJournals(List<JournalEntry> journalEntries) {
 
-        List<Object>journalEntriesMap = new ArrayList<Object>();
-        for(JournalEntry journalEntry: journalEntries) {
+        List<Object> journalEntriesMap = new ArrayList<Object>();
+        for (JournalEntry journalEntry : journalEntries) {
             journalEntriesMap.add(generateJournal(journalEntry));
         }
         return journalEntriesMap;
     }
 
-    public static Object generateJournal (JournalEntry journalEntry) {
+    public static Object generateJournal(JournalEntry journalEntry) {
 
 
-            Map<String, Object> personMap = generatePerson(journalEntry.getCreator());
+        Map<String, Object> personMap = generatePerson(journalEntry.getCreator());
 
-            Map<String, Object> journalEntryMap = new HashMap<String, Object>();
-            journalEntryMap.put("id", journalEntry.getUuid());
-            journalEntryMap.put("title", journalEntry.getTitle());
-            journalEntryMap.put("content", journalEntry.getContent());
-            journalEntryMap.put("date", new SimpleDateFormat().format(new Date(journalEntry.getDateCreated().getTime())));
-            journalEntryMap.put("creator", personMap);
+        Map<String, Object> journalEntryMap = new HashMap<String, Object>();
+        journalEntryMap.put("id", journalEntry.getUuid());
+        journalEntryMap.put("title", journalEntry.getTitle());
+        journalEntryMap.put("content", journalEntry.getContent());
+        journalEntryMap.put("date", new SimpleDateFormat().format(new Date(journalEntry.getDateCreated().getTime())));
+        journalEntryMap.put("creator", personMap);
 
         return journalEntryMap;
     }
 
-    public static JournalEntry transformJournal (String json) {
-        String title=null;
-        String content=null;
-        Map<String,Object> map = new HashMap<String,Object>();
+    public static JournalEntry transformJournal(String json) {
+        String title = null;
+        String content = null;
+        Map<String, Object> map = new HashMap<String, Object>();
         ObjectMapper mapper = new ObjectMapper();
         try {
 
             //convert JSON string to Map
             map = mapper.readValue(json,
-                    new TypeReference<HashMap<String,Object>>(){});
+                    new TypeReference<HashMap<String, Object>>() {
+                    });
 
             System.out.println(map);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(map.get("title")!= null)
+        if (map.get("title") != null)
             title = map.get("title").toString();
-        if(map.get("content")!= null)
+        if (map.get("content") != null)
             content = map.get("content").toString();
 
-        if(content!=null && title!=null)
-        return new JournalEntry(title,content);
+        if (content != null && title != null)
+            return new JournalEntry(title, content);
 
         return null;
 
     }
 
-    public static Object generateRelations (List<PatientPortalRelation> patientPortalRelations) {
+    public static Object generateRelations(List<PatientPortalRelation> patientPortalRelations) {
 
-        List<Object>patientRelationsMap = new ArrayList<Object>();
-        for(PatientPortalRelation patientRelation: patientPortalRelations) {
+        List<Object> patientRelationsMap = new ArrayList<Object>();
+        for (PatientPortalRelation patientRelation : patientPortalRelations) {
             patientRelationsMap.add(generateRelation(patientRelation));
         }
         return patientRelationsMap;
     }
-    public static Object generateRelation (PatientPortalRelation patientPortalRelation) {
+
+    public static Object generateRelation(PatientPortalRelation patientPortalRelation) {
 
 
         Map<String, Object> relatedPersonMap = generatePerson(patientPortalRelation.getRelatedPerson());
@@ -332,5 +334,82 @@ public class ToolkitResourceUtil {
         patientRelationMap.put("relatedPerson", relatedPersonMap);
 
         return patientRelationMap;
+    }
+
+    public static Object generateEncounterTypes(List<EncounterType> encounterTypes) {
+
+        List<Object> encounterTypesMap = new ArrayList<Object>();
+        for (EncounterType encounterType : encounterTypes) {
+            encounterTypesMap.add(generateEncounterType(encounterType));
+        }
+        return encounterTypesMap;
+    }
+
+    public static Object generateEncounterType(EncounterType encounterType) {
+
+        Map<String, Object> creatorPersonMap = generatePerson(encounterType.getCreator().getPerson());
+
+        Map<String, Object> encounterTypeMap = new HashMap<String, Object>();
+        encounterTypeMap.put("id", encounterType.getUuid());
+        encounterTypeMap.put("name", encounterType.getName());
+        encounterTypeMap.put("description", encounterType.getDescription());
+        encounterTypeMap.put("dateCreated", new SimpleDateFormat().format(new Date(encounterType.getDateCreated().getTime())));
+        encounterTypeMap.put("creator", creatorPersonMap);
+
+        return encounterTypeMap;
+    }
+
+    public static Object generatePatientPortalForms(List<PatientPortalForm> patientPortalForms) {
+
+        List<Object> patientPortalFormsMap = new ArrayList<Object>();
+        for (PatientPortalForm patientPortalForm : patientPortalForms) {
+            patientPortalFormsMap.add(generatePatientPortalForm(patientPortalForm));
+        }
+        return patientPortalFormsMap;
+    }
+
+    public static Object generatePatientPortalForm(PatientPortalForm patientPortalForm) {
+
+
+        Map<String, Object> patientPortalFormMap = new HashMap<String, Object>();
+        patientPortalFormMap.put("id", patientPortalForm.getUuid());
+        patientPortalFormMap.put("name", patientPortalForm.getName());
+        patientPortalFormMap.put("description", patientPortalForm.getDescription());
+        patientPortalFormMap.put("concepts", generateConcepts(new ArrayList<Concept>(patientPortalForm.getConcepts())));
+
+        return patientPortalFormMap;
+    }
+    public static Object generateConcepts(List<Concept> concepts) {
+
+        List<Object> conceptsMap = new ArrayList<Object>();
+        for (Concept concept : concepts) {
+            conceptsMap.add(generateConcept(concept));
+        }
+        return conceptsMap;
+    }
+
+    public static Object generateConcept (Concept concept) {
+
+        Map<String, Object> conceptMap = generateBasicConcept(concept);
+        if (concept.isSet()) {
+            List<Object> conceptSetsMap = new ArrayList<Object>();
+            for (Concept conceptSet : concept.getSetMembers()) {
+                conceptSetsMap.add(generateBasicConcept(conceptSet));
+            }
+        }
+        return conceptMap;
+    }
+
+    public static Map<String, Object> generateBasicConcept (Concept concept) {
+
+        Map<String, Object> creatorPersonMap = generatePerson(concept.getCreator().getPerson());
+
+        Map<String, Object> basicConceptMap = new HashMap<String, Object>();
+            basicConceptMap.put("id", concept.getUuid());
+            basicConceptMap.put("name", concept.getName());
+            basicConceptMap.put("description", concept.getDescription());
+            basicConceptMap.put("creator", creatorPersonMap);
+
+        return basicConceptMap;
     }
 }
