@@ -20,6 +20,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
 import org.openmrs.module.patientportaltoolkit.PatientPortalForm;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.SideEffect;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -383,6 +384,31 @@ public class ToolkitResourceUtil {
             patientPortalFormMap.put("concepts", generateConcepts(questionConcepts));
         }
         return patientPortalFormMap;
+    }
+
+    public static Object generateSideEffects(List<SideEffect> sideEffects) {
+
+        List<Object> sideEffectsMap = new ArrayList<Object>();
+        for (SideEffect sideEffect : sideEffects) {
+            sideEffectsMap.add(generateSideEffect(sideEffect));
+        }
+        return sideEffectsMap;
+    }
+
+    public static Object generateSideEffect(SideEffect sideEffect) {
+
+
+        Map<String, Object> sideEffectMap = new HashMap<String, Object>();
+        sideEffectMap.put("id", sideEffect.getId());
+        sideEffectMap.put("condition", sideEffect.getCondition());
+        if (!sideEffect.getConcepts().isEmpty()) {
+            List<Concept> sideEffectConcepts = new ArrayList<Concept>();
+            for (Concept concept : sideEffect.getConcepts()) {
+                sideEffectConcepts.add(concept);
+            }
+            sideEffectMap.put("concepts", generateConcepts(sideEffectConcepts));
+        }
+        return sideEffectMap;
     }
     public static Object generateConcepts(List<Concept> concepts) {
 
