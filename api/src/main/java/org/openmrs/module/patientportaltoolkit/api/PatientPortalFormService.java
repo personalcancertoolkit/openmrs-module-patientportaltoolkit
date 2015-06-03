@@ -14,4 +14,6 @@ public interface PatientPortalFormService  extends OpenmrsService {
     @Transactional(readOnly = true)
     public List<PatientPortalForm> getAllPatientPortalForms();
 
+    @Transactional(readOnly = true)
+    public PatientPortalForm getPatientPortalForm(String uuid);
 }

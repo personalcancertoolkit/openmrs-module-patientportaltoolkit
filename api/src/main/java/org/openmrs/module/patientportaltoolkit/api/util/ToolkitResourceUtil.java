@@ -375,8 +375,13 @@ public class ToolkitResourceUtil {
         patientPortalFormMap.put("id", patientPortalForm.getUuid());
         patientPortalFormMap.put("name", patientPortalForm.getName());
         patientPortalFormMap.put("description", patientPortalForm.getDescription());
-        patientPortalFormMap.put("concepts", generateConcepts(new ArrayList<Concept>(patientPortalForm.getConcepts())));
-
+        if (!patientPortalForm.getConcepts().isEmpty()) {
+            List<Concept> questionConcepts = new ArrayList<Concept>();
+            for (Concept concept : patientPortalForm.getConcepts()) {
+                questionConcepts.add(concept);
+            }
+            patientPortalFormMap.put("concepts", generateConcepts(questionConcepts));
+        }
         return patientPortalFormMap;
     }
     public static Object generateConcepts(List<Concept> concepts) {
@@ -396,6 +401,15 @@ public class ToolkitResourceUtil {
             for (Concept conceptSet : concept.getSetMembers()) {
                 conceptSetsMap.add(generateBasicConcept(conceptSet));
             }
+            conceptMap.put("conceptSets",conceptSetsMap) ;
+        }
+
+        if (concept.getAnswers()!= null) {
+            List<Object> conceptAnswerMap = new ArrayList<Object>();
+            for (ConceptAnswer conceptAnswer : concept.getAnswers()) {
+                conceptAnswerMap.add(generateBasicConcept(conceptAnswer.getAnswerConcept()));
+            }
+            conceptMap.put("conceptAnswers",conceptAnswerMap) ;
         }
         return conceptMap;
     }
@@ -405,10 +419,16 @@ public class ToolkitResourceUtil {
         Map<String, Object> creatorPersonMap = generatePerson(concept.getCreator().getPerson());
 
         Map<String, Object> basicConceptMap = new HashMap<String, Object>();
-            basicConceptMap.put("id", concept.getUuid());
-            basicConceptMap.put("name", concept.getName());
-            basicConceptMap.put("description", concept.getDescription());
-            basicConceptMap.put("creator", creatorPersonMap);
+        basicConceptMap.put("id", concept.getUuid());
+        if(concept.getName()!=null)
+            basicConceptMap.put("name", concept.getName().getName());
+        else
+            basicConceptMap.put("name", null);
+        if(concept.getDescription()!=null)
+            basicConceptMap.put("description", concept.getDescription().getDescription());
+        else
+            basicConceptMap.put("description", null);
+        basicConceptMap.put("creator", creatorPersonMap);
 
         return basicConceptMap;
     }

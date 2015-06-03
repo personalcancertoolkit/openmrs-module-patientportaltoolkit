@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
 import org.openmrs.module.patientportaltoolkit.PatientPortalForm;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalFormDAO;
@@ -36,7 +37,10 @@ public class HibernatePatientPortalFormDAO implements PatientPortalFormDAO {
 
     @Override
     public PatientPortalForm getPatientPortalForm(String uuid) {
-        return null;
+
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(PatientPortalForm.class);
+        c.add(Restrictions.eq("uuid", uuid));
+        return (PatientPortalForm) c.uniqueResult();
     }
 
     @Override

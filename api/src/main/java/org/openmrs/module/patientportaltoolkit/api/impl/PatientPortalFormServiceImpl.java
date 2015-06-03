@@ -36,4 +36,9 @@ public class PatientPortalFormServiceImpl extends BaseOpenmrsService implements 
     public List<PatientPortalForm> getAllPatientPortalForms() {
       return dao.getAllPatientPortalForms();
     }
+
+    @Override
+    public PatientPortalForm getPatientPortalForm(String uuid) {
+        return dao.getPatientPortalForm(uuid);
+    }
 }

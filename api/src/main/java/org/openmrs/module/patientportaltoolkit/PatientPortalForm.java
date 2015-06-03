@@ -3,7 +3,7 @@ package org.openmrs.module.patientportaltoolkit;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Concept;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -18,7 +18,7 @@ public class PatientPortalForm extends BaseOpenmrsMetadata {
 
     private String description;
 
-    private Set<Concept> concepts;
+    private Set<Concept> concepts = new HashSet<Concept>(0);
 
     @Override
     public Integer getId() {
