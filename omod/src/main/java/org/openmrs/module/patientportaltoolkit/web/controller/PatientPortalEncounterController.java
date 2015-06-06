@@ -2,6 +2,7 @@ package org.openmrs.module.patientportaltoolkit.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
@@ -22,8 +23,16 @@ public class PatientPortalEncounterController {
     protected final Log log = LogFactory.getLog(getClass());
     @RequestMapping( value = "/patientportaltoolkit/getallencountertypes")
     @ResponseBody
-    public Object getPatientPortalEncounters()
+    public Object getPatientPortalEncounterTypes()
     {
         return ToolkitResourceUtil.generateEncounterTypes(Context.getEncounterService().getAllEncounterTypes());
+    }
+
+    @RequestMapping( value = "/patientportaltoolkit/getallencountersforpatient/{patientId}")
+    @ResponseBody
+    public Object getPatientPortalEncountersforPatient( @PathVariable( "patientId" ) String patientId)
+    {
+        Patient patient=Context.getPatientService().getPatientByUuid(patientId);
+        return ToolkitResourceUtil.generateEncounters(Context.getEncounterService().getEncountersByPatient(patient));
     }
 }

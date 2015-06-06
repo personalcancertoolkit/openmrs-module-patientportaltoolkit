@@ -458,4 +458,61 @@ public class ToolkitResourceUtil {
 
         return basicConceptMap;
     }
+
+    public static Object generateObservations(List<Obs> observations) {
+
+        List<Object> observationsMap = new ArrayList<Object>();
+        for (Obs observation : observations) {
+            observationsMap.add(generateObservation(observation));
+        }
+        return observationsMap;
+    }
+
+    public static Object generateObservation(Obs observation) {
+
+
+        Map<String, Object> observationMap = new HashMap<String, Object>();
+        observationMap.put("id", observation.getUuid());
+        observationMap.put("concept", generateConcept(observation.getConcept()));
+        ConceptDatatype conceptDatatype=observation.getConcept().getDatatype();
+
+        if(conceptDatatype.isBoolean()) {
+            observationMap.put("type", "boolean");
+            observationMap.put("value", observation.getValueBoolean());
+        }
+        else if(conceptDatatype.isText()) {
+            observationMap.put("type", "text");
+            observationMap.put("value", observation.getValueText());
+        }
+        else if(conceptDatatype.isDateTime()) {
+            observationMap.put("type", "datetime");
+            observationMap.put("value", new SimpleDateFormat().format(new Date(observation.getValueDatetime().getTime())));
+        }
+        else if(conceptDatatype.isCoded()) {
+            observationMap.put("type", "coded");
+            observationMap.put("value", generateConcept(observation.getValueCoded()));
+        }
+        return observationMap;
+    }
+
+    public static Object generateEncounters(List<Encounter> encounters) {
+
+        List<Object> encountersMap = new ArrayList<Object>();
+        for (Encounter encounter : encounters) {
+            encountersMap.add(generateEncounter(encounter));
+        }
+        return encountersMap;
+    }
+
+    public static Object generateEncounter(Encounter encounter) {
+
+
+        Map<String, Object> encounterMap = new HashMap<String, Object>();
+        encounterMap.put("id", encounter.getUuid());
+        List<Obs> obsevationList=new ArrayList<Obs>();
+        obsevationList.addAll(encounter.getAllObs());
+        encounterMap.put("observations",generateObservations(obsevationList));
+        encounterMap.put("datecreated",new SimpleDateFormat().format(new Date(encounter.getDateCreated().getTime())));
+        return encounterMap;
+    }
 }
