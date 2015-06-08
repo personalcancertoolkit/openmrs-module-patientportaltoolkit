@@ -10,9 +10,9 @@ import java.util.List;
 public interface GuidelineDAO {
 
 
-    public void deleteGuideline(Guideline guideline);
+    void deleteGuideline(Guideline guideline);
 
-    public List<Guideline> getAllGuidelines();
+    List<Guideline> getAllGuidelines();
 
-    public void saveGuideline(Guideline guideline);
+    void saveGuideline(Guideline guideline);
 }

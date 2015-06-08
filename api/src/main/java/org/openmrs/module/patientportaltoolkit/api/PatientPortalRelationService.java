@@ -16,29 +16,29 @@ import java.util.List;
 public interface PatientPortalRelationService extends OpenmrsService {
 
     @Transactional(readOnly = true)
-    public Object getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User user);
+    Object getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User user);
 
     @Transactional(readOnly = true)
-    public Object getAllPatientPortalRelations();
+    Object getAllPatientPortalRelations();
 
     @Transactional(readOnly = true)
-    public Object getPatientPortalRelationByPatient(Patient patient);
+    Object getPatientPortalRelationByPatient(Patient patient);
 
     @Transactional(readOnly = true)
-    public List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person);
+    List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person);
 
     @Transactional(readOnly = false)
-    public PatientPortalRelation savePatientPortalRelation(PatientPortalRelation patientPortalRelation);
+    PatientPortalRelation savePatientPortalRelation(PatientPortalRelation patientPortalRelation);
 
     @Transactional(readOnly = true)
-    public PatientPortalRelation getPatientPortalRelation(String uuid);
+    PatientPortalRelation getPatientPortalRelation(String uuid);
 
     @Transactional(readOnly = false)
-    public void deletePatientPortalRelation(PatientPortalRelation patientPortalRelation);
+    void deletePatientPortalRelation(PatientPortalRelation patientPortalRelation);
 
     @Transactional(readOnly = false)
-    public void deletePatientPortalRelation(String uuid);
+    void deletePatientPortalRelation(String uuid);
 
     @Transactional(readOnly = false)
-    public void updatePatientPortalRelation(User user, Person person, String uuid);
+    void updatePatientPortalRelation(User user, Person person, String uuid);
 }

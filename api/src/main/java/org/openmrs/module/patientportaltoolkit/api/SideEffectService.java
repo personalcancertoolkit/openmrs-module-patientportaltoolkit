@@ -14,8 +14,8 @@ import java.util.List;
 public interface SideEffectService extends OpenmrsService {
 
     @Transactional(readOnly = true)
-    public List<SideEffect> getAllSideEffects();
+    List<SideEffect> getAllSideEffects();
 
     @Transactional(readOnly = true)
-    public List<Concept> getAllSideEffectsForPatient(Patient patient);
+    List<Concept> getAllSideEffectsForPatient(Patient patient);
 }

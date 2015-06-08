@@ -18,7 +18,7 @@ public interface JournalEntryService extends OpenmrsService {
      * @should return all journal entries
      */
     @Transactional(readOnly = true)
-    public Object getAllJournalEntries();
+    Object getAllJournalEntries();
 
     /**
      * @param entryId
@@ -26,7 +26,7 @@ public interface JournalEntryService extends OpenmrsService {
      * @should return entry with given id
      */
     @Transactional(readOnly = true)
-    public JournalEntry getJournalEntry(String uuid);
+    JournalEntry getJournalEntry(String uuid);
 
     /**
      * @param p the person who wrote the journal entries
@@ -35,7 +35,7 @@ public interface JournalEntryService extends OpenmrsService {
      * @should return entries ordered by date
      */
     @Transactional(readOnly = true)
-    public Object getJournalEntryForPerson(Person p, Boolean orderByDateDesc);
+    Object getJournalEntryForPerson(Person p, Boolean orderByDateDesc);
 
     /**
      * @param p the person who wrote the journal entries
@@ -46,25 +46,25 @@ public interface JournalEntryService extends OpenmrsService {
      * @should return entries with searchString in title or body
      */
     @Transactional(readOnly = true)
-    public List<JournalEntry> findEntries(String searchText, Person p, Boolean orderByDateDesc);
+    List<JournalEntry> findEntries(String searchText, Person p, Boolean orderByDateDesc);
 
     /**
      * Create or update journal entry
      */
     @Transactional
-    public void saveJournalEntry(JournalEntry entry) throws APIException;
+    void saveJournalEntry(JournalEntry entry) throws APIException;
 
     /**
      * Delete journal entry
      */
     @Transactional
-    public void deleteJournalEntry(JournalEntry entry) throws APIException;
+    void deleteJournalEntry(JournalEntry entry) throws APIException;
 
     /**
      * Sets the deleted flag to true
      */
     @Transactional
-    public void softDelete(JournalEntry entry);
+    void softDelete(JournalEntry entry);
 
     /**
      * find all comments of a given entry
@@ -72,5 +72,5 @@ public interface JournalEntryService extends OpenmrsService {
      * @return all comments of a given entry
      */
     @Transactional
-    public List<JournalEntry> findComments(JournalEntry entry);
+    List<JournalEntry> findComments(JournalEntry entry);
 }

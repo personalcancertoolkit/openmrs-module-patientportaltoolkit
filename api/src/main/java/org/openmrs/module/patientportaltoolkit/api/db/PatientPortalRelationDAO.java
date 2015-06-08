@@ -18,7 +18,7 @@ public interface PatientPortalRelationDAO {
      *
      * @param sessionFactory Hibernate session factory object
      */
-    public void setSessionFactory(SessionFactory sessionFactory);
+    void setSessionFactory(SessionFactory sessionFactory);
 
     /**
      * Get relation of a uuid
@@ -26,36 +26,36 @@ public interface PatientPortalRelationDAO {
      * @param uuid of the relation
      * @return Relation
      */
-    public PatientPortalRelation getPatientPortalRelation(String uuid);
+    PatientPortalRelation getPatientPortalRelation(String uuid);
 
 
     /**
      */
-    public PatientPortalRelation savePatientPortalRelation(PatientPortalRelation patientPortalRelation);
+    PatientPortalRelation savePatientPortalRelation(PatientPortalRelation patientPortalRelation);
 
     /**
      */
-    public void deletePatientPortalRelation(PatientPortalRelation patientPortalRelation);
+    void deletePatientPortalRelation(PatientPortalRelation patientPortalRelation);
 
     /**
      */
-    public List<PatientPortalRelation> getAllPatientPortalRelation();
+    List<PatientPortalRelation> getAllPatientPortalRelation();
 
     /**
      */
-    public List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient);
+    List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient);
 
     /**
      */
-    public List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person);
+    List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person);
 
     /**
      *
      */
-    public PatientPortalRelation getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User requestingUser);
+    PatientPortalRelation getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User requestingUser);
 
 
     /**
      */
-    public void updatePatientPortalRelation(User user, Person person, String uuid);
+    void updatePatientPortalRelation(User user, Person person, String uuid);
 }

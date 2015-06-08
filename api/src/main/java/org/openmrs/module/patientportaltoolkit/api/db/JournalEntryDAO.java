@@ -10,19 +10,19 @@ import java.util.List;
  */
 public interface JournalEntryDAO {
 
-    public void deleteJournalEntry(JournalEntry entry);
+    void deleteJournalEntry(JournalEntry entry);
 
-    public List<JournalEntry> getAllJournalEntries();
+    List<JournalEntry> getAllJournalEntries();
 
-    public JournalEntry getJournalEntry(String uuid);
+    JournalEntry getJournalEntry(String uuid);
 
-    public void saveJournalEntry(JournalEntry entry);
+    void saveJournalEntry(JournalEntry entry);
 
-    public List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc);
+    List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc);
 
-    public List<JournalEntry> findEntries(String searchText, Person p, Boolean orderByDateDesc);
+    List<JournalEntry> findEntries(String searchText, Person p, Boolean orderByDateDesc);
 
-    public void softDelete(JournalEntry entry);
+    void softDelete(JournalEntry entry);
 
-    public List<JournalEntry> findComments(JournalEntry entry);
+    List<JournalEntry> findComments(JournalEntry entry);
 }

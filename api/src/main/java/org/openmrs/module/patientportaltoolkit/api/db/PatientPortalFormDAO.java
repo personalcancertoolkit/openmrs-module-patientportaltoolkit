@@ -11,13 +11,13 @@ import java.util.List;
  */
 public interface PatientPortalFormDAO {
 
-    public void deletePatientPortalForm(PatientPortalForm patientPortalForm);
+    void deletePatientPortalForm(PatientPortalForm patientPortalForm);
 
-    public List<PatientPortalForm> getAllPatientPortalForms();
+    List<PatientPortalForm> getAllPatientPortalForms();
 
-    public PatientPortalForm getPatientPortalForm(String uuid);
+    PatientPortalForm getPatientPortalForm(String uuid);
 
-    public void savePatientPortalForm(PatientPortalForm patientPortalForm);
+    void savePatientPortalForm(PatientPortalForm patientPortalForm);
 
-    public void softDeletePatientPortalForm (PatientPortalForm patientPortalForm);
+    void softDeletePatientPortalForm (PatientPortalForm patientPortalForm);
 }

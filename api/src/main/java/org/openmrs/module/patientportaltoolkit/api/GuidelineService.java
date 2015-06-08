@@ -14,9 +14,9 @@ import java.util.Set;
 public interface GuidelineService extends OpenmrsService {
 
     @Transactional(readOnly = true)
-    public List<Guideline> getAllGuidlines();
+    List<Guideline> getAllGuidlines();
 
     @Transactional(readOnly = true)
-    public List<Guideline> getGuidlinesByConditions(Set<Concept> conditions);
+    List<Guideline> getGuidlinesByConditions(Set<Concept> conditions);
 
 }

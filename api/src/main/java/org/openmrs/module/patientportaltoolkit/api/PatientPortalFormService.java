@@ -12,8 +12,8 @@ import java.util.List;
 public interface PatientPortalFormService  extends OpenmrsService {
 
     @Transactional(readOnly = true)
-    public List<PatientPortalForm> getAllPatientPortalForms();
+    List<PatientPortalForm> getAllPatientPortalForms();
 
     @Transactional(readOnly = true)
-    public PatientPortalForm getPatientPortalForm(String uuid);
+    PatientPortalForm getPatientPortalForm(String uuid);
 }

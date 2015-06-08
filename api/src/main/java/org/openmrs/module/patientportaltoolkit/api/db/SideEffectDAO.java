@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface SideEffectDAO {
 
-    public void deleteSideEffect(SideEffect sideEffect);
+    void deleteSideEffect(SideEffect sideEffect);
 
-    public List<SideEffect> getAllSideEffects();
+    List<SideEffect> getAllSideEffects();
 
-    public void saveSideEffect(SideEffect sideEffect);
+    void saveSideEffect(SideEffect sideEffect);
 }
