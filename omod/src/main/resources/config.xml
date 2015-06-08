@@ -47,6 +47,7 @@
 		PatientPortalRelation.hbm.xml
 		PatientPortalForm.hbm.xml
 		SideEffect.hbm.xml
+		Guideline.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->

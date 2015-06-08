@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+        <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.openmrs.module.patientportaltoolkit">
+<class table="patientportal_guideline" name="Guideline">
+    <id name="id" type="int" column="id"  unsaved-value="0">
+        <generator class="native" />
+    </id>
+    <property name="name" type="java.lang.String" column="name"/>
+    <many-to-one name="followupProcedure" class="org.openmrs.Concept" column="followup_procedure" not-null="true"/>
+    <property name="followupTimline" type="java.lang.String" column="followup_timeline"/>
+
+    <set name="conditionsSet" table="patientportal_guideline_conceptmapping" >
+        <key column="guideline_id" not-null="true" />
+        <many-to-many entity-name="org.openmrs.Concept">
+            <column name="concept_id" not-null="true" />
+        </many-to-many>
+    </set>
+</class>
+</hibernate-mapping>

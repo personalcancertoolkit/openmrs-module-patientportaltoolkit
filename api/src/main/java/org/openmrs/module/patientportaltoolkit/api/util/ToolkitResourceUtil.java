@@ -17,10 +17,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.openmrs.*;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.patientportaltoolkit.JournalEntry;
-import org.openmrs.module.patientportaltoolkit.PatientPortalForm;
-import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
-import org.openmrs.module.patientportaltoolkit.SideEffect;
+import org.openmrs.module.patientportaltoolkit.*;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -514,5 +511,28 @@ public class ToolkitResourceUtil {
         encounterMap.put("observations",generateObservations(obsevationList));
         encounterMap.put("datecreated",new SimpleDateFormat().format(new Date(encounter.getDateCreated().getTime())));
         return encounterMap;
+    }
+
+    public static Object generateGuidelines(List<Guideline> guidelines) {
+
+        List<Object> guidelinesMap = new ArrayList<Object>();
+        for (Guideline guideline : guidelines) {
+            guidelinesMap.add(generateGuideline(guideline));
+        }
+        return guidelinesMap;
+    }
+
+    public static Object generateGuideline(Guideline guideline) {
+
+
+        Map<String, Object> guidelineMap = new HashMap<String, Object>();
+        List<Concept> conditionsList=new ArrayList<Concept>();
+        conditionsList.addAll(guideline.getConditionsSet());
+        guidelineMap.put("id", guideline.getId());
+        guidelineMap.put("name",guideline.getName());
+        guidelineMap.put("followupTimeline",guideline.getFollowupTimline());
+        guidelineMap.put("followupProcedure",generateConcept(guideline.getFollowupProcedure()));
+        guidelineMap.put("conditions",generateConcepts(conditionsList));
+        return guidelineMap;
     }
 }
