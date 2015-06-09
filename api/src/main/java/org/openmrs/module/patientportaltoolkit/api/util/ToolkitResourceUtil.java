@@ -32,6 +32,21 @@ public class ToolkitResourceUtil {
     public static final String PHONE_NUMBER_ATTRIBUTE = "Telephone Number";
     public static final String EMAIL_ATTRIBUTE = "Email";
 
+
+    public static Date clearDate(Date dateTime) {
+        if(dateTime == null) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateTime);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date dateWithoutTime = cal.getTime();
+
+        return dateWithoutTime;
+    }
     public static Map<String, Object> generatePerson(Person person) {
 
         PersonAddress personAddress = new PersonAddress();
@@ -534,5 +549,26 @@ public class ToolkitResourceUtil {
         guidelineMap.put("followupProcedure",generateConcept(guideline.getFollowupProcedure()));
         guidelineMap.put("conditions",generateConcepts(conditionsList));
         return guidelineMap;
+    }
+
+    public static Object generateReminders(List<Reminder> reminders) {
+
+        List<Object> remindersMap = new ArrayList<Object>();
+        for (Reminder reminder : reminders) {
+            remindersMap.add(generateReminder(reminder));
+        }
+        return remindersMap;
+    }
+
+    public static Object generateReminder(Reminder reminder) {
+
+
+        Map<String, Object> reminderMap = new HashMap<String, Object>();
+        reminderMap.put("id", reminder.getId());
+        reminderMap.put("patient",generatePerson(reminder.getPatient()));
+        reminderMap.put("followupProcedure",generateConcept(reminder.getFollowProcedure()));
+        reminderMap.put("followupProcedureName",reminder.getFollowProcedureName());
+        reminderMap.put("status",reminder.getStatus());
+        return reminderMap;
     }
 }
