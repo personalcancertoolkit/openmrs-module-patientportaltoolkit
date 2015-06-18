@@ -22,7 +22,7 @@ public interface PatientPortalRelationService extends OpenmrsService {
     Object getAllPatientPortalRelations();
 
     @Transactional(readOnly = true)
-    Object getPatientPortalRelationByPatient(Patient patient);
+    List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient);
 
     @Transactional(readOnly = true)
     List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person);

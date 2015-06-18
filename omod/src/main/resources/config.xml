@@ -40,7 +40,6 @@
 			org.openmrs.module.uiframework
 		</require_module>
 	</require_modules>
-
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
 		JournalEntry.hbm.xml

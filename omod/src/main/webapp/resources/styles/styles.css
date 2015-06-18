@@ -1,0 +1,110 @@
+.button-div {
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+.btn.pad-left {
+	margin-left: 5px;
+}
+
+.navbar {
+	border-radius: 0;
+	width: 100%;
+	z-index: 2;
+}
+
+.header {
+	width: 100%;
+	margin: 0 auto;
+}
+
+ul.nav.nav-tabs {
+	margin-bottom: 10px;
+}
+
+.navbar-nav {
+	margin-left: 2%;
+	margin-right: 2%;
+}
+
+#content {
+	position: relative;
+	top: 70px;
+	padding-bottom: 40px;
+	z-index: 1;
+}
+
+select {
+	margin-right: 10px;
+}
+
+.modal.fade {
+	z-index: 10;
+}
+
+.modal-backdrop {
+	z-index: 100;
+}
+
+.modal-dialog {
+	position: relative;
+	margin-top: 140px;
+	z-index: 1000;
+}
+
+button.add-treatment-btn {
+	margin-top: 15px;
+}
+
+li.plain-list-item {
+	list-style: none;
+	margin-bottom: 20px;
+}
+
+li.plain-list-item .pull-right {
+	margin-top: 15px;
+}
+
+li.media.friendlist-item {
+	margin-bottom: -30px;
+}
+
+/* Home page */
+.aside {
+	min-width: 12em;
+	max-width: 12em;
+	min-height: 300px;
+	max-height: 300px;
+}
+.status-updater {
+	resize: none !important; 
+}
+.feed-subitems {
+	background-color: transparent !important;
+}
+.feed-item {
+	background-color: transparent !important;
+	display: block;
+}
+.separator {
+	padding: 5px;
+}
+.feed-comment {
+	border-top: 1px solid #ddd;
+}
+
+/* Profile stuff */
+#profile-pills {
+	margin-top: -20px;
+}
+#profile-name {
+	padding: 20px;
+}
+.profile-image {
+	border: 4px solid #fff;
+}
+
+/* Friends */
+.allies-number {
+	margin-top: 30px;
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "id": "patientportaltoolkit",
+    "description": "patientportal toolkit desc",
+    "order": 10,
+    "extensions": [
+      {
+        "id": "patientportaltoolkit",
+        "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
+        "type": "link",
+        "order": 1,
+        "label": "Patient Portal Toolkit",
+        "url": "patientportaltoolkit/home.page",
+        "icon": "icon-user-md",
+        "requiredPrivilege": "App: patientportaltoolkit"
+      }
+    ]
+  }
+]

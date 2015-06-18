@@ -33,8 +33,8 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
     }
 
     @Override
-    public Object getPatientPortalRelationByPatient(Patient patient) {
-        return ToolkitResourceUtil.generateRelations(dao.getPatientPortalRelationByPatient(patient));
+    public List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient) {
+        return dao.getPatientPortalRelationByPatient(patient);
     }
 
     @Override

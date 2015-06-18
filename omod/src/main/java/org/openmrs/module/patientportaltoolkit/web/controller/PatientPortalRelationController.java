@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
+import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class PatientPortalRelationController {
             throws Exception
     {
         Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        List<Object> relations = (List<Object>) Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPatient(patient);
+        List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPatient(patient));
         return relations;
     }
 
