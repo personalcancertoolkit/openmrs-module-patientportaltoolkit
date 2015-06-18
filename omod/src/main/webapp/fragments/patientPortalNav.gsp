@@ -38,12 +38,7 @@
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
             <li id="patientPortalNavHome"><a href="home.page">Home</a></li>
-            <li id="patientPortalNavProfile"><a
-                    href="patientPortalProfile.page">Profile</a></li>
-            <li id="patientPortalNavConnections"><a href="#">Connections</a></li>
             <li id="patientPortalNavCommunity"><a href="communities.page">Community</a></li>
-            <li id="patientPortalNavSideEffects"><a href="sideEffects.page">Side
-            Effects</a></li>
             <li id="patientPortalNavSymptoms"><a href="#">Symptom
             Management</a></li>
         </ul>

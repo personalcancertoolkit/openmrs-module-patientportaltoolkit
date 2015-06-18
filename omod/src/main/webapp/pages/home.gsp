@@ -16,9 +16,13 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 
     <div class="tab-content">
         <div id="journal" class="tab-pane fade in active">
+            <br>
             ${ ui.includeFragment("patientportaltoolkit", "statusUpdater") }
+            <br>
+            ${ ui.includeFragment("patientportaltoolkit", "feedItems") }
         </div>
         <div id="connections" class="tab-pane fade">
+            <br>
             ${ ui.includeFragment("patientportaltoolkit", "connections") }
         </div>
         <div id="treatments" class="tab-pane fade">

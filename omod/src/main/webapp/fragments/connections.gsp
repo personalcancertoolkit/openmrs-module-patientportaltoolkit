@@ -33,7 +33,7 @@
 
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object" src="" alt="Ken Spry's Picture" width="60" height="60"/>
+                            <img class="media-object" src="/openmrs/images/openmrs_logo_white.gif" alt="Default Picture" width="60" height="60"/>
                         </a>
                     </div>
 

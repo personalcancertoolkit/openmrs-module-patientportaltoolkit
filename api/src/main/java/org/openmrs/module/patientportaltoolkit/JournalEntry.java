@@ -4,6 +4,8 @@ import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.Person;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Maurya on 25/05/2015.
@@ -21,6 +23,8 @@ public class JournalEntry extends BaseOpenmrsObject {
     private Date dateCreated;
     private boolean deleted;
     private Date dateDeleted;
+
+    private Set<JournalEntry> children = new HashSet<JournalEntry>(0);
 
     public JournalEntry(String title, String content) {
         super();
@@ -155,6 +159,21 @@ public class JournalEntry extends BaseOpenmrsObject {
      */
     public void setParentEntryId(Integer parentEntryId) {
         this.parentEntryId = parentEntryId;
+    }
+
+    /**
+     * @return children of parent entry (null: original entry; not null: comment to an original/parent entry)
+     */
+    public Set<JournalEntry> getChildren() {
+        return children;
+    }
+
+
+    /**
+     * @param children id of parent entry
+     */
+    public void setChildren(Set<JournalEntry> children) {
+        this.children = children;
     }
 
 }

@@ -2,6 +2,7 @@ package org.openmrs.module.patientportal.api;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.PatientService;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
@@ -46,7 +47,7 @@ public class PatientServiceTest extends BaseModuleContextSensitiveTest {
 
     @Test
     public void getAllPatients_shouldNotReturnNullValue() throws Exception {
-        List<Object> patientObjects = getService().getAllPatients();
+        List<Patient> patientObjects = getService().getAllPatients();
         assertNotNull(patientObjects);
     }
 
