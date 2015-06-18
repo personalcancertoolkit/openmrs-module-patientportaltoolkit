@@ -15,12 +15,15 @@ package org.openmrs.module.patientportaltoolkit.web.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Patient;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.PatientService;
+import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +42,10 @@ public class PatientPortalToolkitPatientController {
     {
 
         PatientService patientService = Context.getService(PatientService.class);
-        Map<String, Object> patientObject = (Map<String, Object>) patientService.getPatient(patientId);
+       Patient patient= Context.getPatientService().getPatientByUuid(patientId);
+        Map<String, Object> patientObject = new HashMap<String, Object>();
+        if (patient != null)
+            patientObject = ToolkitResourceUtil.generatePerson(patientService.getPatient(patientId));
         return patientObject;
 
     }
@@ -49,10 +55,12 @@ public class PatientPortalToolkitPatientController {
     public Object getAllPatientPortalPatient()
             throws Exception
     {
-        PatientService patientService = Context.getService(PatientService.class);
-        List<Object> patientObjects = patientService.getAllPatients();
-        return patientObjects;
-
+         List<Patient> omrspatients = Context.getPatientService().getAllPatients();
+        List<Object> patients = new ArrayList<Object>();
+        for(Patient p: omrspatients){
+            patients.add(ToolkitResourceUtil.generatePerson(Context.getPatientService().getPatientByUuid(p.getUuid())));
+        }
+        return patients;
     }
     @RequestMapping( value = "/patientportaltoolkit/getuser")
     @ResponseBody

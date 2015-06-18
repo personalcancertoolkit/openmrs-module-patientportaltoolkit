@@ -46,9 +46,9 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
     /**
      *
      */
-    public Object getAllJournalEntries() {
+    public List<JournalEntry> getAllJournalEntries() {
 
-        return ToolkitResourceUtil.generateJournals(dao.getAllJournalEntries());
+        return dao.getAllJournalEntries();
     }
 
     /**
@@ -68,8 +68,8 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
     /**
      *
      */
-    public Object getJournalEntryForPerson(Person p, Boolean orderByDateDesc ) {
-        return ToolkitResourceUtil.generateJournals(dao.getJournalEntryForPerson(p, orderByDateDesc));
+    public List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc ) {
+        return dao.getJournalEntryForPerson(p, orderByDateDesc);
     }
 
     /**

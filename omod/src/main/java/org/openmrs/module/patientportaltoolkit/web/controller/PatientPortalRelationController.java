@@ -35,7 +35,7 @@ public class PatientPortalRelationController {
     public Object getAllPatientPortalRelations()
             throws Exception
     {
-        List<Object> relations = (List<Object>) Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations();
+        List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations());
         return relations;
     }
 }

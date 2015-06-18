@@ -28,26 +28,19 @@ import java.util.List;
 public class PatientServiceImpl extends BaseOpenmrsService implements PatientService {
 
     @Override
-    public  Object getPatient(String patientId){
+    public  Patient getPatient(String patientId){
         Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        if (patient != null)
-            return ToolkitResourceUtil.generatePerson(patient);
-
-        return null;
+        return patient;
     }
 
     @Override
-    public List<Object> getAllPatients() {
+    public List<Patient> getAllPatients() {
         List<Object> patientPortalPatients = new ArrayList<Object>();
-        List<Patient> omrsPatients = Context.getPatientService().getAllPatients();
-        for(Patient p: omrsPatients){
-            patientPortalPatients.add(getPatient(p.getUuid()));
-        }
-        return patientPortalPatients;
+       return Context.getPatientService().getAllPatients();
     }
 
     @Override
-    public Object updatePatient(String patientJson) {
+    public Patient updatePatient(String patientJson) {
         return ToolkitResourceUtil.updatePatient(patientJson);
     }
 }

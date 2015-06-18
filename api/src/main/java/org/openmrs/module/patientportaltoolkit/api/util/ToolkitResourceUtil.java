@@ -177,7 +177,7 @@ public class ToolkitResourceUtil {
 
     }
 
-    public static Object updatePatient(String json) {
+    public static Patient updatePatient(String json) {
         Map<String, Object> map = new HashMap<String, Object>();
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -264,8 +264,8 @@ public class ToolkitResourceUtil {
 
             patient.setAddresses(personAddresses);
         }
-        return generatePerson(Context.getPatientService().savePatient(patient));
-
+        Context.getPatientService().savePatient(patient);
+        return Context.getPatientService().getPatientByUuid(patient.getUuid());
     }
 
     public static Object generateJournals(List<JournalEntry> journalEntries) {

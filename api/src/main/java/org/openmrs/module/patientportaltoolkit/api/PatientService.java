@@ -13,6 +13,8 @@
 
 package org.openmrs.module.patientportaltoolkit.api;
 
+import org.openmrs.Patient;
+
 import java.util.List;
 
 /**
@@ -28,7 +30,7 @@ public interface PatientService {
      *
      * @should not return null value
      */
-     Object getPatient(String id);
+     Patient getPatient(String id);
 
     /**
      * get all patient resources
@@ -38,7 +40,7 @@ public interface PatientService {
      *
      * @should not return null value
      */
-    List<Object> getAllPatients() ;
+    List<Patient> getAllPatients() ;
 
     /**
      * update patient resource
@@ -46,5 +48,5 @@ public interface PatientService {
      * @param patientObject json provided by the client
      * @return patient resource and will return null if patient not found for the given id
      */
-     Object updatePatient(String patientJson);
+     Patient updatePatient(String patientJson);
 }
