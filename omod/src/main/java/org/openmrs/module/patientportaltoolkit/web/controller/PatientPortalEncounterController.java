@@ -25,6 +25,7 @@ public class PatientPortalEncounterController {
     private final static String  RADIATION_ENCOUNTER = "CANCER TREATMENT - RADIATION";
     private final static String  CHEMOTHERAPY_ENCOUNTER = "CANCER TREATMENT - CHEMOTHERAPY";
     private final static String  SURGERY_ENCOUNTER = "CANCER TREATMENT - SURGERY";
+    private final static String  TREATMENTSUMMARY_ENCOUNTER = "CANCER TREATMENT SUMMARY";
     protected final Log log = LogFactory.getLog(getClass());
     @RequestMapping( value = "/patientportaltoolkit/getallencountertypes")
     @ResponseBody

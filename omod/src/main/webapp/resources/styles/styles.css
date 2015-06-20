@@ -91,6 +91,7 @@ li.media.friendlist-item {
 }
 .feed-comment {
 	border-top: 1px solid #ddd;
+	height: 40px;
 }
 
 /* Profile stuff */

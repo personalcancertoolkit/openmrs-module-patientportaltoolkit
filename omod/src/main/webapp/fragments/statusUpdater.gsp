@@ -1,8 +1,10 @@
-<form class="form" id="status-update-form">
+<form method="POST" class="form" id="status-update-form">
     <div class="form-group">
         <div class="panel panel-default">
             <div class="panel-body">
-                <textarea class="form-control" placeholder="Share your thoughts..."></textarea>
+                <input  name="title" class="form-control" placeholder="Title for your journal...">
+                <br>
+                <textarea name="content" class="form-control" placeholder="Share your thoughts..."></textarea>
             </div>
             <div class="panel-footer clearfix">
                 <div class="pull-right">
@@ -12,7 +14,7 @@
                         <option>Personal Connections</option>
                         <option>Physician Connections</option>
                     </select>
-                    <div class="btn btn-primary btn-sm" >Post</div>
+                    <button type="submit" class="btn btn-primary btn-sm" >Post</button>
                 </div>
             </div>
         </div>

@@ -6,11 +6,11 @@
             </a>
         </div>
         <div class="pull-left" id="profile-name">
-            <h2>James Bond</h2>
+            <h2>${ (person.getGivenName()) } ${ (person.getFamilyName()) }</h2>
             <div>
                 <label>Birthday</label>
                 <span>
-                    <small>&emsp;21-Feb-1945<i>&emsp;70 years old</i></small>
+                    <small>&emsp;${ (person.birthdate) }</small>
                 </span>
             </div>
         </div>

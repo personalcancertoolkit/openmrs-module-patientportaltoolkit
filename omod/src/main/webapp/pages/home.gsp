@@ -2,6 +2,15 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 <script type="text/javascript">
     \$(document).ready(function(){
         \$('#patientPortalNavHome').addClass('active');
+        \$(".journalComment").keydown(
+                function (event) {
+
+                    if (event.which == 13) {
+                        alert("You have pressed @ sign");
+                    }
+
+
+                });
     });
 </script>
 <body>
@@ -26,8 +35,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
             ${ ui.includeFragment("patientportaltoolkit", "connections") }
         </div>
         <div id="treatments" class="tab-pane fade">
-            <h3>Menu 2</h3>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+            ${ ui.includeFragment("patientportaltoolkit", "treatments") }
         </div>
         <div id="sideEffects" class="tab-pane fade">
             ${ ui.includeFragment("patientportaltoolkit", "sideEffects") }

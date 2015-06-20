@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="media-body">
-                        <h4 class="media-heading">${ (it.getRelationType()) }</h4>
+                        <h4 class="media-heading">${ (it.relatedPerson.getGivenName()) } ${ (it.relatedPerson.getFamilyName()) } </h4>
                         <select>
                             <option selected>doctor</option>
                             <option>friend</option>

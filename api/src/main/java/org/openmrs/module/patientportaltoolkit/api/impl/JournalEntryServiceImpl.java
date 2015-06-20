@@ -4,12 +4,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.api.APIException;
+import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
 import org.openmrs.module.patientportaltoolkit.api.JournalEntryService;
 import org.openmrs.module.patientportaltoolkit.api.db.JournalEntryDAO;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,6 +66,9 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
      *
      */
     public void saveJournalEntry(JournalEntry entry) throws APIException {
+        entry.setCreator(Context.getAuthenticatedUser().getPerson());
+        Date date = new Date();
+        entry.setDateCreated(date);
         dao.saveJournalEntry(entry);
     }
 
