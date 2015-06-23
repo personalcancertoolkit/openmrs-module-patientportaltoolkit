@@ -20,6 +20,11 @@
             </div>
         </div>
     </div>
+    <div class="clearfix">
+        <div class="button-div pull-right">
+            <button type="button" class="btn btn-default pad-left">Find Relations</button>
+        </div>
+    </div>
     <% if (relationships) { %>
     <ul class="media-list">
         <% relationships.each { relationship -> %>
