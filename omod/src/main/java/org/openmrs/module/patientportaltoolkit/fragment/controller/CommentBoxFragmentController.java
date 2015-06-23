@@ -5,7 +5,6 @@ import org.openmrs.module.patientportaltoolkit.JournalEntry;
 import org.openmrs.module.patientportaltoolkit.api.JournalEntryService;
 import org.openmrs.ui.framework.annotation.FragmentParam;
 import org.openmrs.ui.framework.fragment.FragmentModel;
-import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -16,11 +15,11 @@ public class CommentBoxFragmentController {
                            @FragmentParam(value="parentId", required=true) String parentId) {
         model.addAttribute("parentId",parentId);
     }
-    public String post(FragmentModel model,@RequestParam(value = "commentContent", required = true) String content) {
-         String title=Context.getAuthenticatedUser().getGivenName()+Context.getAuthenticatedUser().getFamilyName();
+
+    public void saveComment(FragmentModel model,@RequestParam(value = "commentContent", required = true) String content,@RequestParam(value = "parentId", required = true) String parentId) {
+        String title=Context.getAuthenticatedUser().getGivenName()+" "+Context.getAuthenticatedUser().getFamilyName();
         JournalEntry journalEntry = new JournalEntry(title,content);
-        journalEntry.setParentEntryId(Context.getService(JournalEntryService.class).getJournalEntry(model.getAttribute("parentId").toString()).getId());
+        journalEntry.setParentEntryId(Context.getService(JournalEntryService.class).getJournalEntry(parentId).getId());
         Context.getService(JournalEntryService.class).saveJournalEntry(journalEntry);
-        return null;
     }
 }

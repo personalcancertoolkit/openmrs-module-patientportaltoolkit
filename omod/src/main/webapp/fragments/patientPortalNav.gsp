@@ -25,9 +25,9 @@
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/styles.css") }"
           type="text/css">
-    <style type="text/css">
+    <script type="text/javascript"
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}"></script>
 
-    </style>
 </head>
 <div class="navbar navbar-default container">
     <button type="button" class="navbar-toggle" data-toggle="collapse"

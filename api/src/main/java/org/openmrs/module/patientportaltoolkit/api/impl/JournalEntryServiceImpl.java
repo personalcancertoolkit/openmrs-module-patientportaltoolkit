@@ -13,8 +13,7 @@ import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Maurya on 25/05/2015.
@@ -76,7 +75,25 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
      *
      */
     public List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc ) {
-        return dao.getJournalEntryForPerson(p, orderByDateDesc);
+        List<JournalEntry> totalJournalList= dao.getJournalEntryForPerson(p, orderByDateDesc);
+        List<JournalEntry> returnJournalList = new ArrayList<JournalEntry>();
+        for(JournalEntry je: totalJournalList){
+            if(je.getParentEntryId() ==null)
+                returnJournalList.add(je);
+        }
+        for(JournalEntry je:returnJournalList){
+            if(je.getChildren() !=null){
+                Set<JournalEntry> journalEntriesSet= new TreeSet<JournalEntry>(new Comparator<JournalEntry>() {
+                    public int compare(JournalEntry je1, JournalEntry je2) {
+                        return je1.getDateCreated().compareTo(je2.getDateCreated());
+                    }
+                });
+                journalEntriesSet.addAll(je.getChildren());
+
+                je.setChildren(journalEntriesSet);
+            }
+        }
+        return returnJournalList;
     }
 
     /**

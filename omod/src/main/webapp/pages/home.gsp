@@ -1,16 +1,8 @@
+
 ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 <script type="text/javascript">
     \$(document).ready(function(){
         \$('#patientPortalNavHome').addClass('active');
-        \$(".journalComment").keydown(
-                function (event) {
-
-                    if (event.which == 13) {
-                        alert("You have pressed @ sign");
-                    }
-
-
-                });
     });
 </script>
 <body>

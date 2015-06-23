@@ -1,5 +1,5 @@
-<form method="POST" class="form">
+<form method="POST" class="form" id='commentbox-form${(parentId)}'>
     <div class="form-group-sm">
-        <input name="commentContent" class="form-control journalComment" placeholder="Comment&hellip;" />
+        <input id='commentbox${(parentId)}' name="commentContent" class="form-control journalComment" placeholder="Comment&hellip;" />
     </div>
 </form>

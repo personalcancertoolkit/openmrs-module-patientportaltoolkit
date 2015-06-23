@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 public class StatusUpdaterFragmentController {
     public void controller(PageModel model) {
     }
-    public String post(@RequestParam(value = "title", required = true) String title,
+    public String savePost(@RequestParam(value = "title", required = true) String title,
                        @RequestParam(value = "content", required = true) String content) {
 
         JournalEntry journalEntry = new JournalEntry(title,content);

@@ -22,7 +22,7 @@
     </div>
     <% if (relationships) { %>
     <ul class="media-list">
-        <% relationships.each { %>
+        <% relationships.each { relationship -> %>
         <li class="media friendlist-item">
 
             <div class="panel panel-default">
@@ -38,12 +38,8 @@
                     </div>
 
                     <div class="media-body">
-                        <h4 class="media-heading">${ (it.relatedPerson.getGivenName()) } ${ (it.relatedPerson.getFamilyName()) } </h4>
-                        <select>
-                            <option selected>doctor</option>
-                            <option>friend</option>
-                            <option>family</option>
-                        </select>
+                        <h4 class="media-heading">${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) } </h4>
+                        ${ ui.includeFragment("patientportaltoolkit", "relationshipSelect",[selectedRelationShip: (relationship.relationType)]) }
                         <select>
                             <option selected>All Connections</option>
                             <option>Personal Connections</option>
