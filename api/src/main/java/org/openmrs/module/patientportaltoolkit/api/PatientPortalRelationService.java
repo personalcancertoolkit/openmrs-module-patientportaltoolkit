@@ -25,6 +25,9 @@ public interface PatientPortalRelationService extends OpenmrsService {
     List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient);
 
     @Transactional(readOnly = true)
+    List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient, Boolean includeRetired);
+
+    @Transactional(readOnly = true)
     List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person);
 
     @Transactional(readOnly = false)
@@ -37,7 +40,7 @@ public interface PatientPortalRelationService extends OpenmrsService {
     void deletePatientPortalRelation(PatientPortalRelation patientPortalRelation);
 
     @Transactional(readOnly = false)
-    void deletePatientPortalRelation(String uuid);
+    void deletePatientPortalRelation(String uuid, User user);
 
     @Transactional(readOnly = false)
     void updatePatientPortalRelation(User user, Person person, String uuid);

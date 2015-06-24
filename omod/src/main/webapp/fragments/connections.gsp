@@ -1,28 +1,8 @@
 <div class="clearfix" id="friends-list">
-    <div class="modal fade" id="confirm-friend-delete" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-
-                <div class="modal-body">
-                    Are you sure that you'd like to remove this friend?
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Go Back</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="delete-btn"
-                            delete={this.confirmDelete}>Yes, Remove Friend</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    ${ ui.includeFragment("patientportaltoolkit", "removeRelationship") }
     <div class="clearfix">
         <div class="button-div pull-right">
-            <button type="button" class="btn btn-default pad-left">Find Relations</button>
+            <button type="button" class="btn btn-default pad-left">Add Relations</button>
         </div>
     </div>
     <% if (relationships) { %>
@@ -32,7 +12,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <button type="button" class="close" aria-label="remove">
+                    <button type="button" id="removeRelation${ relationship.uuid }" class="close removeRelationCloseButton" aria-label="remove" data-toggle="modal" data-target="#confirm-friend-delete">
                         <span aria-hidden="true">&times;</span>
                     </button>
 

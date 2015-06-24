@@ -9,6 +9,8 @@ import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalRelationDAO;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,7 +36,23 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
 
     @Override
     public List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient) {
-        return dao.getPatientPortalRelationByPatient(patient);
+        return getPatientPortalRelationByPatient(patient,false);
+    }
+
+    @Override
+    public List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient, Boolean includeRetired) {
+        List<PatientPortalRelation> patientPortalRelations = dao.getPatientPortalRelationByPatient(patient);
+        if(includeRetired)
+            return patientPortalRelations;
+        else
+        {
+            List<PatientPortalRelation> patientPortalNotRetiredRelations = new ArrayList<PatientPortalRelation>();
+           for(PatientPortalRelation ppr: patientPortalRelations){
+               if (!ppr.getRetired())
+                   patientPortalNotRetiredRelations.add(ppr);
+           }
+           return patientPortalNotRetiredRelations;
+        }
     }
 
     @Override
@@ -49,7 +67,7 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
 
     @Override
     public PatientPortalRelation getPatientPortalRelation(String uuid) {
-        return null;
+        return dao.getPatientPortalRelation(uuid);
     }
 
     @Override
@@ -58,8 +76,12 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
     }
 
     @Override
-    public void deletePatientPortalRelation(String uuid) {
-
+    public void deletePatientPortalRelation(String uuid, User user) {
+        PatientPortalRelation patientPortalRelation=getPatientPortalRelation(uuid);
+        patientPortalRelation.setRetired(true);
+        patientPortalRelation.setRetiredBy(user);
+        patientPortalRelation.setDateRetired(new Date());
+        dao.savePatientPortalRelation(patientPortalRelation);
     }
 
     @Override

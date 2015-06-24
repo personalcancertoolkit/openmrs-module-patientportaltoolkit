@@ -23,4 +23,14 @@ jq(document).ready(function(){
                 location.reload();
             });
         });
+    jq(".removeRelationCloseButton").click(
+        function () {
+            jq("#remove-relationId").val(this.id.split("removeRelation")[1]);
+        });
+    jq("#relation-delete-btn").click(
+        function () {
+            jq.get("removeRelationship/removeRelationship.action", {relationshipId:  jq("#remove-relationId").val()}, function(){
+                location.reload();
+            });
+        });
 });

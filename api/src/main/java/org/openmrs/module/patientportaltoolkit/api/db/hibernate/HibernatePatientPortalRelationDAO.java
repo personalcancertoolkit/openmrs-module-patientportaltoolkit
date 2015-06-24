@@ -32,7 +32,9 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
 
     @Override
     public PatientPortalRelation getPatientPortalRelation(String uuid) {
-        return (PatientPortalRelation) this.sessionFactory.getCurrentSession().get(PatientPortalRelation.class, uuid);
+        final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
+        crit.add(Restrictions.eq("uuid", uuid));
+        return (PatientPortalRelation) crit.uniqueResult();
     }
 
     @Override
