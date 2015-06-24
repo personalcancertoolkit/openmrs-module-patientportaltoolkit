@@ -3,6 +3,17 @@
  */
 jq = jQuery;
 jq(document).ready(function(){
+
+    jq(function() {
+        jq('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            localStorage.setItem('lastTab', jq(this).attr('href'));
+        });
+        var lastTab = localStorage.getItem('lastTab');
+        if (lastTab) {
+            jq('[href="' + lastTab + '"]').tab('show');
+        }
+    });
+
     jq(".journalComment").keydown(
         function (event) {
 
@@ -33,4 +44,6 @@ jq(document).ready(function(){
                 location.reload();
             });
         });
+
+
 });
