@@ -13,6 +13,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
         <li><a data-toggle="tab" href="#connections">Connections</a></li>
         <li><a data-toggle="tab" href="#treatments">Treatments</a></li>
         <li><a data-toggle="tab" href="#sideEffects">Side Effects</a></li>
+        <li><a href="#">Follow up Care</a></li>
     </ul>
 
     <div class="tab-content">

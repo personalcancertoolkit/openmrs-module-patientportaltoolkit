@@ -62,7 +62,7 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
 
     @Override
     public PatientPortalRelation savePatientPortalRelation(PatientPortalRelation patientPortalRelation) {
-        return null;
+        return dao.savePatientPortalRelation(patientPortalRelation);
     }
 
     @Override

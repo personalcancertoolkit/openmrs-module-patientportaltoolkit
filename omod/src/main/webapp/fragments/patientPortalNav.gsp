@@ -42,8 +42,7 @@
             <li id="patientPortalNavSymptoms"><a href="#">Symptom
             Management</a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-calendar"></span></a></li>
+        <ul class="nav navbar-nav navbar-right">s
             <li><a href="#"><span class="glyphicon glyphicon-envelope"></span></a></li>
             <li><a href="#">Logout <span
                     class="glyphicon glyphicon-log-out"></span></a></li>

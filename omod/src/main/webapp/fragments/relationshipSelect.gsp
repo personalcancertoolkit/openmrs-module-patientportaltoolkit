@@ -1,5 +1,5 @@
 <% if (relationshipTypes) { %>
-<select>
+<select class="form-control" id="relationshipSelect${(parentForm)}">
     <% relationshipTypes.each { relationshipType -> %>
     <% if (selectedRelationShiptype) { %>
     <% if (selectedRelationShiptype.equals(relationshipType.aIsToB)) { %>
@@ -7,7 +7,9 @@
     <% } else { %>
     <option>${(relationshipType.aIsToB)}</option>
     <% }%>
-    <% }%>
+    <% } else {%>
+    <option>${(relationshipType.aIsToB)}</option>
+    <% } %>
     <% } %>
 </select>
 <% } %>

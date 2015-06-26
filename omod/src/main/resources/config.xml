@@ -26,6 +26,11 @@
 		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
 	</extension>
 
+	<privilege>
+		<name>App: patientportaltoolkit</name>
+		<description>Access Patient Portal Toolkit app</description>
+	</privilege>
+
 	<filter>
 		<filter-name>Patient Portal Web Service Authorization</filter-name>
 		<filter-class>org.openmrs.module.patientportaltoolkit.web.filter.AuthorizationFilter

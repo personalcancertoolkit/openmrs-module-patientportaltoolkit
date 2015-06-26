@@ -44,6 +44,21 @@ jq(document).ready(function(){
                 location.reload();
             });
         });
+    //jq("#searchPersonsInput").keydown(
+    //    function () {
+    //        if(jq("#searchPersonsInput").val().length>2)
+    //        jq.get("searchPersons/getPersonsFromSearch.action", {searchQuery:  jq("#searchPersonsInput").val()}, function(data){
+    //            alert(data);
+    //        });
+    //    });
 
+    jq("#addrelationshipbutton").click(
+        function () {
+            var result = jq.get("addRelationship/addRelationshipfromForm.action", {given:  jq("#givenpersonName").val(),family:  jq("#familypersonName").val(),gender:jq("#genderSelect").val(),personEmail:jq("#personEmail").val(),personRelationType:jq("#relationshipSelectaddRelation").val()}, function(){
+
+            });
+            alert(result);
+            location.reload();
+        });
 
 });

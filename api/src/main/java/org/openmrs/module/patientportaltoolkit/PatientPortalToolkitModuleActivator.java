@@ -16,55 +16,39 @@ package org.openmrs.module.patientportaltoolkit;
 
 import org.apache.commons.logging.Log; 
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Role;
+import org.openmrs.api.UserService;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.BaseModuleActivator;
 import org.openmrs.module.ModuleActivator;
 
 /**
  * This class contains the logic that is run every time this module is either started or stopped.
  */
-public class PatientPortalToolkitModuleActivator implements ModuleActivator {
+public class PatientPortalToolkitModuleActivator extends BaseModuleActivator {
 	
 	protected Log log = LogFactory.getLog(getClass());
 		
-	/**
-	 * @see ModuleActivator#willRefreshContext()
-	 */
-	public void willRefreshContext() {
-		log.info("Refreshing Patient Portal Toolkit Module Module");
-	}
-	
+
 	/**
 	 * @see ModuleActivator#contextRefreshed()
 	 */
+	@Override
 	public void contextRefreshed() {
-		log.info("Patient Portal Toolkit Module Module refreshed");
+		super.contextRefreshed();    //To change body of overridden methods use File | Settings | File Templates.
+		ensureRolesAreCreated();
 	}
-	
-	/**
-	 * @see ModuleActivator#willStart()
-	 */
-	public void willStart() {
-		log.info("Starting Patient Portal Toolkit Module Module");
+
+	private void ensureRolesAreCreated() {
+		UserService userService = Context.getUserService();
+		Role patientportalbasicrole = userService.getRole(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE_ROLE);
+		if (patientportalbasicrole == null) {
+			patientportalbasicrole = new Role();
+			patientportalbasicrole.setRole(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE_ROLE);
+			patientportalbasicrole.setDescription(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE_ROLE_DESCRIPTION);
+			patientportalbasicrole.addPrivilege(userService.getPrivilege(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE));
+			userService.saveRole(patientportalbasicrole);
+		}
+		userService.saveRole(patientportalbasicrole);
 	}
-	
-	/**
-	 * @see ModuleActivator#started()
-	 */
-	public void started() {
-		log.info("Patient Portal Toolkit Module Module started");
-	}
-	
-	/**
-	 * @see ModuleActivator#willStop()
-	 */
-	public void willStop() {
-		log.info("Stopping Patient Portal Toolkit Module Module");
-	}
-	
-	/**
-	 * @see ModuleActivator#stopped()
-	 */
-	public void stopped() {
-		log.info("Patient Portal Toolkit Module Module stopped");
-	}
-		
 }

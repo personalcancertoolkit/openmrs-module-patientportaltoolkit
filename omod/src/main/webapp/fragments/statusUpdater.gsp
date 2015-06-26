@@ -2,7 +2,7 @@
     <div class="form-group">
         <div class="panel panel-default">
             <div class="panel-body">
-                <input id="statusUpdaterTitle" name="title" class="form-control" placeholder="Title for your journal...">
+                <input id="statusUpdaterTitle" name="title" class="form-control" placeholder="Title for your Journal Entry...">
                 <br>
                 <textarea id="statusUpdaterContent" name="content" class="form-control" placeholder="Share your thoughts..."></textarea>
             </div>

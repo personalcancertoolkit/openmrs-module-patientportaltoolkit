@@ -11,7 +11,7 @@
                 <span class="gender-age">
                     <span>${ui.message("coreapps.gender." + person.gender)}&nbsp;</span>
                     <span>
-                        <% if (person.birthdate) { %>
+                        <% if (!person.birthdate == null) { %>
                         <% if (person.age > 0) { %>
                         ${ui.message("coreapps.ageYears", person.age)}
                         <% } else if (patient.ageInMonths > 0) { %>
