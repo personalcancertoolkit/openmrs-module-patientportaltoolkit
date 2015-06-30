@@ -7,8 +7,10 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
 import org.openmrs.User;
+import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,12 +29,13 @@ public class AddRelationshipFragmentController {
 
     }
 
-    public String addRelationshipfromForm(FragmentModel model, @RequestParam(value = "given", required = true) String given,
+    public void addRelationshipfromForm(FragmentModel model, @RequestParam(value = "given", required = true) String given,
                                           @RequestParam(value = "family", required = true) String family,
                                         @RequestParam(value = "personEmail", required = true) String personEmail,
                                         @RequestParam(value = "personRelationType", required = true) String personRelationType,
                                         @RequestParam(value = "gender", required = true) String gender) {
         User user = Context.getAuthenticatedUser();
+        UserService userService=Context.getUserService();
         Person p = new Person();
         p.setPersonCreator(user);
         p.setPersonDateCreated(new Date());
@@ -40,18 +43,18 @@ public class AddRelationshipFragmentController {
         p.setPersonDateChanged(new Date());
         if (StringUtils.isEmpty(gender)) {
             log.error("Gender cannot be null.");
-            return String.valueOf("Gender cannot be null.");
+            //return String.valueOf("Gender cannot be null.");
         } else if (gender.toUpperCase().contains("M")) {
             p.setGender("M");
         } else if (gender.toUpperCase().contains("F")) {
             p.setGender("F");
         } else {
             log.error("Gender must be 'M' or 'F'.");
-            return new String("Gender must be 'M' or 'F'.");
+            //return new String("Gender must be 'M' or 'F'.");
         }
         if ("".equals(given) || "".equals(family)) {
             log.error("Given name and family name cannot be null.");
-            return new String("Given name and family name cannot be null.");
+            //return new String("Given name and family name cannot be null.");
         }
         PersonName name = new PersonName(given, "", family);
         name.setCreator(user);
@@ -64,16 +67,16 @@ public class AddRelationshipFragmentController {
             p.setBirthdate(d);
         } catch (java.text.ParseException pe) {
             log.error(pe);
-            return new String("Birthdate cannot be parsed.");
+            //return new String("Birthdate cannot be parsed.");
         }
         p.setGender(gender);
         Person person = Context.getPersonService().savePerson(p);
         User newUser=new User(person);
         newUser.setUsername(given+family);
+        newUser.addRole(userService.getRole(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE_ROLE));
         String passworduuid = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
         User savedUser=Context.getUserService().saveUser(newUser,"Tester123");
-
-        log.info("password is "+"Test123"+passworduuid);
+        System.out.println("\nsystemout---password is " + "Test123" + passworduuid);
         PatientPortalRelation ppr=new PatientPortalRelation(Context.getPatientService().getPatientByUuid(user.getPerson().getUuid()),person);
         ppr.setRelatedPersonEmail(personEmail);
         ppr.setRelationType(personRelationType);
@@ -84,7 +87,7 @@ public class AddRelationshipFragmentController {
         date.add(Calendar.YEAR,20);
         ppr.setExpireDate(date.getTime());
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
-        return "Success";
+        //return "Success";
     }
 
     private Date updateAge(String birthdate, String dateformat, String age) throws java.text.ParseException {

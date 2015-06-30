@@ -11,5 +11,7 @@ public class PatientPortalToolkitConstants {
 
     public static final String APP_VIEW_PRIVILEGE = "App: patientportaltoolkit";
 
+    public static final String VIEW_PROVIDER_PRIVILEGE = "View Providers";
+
 
 }

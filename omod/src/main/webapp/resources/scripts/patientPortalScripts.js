@@ -54,11 +54,11 @@ jq(document).ready(function(){
 
     jq("#addrelationshipbutton").click(
         function () {
-            var result = jq.get("addRelationship/addRelationshipfromForm.action", {given:  jq("#givenpersonName").val(),family:  jq("#familypersonName").val(),gender:jq("#genderSelect").val(),personEmail:jq("#personEmail").val(),personRelationType:jq("#relationshipSelectaddRelation").val()}, function(){
-
+          jq.get("addRelationship/addRelationshipfromForm.action", {given:  jq("#givenpersonName").val(),family:  jq("#familypersonName").val(),gender:jq("#genderSelect").val(),personEmail:jq("#personEmail").val(),personRelationType:jq("#relationshipSelectaddRelation").val()}, function(){
             });
-            alert(result);
-            location.reload();
+            setTimeout(function(){
+                location.reload();
+            }, 2000);
         });
 
 });

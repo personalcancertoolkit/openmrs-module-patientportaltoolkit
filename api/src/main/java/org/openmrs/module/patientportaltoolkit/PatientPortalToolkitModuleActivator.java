@@ -47,6 +47,7 @@ public class PatientPortalToolkitModuleActivator extends BaseModuleActivator {
 			patientportalbasicrole.setRole(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE_ROLE);
 			patientportalbasicrole.setDescription(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE_ROLE_DESCRIPTION);
 			patientportalbasicrole.addPrivilege(userService.getPrivilege(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE));
+			patientportalbasicrole.addPrivilege(userService.getPrivilege(PatientPortalToolkitConstants.VIEW_PROVIDER_PRIVILEGE));
 			userService.saveRole(patientportalbasicrole);
 		}
 		userService.saveRole(patientportalbasicrole);
