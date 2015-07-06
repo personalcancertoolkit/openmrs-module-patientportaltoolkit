@@ -8,24 +8,31 @@
         </div>
 
         <div>
+            <% if (treatmentsummary) { %>
+            <% treatmentsummary.each { genhistory -> %>
             <div>
-
-                <% if (treatmentsummary) { %>
-                <% treatmentsummary.each { encounter -> %>
-                <% if (encounter.obs) { %>
-                <% encounter.obs.each { obs -> %>
-                <label>${(obs.concept.getName())}</label>
-                <% if (obs.concept.datatype.isText()) { %> <span><small>&emsp;${(obs.valueText)}</small></span> <% } %>
-            <% if (obs.concept.datatype.isCoded()) { %> <span><small>&emsp;${(obs.valueCoded.getName())}</small>
-            </span><% } %>
-            <% if (obs.concept.datatype.isDate()) { %> <span><small>&emsp;${(obs.valueDate)}</small></span><% } %>
-                <br>
-                <% } %>
-                <% } %>
-                <% } %>
-                <% } %>
+                <label>
+                ${(genhistory.cancerType)}
+                &ensp;
+                ${(genhistory.cancerStage)}
+                </label>
+                <span><small>&emsp;${(genhistory.diagnosisDate)}</small></span>
             </div>
-
+            <% if (genhistory.hasGeneticOrPredisposingAbnormality) { %>
+            <div>
+                <label>Genetic or Predisposing Abnormality&emsp;</label>
+                <span>${(genhistory.geneticOrPredisposingAbnormality)}</span>
+            </div>
+            <% } %>
+            <div>
+                <label>Primary Care Provider&emsp;</label>
+                <span>${(genhistory.pcpName)}
+                    <small>&emsp;${(genhistory.pcpPhone)}</small>
+                    <small>&emsp;${(genhistory.pcpEmail)}</small>
+                </span>
+            </div>
+            <% } %>
+            <% } %>
         </div>
     </div>
 

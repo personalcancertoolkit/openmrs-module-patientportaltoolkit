@@ -3,6 +3,8 @@ package org.openmrs.module.patientportaltoolkit.fragment.controller;
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.util.GenerateTreatmentClassesUtil;
 import org.openmrs.ui.framework.page.PageModel;
 
 import java.util.ArrayList;
@@ -21,7 +23,8 @@ public class TreatmentsFragmentController {
         Patient patient = null;
         patient= Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
         if (patient !=null) {
-            model.addAttribute("treatmentsummary",getEncountersByTreatment(patient, TREATMENTSUMMARY_ENCOUNTER));
+            model.addAttribute("encounterss", getEncountersByTreatment(patient, PatientPortalToolkitConstants.TREATMENTSUMMARY_ENCOUNTER));
+            model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
             model.addAttribute("radiationencounters",getEncountersByTreatment(patient, RADIATION_ENCOUNTER));
             model.addAttribute("surgeryencounters",getEncountersByTreatment(patient, SURGERY_ENCOUNTER));
             model.addAttribute("chemotherapyencounters",getEncountersByTreatment(patient, CHEMOTHERAPY_ENCOUNTER));

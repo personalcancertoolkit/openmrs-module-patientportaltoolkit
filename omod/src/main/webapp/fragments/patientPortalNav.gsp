@@ -44,7 +44,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">s
             <li><a href="#"><span class="glyphicon glyphicon-envelope"></span></a></li>
-            <li><a href="#">Logout <span
+            <li><a href="/openmrs/logout">Logout <span
                     class="glyphicon glyphicon-log-out"></span></a></li>
 
         </ul>

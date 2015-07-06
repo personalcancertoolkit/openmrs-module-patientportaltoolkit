@@ -8,7 +8,7 @@
         "id": "patientportaltoolkit",
         "extensionPointId": "org.openmrs.referenceapplication.homepageLink",
         "type": "link",
-        "order": 1,
+        "order": 20,
         "label": "Patient Portal Toolkit",
         "url": "patientportaltoolkit/home.page",
         "icon": "icon-user-md",

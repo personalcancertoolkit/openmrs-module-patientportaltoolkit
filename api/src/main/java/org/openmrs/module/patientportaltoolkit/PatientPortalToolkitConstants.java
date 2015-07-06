@@ -13,5 +13,15 @@ public class PatientPortalToolkitConstants {
 
     public static final String VIEW_PROVIDER_PRIVILEGE = "View Providers";
 
+    public static final String VIEW_PATIENT_PRIVILEGE = "View Patients";
+
+    public final static String  RADIATION_ENCOUNTER = "CANCER TREATMENT - RADIATION";
+
+    public final static String  CHEMOTHERAPY_ENCOUNTER = "CANCER TREATMENT - CHEMOTHERAPY";
+
+    public final static String  SURGERY_ENCOUNTER = "CANCER TREATMENT - SURGERY";
+
+    public final static String  TREATMENTSUMMARY_ENCOUNTER = "CANCER TREATMENT SUMMARY";
+
 
 }
