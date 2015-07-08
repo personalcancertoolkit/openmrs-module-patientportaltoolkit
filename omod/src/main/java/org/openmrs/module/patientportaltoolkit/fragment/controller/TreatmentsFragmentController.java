@@ -26,7 +26,7 @@ public class TreatmentsFragmentController {
             model.addAttribute("encounterss", getEncountersByTreatment(patient, PatientPortalToolkitConstants.TREATMENTSUMMARY_ENCOUNTER));
             model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
             model.addAttribute("radiationencounters",getEncountersByTreatment(patient, RADIATION_ENCOUNTER));
-            model.addAttribute("surgeryencounters",getEncountersByTreatment(patient, SURGERY_ENCOUNTER));
+            model.addAttribute("surgeryencounters",GenerateTreatmentClassesUtil.generateSurgeries(patient));
             model.addAttribute("chemotherapyencounters",getEncountersByTreatment(patient, CHEMOTHERAPY_ENCOUNTER));
         }
         else {

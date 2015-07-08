@@ -6,6 +6,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.GeneralHistory;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.Surgery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +38,13 @@ public class GenerateTreatmentClassesUtil {
                     generalHistory.setGeneticOrPredisposingAbnormality(o.getValueCoded().getName().getName());
                 if(o.getConcept().getUuid().equals("654e32f0-8b57-4d1f-845e-500922e800f6"))
                     generalHistory.setDiagnosisDate(o.getValueDate());
+                //doctors name
                 if(o.getConcept().getUuid().equals("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"))
                     generalHistory.setPcpName(o.getValueText());
+                //doctors email
                 if(o.getConcept().getUuid().equals("898a0028-8c65-4db9-a802-1577fce59864"))
                     generalHistory.setPcpEmail(o.getValueText());
+                //doctors phone
                 if(o.getConcept().getUuid().equals("9285b227-4054-4830-ac32-5ea78462e8c4"))
                     generalHistory.setPcpPhone(o.getValueText());
 
@@ -48,6 +52,46 @@ public class GenerateTreatmentClassesUtil {
             generalHistoryList.add(generalHistory);
         }
         return generalHistoryList;
+    }
+
+    public static  List<Surgery> generateSurgeries(Patient patient){
+        List<Encounter> encounters = getEncountersByTreatment(patient, PatientPortalToolkitConstants.SURGERY_ENCOUNTER);
+        List<Surgery> surgeriesList=new ArrayList<Surgery>();
+        for(Encounter e: encounters){
+            Surgery surgery=new Surgery();
+            Set<Obs> obsList= e.getObs();
+            for(Obs o: obsList){
+                if(o.getConcept().getUuid().equals("d409122c-8a0b-4282-a17f-07abad81f278"))
+                    surgery.setSurgeryType(o.getValueCoded().getName().getName());
+                if(o.getConcept().getUuid().equals("99ef1d68-05ed-4f37-b98b-c982e3574138")){
+                    if(o.getValueCoded().getUuid().equals("1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
+                        surgery.setHasMajorComplications(true);
+                    else
+                        surgery.setHasMajorComplications(false);
+                }
+                if(o.getConcept().getUuid().equals("c2d9fca3-1e0b-4007-8c3c-b3ebb4e67963"))
+                    surgery.setMajorComplications(o.getValueText());
+                if(o.getConcept().getUuid().equals("87a69397-65ef-4576-a709-ae0a526afd85"))
+                    surgery.setSurgeryDate(o.getValueDate());
+                //doctors name
+                if(o.getConcept().getUuid().equals("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"))
+                    surgery.setPcpName(o.getValueText());
+                //doctors email
+                if(o.getConcept().getUuid().equals("898a0028-8c65-4db9-a802-1577fce59864"))
+                    surgery.setPcpEmail(o.getValueText());
+                //doctors phone
+                if(o.getConcept().getUuid().equals("9285b227-4054-4830-ac32-5ea78462e8c4"))
+                    surgery.setPcpPhone(o.getValueText());
+                if(o.getConcept().getUuid().equals("47d58999-d3b5-4869-a52e-841e2e6bdbb3"))
+                    surgery.setInstitutionName(o.getValueText());
+                if(o.getConcept().getUuid().equals("bfa752d6-2037-465e-b0a2-c4c2d485ec32"))
+                    surgery.setInstitutionCity(o.getValueText());
+                if(o.getConcept().getUuid().equals("34489100-487e-443a-bf27-1b6869fb9332"))
+                    surgery.setInstitutionState(o.getValueText());
+            }
+            surgeriesList.add(surgery);
+        }
+        return surgeriesList;
     }
 
     public static List<Encounter> getEncountersByTreatment(Patient patient,String treatmentType) {

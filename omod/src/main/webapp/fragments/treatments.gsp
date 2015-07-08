@@ -50,19 +50,36 @@
             <a href="/treatments/all-treatments/surgeries/procedure-form"
                class="glyphicon glyphicon-pencil"></a>
         </div>
-        <% if (surgeryencounters) { %>
-        <% surgeryencounters.each { encounter -> %>
-        <% if (encounter.obs) { %>
-        <% encounter.obs.each { obs -> %>
-        <label>${(obs.concept.getName())}</label>
-        <% if (obs.concept.datatype.isText()) { %> <span><small>&emsp;${(obs.valueText)}</small></span> <% } %>
-    <% if (obs.concept.datatype.isCoded()) { %> <span><small>&emsp;${(obs.valueCoded.getName())}</small></span><% } %>
-    <% if (obs.concept.datatype.isDate()) { %> <span><small>&emsp;${(obs.valueDate)}</small></span><% } %>
-        <br>
-        <% } %>
-        <% } %>
-        <% } %>
-        <% } %>
+        <div>
+            <% if (surgeryencounters) { %>
+            <% surgeryencounters.each { surgery -> %>
+        <div className="clearfix">
+            <div className="pull-left">
+                <h5>${(surgery.surgeryType)}<small>&emsp;${(surgery.surgeryDate)}</small></h5>
+                <% if (surgery.hasMajorComplications) { %>
+                <div>
+                    <label>Major Complications&emsp;</label>
+                    <span>${(surgery.majorComplications)}</span>
+                </div>
+                <% } %>
+                <div>
+                    <span>${(surgery.institutionName)}</span>
+                &emsp;
+                    <span>${(surgery.institutionCity)}</span>
+                &emsp;
+                    <span>${(surgery.institutionState)}</span>
+                </div>
+                <div>
+                    <span>${(surgery.pcpName)}
+                        <small>&emsp;${(surgery.pcpPhone)}</small>
+                        <small>&emsp;${(surgery.pcpEmail)}</small>
+                    </span>
+                </div>
+            </div>
+        </div>
+            <% } %>
+            <% } %>
+        </div>
     </div>
 
     <hr/>
