@@ -111,3 +111,9 @@ li.media.friendlist-item {
 	margin-top: 30px;
 }
 
+.modal.modal-wide .modal-dialog {
+	width: 60%;
+}
+.modal-wide .modal-body {
+	overflow-y: auto;
+}

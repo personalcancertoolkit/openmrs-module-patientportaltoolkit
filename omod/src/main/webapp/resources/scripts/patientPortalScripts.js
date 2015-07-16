@@ -3,7 +3,7 @@
  */
 jq = jQuery;
 jq(document).ready(function(){
-
+    jq(".gen-history-date").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq(".gen-history-date").val())));
     jq(function() {
         jq('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             localStorage.setItem('lastTab', jq(this).attr('href'));
@@ -61,4 +61,26 @@ jq(document).ready(function(){
             }, 2000);
         });
 
+    jq(".editGenHistButton").click(
+        function () {
+            jq("#genHistEncounterHolder").val(this.id);
+        });
+   var genHistdatePicker= jq( ".gen-history-date" ).datepicker({
+        format: 'mm/dd/yyyy'
+    }).on('changeDate', function() {
+       genHistdatePicker.hide();
+   }).data('datepicker');
+
+    jq(".cancelModal").click(
+        function () {
+            location.reload();
+        });
+    //$('#edit-genHistory-modal').on('hidden.bs.modal', function () {
+    //    location.reload();
+    //})
+    $('#saveGeneralHistorybutton').click(
+        function () {
+
+            location.reload();
+        });
 });

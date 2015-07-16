@@ -1,20 +1,22 @@
+${ ui.includeFragment("patientportaltoolkit", "genHistoryModal",[parentId: (latestTreatmentSummary)]) }
 <div>
     <div class="clearfix">
         <h4>General History</h4>
 
-        <div class="pull-right">
-            <a href="/general-history-form"
-               class="glyphicon glyphicon-pencil"></a>
-        </div>
 
         <div>
             <% if (treatmentsummary) { %>
             <% treatmentsummary.each { genhistory -> %>
+            <div class="pull-right">
+                <a id="${(genhistory.encounterUuid)}"
+                   class="glyphicon glyphicon-pencil editGenHistButton" data-toggle="modal" data-target="#edit-genHistory-modal"></a>
+            </div>
+
             <div>
                 <label>
-                ${(genhistory.cancerType)}
+                    ${(genhistory.cancerType)}
                 &ensp;
-                ${(genhistory.cancerStage)}
+                    ${(genhistory.cancerStage)}
                 </label>
                 <span><small>&emsp;${(genhistory.diagnosisDate)}</small></span>
             </div>
@@ -53,30 +55,32 @@
         <div>
             <% if (surgeryencounters) { %>
             <% surgeryencounters.each { surgery -> %>
-        <div className="clearfix">
-            <div className="pull-left">
-                <h5>${(surgery.surgeryType)}<small>&emsp;${(surgery.surgeryDate)}</small></h5>
-                <% if (surgery.hasMajorComplications) { %>
-                <div>
-                    <label>Major Complications&emsp;</label>
-                    <span>${(surgery.majorComplications)}</span>
-                </div>
-                <% } %>
-                <div>
-                    <span>${(surgery.institutionName)}</span>
-                &emsp;
-                    <span>${(surgery.institutionCity)}</span>
-                &emsp;
-                    <span>${(surgery.institutionState)}</span>
-                </div>
-                <div>
-                    <span>${(surgery.pcpName)}
-                        <small>&emsp;${(surgery.pcpPhone)}</small>
-                        <small>&emsp;${(surgery.pcpEmail)}</small>
-                    </span>
+            <div class="clearfix">
+                <div class="pull-left">
+                    <h5>${(surgery.surgeryType)} <small>&emsp;${(surgery.surgeryDate)}</small></h5>
+                    <% if (surgery.hasMajorComplications) { %>
+                    <div>
+                        <label>Major Complications&emsp;</label>
+                        <span>${(surgery.majorComplications)}</span>
+                    </div>
+                    <% } %>
+                    <div>
+                    <label>Surgery Location&emsp;</label>
+                        <span>${(surgery.institutionName)}</span>
+                    &emsp;
+                        <span>${(surgery.institutionCity)}</span>
+                    &emsp;
+                        <span>${(surgery.institutionState)}</span>
+                    </div>
+                    <div>
+                        <label>Surgeon&emsp;</label>
+                        <span>${(surgery.pcpName)}
+                            <small>&emsp;${(surgery.pcpPhone)}</small>
+                            <small>&emsp;${(surgery.pcpEmail)}</small>
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
             <% } %>
             <% } %>
         </div>
@@ -99,17 +103,32 @@
                        class="glyphicon glyphicon-pencil"></a>
                 </div>
                 <% if (chemotherapyencounters) { %>
-                <% chemotherapyencounters.each { encounter -> %>
-                <% if (encounter.obs) { %>
-                <% encounter.obs.each { obs -> %>
-                <label>${(obs.concept.getName())}</label>
-                <% if (obs.concept.datatype.isText()) { %> <span><small>&emsp;${(obs.valueText)}</small></span> <% } %>
-            <% if (obs.concept.datatype.isCoded()) { %> <span><small>&emsp;${(obs.valueCoded.getName())}</small>
-            </span><% } %>
-            <% if (obs.concept.datatype.isDate()) { %> <span><small>&emsp;${(obs.valueDate)}</small></span><% } %>
-                <br>
-                <% } %>
-                <% } %>
+                <% chemotherapyencounters.each { chemotherapy -> %>
+                <div class="clearfix">
+                    <div class="pull-left">
+                        <h5> <% chemotherapy.chemoMedications.each { chemotherapymed -> %> ${(chemotherapymed)} <% } %>
+                            <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;${(chemotherapy.chemoStartDate)}<% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash; ${(chemotherapy.chemoEndDate)}<% } %></small>
+                        </h5>
+                        <div class="">
+                            Central Line &ndash; <span><small> <% if (chemotherapy.centralLine) { %>Yes<% } else{ %> No <% } %></small></span>
+                        </div>
+                        <div class="">
+                            <label>Chemotherapy Location&emsp;</label>
+                            <% if (chemotherapy.institutionName) { %> <span> ${(chemotherapy.institutionName)}</span><% } %>
+                        <% if (chemotherapy.institutionCity) { %>   &emsp;
+                            <span>${(chemotherapy.institutionCity)}</span><% } %>
+                        <% if (chemotherapy.institutionState) { %> &emsp;
+                            <span>${(chemotherapy.institutionState)}</span><% } %>
+                        </div>
+                        <div>
+                            <label>Chemotherapist&emsp;</label>
+                            <span>  <% if (chemotherapy.pcpName) { %> ${(chemotherapy.pcpName)}<% } %>
+                            <% if (chemotherapy.pcpPhone) { %>  <small>&emsp;${(chemotherapy.pcpPhone)}</small><% } %>
+                            <% if (chemotherapy.pcpEmail) { %> <small>&emsp;${(chemotherapy.pcpEmail)}</small><% } %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <% } %>
                 <% } %>
             </div>
@@ -132,17 +151,29 @@
                        class="glyphicon glyphicon-pencil"></a>
                 </div>
                 <% if (radiationencounters) { %>
-                <% radiationencounters.each { encounter -> %>
-                <% if (encounter.obs) { %>
-                <% encounter.obs.each { obs -> %>
-                <label>${(obs.concept.getName())}</label>
-                <% if (obs.concept.datatype.isText()) { %> <span><small>&emsp;${(obs.valueText)}</small></span> <% } %>
-            <% if (obs.concept.datatype.isCoded()) { %> <span><small>&emsp;${(obs.valueCoded.getName())}</small>
-            </span><% } %>
-            <% if (obs.concept.datatype.isDate()) { %> <span><small>&emsp;${(obs.valueDate)}</small></span><% } %>
-                <br>
-                <% } %>
-                <% } %>
+                <% radiationencounters.each { radiation -> %>
+                <div class="clearfix">
+                    <div class="pull-left">
+                        <h5> <% radiation.radiationTypes.each { radiationType -> %> ${(radiationType)} <% } %>
+                            <small> <% if (radiation.startDate) { %>&emsp;${(radiation.startDate)}<% } %>  <% if (radiation.endDate) { %>&ndash; ${(radiation.endDate)}<% } %></small>
+                        </h5>
+                        <div class="">
+                            <label>Radation Location&emsp;</label>
+                            <% if (radiation.institutionName) { %> <span> ${(radiation.institutionName)}</span><% } %>
+                        <% if (radiation.institutionCity) { %>   &emsp;
+                            <span>${(radiation.institutionCity)}</span><% } %>
+                        <% if (radiation.institutionState) { %> &emsp;
+                            <span>${(radiation.institutionState)}</span><% } %>
+                        </div>
+                        <div>
+                            <label>Radation Specialist&emsp;</label>
+                            <span>  <% if (radiation.pcpName) { %> ${(radiation.pcpName)}<% } %>
+                            <% if (radiation.pcpPhone) { %>  <small>&emsp;${(radiation.pcpPhone)}</small><% } %>
+                            <% if (radiation.pcpEmail) { %> <small>&emsp;${(radiation.pcpEmail)}</small><% } %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <% } %>
                 <% } %>
             </div>

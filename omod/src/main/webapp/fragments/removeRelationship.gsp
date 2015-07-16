@@ -4,16 +4,16 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Delete Relationship?</h4>
+                <h4 class="modal-title" id="myModalLabel">Delete Connection?</h4>
             </div>
 
             <div class="modal-body">
-                Are you sure that you'd like to remove this Relationship?
+                Are you sure that you'd like to remove this Connection?
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="remove-relationId">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Go Back</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="relation-delete-btn">Yes, Remove Relationship</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="relation-delete-btn">Yes, Remove Connection</button>
             </div>
         </div>
     </div>

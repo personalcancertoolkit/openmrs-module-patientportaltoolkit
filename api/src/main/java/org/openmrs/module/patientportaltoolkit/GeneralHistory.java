@@ -7,6 +7,8 @@ import java.util.Date;
  */
 public class GeneralHistory {
 
+    private String encounterUuid;
+
     private String cancerType;
 
     private String cancerStage;
@@ -22,6 +24,14 @@ public class GeneralHistory {
     private String pcpEmail;
 
     private String pcpPhone;
+
+    public String getEncounterUuid() {
+        return encounterUuid;
+    }
+
+    public void setEncounterUuid(String encounterUuid) {
+        this.encounterUuid = encounterUuid;
+    }
 
     public String getCancerType() {
         return cancerType;

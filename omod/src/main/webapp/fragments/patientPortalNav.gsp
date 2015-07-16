@@ -23,10 +23,16 @@
 	href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap.min.css") }"
 	type="text/css">
     <link rel="stylesheet"
+          href="${ ui.resourceLink("patientportaltoolkit", "styles/datepicker.css") }"
+          type="text/css">
+    <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/styles.css") }"
           type="text/css">
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}"></script>
+
+    <script type="text/javascript"
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-datepicker.js") }"></script>
 
 </head>
 <div class="navbar navbar-default container">
