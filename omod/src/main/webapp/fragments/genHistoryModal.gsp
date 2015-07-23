@@ -14,12 +14,12 @@
                 <% /* cancer Type*/ %>
                 <% if (obs.concept.uuid=="cdf6d767-2aa3-40b6-ae78-0386eebe2411") { %>
                 <form class="form-inline" role="form"> <label>${(obs.concept.getName())} : </label>
-                    <select class="form-control">
+                    <select class="form-control" id="genHistoryCancerTypeSelect">
                         <% obs.concept.getAnswers().each { answers -> %>
                         <% if (obs.getValueCoded().uuid==answers.answerConcept.uuid) { %>
-                        <option selected>${(answers.answerConcept.getName())}</option>
+                        <option selected value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
                         <% } else {%>
-                        <option>${(answers.answerConcept.getName())}</option>
+                        <option  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
                         <% } %>
                         <% } %>
                     </select> </form>
@@ -29,12 +29,12 @@
                 <% /* cancer Stage*/ %>
                 <% if (obs.concept.uuid=="efa3f9eb-ade4-4ddb-92c9-0fc1119d112d") { %>
                 <form class="form-inline" role="form"> <label>${(obs.concept.getName())} : </label>
-                    <select class="form-control">
+                    <select class="form-control" id="genHistoryCancerStageSelect">
                         <% obs.concept.getAnswers().each { answers -> %>
                         <% if (obs.getValueCoded().uuid==answers.answerConcept.uuid) { %>
-                        <option selected>${(answers.answerConcept.getName())}</option>
+                        <option selected  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
                         <% } else {%>
-                        <option>${(answers.answerConcept.getName())}</option>
+                        <option  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
                         <% } %>
                         <% } %>
                     </select> </form>
@@ -45,7 +45,7 @@
                 <% /* cancer Date*/ %>
                 <% if (obs.concept.uuid=="654e32f0-8b57-4d1f-845e-500922e800f6") { %>
                 <form class="form-inline" role="form"> <label>${(obs.concept.getName())} : </label>
-                    <input class="form-control gen-history-date" type="text" value="${(obs.getValueDatetime())}"/>
+                    <input class="form-control gen-history-date" id="genHistoryDate" type="text" value="${(obs.getValueDatetime())}"/>
                 </form>
                 <% } %>
                 <% } %>
@@ -54,12 +54,12 @@
                 <% /* cancer abnormality*/ %>
                 <% if (obs.concept.uuid=="395878ae-5108-4aad-8ad8-9b88e812d278") { %>
                 <form class="form-inline" role="form"> <label>${(obs.concept.getName())} : </label>
-                    <select class="form-control">
+                    <select class="form-control" id="genHistoryCancerabnormalitySelect">
                         <% obs.concept.getAnswers().each { answers -> %>
                         <% if (obs.getValueCoded().uuid==answers.answerConcept.uuid) { %>
-                        <option selected>${(answers.answerConcept.getName())}</option>
+                        <option selected  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
                         <% } else {%>
-                        <option>${(answers.answerConcept.getName())}</option>
+                        <option  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
                         <% } %>
                         <% } %>
                     </select> </form>
@@ -70,12 +70,12 @@
                 <% /* cancer abnormality type*/ %>
                 <% if (obs.concept.uuid=="8719adbe-0975-477f-a95f-2fae4d6cbdae") { %>
                 <form class="form-inline" role="form"> <label>${(obs.concept.getName())} : </label>
-                    <select class="form-control">
+                    <select class="form-control" id="genHistoryCancerabnormalityTypeSelect">
                         <% obs.concept.getAnswers().each { answers -> %>
                         <% if (obs.getValueCoded().uuid==answers.answerConcept.uuid) { %>
-                        <option selected>${(answers.answerConcept.getName())}</option>
+                        <option selected  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
                         <% } else {%>
-                        <option>${(answers.answerConcept.getName())}</option>
+                        <option  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
                         <% } %>
                         <% } %>
                     </select> </form>
@@ -88,7 +88,7 @@
                 <% /* pcp name*/ %>
                 <% if (obs.concept.uuid=="c2cb2220-c07d-47c6-a4df-e5918aac3fc2") { %>
                 <form class="form-inline" role="form"> <label>Name : </label>
-                    <input class="form-control" type="text" value="${(obs.getValueText())}"/>
+                    <input class="form-control" id="genHistoryCancerPcpName" type="text" value="${(obs.getValueText())}"/>
                 </form>
                 <% } %>
                 <% } %>
@@ -96,7 +96,7 @@
                 <% /* pcp email*/ %>
                 <% if (obs.concept.uuid=="898a0028-8c65-4db9-a802-1577fce59864") { %>
                 <form class="form-inline" role="form"> <label>Email : </label>
-                    <input class="form-control" type="text" value="${(obs.getValueText())}"/>
+                    <input class="form-control" id="genHistoryCancerPcpEmail" type="text" value="${(obs.getValueText())}"/>
                 </form>
                 <% } %>
                 <% } %>
@@ -105,7 +105,7 @@
                 <% /* pcp phone*/ %>
                 <% if (obs.concept.uuid=="9285b227-4054-4830-ac32-5ea78462e8c4") { %>
                 <form class="form-inline" role="form"> <label>Phone : </label>
-                    <input class="form-control" type="text" value="${(obs.getValueText())}"/>
+                    <input class="form-control" id="genHistoryCancerPcpPhone" type="text" value="${(obs.getValueText())}"/>
                 </form>
                 <% } %>
                 <% } %>
