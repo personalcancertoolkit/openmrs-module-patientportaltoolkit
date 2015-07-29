@@ -1,4 +1,4 @@
-${ ui.includeFragment("patientportaltoolkit", "genHistoryModal",[parentId: (latestTreatmentSummary)]) }
+${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
 <div>
     <div class="clearfix">
         <h4>General History</h4>
@@ -39,44 +39,42 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal",[parentId: (late
     </div>
 
     <hr/>
-
+    ${ ui.includeFragment("patientportaltoolkit", "surgeriesModal") }
     <div class="clearfix">
         <h4>Surgeries&emsp;
-            <a href="/treatments/all-treatments/surgeries/procedure-form"
-               class="btn btn-primary btn-sm">Add</a>
+            <a class="btn btn-primary btn-sm"   data-toggle="modal" data-target="#edit-surgeries-modal">Add</a>
         </h4>
     </div>
 
     <div>
-        <div class="pull-right">
-            <a href="/treatments/all-treatments/surgeries/procedure-form"
-               class="glyphicon glyphicon-pencil"></a>
-        </div>
         <div>
             <% if (surgeryencounters) { %>
             <% surgeryencounters.each { surgery -> %>
+            <div class="pull-right">
+                <a id="${(surgery.encounterUuid)}" class="glyphicon glyphicon-pencil editSurgeryButton"  data-toggle="modal" data-target="#edit-surgeries-modal"></a>
+            </div>
             <div class="clearfix">
                 <div class="pull-left">
-                    <h5>${(surgery.surgeryType)} <small>&emsp;${(surgery.surgeryDate)}</small></h5>
+                    <h5><% surgery.surgeryTypes.each { surgeryType -> %> <em class="${(surgery.encounterUuid)}surgeryType" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</em> <% } %> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate">${(surgery.surgeryDate)}</small></h5>
                     <% if (surgery.hasMajorComplications) { %>
                     <div>
                         <label>Major Complications&emsp;</label>
-                        <span>${(surgery.majorComplications)}</span>
+                        <span id="${(surgery.encounterUuid)}surgeryComplications">${(surgery.majorComplications)}</span>
                     </div>
                     <% } %>
                     <div>
                     <label>Surgery Location&emsp;</label>
-                        <span>${(surgery.institutionName)}</span>
+                        <span id="${(surgery.encounterUuid)}surgeryinstituteName">${(surgery.institutionName)}</span>
                     &emsp;
-                        <span>${(surgery.institutionCity)}</span>
+                        <span id="${(surgery.encounterUuid)}surgeryCity">${(surgery.institutionCity)}</span>
                     &emsp;
-                        <span>${(surgery.institutionState)}</span>
+                        <span id="${(surgery.encounterUuid)}surgeryState">${(surgery.institutionState)}</span>
                     </div>
                     <div>
                         <label>Surgeon&emsp;</label>
-                        <span>${(surgery.pcpName)}
-                            <small>&emsp;${(surgery.pcpPhone)}</small>
-                            <small>&emsp;${(surgery.pcpEmail)}</small>
+                        <span><em id="${(surgery.encounterUuid)}surgeryPCPName">${(surgery.pcpName)}</em>
+                        &emsp;<small id="${(surgery.encounterUuid)}surgeryPCPPhone">${(surgery.pcpPhone)}</small>
+                        &emsp;<small id="${(surgery.encounterUuid)}surgeryPCPEmail">${(surgery.pcpEmail)}</small>
                         </span>
                     </div>
                 </div>

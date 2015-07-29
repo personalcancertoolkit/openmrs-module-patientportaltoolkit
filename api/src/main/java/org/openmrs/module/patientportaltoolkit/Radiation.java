@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class Radiation {
 
+    private String encounterUuid;
+
     private List<String> radiationTypes;
 
     private Date startDate;
@@ -25,6 +27,14 @@ public class Radiation {
     private String institutionCity;
 
     private String institutionState;
+
+    public String getEncounterUuid() {
+        return encounterUuid;
+    }
+
+    public void setEncounterUuid(String encounterUuid) {
+        this.encounterUuid = encounterUuid;
+    }
 
     public String getInstitutionCity() {
         return institutionCity;

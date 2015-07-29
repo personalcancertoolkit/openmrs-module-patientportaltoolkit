@@ -44,6 +44,13 @@ public class HibernatePatientPortalFormDAO implements PatientPortalFormDAO {
     }
 
     @Override
+    public PatientPortalForm getPatientPortalFormByFormType(String formType) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(PatientPortalForm.class);
+        c.add(Restrictions.eq("name", formType));
+        return (PatientPortalForm) c.uniqueResult();
+    }
+
+    @Override
     public void savePatientPortalForm(PatientPortalForm patientPortalForm) {
 
     }

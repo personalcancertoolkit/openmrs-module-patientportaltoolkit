@@ -58,10 +58,12 @@ public class GenerateTreatmentClassesUtil {
         List<Surgery> surgeriesList=new ArrayList<Surgery>();
         for(Encounter e: encounters){
             Surgery surgery=new Surgery();
+            List<String> surgeryTypes= new ArrayList<String>();
             Set<Obs> obsList= e.getObs();
+            surgery.setEncounterUuid(e.getUuid());
             for(Obs o: obsList){
                 if(o.getConcept().getUuid().equals("d409122c-8a0b-4282-a17f-07abad81f278"))
-                    surgery.setSurgeryType(o.getValueCoded().getName().getName());
+                    surgeryTypes.add(o.getValueCoded().getName().getName());
                 if(o.getConcept().getUuid().equals("99ef1d68-05ed-4f37-b98b-c982e3574138")){
                     if(o.getValueCoded().getUuid().equals("1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
                         surgery.setHasMajorComplications(true);
@@ -88,6 +90,7 @@ public class GenerateTreatmentClassesUtil {
                 if(o.getConcept().getUuid().equals("34489100-487e-443a-bf27-1b6869fb9332"))
                     surgery.setInstitutionState(o.getValueText());
             }
+            surgery.setSurgeryTypes(surgeryTypes);
             surgeriesList.add(surgery);
         }
         return surgeriesList;
@@ -100,6 +103,7 @@ public class GenerateTreatmentClassesUtil {
             Chemotherapy chemotherapy=new Chemotherapy();
             List<String> chemomedications= new ArrayList<String>();
             Set<Obs> obsList= e.getObs();
+            chemotherapy.setEncounterUuid(e.getUuid());
             for(Obs o: obsList){
                 if(o.getConcept().getUuid().equals("8481b9da-74e3-45a9-9124-d69ab572d636"))
                     chemomedications.add(o.getValueCoded().getName().getName());
@@ -142,6 +146,7 @@ public class GenerateTreatmentClassesUtil {
             Radiation radiation=new Radiation();
             List<String> radiationTypes= new ArrayList<String>();
             Set<Obs> obsList= e.getObs();
+            radiation.setEncounterUuid(e.getUuid());
             for(Obs o: obsList){
                 if(o.getConcept().getUuid().equals("42fb7bb5-f840-4518-814c-893813211cba"))
                     radiationTypes.add(o.getValueCoded().getName().getName());

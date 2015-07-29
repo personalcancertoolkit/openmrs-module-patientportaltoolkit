@@ -1,13 +1,16 @@
 package org.openmrs.module.patientportaltoolkit;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Maurya on 06/07/2015.
  */
 public class Surgery {
 
-    private String surgeryType;
+    private String encounterUuid;
+
+    private List<String> surgeryTypes;
 
     private Date surgeryDate;
 
@@ -27,12 +30,20 @@ public class Surgery {
 
     private String institutionState;
 
-    public String getSurgeryType() {
-        return surgeryType;
+    public String getEncounterUuid() {
+        return encounterUuid;
     }
 
-    public void setSurgeryType(String surgeryType) {
-        this.surgeryType = surgeryType;
+    public void setEncounterUuid(String encounterUuid) {
+        this.encounterUuid = encounterUuid;
+    }
+
+    public List<String> getSurgeryTypes() {
+        return surgeryTypes;
+    }
+
+    public void setSurgeryTypes(List<String> surgeryTypes) {
+        this.surgeryTypes = surgeryTypes;
     }
 
     public Date getSurgeryDate() {

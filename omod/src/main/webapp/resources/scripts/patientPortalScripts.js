@@ -84,4 +84,41 @@ jq(document).ready(function(){
             });
             location.reload();
         });
+
+    var surgerydatePicker= jq( "#surgeryDate" ).datepicker({
+        format: 'mm/dd/yyyy'
+    }).on('changeDate', function() {
+        surgerydatePicker.hide();
+    }).data('datepicker');
+    $('.editSurgeryButton').click(
+        function () {
+          var encounterID=this.id;
+            var surgeryTypeList=[];
+            $('.'+encounterID+'surgeryType').each(function() {
+               // console.log(($( this ).attr('id').split('surgeryType')[1]));
+                surgeryTypeList.push(($( this ).attr('id').split('surgeryType')[1]));
+            });
+            $('.surgeryTypesInModal').each(function() {
+                if ( $.inArray(($( this ).val()).split('split')[1], surgeryTypeList)>-1) {
+                    $(this).prop('checked', true);
+                }
+            });
+
+            if($('#'+encounterID+'surgeryComplications').text() != null || $('#'+encounterID+'surgeryComplications').text() != ''){
+                $('#majorComplicationsBoolSelect').val('1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                $('#majorComplicationsTypeAnswer').val($('#'+encounterID+'surgeryComplications').text());
+            }
+            else{
+                $('#majorComplicationsBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            }
+            $("#surgeryDate").val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'surgeryDate').text())));
+           // console.log($('#'+encounterID+'surgeryPCPName').text());
+            $("#surgeonPcpName").val($('#'+encounterID+'surgeryPCPName').text());
+            $("#surgeonPcpEmail").val($('#'+encounterID+'surgeryPCPEmail').text());
+            $("#surgeonPcpPhone").val($('#'+encounterID+'surgeryPCPPhone').text());
+
+            $("#surgeryInstitutionName").val($('#'+encounterID+'surgeryinstituteName').text());
+            $("#surgeryInstitutionCity").val($('#'+encounterID+'surgeryCity').text());
+            $("#surgeryInstitutionState").val($('#'+encounterID+'surgeryState').text());
+        });
 });

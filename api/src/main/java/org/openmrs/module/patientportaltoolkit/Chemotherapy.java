@@ -8,6 +8,8 @@ import java.util.List;
  */
 public class Chemotherapy {
 
+    private String encounterUuid;
+
     private List<String> chemoMedications;
 
     private Date chemoStartDate;
@@ -27,6 +29,14 @@ public class Chemotherapy {
     private String institutionCity;
 
     private String institutionState;
+
+    public String getEncounterUuid() {
+        return encounterUuid;
+    }
+
+    public void setEncounterUuid(String encounterUuid) {
+        this.encounterUuid = encounterUuid;
+    }
 
     public List<String> getChemoMedications() {
         return chemoMedications;

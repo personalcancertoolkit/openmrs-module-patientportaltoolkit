@@ -17,6 +17,8 @@ public interface PatientPortalFormDAO {
 
     PatientPortalForm getPatientPortalForm(String uuid);
 
+    PatientPortalForm getPatientPortalFormByFormType(String formType);
+
     void savePatientPortalForm(PatientPortalForm patientPortalForm);
 
     void softDeletePatientPortalForm (PatientPortalForm patientPortalForm);
