@@ -18,7 +18,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                 &ensp;
                     ${(genhistory.cancerStage)}
                 </label>
-                <span><small>&emsp;${(genhistory.diagnosisDate)}</small></span>
+                <span>&emsp;<small class="dateFormatter">${(genhistory.diagnosisDate)}</small></span>
             </div>
             <% if (genhistory.hasGeneticOrPredisposingAbnormality) { %>
             <div>
@@ -55,7 +55,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
             </div>
             <div class="clearfix">
                 <div class="pull-left">
-                    <h5><% surgery.surgeryTypes.each { surgeryType -> %> <em class="${(surgery.encounterUuid)}surgeryType" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</em> <% } %> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate">${(surgery.surgeryDate)}</small></h5>
+                    <h5><% surgery.surgeryTypes.each { surgeryType -> %> <em class="${(surgery.encounterUuid)}surgeryType" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</em> <% } %> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate"  class="dateFormatter">${(surgery.surgeryDate)}</small></h5>
                     <% if (surgery.hasMajorComplications) { %>
                     <div>
                         <label>Major Complications&emsp;</label>
@@ -105,7 +105,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                 <div class="clearfix">
                     <div class="pull-left">
                         <h5> <% chemotherapy.chemoMedications.each { chemotherapymed -> %> ${(chemotherapymed)} <% } %>
-                            <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;${(chemotherapy.chemoStartDate)}<% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash; ${(chemotherapy.chemoEndDate)}<% } %></small>
+                            <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;<span class="dateFormatter">${(chemotherapy.chemoStartDate)}</span><% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash;<span class="dateFormatter"> ${(chemotherapy.chemoEndDate)}</span><% } %></small>
                         </h5>
                         <div class="">
                             Central Line &ndash; <span><small> <% if (chemotherapy.centralLine) { %>Yes<% } else{ %> No <% } %></small></span>
@@ -153,7 +153,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                 <div class="clearfix">
                     <div class="pull-left">
                         <h5> <% radiation.radiationTypes.each { radiationType -> %> ${(radiationType)} <% } %>
-                            <small> <% if (radiation.startDate) { %>&emsp;${(radiation.startDate)}<% } %>  <% if (radiation.endDate) { %>&ndash; ${(radiation.endDate)}<% } %></small>
+                            <small> <% if (radiation.startDate) { %>&emsp;<span class="dateFormatter">${(radiation.startDate)}</span><% } %>  <% if (radiation.endDate) { %>&ndash; <span class="dateFormatter">${(radiation.endDate)}</span><% } %></small>
                         </h5>
                         <div class="">
                             <label>Radation Location&emsp;</label>

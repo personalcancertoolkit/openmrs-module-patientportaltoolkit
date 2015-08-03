@@ -4,6 +4,18 @@
 jq = jQuery;
 jq(document).ready(function(){
     jq(".gen-history-date").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq(".gen-history-date").val())));
+    $('.dateFormatter').each(function() {
+        var dateFormat = $(this).text();
+        if(dateFormat == null || dateFormat==''){
+            $(this).html(null);
+        }
+        //console.log(dateFormat);
+        else {
+            var dateFormat = $.datepicker.formatDate('mm/dd/yy', new Date(dateFormat));
+            //alert(dateFormat);
+            $(this).html(dateFormat);
+        }
+    });
     jq(function() {
         jq('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             localStorage.setItem('lastTab', jq(this).attr('href'));
@@ -93,6 +105,7 @@ jq(document).ready(function(){
     $('.editSurgeryButton').click(
         function () {
           var encounterID=this.id;
+            $("#surgeryEncounterHolder").val(encounterID);
             var surgeryTypeList=[];
             $('.'+encounterID+'surgeryType').each(function() {
                // console.log(($( this ).attr('id').split('surgeryType')[1]));
@@ -120,5 +133,25 @@ jq(document).ready(function(){
             $("#surgeryInstitutionName").val($('#'+encounterID+'surgeryinstituteName').text());
             $("#surgeryInstitutionCity").val($('#'+encounterID+'surgeryCity').text());
             $("#surgeryInstitutionState").val($('#'+encounterID+'surgeryState').text());
+        });
+
+    $('#saveSurgeryButton').click(
+        function () {
+            var surgeryTypeList='';
+            $('.surgeryTypesInModal').each(function() {
+                if ( $(this).is(':checked')) {
+                   // console.log($( this ).val().split('split')[0]);
+                    surgeryTypeList=surgeryTypeList+($( this ).val().split('split')[0])+"split";
+                }
+            });
+            //console.log(surgeryTypeList);
+            jq.get("surgeriesModal/saveSurgeryForm.action", {encounterId: jq("#surgeryEncounterHolder").val(), surgeryTypes: surgeryTypeList,surgeryComplications:  jq("#majorComplicationsBoolSelect").val(),majorComplicationsTypeAnswer:jq("#majorComplicationsTypeAnswer").val(),surgeryDate:jq("#surgeryDate").val(),surgeonPcpName:jq("#surgeonPcpName").val(),surgeonPcpEmail:jq("#surgeonPcpEmail").val(),surgeonPcpPhone:jq("#surgeonPcpPhone").val(),surgeryInstitutionName:jq("#surgeryInstitutionName").val(),surgeryInstitutionCity:jq("#surgeryInstitutionCity").val(),surgeryInstitutionState:jq("#surgeryInstitutionState").val()}, function(){
+           // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
+            });
+            setTimeout(
+                function()
+                {
+                    location.reload();
+                }, 2000);
         });
 });
