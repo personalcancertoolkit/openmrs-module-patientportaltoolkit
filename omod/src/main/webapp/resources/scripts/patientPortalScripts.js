@@ -16,6 +16,14 @@ jq(document).ready(function(){
             $(this).html(dateFormat);
         }
     });
+    jq(".reformatText").each(function() {
+        var str=$(this).text().toString();
+        var newStr=str[0].toUpperCase()+str.slice(1).toLowerCase();
+        $(this).text(newStr);
+        //console.log("----"+newStr+"----");
+       // var res = str.replace(/blue/g, "red");
+       // document.getElementById("demo").innerHTML = res;
+    });
     jq(function() {
         jq('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             localStorage.setItem('lastTab', jq(this).attr('href'));

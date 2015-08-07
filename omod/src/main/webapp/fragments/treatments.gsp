@@ -14,16 +14,16 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
 
             <div>
                 <label>
-                    ${(genhistory.cancerType)}
+                    <span class="reformatText">${(genhistory.cancerType)}</span>
                 &ensp;
-                    ${(genhistory.cancerStage)}
+                    <span class="reformatText">${(genhistory.cancerStage)}</span>
                 </label>
                 <span>&emsp;<small class="dateFormatter">${(genhistory.diagnosisDate)}</small></span>
             </div>
             <% if (genhistory.hasGeneticOrPredisposingAbnormality) { %>
             <div>
                 <label>Genetic or Predisposing Abnormality&emsp;</label>
-                <span>${(genhistory.geneticOrPredisposingAbnormality)}</span>
+                <span class="reformatText">${(genhistory.geneticOrPredisposingAbnormality)}</span>
             </div>
             <% } %>
             <div>
@@ -55,7 +55,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
             </div>
             <div class="clearfix">
                 <div class="pull-left">
-                    <h5><% surgery.surgeryTypes.each { surgeryType -> %> <em class="${(surgery.encounterUuid)}surgeryType" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</em> <% } %> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate"  class="dateFormatter">${(surgery.surgeryDate)}</small></h5>
+                    <h5><% surgery.surgeryTypes.each { surgeryType -> %> <span class="${(surgery.encounterUuid)}surgeryType reformatText" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</span> <% } %> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate"  class="dateFormatter">${(surgery.surgeryDate)}</small></h5>
                     <% if (surgery.hasMajorComplications) { %>
                     <div>
                         <label>Major Complications&emsp;</label>
@@ -104,7 +104,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                 <% chemotherapyencounters.each { chemotherapy -> %>
                 <div class="clearfix">
                     <div class="pull-left">
-                        <h5> <% chemotherapy.chemoMedications.each { chemotherapymed -> %> ${(chemotherapymed)} <% } %>
+                        <h5> <% chemotherapy.chemoMedications.each { chemotherapymed -> %> <span class="${(chemotherapy.encounterUuid)}chemotherapymed reformatText" id="${(chemotherapy.encounterUuid)}chemotherapymed${(chemotherapymed)}">${(chemotherapymed)}</span> <% } %>
                             <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;<span class="dateFormatter">${(chemotherapy.chemoStartDate)}</span><% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash;<span class="dateFormatter"> ${(chemotherapy.chemoEndDate)}</span><% } %></small>
                         </h5>
                         <div class="">
@@ -152,7 +152,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                 <% radiationencounters.each { radiation -> %>
                 <div class="clearfix">
                     <div class="pull-left">
-                        <h5> <% radiation.radiationTypes.each { radiationType -> %> ${(radiationType)} <% } %>
+                        <h5> <% radiation.radiationTypes.each { radiationType -> %> <span class="${(radiation.encounterUuid)}radiationType reformatText" id="${(radiation.encounterUuid)}radiationType${(radiationType)}">${(radiationType)}</span> <% } %>
                             <small> <% if (radiation.startDate) { %>&emsp;<span class="dateFormatter">${(radiation.startDate)}</span><% } %>  <% if (radiation.endDate) { %>&ndash; <span class="dateFormatter">${(radiation.endDate)}</span><% } %></small>
                         </h5>
                         <div class="">
