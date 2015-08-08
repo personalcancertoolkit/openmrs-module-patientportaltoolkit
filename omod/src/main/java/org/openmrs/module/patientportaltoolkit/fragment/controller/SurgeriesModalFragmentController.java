@@ -101,8 +101,8 @@ public class SurgeriesModalFragmentController {
                 else {
                     for (Obs o : surgeryEncounter.getObs()) {
                         if (o.getConcept().getUuid().equals("d409122c-8a0b-4282-a17f-07abad81f278")) {
-                            if (o.getValueCoded().getUuid().equals(s)) ;
-                            o.setVoided(true);
+                            if (o.getValueCoded().getUuid().equals(s))
+                                o.setVoided(true);
                         }
                     }
                 }
