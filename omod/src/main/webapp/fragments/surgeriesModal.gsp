@@ -11,10 +11,10 @@
                 <% surgeryConcepts.concepts.each { questions -> %>
                 <% /* surgery Type*/ %>
                 <% if (questions.uuid=="d409122c-8a0b-4282-a17f-07abad81f278") { %>
-                <form class="form-inline" role="form"> <label>${(questions.getName())} </label><br>
+                <form class="form-inline" role="form"> <label class="reformatText">${(questions.getName())} </label><br>
                 <% questions.answers.each { answers -> %>
                 <div class="checkbox">
-                    <label><input type="checkbox" class="surgeryTypesInModal" value="${(answers.answerConcept.uuid)}split${(answers.answerConcept.getName())}">${(answers.answerConcept.getName())}</label>
+                    <label><input type="checkbox" class="surgeryTypesInModal" value="${(answers.answerConcept.uuid)}split${(answers.answerConcept.getName())}"><span class="reformatText">${(answers.answerConcept.getName())}</span></label>
                 </div>
                 <br>
                 <% } %>
@@ -24,11 +24,10 @@
                 <% surgeryConcepts.concepts.each { questions -> %>
                 <% /* majr complications yes no*/ %>
                 <% if (questions.uuid=="99ef1d68-05ed-4f37-b98b-c982e3574138") { %>
-                <form class="form-inline" role="form"> <label>${(questions.getName())} </label>
+                <form class="form-inline" role="form"> <label class="reformatText">${(questions.getName())} </label>
                     <select class="form-control" id="majorComplicationsBoolSelect">
                         <% questions.getAnswers().each { answers -> %>
-                        <option  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
-                        <option  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
+                        <option  value="${(answers.answerConcept.uuid)}" class="reformatText">${(answers.answerConcept.getName())}</option>
                         <% } %>
                     </select> </form>
                 <% } %>
@@ -36,14 +35,14 @@
                 <% surgeryConcepts.concepts.each { questions -> %>
                 <% /* major complication*/ %>
                 <% if (questions.uuid=="c2d9fca3-1e0b-4007-8c3c-b3ebb4e67963") { %>
-                <form class="form-inline" role="form"> <label>${(questions.getName())} </label>
+                <form class="form-inline" role="form"> <label class="reformatText">${(questions.getName())} </label>
                 <input class="form-control" id="majorComplicationsTypeAnswer" type="text"/> </form>
                 <% } %>
                 <% } %>
                 <% surgeryConcepts.concepts.each { questions -> %>
                 <% /* surgery Date*/ %>
                 <% if (questions.uuid=="87a69397-65ef-4576-a709-ae0a526afd85") { %>
-                <form class="form-inline" role="form"> <label>${(questions.getName())} </label>
+                <form class="form-inline" role="form"> <label class="reformatText">${(questions.getName())} </label>
                     <input class="form-control" id="surgeryDate" type="text"/>
                 </form>
                 <% } %>
