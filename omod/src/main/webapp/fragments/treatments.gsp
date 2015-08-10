@@ -72,7 +72,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                     </div>
                     <div>
                         <label>Surgeon&emsp;</label>
-                        <span><em id="${(surgery.encounterUuid)}surgeryPCPName">${(surgery.pcpName)}</em>
+                        <span><span id="${(surgery.encounterUuid)}surgeryPCPName">${(surgery.pcpName)}</span>
                         &emsp;<small id="${(surgery.encounterUuid)}surgeryPCPPhone">${(surgery.pcpPhone)}</small>
                         &emsp;<small id="${(surgery.encounterUuid)}surgeryPCPEmail">${(surgery.pcpEmail)}</small>
                         </span>
@@ -86,43 +86,42 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
 
     <hr/>
 
+    ${ ui.includeFragment("patientportaltoolkit", "chemotherapyModal") }
     <div>
         <div class="clearfix">
             <h4>Chemotherapies&emsp;
-                <a href="../NotFoundPage.js"
-                   class="btn btn-primary btn-sm">Add</a>
+                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#edit-chemotherapies-modal">Add</a>
             </h4>
         </div>
 
         <div>
             <div class="clearfix">
-                <div class="pull-right">
-                    <a href="/treatments/all-treatments/surgeries/procedure-form"
-                       class="glyphicon glyphicon-pencil"></a>
-                </div>
                 <% if (chemotherapyencounters) { %>
                 <% chemotherapyencounters.each { chemotherapy -> %>
+                <div class="pull-right">
+                    <a id="${(chemotherapy.encounterUuid)}" class="glyphicon glyphicon-pencil editChemotherapyButton"  data-toggle="modal" data-target="#edit-chemotherapies-modal"></a>
+                </div>
                 <div class="clearfix">
                     <div class="pull-left">
                         <h5> <% chemotherapy.chemoMedications.each { chemotherapymed -> %> <span class="${(chemotherapy.encounterUuid)}chemotherapymed reformatText" id="${(chemotherapy.encounterUuid)}chemotherapymed${(chemotherapymed)}">${(chemotherapymed)}</span> <% } %>
-                            <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;<span class="dateFormatter">${(chemotherapy.chemoStartDate)}</span><% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash;<span class="dateFormatter"> ${(chemotherapy.chemoEndDate)}</span><% } %></small>
+                            <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;<span id="${(chemotherapy.encounterUuid)}chemotherapyStartDate" class="dateFormatter">${(chemotherapy.chemoStartDate)}</span><% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash;<span id="${(chemotherapy.encounterUuid)}chemotherapyStartDate" class="dateFormatter"> ${(chemotherapy.chemoEndDate)}</span><% } %></small>
                         </h5>
                         <div class="">
-                            Central Line &ndash; <span><small> <% if (chemotherapy.centralLine) { %>Yes<% } else{ %> No <% } %></small></span>
+                            Central Line &ndash; <span><small id="${(chemotherapy.encounterUuid)}centralLine"><% if (chemotherapy.centralLine) { %>Yes<% } else{ %>No<% } %></small></span>
                         </div>
                         <div class="">
                             <label>Chemotherapy Location&emsp;</label>
-                            <% if (chemotherapy.institutionName) { %> <span> ${(chemotherapy.institutionName)}</span><% } %>
-                        <% if (chemotherapy.institutionCity) { %>   &emsp;
-                            <span>${(chemotherapy.institutionCity)}</span><% } %>
-                        <% if (chemotherapy.institutionState) { %> &emsp;
-                            <span>${(chemotherapy.institutionState)}</span><% } %>
+                            <% if (chemotherapy.institutionName) { %> <span id="${(chemotherapy.encounterUuid)}chemotherapyinstituteName">${(chemotherapy.institutionName)}</span><% } %>
+                        <% if (chemotherapy.institutionCity) { %>&emsp;
+                            <span id="${(chemotherapy.encounterUuid)}chemotherapyCity">${(chemotherapy.institutionCity)}</span><% } %>
+                        <% if (chemotherapy.institutionState) { %>&emsp;
+                            <span id="${(chemotherapy.encounterUuid)}chemotherapyState">${(chemotherapy.institutionState)}</span><% } %>
                         </div>
                         <div>
                             <label>Chemotherapist&emsp;</label>
-                            <span>  <% if (chemotherapy.pcpName) { %> ${(chemotherapy.pcpName)}<% } %>
-                            <% if (chemotherapy.pcpPhone) { %>  <small>&emsp;${(chemotherapy.pcpPhone)}</small><% } %>
-                            <% if (chemotherapy.pcpEmail) { %> <small>&emsp;${(chemotherapy.pcpEmail)}</small><% } %>
+                            <span>  <% if (chemotherapy.pcpName) { %><span id="${(chemotherapy.encounterUuid)}chemotherapyPCPName">${(chemotherapy.pcpName)}</span><% } %>
+                            <% if (chemotherapy.pcpPhone) { %>&emsp;<small id="${(chemotherapy.encounterUuid)}chemotherapyPCPPhone">${(chemotherapy.pcpPhone)}</small><% } %>
+                            <% if (chemotherapy.pcpEmail) { %>&emsp;<small id="${(chemotherapy.encounterUuid)}chemotherapyPCPEmail">${(chemotherapy.pcpEmail)}</small><% } %>
                             </span>
                         </div>
                     </div>

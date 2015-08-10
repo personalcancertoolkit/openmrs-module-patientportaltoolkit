@@ -22,6 +22,7 @@ public class TreatmentsFragmentController {
         PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
         if (patient !=null) {
             model.addAttribute("surgeryConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.SURGERY_ENCOUNTER));
+            model.addAttribute("chemotherapyConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHEMOTHERAPY_ENCOUNTER));
             model.addAttribute("latestTreatmentSummary", GenerateTreatmentClassesUtil.generateLatestGeneralHistory(patient));
             model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
             model.addAttribute("radiationencounters", GenerateTreatmentClassesUtil.generateRadiations(patient));
