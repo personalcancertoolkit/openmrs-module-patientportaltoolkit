@@ -162,4 +162,38 @@ jq(document).ready(function(){
                     location.reload();
                 }, 2000);
         });
+
+    $('.editChemotherapyButton').click(
+        function () {
+            var encounterID=this.id;
+            $("#chemotherapyEncounterHolder").val(encounterID);
+            var chemotherapyMedList=[];
+            $('.'+encounterID+'chemotherapymed').each(function() {
+                // console.log(($( this ).attr('id').split('surgeryType')[1]));
+                chemotherapyMedList.push(($( this ).attr('id').split('chemotherapymed')[1]));
+            });
+            $('.chemotherapyMedTypesInModal').each(function() {
+                if ( $.inArray(($( this ).val()).split('split')[1], chemotherapyMedList)>-1) {
+                    $(this).prop('checked', true);
+                }
+            });
+
+            if($('#'+encounterID+'centralLine').text()=="Yes"){
+                $('#centralLineBoolSelect').val('1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            }
+            else{
+                $('#centralLineBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            }
+            $('chemoStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyStartDate').text())));
+            $('chemoEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyEndDate').text())));
+            // console.log($('#'+encounterID+'surgeryPCPName').text());
+            $("#oncologistPcpName").val($('#'+encounterID+'chemotherapyPCPName').text());
+            $("#oncologistPcpEmail").val($('#'+encounterID+'chemotherapyPCPEmail').text());
+            $("#oncologistPcpPhone").val($('#'+encounterID+'chemotherapyPCPPhone').text());
+
+            $("#chemotherapyInstitutionName").val($('#'+encounterID+'chemotherapyinstituteName').text());
+            $("#chemotherapyInstitutionCity").val($('#'+encounterID+'chemotherapyCity').text());
+            $("#chemotherapyInstitutionState").val($('#'+encounterID+'chemotherapyState').text());
+        });
+
 });

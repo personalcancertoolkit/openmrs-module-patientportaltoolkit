@@ -45,7 +45,7 @@
                 <% /* chemo end Date*/ %>
                 <% if (questions.uuid=="7dd8b8aa-b0f1-4eb1-862d-b6d737bdd315") { %>
                 <form class="form-inline" role="form"> <label class="reformatText">${(questions.getName())} </label>
-                    <input class="form-control" id="chemoendDate" type="text"/>
+                    <input class="form-control" id="chemoEndDate" type="text"/>
                 </form>
                 <% } %>
                 <% } %>

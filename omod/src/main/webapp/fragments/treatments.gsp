@@ -104,7 +104,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                 <div class="clearfix">
                     <div class="pull-left">
                         <h5> <% chemotherapy.chemoMedications.each { chemotherapymed -> %> <span class="${(chemotherapy.encounterUuid)}chemotherapymed reformatText" id="${(chemotherapy.encounterUuid)}chemotherapymed${(chemotherapymed)}">${(chemotherapymed)}</span> <% } %>
-                            <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;<span id="${(chemotherapy.encounterUuid)}chemotherapyStartDate" class="dateFormatter">${(chemotherapy.chemoStartDate)}</span><% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash;<span id="${(chemotherapy.encounterUuid)}chemotherapyStartDate" class="dateFormatter"> ${(chemotherapy.chemoEndDate)}</span><% } %></small>
+                            <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;<span id="${(chemotherapy.encounterUuid)}chemotherapyStartDate" class="dateFormatter">${(chemotherapy.chemoStartDate)}</span><% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash;<span id="${(chemotherapy.encounterUuid)}chemotherapyEndDate" class="dateFormatter"> ${(chemotherapy.chemoEndDate)}</span><% } %></small>
                         </h5>
                         <div class="">
                             Central Line &ndash; <span><small id="${(chemotherapy.encounterUuid)}centralLine"><% if (chemotherapy.centralLine) { %>Yes<% } else{ %>No<% } %></small></span>
@@ -118,7 +118,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                             <span id="${(chemotherapy.encounterUuid)}chemotherapyState">${(chemotherapy.institutionState)}</span><% } %>
                         </div>
                         <div>
-                            <label>Chemotherapist&emsp;</label>
+                            <label>Oncologist&emsp;</label>
                             <span>  <% if (chemotherapy.pcpName) { %><span id="${(chemotherapy.encounterUuid)}chemotherapyPCPName">${(chemotherapy.pcpName)}</span><% } %>
                             <% if (chemotherapy.pcpPhone) { %>&emsp;<small id="${(chemotherapy.encounterUuid)}chemotherapyPCPPhone">${(chemotherapy.pcpPhone)}</small><% } %>
                             <% if (chemotherapy.pcpEmail) { %>&emsp;<small id="${(chemotherapy.encounterUuid)}chemotherapyPCPEmail">${(chemotherapy.pcpEmail)}</small><% } %>
