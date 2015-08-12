@@ -25,7 +25,6 @@ public class SurgeriesModalFragmentController {
     protected final Log log = LogFactory.getLog(getClass());
 
     public void controller(FragmentModel model) {
-            model.addAttribute("tata","taearfgad");
     }
 
     public void saveSurgeryForm(FragmentModel model,  @RequestParam(value = "encounterId", required = false) String encounterId,

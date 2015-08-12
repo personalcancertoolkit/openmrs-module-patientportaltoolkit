@@ -163,6 +163,16 @@ jq(document).ready(function(){
                 }, 2000);
         });
 
+    var chemotherapyStartdatePicker= jq( "#chemoStartDate" ).datepicker({
+        format: 'mm/dd/yyyy'
+    }).on('changeDate', function() {
+        chemotherapyStartdatePicker.hide();
+    }).data('datepicker');
+    var chemotherapyEnddatePicker= jq( "#chemoEndDate" ).datepicker({
+        format: 'mm/dd/yyyy'
+    }).on('changeDate', function() {
+        chemotherapyEnddatePicker.hide();
+    }).data('datepicker');
     $('.editChemotherapyButton').click(
         function () {
             var encounterID=this.id;
@@ -184,8 +194,9 @@ jq(document).ready(function(){
             else{
                 $('#centralLineBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             }
-            $('chemoStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyStartDate').text())));
-            $('chemoEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyEndDate').text())));
+           // console.log($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyStartDate').text()))+"");
+            $('#chemoStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyStartDate').text())));
+            $('#chemoEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyEndDate').text())));
             // console.log($('#'+encounterID+'surgeryPCPName').text());
             $("#oncologistPcpName").val($('#'+encounterID+'chemotherapyPCPName').text());
             $("#oncologistPcpEmail").val($('#'+encounterID+'chemotherapyPCPEmail').text());
@@ -194,6 +205,26 @@ jq(document).ready(function(){
             $("#chemotherapyInstitutionName").val($('#'+encounterID+'chemotherapyinstituteName').text());
             $("#chemotherapyInstitutionCity").val($('#'+encounterID+'chemotherapyCity').text());
             $("#chemotherapyInstitutionState").val($('#'+encounterID+'chemotherapyState').text());
+        });
+
+    $('#saveChemotherapyButton').click(
+        function () {
+            var chemotherapyMedTypesList='';
+            $('.chemotherapyMedTypesInModal').each(function() {
+                if ( $(this).is(':checked')) {
+                    // console.log($( this ).val().split('split')[0]);
+                    chemotherapyMedTypesList=chemotherapyMedTypesList+($( this ).val().split('split')[0])+"split";
+                }
+            });
+            //console.log(surgeryTypeList);
+            jq.get("chemotherapyModal/saveChemotherapyForm.action", {encounterId: jq("#chemotherapyEncounterHolder").val(), chemotherapyMeds: chemotherapyMedTypesList,centralLine:  jq("#centralLineBoolSelect").val(),chemoStartDate:jq("#chemoStartDate").val(),chemoEndDate:jq("#chemoEndDate").val(),chemotherapyPcpName:jq("#oncologistPcpName").val(),chemotherapyPcpEmail:jq("#oncologistPcpEmail").val(),chemotherapyPcpPhone:jq("#oncologistPcpPhone").val(),chemotherapyInstitutionName:jq("#chemotherapyInstitutionName").val(),chemotherapyInstitutionCity:jq("#chemotherapyInstitutionCity").val(),chemotherapyInstitutionState:jq("#chemotherapyInstitutionState").val()}, function(){
+                // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
+            });
+            setTimeout(
+                function()
+                {
+                    location.reload();
+                }, 2000);
         });
 
 });
