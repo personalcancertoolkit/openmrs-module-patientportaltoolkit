@@ -227,4 +227,42 @@ jq(document).ready(function(){
                 }, 2000);
         });
 
+    var raidationStartdatePicker= jq( "#raidationStartDate" ).datepicker({
+        format: 'mm/dd/yyyy'
+    }).on('changeDate', function() {
+        raidationStartdatePicker.hide();
+    }).data('datepicker');
+    var raidationEnddatePicker= jq( "#raidationEndDate" ).datepicker({
+        format: 'mm/dd/yyyy'
+    }).on('changeDate', function() {
+        raidationEnddatePicker.hide();
+    }).data('datepicker');
+
+    $('.editRadiationButton').click(
+        function () {
+            var encounterID=this.id;
+            $("#raidationEncounterHolder").val(encounterID);
+            var radiationTypesList=[];
+            $('.'+encounterID+'radiationType').each(function() {
+                // console.log(($( this ).attr('id').split('surgeryType')[1]));
+                radiationTypesList.push(($( this ).attr('id').split('radiationType')[1]));
+            });
+            $('.raidationTypesInModal').each(function() {
+                if ( $.inArray(($( this ).val()).split('split')[1], radiationTypesList)>-1) {
+                    $(this).prop('checked', true);
+                }
+            });
+            // console.log($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyStartDate').text()))+"");
+            $('#raidationStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radStartDate').text())));
+            if($('#'+encounterID+'radEndDate').text())
+            $('#raidationEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radEndDate').text())));
+            // console.log($('#'+encounterID+'surgeryPCPName').text());
+            $("#radiologistPcpName").val($('#'+encounterID+'radPCPName').text());
+            $("#radiologistPcpEmail").val($('#'+encounterID+'radPCPEmail').text());
+            $("#radiologistPcpPhone").val($('#'+encounterID+'radPCPPhone').text());
+
+            $("#radiologistInstitutionName").val($('#'+encounterID+'radinstituteName').text());
+            $("#radiologistInstitutionCity").val($('#'+encounterID+'radCity').text());
+            $("#radiologistInstitutionState").val($('#'+encounterID+'radState').text());
+        });
 });

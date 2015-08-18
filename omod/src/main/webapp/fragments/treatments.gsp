@@ -132,41 +132,41 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
 
         </div>
     </div>
+    <hr/>
 
+    ${ ui.includeFragment("patientportaltoolkit", "radiationModal") }
     <div>
         <div class="clearfix">
             <h4>Radiation Surgery&emsp;
-                <a href="../NotFoundPage.js"
-                   class="btn btn-primary btn-sm">Add</a>
+                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#edit-radiation-modal">Add</a>
             </h4>
         </div>
 
         <div>
             <div class="clearfix">
-                <div class="pull-right">
-                    <a href="/treatments/all-treatments/surgeries/procedure-form"
-                       class="glyphicon glyphicon-pencil"></a>
-                </div>
                 <% if (radiationencounters) { %>
                 <% radiationencounters.each { radiation -> %>
+                <div class="pull-right">
+                    <a id="${(radiation.encounterUuid)}" class="glyphicon glyphicon-pencil editRadiationButton" data-toggle="modal" data-target="#edit-radiation-modal"></a>
+                </div>
                 <div class="clearfix">
                     <div class="pull-left">
-                        <h5> <% radiation.radiationTypes.each { radiationType -> %> <span class="${(radiation.encounterUuid)}radiationType reformatText" id="${(radiation.encounterUuid)}radiationType${(radiationType)}">${(radiationType)}</span> <% } %>
-                            <small> <% if (radiation.startDate) { %>&emsp;<span class="dateFormatter">${(radiation.startDate)}</span><% } %>  <% if (radiation.endDate) { %>&ndash; <span class="dateFormatter">${(radiation.endDate)}</span><% } %></small>
+                        <h5>  <label> <% radiation.radiationTypes.each { radiationType -> %> <span class="${(radiation.encounterUuid)}radiationType reformatText" id="${(radiation.encounterUuid)}radiationType${(radiationType)}">${(radiationType)}</span>; <% } %></label>
+                            <small> <% if (radiation.startDate) { %>&emsp;<span id="${(radiation.encounterUuid)}radStartDate" class="dateFormatter">${(radiation.startDate)}</span><% } %>  <% if (radiation.endDate) { %>&ndash; <span id="${(radiation.encounterUuid)}radEndDate" class="dateFormatter">${(radiation.endDate)}</span><% } %></small>
                         </h5>
                         <div class="">
-                            <label>Radation Location&emsp;</label>
-                            <% if (radiation.institutionName) { %> <span> ${(radiation.institutionName)}</span><% } %>
+                            <label>Radiation Location&emsp;</label>
+                            <% if (radiation.institutionName) { %> <span id="${(radiation.encounterUuid)}radinstituteName">${(radiation.institutionName)}</span><% } %>
                         <% if (radiation.institutionCity) { %>   &emsp;
-                            <span>${(radiation.institutionCity)}</span><% } %>
+                            <span id="${(radiation.encounterUuid)}radCity">${(radiation.institutionCity)}</span><% } %>
                         <% if (radiation.institutionState) { %> &emsp;
-                            <span>${(radiation.institutionState)}</span><% } %>
+                            <span id="${(radiation.encounterUuid)}radState">${(radiation.institutionState)}</span><% } %>
                         </div>
                         <div>
-                            <label>Radation Specialist&emsp;</label>
-                            <span>  <% if (radiation.pcpName) { %> ${(radiation.pcpName)}<% } %>
-                            <% if (radiation.pcpPhone) { %>  <small>&emsp;${(radiation.pcpPhone)}</small><% } %>
-                            <% if (radiation.pcpEmail) { %> <small>&emsp;${(radiation.pcpEmail)}</small><% } %>
+                            <label>Radiation Specialist&emsp;</label>
+                            <span>  <% if (radiation.pcpName) { %><span id="${(radiation.encounterUuid)}radPCPName">${(radiation.pcpName)}</span><% } %>
+                            <% if (radiation.pcpPhone) { %>  <small id="${(radiation.encounterUuid)}radPCPPhone">&emsp;${(radiation.pcpPhone)}</small><% } %>
+                            <% if (radiation.pcpEmail) { %> <small id="${(radiation.encounterUuid)}radPCPEmail">&emsp;${(radiation.pcpEmail)}</small><% } %>
                             </span>
                         </div>
                     </div>
