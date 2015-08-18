@@ -165,8 +165,8 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                         <div>
                             <label>Radiation Specialist&emsp;</label>
                             <span>  <% if (radiation.pcpName) { %><span id="${(radiation.encounterUuid)}radPCPName">${(radiation.pcpName)}</span><% } %>
-                            <% if (radiation.pcpPhone) { %>  <small id="${(radiation.encounterUuid)}radPCPPhone">&emsp;${(radiation.pcpPhone)}</small><% } %>
-                            <% if (radiation.pcpEmail) { %> <small id="${(radiation.encounterUuid)}radPCPEmail">&emsp;${(radiation.pcpEmail)}</small><% } %>
+                            <% if (radiation.pcpPhone) { %> &emsp; <small id="${(radiation.encounterUuid)}radPCPPhone">${(radiation.pcpPhone)}</small><% } %>
+                            <% if (radiation.pcpEmail) { %>&emsp; <small id="${(radiation.encounterUuid)}radPCPEmail">${(radiation.pcpEmail)}</small><% } %>
                             </span>
                         </div>
                     </div>

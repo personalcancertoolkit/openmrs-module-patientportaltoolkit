@@ -227,35 +227,35 @@ jq(document).ready(function(){
                 }, 2000);
         });
 
-    var raidationStartdatePicker= jq( "#raidationStartDate" ).datepicker({
+    var radiationStartdatePicker= jq( "#radiationStartDate" ).datepicker({
         format: 'mm/dd/yyyy'
     }).on('changeDate', function() {
-        raidationStartdatePicker.hide();
+        radiationStartdatePicker.hide();
     }).data('datepicker');
-    var raidationEnddatePicker= jq( "#raidationEndDate" ).datepicker({
+    var radiationEnddatePicker= jq( "#radiationEndDate" ).datepicker({
         format: 'mm/dd/yyyy'
     }).on('changeDate', function() {
-        raidationEnddatePicker.hide();
+        radiationEnddatePicker.hide();
     }).data('datepicker');
 
     $('.editRadiationButton').click(
         function () {
             var encounterID=this.id;
-            $("#raidationEncounterHolder").val(encounterID);
+            $("#radiationEncounterHolder").val(encounterID);
             var radiationTypesList=[];
             $('.'+encounterID+'radiationType').each(function() {
                 // console.log(($( this ).attr('id').split('surgeryType')[1]));
                 radiationTypesList.push(($( this ).attr('id').split('radiationType')[1]));
             });
-            $('.raidationTypesInModal').each(function() {
+            $('.radiationTypesInModal').each(function() {
                 if ( $.inArray(($( this ).val()).split('split')[1], radiationTypesList)>-1) {
                     $(this).prop('checked', true);
                 }
             });
             // console.log($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyStartDate').text()))+"");
-            $('#raidationStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radStartDate').text())));
+            $('#radiationStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radStartDate').text())));
             if($('#'+encounterID+'radEndDate').text())
-            $('#raidationEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radEndDate').text())));
+            $('#radiationEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radEndDate').text())));
             // console.log($('#'+encounterID+'surgeryPCPName').text());
             $("#radiologistPcpName").val($('#'+encounterID+'radPCPName').text());
             $("#radiologistPcpEmail").val($('#'+encounterID+'radPCPEmail').text());
@@ -264,5 +264,26 @@ jq(document).ready(function(){
             $("#radiologistInstitutionName").val($('#'+encounterID+'radinstituteName').text());
             $("#radiologistInstitutionCity").val($('#'+encounterID+'radCity').text());
             $("#radiologistInstitutionState").val($('#'+encounterID+'radState').text());
+        });
+
+    $('#saveRadiationButton').click(
+        function () {
+            var radiationTypesList='';
+            $('.radiationTypesInModal').each(function() {
+                if ( $(this).is(':checked')) {
+                    // console.log($( this ).val().split('split')[0]);
+                    radiationTypesList=radiationTypesList+($( this ).val().split('split')[0])+"split";
+                }
+            });
+            //console.log(surgeryTypeList);
+            console.log(jq("#radiologistInstitutionCity").val()+"-------------------"+ jq("#radiologistInstitutionName").val());
+            jq.get("radiationModal/saveRadiationForm.action", {encounterId: jq("#radiationEncounterHolder").val(), radiationTypes: radiationTypesList,radiationStartDate:jq("#radiationStartDate").val(),radiationEndDate:jq("#radiationEndDate").val(),radiationPcpName:jq("#radiologistPcpName").val(),radiationPcpEmail:jq("#radiologistPcpEmail").val(),radiationPcpPhone:jq("#radiologistPcpPhone").val(),radiationInstitutionName:jq("#radiologistInstitutionName").val(),radiationInstitutionCity:jq("#radiologistInstitutionCity").val(),radiationInstitutionState:jq("#radiologistInstitutionState").val()}, function(){
+                // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
+            });
+            setTimeout(
+                function()
+                {
+                    location.reload();
+                }, 2000);
         });
 });

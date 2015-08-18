@@ -134,7 +134,7 @@ public class ChemotherapyModalFragmentController {
                                 if (o.getValueText() != chemotherapyPcpName)
                                     o.setValueText(chemotherapyPcpName);
                             } else {
-                                if (chemoStartDate != null && chemoStartDate != "") {
+                                if (chemotherapyPcpName != null && chemotherapyPcpName != "") {
                                     Obs o = new Obs();
                                     o.setConcept(conceptService.getConceptByUuid("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"));
                                     o.setValueText(chemotherapyPcpName);
@@ -148,7 +148,7 @@ public class ChemotherapyModalFragmentController {
                                 if (o.getValueText() != chemotherapyPcpEmail)
                                     o.setValueText(chemotherapyPcpEmail);
                             } else {
-                                if (chemoStartDate != null && chemoStartDate != "") {
+                                if (chemotherapyPcpEmail != null && chemotherapyPcpEmail != "") {
                                     Obs o = new Obs();
                                     o.setConcept(conceptService.getConceptByUuid("898a0028-8c65-4db9-a802-1577fce59864"));
                                     o.setValueText(chemotherapyPcpEmail);
@@ -162,7 +162,7 @@ public class ChemotherapyModalFragmentController {
                                 if (o.getValueText() != chemotherapyPcpPhone)
                                     o.setValueText(chemotherapyPcpPhone);
                             } else {
-                                if (chemoStartDate != null && chemoStartDate != "") {
+                                if (chemotherapyPcpPhone != null && chemotherapyPcpPhone != "") {
                                     Obs o = new Obs();
                                     o.setConcept(conceptService.getConceptByUuid("9285b227-4054-4830-ac32-5ea78462e8c4"));
                                     o.setValueText(chemotherapyPcpPhone);
@@ -176,7 +176,7 @@ public class ChemotherapyModalFragmentController {
                                 if (o.getValueText() != chemotherapyInstitutionName)
                                     o.setValueText(chemotherapyInstitutionName);
                             } else {
-                                if (chemoStartDate != null && chemoStartDate != "") {
+                                if (chemotherapyInstitutionName != null && chemotherapyInstitutionName != "") {
                                     Obs o = new Obs();
                                     o.setConcept(conceptService.getConceptByUuid("47d58999-d3b5-4869-a52e-841e2e6bdbb3"));
                                     o.setValueText(chemotherapyInstitutionName);
@@ -190,7 +190,7 @@ public class ChemotherapyModalFragmentController {
                                 if (o.getValueText() != chemotherapyInstitutionCity)
                                     o.setValueText(chemotherapyInstitutionCity);
                             } else {
-                                if (chemoStartDate != null && chemoStartDate != "") {
+                                if (chemotherapyInstitutionCity != null && chemotherapyInstitutionCity != "") {
                                     Obs o = new Obs();
                                     o.setConcept(conceptService.getConceptByUuid("bfa752d6-2037-465e-b0a2-c4c2d485ec32"));
                                     o.setValueText(chemotherapyInstitutionCity);
@@ -204,7 +204,7 @@ public class ChemotherapyModalFragmentController {
                                 if (o.getValueText() != chemotherapyInstitutionState)
                                     o.setValueText(chemotherapyInstitutionState);
                             } else {
-                                if (chemoStartDate != null && chemoStartDate != "") {
+                                if (chemotherapyInstitutionState != null && chemotherapyInstitutionState != "") {
                                     Obs o = new Obs();
                                     o.setConcept(conceptService.getConceptByUuid("34489100-487e-443a-bf27-1b6869fb9332"));
                                     o.setValueText(chemotherapyInstitutionState);

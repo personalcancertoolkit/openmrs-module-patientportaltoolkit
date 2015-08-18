@@ -7,14 +7,14 @@
                 <h4 class="modal-title" id="editRadiationsLabel">Radiation</h4>
             </div>
             <div class="modal-body">
-                <input id="raidationEncounterHolder" type="hidden">
+                <input id="radiationEncounterHolder" type="hidden">
                 <% radiationConcepts.concepts.each { questions -> %>
                 <% /* radiation type used*/ %>
                 <% if (questions.uuid=="42fb7bb5-f840-4518-814c-893813211cba") { %>
                 <form class="form-inline" role="form"> <label class="reformatText">${(questions.getName())}</label><br>
                     <% questions.answers.each { answers -> %>
                     <div class="checkbox">
-                        <label><input type="checkbox" class="raidationTypesInModal" value="${(answers.answerConcept.uuid)}split${(answers.answerConcept.getName())}"><span class="reformatText">${(answers.answerConcept.getName())}</span></label>
+                        <label><input type="checkbox" class="radiationTypesInModal" value="${(answers.answerConcept.uuid)}split${(answers.answerConcept.getName())}"><span class="reformatText">${(answers.answerConcept.getName())}</span></label>
                     </div>
                     <br>
                     <% } %>
@@ -26,7 +26,7 @@
                 <% /* radiation start Date*/ %>
                 <% if (questions.uuid=="85c3a99e-0598-4c63-912b-796dee9c75b2") { %>
                 <form class="form-inline" role="form"> <label class="reformatText">Radiation start date </label>
-                    <input class="form-control" id="raidationStartDate" type="text"/>
+                    <input class="form-control" id="radiationStartDate" type="text"/>
                 </form>
                 <% } %>
                 <% } %>
@@ -34,7 +34,7 @@
                 <% /* radiation end Date*/ %>
                 <% if (questions.uuid=="7dd8b8aa-b0f1-4eb1-862d-b6d737bdd315") { %>
                 <form class="form-inline" role="form"> <label class="reformatText">Radiation end date </label>
-                    <input class="form-control" id="raidationEndDate" type="text"/>
+                    <input class="form-control" id="radiationEndDate" type="text"/>
                 </form>
                 <% } %>
                 <% } %>
@@ -86,7 +86,7 @@
             <div class="modal-footer">
                 <div class="button-div pull-right">
                     <button type="button" class="btn btn-default cancelModal">Cancel Changes</button>
-                    <button type="button" class="btn btn-primary" id="saveChemotherapyButton">Save Changes</button>
+                    <button type="button" class="btn btn-primary" id="saveRadiationButton">Save Changes</button>
 
                 </div>
             </div>
