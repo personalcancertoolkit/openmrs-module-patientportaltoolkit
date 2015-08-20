@@ -9,11 +9,12 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 <div class="container bgcontent col-sm-8 col-sm-offset-2">
     ${ ui.includeFragment("patientportaltoolkit", "profileHeader") }
     <ul class="nav nav-pills">
-        <li class="active"><a data-toggle="tab" href="#journal">Journals</a></li>
-        <li><a data-toggle="tab" href="#connections">Connections</a></li>
-        <li><a data-toggle="tab" href="#treatments">Treatments</a></li>
-        <li><a data-toggle="tab" href="#sideEffects">Side Effects</a></li>
-        <li><a href="#">Follow up Care</a></li>
+    <li class="active"><a data-toggle="tab" href="#journal">Journals</a></li>
+    <li><a data-toggle="tab" href="#connections">Connections</a></li>
+    <li><a data-toggle="tab" href="#treatments">Treatments</a></li>
+    <li><a data-toggle="tab" href="#sideEffects">Side Effects</a></li>
+    <li><a href="#">Follow up Care</a></li>
+    <li><a data-toggle="tab" href="#symptomManagement">Symtom Management</a></li>
     </ul>
 
     <div class="tab-content">
@@ -32,6 +33,9 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
         </div>
         <div id="sideEffects" class="tab-pane fade">
             ${ ui.includeFragment("patientportaltoolkit", "sideEffects") }
+        </div>
+        <div id="symptomManagement" class="tab-pane fade">
+            ${ ui.includeFragment("patientportaltoolkit", "symptomManagement") }
         </div>
     </div>
 </div>

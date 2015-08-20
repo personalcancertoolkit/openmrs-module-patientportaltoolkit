@@ -45,6 +45,24 @@
 			org.openmrs.module.uiframework
 		</require_module>
 	</require_modules>
+
+	<!-- Global Properties -->
+	<globalProperty>
+		<property>${project.parent.artifactId}.symptommanagementURL</property>
+		<defaultValue>https://portal.nursing.iupui.edu/o_portal/index.php?seq=_003_001</defaultValue>
+		<description>URL for accessing the Symptom Management Portal</description>
+	</globalProperty>
+	<globalProperty>
+		<property>${project.parent.artifactId}.symptommanagementUsername</property>
+		<defaultValue>omrs_client_0001</defaultValue>
+		<description>Username for allowing OpenMRS to log into the Symptom Management Portal</description>
+	</globalProperty>
+	<globalProperty>
+		<property>${project.parent.artifactId}.symptommanagementPassword</property>
+		<defaultValue>project*Connector-909</defaultValue>
+		<description>Password for allowing OpenMRS to log into the Symptom Management Portal</description>
+	</globalProperty>
+
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
 		JournalEntry.hbm.xml

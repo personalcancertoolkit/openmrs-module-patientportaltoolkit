@@ -23,5 +23,9 @@ public class PatientPortalToolkitConstants {
 
     public final static String  TREATMENTSUMMARY_ENCOUNTER = "CANCER TREATMENT SUMMARY";
 
+    public static final String GP_SYMPTOM_MANAGEMENT_USERNAME = "patientportaltoolkit.symptommanagementUsername";
 
+    public static final String GP_SYMPTOM_MANAGEMENT_PASSWORD = "patientportaltoolkit.symptommanagementPassword";
+
+    public static final String GP_SYMPTOM_MANAGEMENT_URL = "patientportaltoolkit.symptommanagementURL";
 }
