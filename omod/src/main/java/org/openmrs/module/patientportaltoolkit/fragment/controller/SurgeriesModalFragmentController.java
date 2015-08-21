@@ -8,6 +8,7 @@ import org.openmrs.Obs;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,6 +28,125 @@ public class SurgeriesModalFragmentController {
     public void controller(FragmentModel model) {
     }
 
+    public void saveNewSurgeryForm(FragmentModel model, @RequestParam(value = "surgeryTypes", required = false) String surgeryTypes,
+                                   @RequestParam(value = "surgeryComplications", required = false) String surgeryComplications,
+                                   @RequestParam(value = "majorComplicationsTypeAnswer", required = false) String majorComplicationsTypeAnswer,
+                                   @RequestParam(value = "surgeryDate", required = false) String surgeryDate,
+                                   @RequestParam(value = "surgeonPcpName", required = false) String surgeonPcpName,
+                                   @RequestParam(value = "surgeonPcpEmail", required = false) String surgeonPcpEmail,
+                                   @RequestParam(value = "surgeonPcpPhone", required = false) String surgeonPcpPhone,
+                                   @RequestParam(value = "surgeryInstitutionName", required = false) String surgeryInstitutionName,
+                                   @RequestParam(value = "surgeryInstitutionCity", required = false) String surgeryInstitutionCity,
+                                   @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState) throws ParseException {
+
+        EncounterService encounterService= Context.getEncounterService();
+        Encounter newSurgeryEncounter = new Encounter();
+        newSurgeryEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        Date date = new Date();
+        newSurgeryEncounter.setDateCreated(new Date());
+        newSurgeryEncounter.setEncounterDatetime(date);
+        newSurgeryEncounter.setEncounterType(encounterService.getEncounterType(PatientPortalToolkitConstants.SURGERY_ENCOUNTER));
+        ConceptService conceptService=Context.getConceptService();
+        String[] str_array = surgeryTypes.split("split");
+        List<String> surgeryTypesConcepts = new ArrayList<>();
+        for(String s: str_array){
+            surgeryTypesConcepts.add(s);
+        }
+        for (String s : surgeryTypesConcepts){
+            Obs o = new Obs();
+            o.setConcept(conceptService.getConceptByUuid("d409122c-8a0b-4282-a17f-07abad81f278"));
+            o.setValueCoded(conceptService.getConceptByUuid(s));
+            newSurgeryEncounter.addObs(o);
+        }
+        Obs suregeryInstitution = new Obs();
+        suregeryInstitution.setConcept(conceptService.getConceptByUuid("329328ab-8e1c-461e-9261-fd4471b1f131"));
+
+        Obs surgeon = new Obs();
+        surgeon.setConcept(conceptService.getConceptByUuid("292e2107-b909-4e4a-947f-ce2be8738137"));
+
+        List<String> allTheEnteredValues = new ArrayList<>();
+        allTheEnteredValues.add("surgeryComplications");//99ef1d68-05ed-4f37-b98b-c982e3574138
+        allTheEnteredValues.add("majorComplicationsTypeAnswer");
+        allTheEnteredValues.add("surgeryDate");
+        allTheEnteredValues.add("surgeonPcpName");
+        allTheEnteredValues.add("surgeonPcpEmail");
+        allTheEnteredValues.add("surgeonPcpPhone");
+        allTheEnteredValues.add("surgeryInstitutionName");
+        allTheEnteredValues.add("surgeryInstitutionCity");
+        allTheEnteredValues.add("surgeryInstitutionState");
+        for (String entry : allTheEnteredValues)
+        {
+            if(entry !=null) {
+                switch (entry) {
+                    case "surgeryComplications":
+                        if (surgeryComplications != null && surgeryComplications != "") {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("99ef1d68-05ed-4f37-b98b-c982e3574138"));
+                            o.setValueCoded(conceptService.getConceptByUuid(surgeryComplications));
+                            newSurgeryEncounter.addObs(o);
+                        }
+                        break;
+                    case "majorComplicationsTypeAnswer":
+                        if (majorComplicationsTypeAnswer != null && majorComplicationsTypeAnswer != "") {
+                                Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("c2d9fca3-1e0b-4007-8c3c-b3ebb4e67963"));
+                            o.setValueText(majorComplicationsTypeAnswer);
+                            newSurgeryEncounter.addObs(o);
+                            }
+                        break;
+                    case "surgeryDate":
+                        if (surgeryDate != null && surgeryDate != "") {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("87a69397-65ef-4576-a709-ae0a526afd85"));
+                            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                            Date parsedDate = formatter.parse(surgeryDate);
+                            o.setValueDate(parsedDate);
+                            newSurgeryEncounter.addObs(o);
+                            }
+                        break;
+                    case "surgeonPcpName":
+                        Obs surgeonPcpNameObs = new Obs();
+                        surgeonPcpNameObs.setConcept(conceptService.getConceptByUuid("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"));
+                        surgeonPcpNameObs.setValueText(surgeonPcpName);
+                        surgeon.addGroupMember(surgeonPcpNameObs);
+                        break;
+                    case "surgeonPcpEmail":
+                        Obs surgeonPcpEmailObs = new Obs();
+                        surgeonPcpEmailObs.setConcept(conceptService.getConceptByUuid("898a0028-8c65-4db9-a802-1577fce59864"));
+                        surgeonPcpEmailObs.setValueText(surgeonPcpEmail);
+                        surgeon.addGroupMember(surgeonPcpEmailObs);
+                        break;
+                    case "surgeonPcpPhone":
+                        Obs surgeonPcpPhoneObs = new Obs();
+                        surgeonPcpPhoneObs.setConcept(conceptService.getConceptByUuid("9285b227-4054-4830-ac32-5ea78462e8c4"));
+                        surgeonPcpPhoneObs.setValueText(surgeonPcpPhone);
+                        surgeon.addGroupMember(surgeonPcpPhoneObs);
+                        break;
+                    case "surgeryInstitutionName":
+                        Obs surgeryInstitutionNameObs = new Obs();
+                        surgeryInstitutionNameObs.setConcept(conceptService.getConceptByUuid("47d58999-d3b5-4869-a52e-841e2e6bdbb3"));
+                        surgeryInstitutionNameObs.setValueText(surgeryInstitutionName);
+                        suregeryInstitution.addGroupMember(surgeryInstitutionNameObs);
+                        break;
+                    case "surgeryInstitutionCity":
+                        Obs surgeryInstitutionCityObs = new Obs();
+                        surgeryInstitutionCityObs.setConcept(conceptService.getConceptByUuid("bfa752d6-2037-465e-b0a2-c4c2d485ec32"));
+                        surgeryInstitutionCityObs.setValueText(surgeryInstitutionCity);
+                        suregeryInstitution.addGroupMember(surgeryInstitutionCityObs);
+                        break;
+                    case "surgeryInstitutionState":
+                        Obs surgeryInstitutionStateobs = new Obs();
+                        surgeryInstitutionStateobs.setConcept(conceptService.getConceptByUuid("34489100-487e-443a-bf27-1b6869fb9332"));
+                        surgeryInstitutionStateobs.setValueText(surgeryInstitutionState);
+                        suregeryInstitution.addGroupMember(surgeryInstitutionStateobs);
+                        break;
+                }
+            }
+        }
+        newSurgeryEncounter.addObs(suregeryInstitution);
+        newSurgeryEncounter.addObs(surgeon);
+        encounterService.saveEncounter(newSurgeryEncounter);
+    }
     public void saveSurgeryForm(FragmentModel model,  @RequestParam(value = "encounterId", required = false) String encounterId,
                          @RequestParam(value = "surgeryTypes", required = false) String surgeryTypes,
                          @RequestParam(value = "surgeryComplications", required = false) String surgeryComplications,

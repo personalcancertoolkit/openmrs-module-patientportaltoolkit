@@ -145,22 +145,55 @@ jq(document).ready(function(){
 
     $('#saveSurgeryButton').click(
         function () {
-            var surgeryTypeList='';
-            $('.surgeryTypesInModal').each(function() {
-                if ( $(this).is(':checked')) {
-                   // console.log($( this ).val().split('split')[0]);
-                    surgeryTypeList=surgeryTypeList+($( this ).val().split('split')[0])+"split";
+            var surgeryTypeList = '';
+            $('.surgeryTypesInModal').each(function () {
+                if ($(this).is(':checked')) {
+                    // console.log($( this ).val().split('split')[0]);
+                    surgeryTypeList = surgeryTypeList + ($(this).val().split('split')[0]) + "split";
                 }
             });
-            //console.log(surgeryTypeList);
-            jq.get("surgeriesModal/saveSurgeryForm.action", {encounterId: jq("#surgeryEncounterHolder").val(), surgeryTypes: surgeryTypeList,surgeryComplications:  jq("#majorComplicationsBoolSelect").val(),majorComplicationsTypeAnswer:jq("#majorComplicationsTypeAnswer").val(),surgeryDate:jq("#surgeryDate").val(),surgeonPcpName:jq("#surgeonPcpName").val(),surgeonPcpEmail:jq("#surgeonPcpEmail").val(),surgeonPcpPhone:jq("#surgeonPcpPhone").val(),surgeryInstitutionName:jq("#surgeryInstitutionName").val(),surgeryInstitutionCity:jq("#surgeryInstitutionCity").val(),surgeryInstitutionState:jq("#surgeryInstitutionState").val()}, function(){
-           // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
+            if (jq("#surgeryEncounterHolder").val() == null || jq("#surgeryEncounterHolder").val() == '') {
+            jq.get("surgeriesModal/saveNewSurgeryForm.action", {
+                surgeryTypes: surgeryTypeList,
+                surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
+                majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
+                surgeryDate: jq("#surgeryDate").val(),
+                surgeonPcpName: jq("#surgeonPcpName").val(),
+                surgeonPcpEmail: jq("#surgeonPcpEmail").val(),
+                surgeonPcpPhone: jq("#surgeonPcpPhone").val(),
+                surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
+                surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
+                surgeryInstitutionState: jq("#surgeryInstitutionState").val()
+            }, function () {
+                // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
             });
             setTimeout(
-                function()
-                {
+                function () {
                     location.reload();
                 }, 2000);
+        }
+            //console.log(surgeryTypeList);
+            else {
+        jq.get("surgeriesModal/saveSurgeryForm.action", {
+            encounterId: jq("#surgeryEncounterHolder").val(),
+            surgeryTypes: surgeryTypeList,
+            surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
+            majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
+            surgeryDate: jq("#surgeryDate").val(),
+            surgeonPcpName: jq("#surgeonPcpName").val(),
+            surgeonPcpEmail: jq("#surgeonPcpEmail").val(),
+            surgeonPcpPhone: jq("#surgeonPcpPhone").val(),
+            surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
+            surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
+            surgeryInstitutionState: jq("#surgeryInstitutionState").val()
+        }, function () {
+            // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
+        });
+        setTimeout(
+            function () {
+                location.reload();
+            }, 2000);
+    }
         });
 
     var chemotherapyStartdatePicker= jq( "#chemoStartDate" ).datepicker({
