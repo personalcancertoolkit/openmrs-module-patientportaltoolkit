@@ -42,17 +42,17 @@ public class ChemotherapyModalFragmentController {
             chemotherapyMedictionConcepts.add(s);
         }
         List<String> existingChemotherapyMedictionConcepts = new ArrayList<>();
-        Map<String,String> allTheEnteredValues = new HashMap<>();
-        allTheEnteredValues.put("chemotherapyMeds",chemotherapyMeds);
-        allTheEnteredValues.put("centralLine",centralLine);
-        allTheEnteredValues.put("chemoStartDate",chemoStartDate);
-        allTheEnteredValues.put("chemoEndDate",chemoEndDate);
-        allTheEnteredValues.put("chemotherapyPcpName",chemotherapyPcpName);
-        allTheEnteredValues.put("chemotherapyPcpEmail",chemotherapyPcpEmail);
-        allTheEnteredValues.put("chemotherapyPcpPhone",chemotherapyPcpPhone);
-        allTheEnteredValues.put("chemotherapyInstitutionName",chemotherapyInstitutionName);
-        allTheEnteredValues.put("chemotherapyInstitutionCity",chemotherapyInstitutionCity);
-        allTheEnteredValues.put("chemotherapyInstitutionState",chemotherapyInstitutionState);
+        List<String> allTheEnteredValues = new ArrayList<>();
+        allTheEnteredValues.add("chemotherapyMeds");
+        allTheEnteredValues.add("centralLine");
+        allTheEnteredValues.add("chemoStartDate");
+        allTheEnteredValues.add("chemoEndDate");
+        allTheEnteredValues.add("chemotherapyPcpName");
+        allTheEnteredValues.add("chemotherapyPcpEmail");
+        allTheEnteredValues.add("chemotherapyPcpPhone");
+        allTheEnteredValues.add("chemotherapyInstitutionName");
+        allTheEnteredValues.add("chemotherapyInstitutionCity");
+        allTheEnteredValues.add("chemotherapyInstitutionState");
         if(encounterId !=null) {
             Encounter chemotherapyEncounter = encounterService.getEncounterByUuid(encounterId);
             Map<String,List<Obs>> observationConceptUUIDToObsMap = new HashMap<>();
@@ -69,10 +69,10 @@ public class ChemotherapyModalFragmentController {
                     observationConceptUUIDToObsMap.put(o.getConcept().getUuid(),existingObsList);
                 }
             }
-            for (Map.Entry<String, String> entry : allTheEnteredValues.entrySet())
+            for (String entry : allTheEnteredValues)
             {
-                if(entry.getValue() !=null) {
-                    switch (entry.getKey()) {
+                if(entry !=null) {
+                    switch (entry) {
                         case "chemotherapyMeds":
                             for (Obs o : observationConceptUUIDToObsMap.get("8481b9da-74e3-45a9-9124-d69ab572d636"))
                                 existingChemotherapyMedictionConcepts.add(o.getValueCoded().getUuid());
