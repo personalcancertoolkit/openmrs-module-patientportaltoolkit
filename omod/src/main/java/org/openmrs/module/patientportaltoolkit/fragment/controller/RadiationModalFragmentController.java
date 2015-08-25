@@ -7,6 +7,7 @@ import org.openmrs.Obs;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,6 +23,119 @@ public class RadiationModalFragmentController {
     protected final Log log = LogFactory.getLog(getClass());
 
     public void controller(FragmentModel model){}
+
+    public void saveNewRadiationForm(FragmentModel model, @RequestParam(value = "radiationTypes", required = false) String radiationTypes,
+                                        @RequestParam(value = "radiationStartDate", required = false) String radiationStartDate,
+                                        @RequestParam(value = "radiationEndDate", required = false) String radiationEndDate,
+                                        @RequestParam(value = "radiationPcpName", required = false) String radiationPcpName,
+                                        @RequestParam(value = "radiationPcpEmail", required = false) String radiationPcpEmail,
+                                        @RequestParam(value = "radiationPcpPhone", required = false) String radiationPcpPhone,
+                                        @RequestParam(value = "radiationInstitutionName", required = false) String radiationInstitutionName,
+                                        @RequestParam(value = "radiationInstitutionCity", required = false) String radiationInstitutionCity,
+                                        @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState) throws ParseException {
+
+        EncounterService encounterService= Context.getEncounterService();
+        Encounter newRadiationEncounter = new Encounter();
+        newRadiationEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        Date date = new Date();
+        newRadiationEncounter.setDateCreated(new Date());
+        newRadiationEncounter.setEncounterDatetime(date);
+        newRadiationEncounter.setEncounterType(encounterService.getEncounterType(PatientPortalToolkitConstants.RADIATION_ENCOUNTER));
+        ConceptService conceptService=Context.getConceptService();
+        String[] str_array = radiationTypes.split("split");
+        List<String> radiationTypesConcepts = new ArrayList<>();
+        for(String s: str_array){
+            radiationTypesConcepts.add(s);
+        }
+
+        List<String> allTheEnteredValues = new ArrayList<>();
+        allTheEnteredValues.add("radiationStartDate");
+        allTheEnteredValues.add("radiationEndDate");
+        allTheEnteredValues.add("radiationPcpName");
+        allTheEnteredValues.add("radiationPcpEmail");
+        allTheEnteredValues.add("radiationPcpPhone");
+        allTheEnteredValues.add("radiationInstitutionName");
+        allTheEnteredValues.add("radiationInstitutionCity");
+        allTheEnteredValues.add("radiationInstitutionState");
+        for (String s : radiationTypesConcepts){
+            Obs o = new Obs();
+            o.setConcept(conceptService.getConceptByUuid("42fb7bb5-f840-4518-814c-893813211cba"));
+            o.setValueCoded(conceptService.getConceptByUuid(s));
+            newRadiationEncounter.addObs(o);
+        }
+        Obs radiationInstitution = new Obs();
+        radiationInstitution.setConcept(conceptService.getConceptByUuid("329328ab-8e1c-461e-9261-fd4471b1f131"));
+
+        Obs raidationSpecialist = new Obs();
+        raidationSpecialist.setConcept(conceptService.getConceptByUuid("f031cc84-5eb1-4d64-beb5-c3c6bd9b915c"));
+
+        for (String entry : allTheEnteredValues)
+        {
+            if(entry !=null) {
+                switch (entry) {
+                    case "radiationStartDate":
+                        if (radiationStartDate != null && radiationStartDate != "") {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("85c3a99e-0598-4c63-912b-796dee9c75b2"));
+                            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                            Date parsedDate = formatter.parse(radiationStartDate);
+                            o.setValueDate(parsedDate);
+                            newRadiationEncounter.addObs(o);
+                        }
+                        break;
+                    case "radiationEndDate":
+                        if (radiationEndDate != null && radiationEndDate != "") {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("7dd8b8aa-b0f1-4eb1-862d-b6d737bdd315"));
+                            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                            Date parsedDate = formatter.parse(radiationEndDate);
+                            o.setValueDate(parsedDate);
+                            newRadiationEncounter.addObs(o);
+                        }
+                        break;
+                    case "radiationPcpName":
+                        Obs surgeonPcpNameObs = new Obs();
+                        surgeonPcpNameObs.setConcept(conceptService.getConceptByUuid("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"));
+                        surgeonPcpNameObs.setValueText(radiationPcpName);
+                        raidationSpecialist.addGroupMember(surgeonPcpNameObs);
+                        break;
+                    case "radiationPcpEmail":
+                        Obs surgeonPcpEmailObs = new Obs();
+                        surgeonPcpEmailObs.setConcept(conceptService.getConceptByUuid("898a0028-8c65-4db9-a802-1577fce59864"));
+                        surgeonPcpEmailObs.setValueText(radiationPcpEmail);
+                        raidationSpecialist.addGroupMember(surgeonPcpEmailObs);
+                        break;
+                    case "radiationPcpPhone":
+                        Obs surgeonPcpPhoneObs = new Obs();
+                        surgeonPcpPhoneObs.setConcept(conceptService.getConceptByUuid("9285b227-4054-4830-ac32-5ea78462e8c4"));
+                        surgeonPcpPhoneObs.setValueText(radiationPcpPhone);
+                        raidationSpecialist.addGroupMember(surgeonPcpPhoneObs);
+                        break;
+                    case "radiationInstitutionName":
+                        Obs surgeryInstitutionNameObs = new Obs();
+                        surgeryInstitutionNameObs.setConcept(conceptService.getConceptByUuid("47d58999-d3b5-4869-a52e-841e2e6bdbb3"));
+                        surgeryInstitutionNameObs.setValueText(radiationInstitutionName);
+                        radiationInstitution.addGroupMember(surgeryInstitutionNameObs);
+                        break;
+                    case "radiationInstitutionCity":
+                        Obs surgeryInstitutionCityObs = new Obs();
+                        surgeryInstitutionCityObs.setConcept(conceptService.getConceptByUuid("bfa752d6-2037-465e-b0a2-c4c2d485ec32"));
+                        surgeryInstitutionCityObs.setValueText(radiationInstitutionCity);
+                        radiationInstitution.addGroupMember(surgeryInstitutionCityObs);
+                        break;
+                    case "radiationInstitutionState":
+                        Obs surgeryInstitutionStateobs = new Obs();
+                        surgeryInstitutionStateobs.setConcept(conceptService.getConceptByUuid("34489100-487e-443a-bf27-1b6869fb9332"));
+                        surgeryInstitutionStateobs.setValueText(radiationInstitutionState);
+                        radiationInstitution.addGroupMember(surgeryInstitutionStateobs);
+                        break;
+                }
+            }
+        }
+        newRadiationEncounter.addObs(radiationInstitution);
+        newRadiationEncounter.addObs(raidationSpecialist);
+        encounterService.saveEncounter(newRadiationEncounter);
+    }
 
     public void saveRadiationForm(FragmentModel model,  @RequestParam(value = "encounterId", required = false) String encounterId,
                                      @RequestParam(value = "radiationTypes", required = false) String radiationTypes,

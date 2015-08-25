@@ -249,15 +249,48 @@ jq(document).ready(function(){
                     chemotherapyMedTypesList=chemotherapyMedTypesList+($( this ).val().split('split')[0])+"split";
                 }
             });
+            if(jq("#chemotherapyEncounterHolder").val() == null || jq("#chemotherapyEncounterHolder").val() == '') {
+                jq.get("chemotherapyModal/saveNewChemotherapyForm.action", {
+                    chemotherapyMeds: chemotherapyMedTypesList,
+                    centralLine: jq("#centralLineBoolSelect").val(),
+                    chemoStartDate: jq("#chemoStartDate").val(),
+                    chemoEndDate: jq("#chemoEndDate").val(),
+                    chemotherapyPcpName: jq("#oncologistPcpName").val(),
+                    chemotherapyPcpEmail: jq("#oncologistPcpEmail").val(),
+                    chemotherapyPcpPhone: jq("#oncologistPcpPhone").val(),
+                    chemotherapyInstitutionName: jq("#chemotherapyInstitutionName").val(),
+                    chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
+                    chemotherapyInstitutionState: jq("#chemotherapyInstitutionState").val()
+                }, function () {
+                    // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
+                });
+                setTimeout(
+                    function () {
+                        location.reload();
+                    }, 2000);
+            }
             //console.log(surgeryTypeList);
-            jq.get("chemotherapyModal/saveChemotherapyForm.action", {encounterId: jq("#chemotherapyEncounterHolder").val(), chemotherapyMeds: chemotherapyMedTypesList,centralLine:  jq("#centralLineBoolSelect").val(),chemoStartDate:jq("#chemoStartDate").val(),chemoEndDate:jq("#chemoEndDate").val(),chemotherapyPcpName:jq("#oncologistPcpName").val(),chemotherapyPcpEmail:jq("#oncologistPcpEmail").val(),chemotherapyPcpPhone:jq("#oncologistPcpPhone").val(),chemotherapyInstitutionName:jq("#chemotherapyInstitutionName").val(),chemotherapyInstitutionCity:jq("#chemotherapyInstitutionCity").val(),chemotherapyInstitutionState:jq("#chemotherapyInstitutionState").val()}, function(){
-                // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
-            });
-            setTimeout(
-                function()
-                {
-                    location.reload();
-                }, 2000);
+            else {
+                jq.get("chemotherapyModal/saveChemotherapyForm.action", {
+                    encounterId: jq("#chemotherapyEncounterHolder").val(),
+                    chemotherapyMeds: chemotherapyMedTypesList,
+                    centralLine: jq("#centralLineBoolSelect").val(),
+                    chemoStartDate: jq("#chemoStartDate").val(),
+                    chemoEndDate: jq("#chemoEndDate").val(),
+                    chemotherapyPcpName: jq("#oncologistPcpName").val(),
+                    chemotherapyPcpEmail: jq("#oncologistPcpEmail").val(),
+                    chemotherapyPcpPhone: jq("#oncologistPcpPhone").val(),
+                    chemotherapyInstitutionName: jq("#chemotherapyInstitutionName").val(),
+                    chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
+                    chemotherapyInstitutionState: jq("#chemotherapyInstitutionState").val()
+                }, function () {
+                    // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
+                });
+                setTimeout(
+                    function () {
+                        location.reload();
+                    }, 2000);
+            }
         });
 
     var radiationStartdatePicker= jq( "#radiationStartDate" ).datepicker({
@@ -301,22 +334,53 @@ jq(document).ready(function(){
 
     $('#saveRadiationButton').click(
         function () {
-            var radiationTypesList='';
-            $('.radiationTypesInModal').each(function() {
-                if ( $(this).is(':checked')) {
+            var radiationTypesList = '';
+            $('.radiationTypesInModal').each(function () {
+                if ($(this).is(':checked')) {
                     // console.log($( this ).val().split('split')[0]);
-                    radiationTypesList=radiationTypesList+($( this ).val().split('split')[0])+"split";
+                    radiationTypesList = radiationTypesList + ($(this).val().split('split')[0]) + "split";
                 }
             });
             //console.log(surgeryTypeList);
-            console.log(jq("#radiologistInstitutionCity").val()+"-------------------"+ jq("#radiologistInstitutionName").val());
-            jq.get("radiationModal/saveRadiationForm.action", {encounterId: jq("#radiationEncounterHolder").val(), radiationTypes: radiationTypesList,radiationStartDate:jq("#radiationStartDate").val(),radiationEndDate:jq("#radiationEndDate").val(),radiationPcpName:jq("#radiologistPcpName").val(),radiationPcpEmail:jq("#radiologistPcpEmail").val(),radiationPcpPhone:jq("#radiologistPcpPhone").val(),radiationInstitutionName:jq("#radiologistInstitutionName").val(),radiationInstitutionCity:jq("#radiologistInstitutionCity").val(),radiationInstitutionState:jq("#radiologistInstitutionState").val()}, function(){
+            if (jq("#radiationEncounterHolder").val() == null || jq("#radiationEncounterHolder").val() == '') {
+            jq.get("radiationModal/saveNewRadiationForm.action", {
+                radiationTypes: radiationTypesList,
+                radiationStartDate: jq("#radiationStartDate").val(),
+                radiationEndDate: jq("#radiationEndDate").val(),
+                radiationPcpName: jq("#radiologistPcpName").val(),
+                radiationPcpEmail: jq("#radiologistPcpEmail").val(),
+                radiationPcpPhone: jq("#radiologistPcpPhone").val(),
+                radiationInstitutionName: jq("#radiologistInstitutionName").val(),
+                radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
+                radiationInstitutionState: jq("#radiologistInstitutionState").val()
+            }, function () {
                 // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
             });
             setTimeout(
-                function()
-                {
+                function () {
                     location.reload();
                 }, 2000);
+        }
+        else
+    {
+        jq.get("radiationModal/saveRadiationForm.action", {
+            encounterId: jq("#radiationEncounterHolder").val(),
+            radiationTypes: radiationTypesList,
+            radiationStartDate: jq("#radiationStartDate").val(),
+            radiationEndDate: jq("#radiationEndDate").val(),
+            radiationPcpName: jq("#radiologistPcpName").val(),
+            radiationPcpEmail: jq("#radiologistPcpEmail").val(),
+            radiationPcpPhone: jq("#radiologistPcpPhone").val(),
+            radiationInstitutionName: jq("#radiologistInstitutionName").val(),
+            radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
+            radiationInstitutionState: jq("#radiologistInstitutionState").val()
+        }, function () {
+            // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
+        });
+        setTimeout(
+            function () {
+                location.reload();
+            }, 2000);
+    }
         });
 });
