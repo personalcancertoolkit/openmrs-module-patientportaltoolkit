@@ -13,8 +13,8 @@
 
 <style>
 #portal {
-    width: 100%;
-    height: 800px;
+    width: 70%;
+    height: 100%;
     border: none;
 }
 </style>
