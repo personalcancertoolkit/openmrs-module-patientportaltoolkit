@@ -45,10 +45,10 @@
         <ul class="nav navbar-nav">
             <li id="patientPortalNavHome"><a href="home.page">Home</a></li>
             <li id="patientPortalNavCommunity"><a href="communities.page">Community</a></li>
-            <li id="patientPortalNavSymptoms"><a href="#">Symptom
-            Management</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">s
+            <li id="patientPortalJournals"><a href="journals.page">Journals</a></li>
+            <li id="patientPortalConnections"><a href="patientconnections.page">Connections</a></li>
+            </ul>
+        <ul class="nav navbar-nav navbar-right">
             <li><a href="messages.page"><span class="glyphicon glyphicon-envelope"></span></a></li>
             <li><a href="/openmrs/logout">Logout <span
                     class="glyphicon glyphicon-log-out"></span></a></li>
