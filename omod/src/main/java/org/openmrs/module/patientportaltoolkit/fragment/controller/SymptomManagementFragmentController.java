@@ -30,7 +30,7 @@ public class SymptomManagementFragmentController {
         // using GET, everything is in the request
         url += "&username=" + username;
         url += "&password=" + password;
-        url += "&omrs_user=" + user.getUsername();
+        url += "&omrs_user=" + user.getUuid();
         model.addAttribute("SymptomManagementPortalUrl",url);
     }
 }
