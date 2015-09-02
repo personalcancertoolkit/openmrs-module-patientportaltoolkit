@@ -6,7 +6,7 @@
             <div class="panel-body">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object" src="/openmrs/images/openmrs_logo_white.gif" alt="sample" width="30"
+                        <img class="media-object imagePlaceHolders" alt="sample" width="30"
                              height="30"/>
                     </a>
                 </div>
@@ -28,7 +28,7 @@
                         <div>
                             <div class="media-left">
                                 <a href="#">
-                                    <img class="media-object" src="/openmrs/images/openmrs_logo_white.gif" alt="sfs"
+                                    <img class="media-object imagePlaceHolders" alt="sfs"
                                          width="30" height="30"/>
                                 </a>
                             </div>
@@ -47,7 +47,7 @@
                         <div class="separator">
                             <div class="media-left">
                                 <a href="#">
-                                    <img class="media-object" src="/openmrs/images/openmrs_logo_white.gif" alt="alt" width="30" height="30" />
+                                    <img class="media-object imagePlaceHolders" alt="alt" width="30" height="30" />
                                 </a>
                             </div>
                             <div class="media-body" style="width: 100%">

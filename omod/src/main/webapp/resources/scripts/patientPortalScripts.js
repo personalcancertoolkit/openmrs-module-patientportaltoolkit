@@ -3,6 +3,8 @@
  */
 jq = jQuery;
 jq(document).ready(function(){
+    var OpenMRSInstance=window.location.href;
+    jq(".imagePlaceHolders").attr("src",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/images/openmrs_logo_white.gif");
     jq(".gen-history-date").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq(".gen-history-date").val())));
     $('.dateFormatter').each(function() {
         var dateFormat = $(this).text();
