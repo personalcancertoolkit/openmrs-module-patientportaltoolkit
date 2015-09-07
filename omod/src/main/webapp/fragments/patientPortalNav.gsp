@@ -44,7 +44,6 @@
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
             <li id="patientPortalNavHome"><a href="home.page">Home</a></li>
-            <li id="patientPortalNavCommunity"><a href="communities.page">Community</a></li>
             <li id="patientPortalJournals"><a href="journals.page">Journals</a></li>
             <li id="patientPortalConnections"><a href="patientconnections.page">Connections</a></li>
             </ul>
