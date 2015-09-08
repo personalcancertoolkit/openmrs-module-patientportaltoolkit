@@ -16,9 +16,15 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
                         <img class="media-object" alt="Picture" width="40" height="40" />
                     </a>
                 </div>
+
                 <div class="media-body">
+<% if (messages) { %>
+<% messages.each { message -> %>
+${(message.content)}
+<% } %>
+<% } %>
                     <h5 class="media-heading">
-                        <strong>subject</strong>
+                        <strong>inbox list item</strong>
                         <br />
                         <small><strong>userID</strong></small>
                         <br />

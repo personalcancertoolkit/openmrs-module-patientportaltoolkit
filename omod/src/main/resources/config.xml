@@ -71,6 +71,7 @@
 		SideEffect.hbm.xml
 		Guideline.hbm.xml
 		Reminder.hbm.xml
+		Message.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->
