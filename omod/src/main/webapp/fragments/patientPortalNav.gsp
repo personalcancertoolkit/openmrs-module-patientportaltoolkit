@@ -34,6 +34,9 @@
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-datepicker.js") }"></script>
 
+    <script type="text/javascript"
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/d3.min.js") }"></script>
+
 </head>
 <div class="navbar navbar-default container">
     <button type="button" class="navbar-toggle" data-toggle="collapse"

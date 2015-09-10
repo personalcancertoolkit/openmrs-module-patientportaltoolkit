@@ -11,7 +11,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
     <ul class="nav nav-pills">
     <li class="active"><a data-toggle="tab" href="#treatments">Treatments</a></li>
     <li><a data-toggle="tab" href="#sideEffects">Side Effects</a></li>
-    <li><a href="#">Follow up Care</a></li>
+    <li><a data-toggle="tab" href="#followUpCare">Follow up Care</a></li>
     <li><a data-toggle="tab" href="#community">Communities</a></li>
     <li><a data-toggle="tab" href="#symptomManagement">Symtom Management</a></li>
     </ul>
@@ -22,6 +22,9 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
         </div>
         <div id="sideEffects" class="tab-pane fade">
             ${ ui.includeFragment("patientportaltoolkit", "sideEffects") }
+        </div>
+        <div id="followUpCare" class="tab-pane fade">
+            ${ ui.includeFragment("patientportaltoolkit", "appointments") }
         </div>
         <div id="community" class="tab-pane fade">
             ${ ui.includeFragment("patientportaltoolkit", "community") }
