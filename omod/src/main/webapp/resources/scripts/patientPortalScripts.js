@@ -6,6 +6,7 @@ jq(document).ready(function(){
     var OpenMRSInstance=window.location.href;
     jq(".imagePlaceHolders").attr("src",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/images/openmrs_logo_white.gif");
     jq(".gen-history-date").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq(".gen-history-date").val())));
+    var patientRelations =
     $('.dateFormatter').each(function() {
         var dateFormat = $(this).text();
         if(dateFormat == null || dateFormat==''){
@@ -385,6 +386,7 @@ jq(document).ready(function(){
             }, 2000);
     }
         });
+    //------------------- Messages Page JS ----------------------
 
     $('#newMessageComposeDiv').hide();
     $('#showDetailedList').hide();
@@ -403,16 +405,41 @@ jq(document).ready(function(){
             $('.detailedMessageList').hide();
             $('#mediaList'+this.id).show();
         });
+    //------------------- Messages Page JS Ends ----------------------
 
-    $( "#sendingto" ).autocomplete({
-        source: "messages/returnRelationships.action",
-        minLength: 2,
-        select: function( event, ui ) {
-            log( ui.item ?
-            "Selected: " + ui.item.value + " aka " + ui.item.id :
-            "Nothing selected, input was " + this.value );
-        }
+    //------------------- compose message JS ----------------------
+   var listOfRelationsData=[];
+    $.when(  $.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/getallrelations",
+        function(data, status) {
+
+            $.each(data, function(k, v) {
+                //display the key
+                var relationitem = {id:data[k]["id"], value:data[k]["relatedPerson"]["GivenName"]+data[k]["relatedPerson"]["FamilyName"]};
+                listOfRelationsData.push(relationitem);
+                console.log(relationitem);
+            });
+        }) ).then(function() {
+        console.log(listOfRelationsData);
+        $( "#sendingto" ).autocomplete({
+            source: listOfRelationsData,
+            minLength: 3,
+            select: function(event, ui) {
+                //alert(ui.item.toString());
+                event.preventDefault();
+
+                $("#sendingto").val(ui.item.value);
+                $("#sendingPersonUUID").val(ui.item.id);
+            },
+            focus: function(event, ui) {
+                event.preventDefault();
+                $("#sendingto").val(ui.item.value);
+            }
+        });
     });
+    //------------------- compose message JS ENDS ----------------------
+
+    //------------------- Follow up care JS ----------------------
+
     var data=[
         {"CEA Tests":
             [
@@ -775,6 +802,7 @@ jq(document).ready(function(){
 
     });
 
+    //------------------- Follow up care JS ENDS ----------------------
 
 
 });

@@ -19,6 +19,8 @@
 <script type="text/javascript"
 	src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap.min.js") }"></script>
 
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
 <link rel="stylesheet"
 	href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap.min.css") }"
 	type="text/css">

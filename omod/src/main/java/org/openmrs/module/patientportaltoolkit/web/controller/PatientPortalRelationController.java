@@ -38,4 +38,13 @@ public class PatientPortalRelationController {
         List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations());
         return relations;
     }
+
+    @RequestMapping( value = "/patientportaltoolkit/getrelations/{searchText}")
+    @ResponseBody
+    public Object getPatientPortalRelationsForSearchText(@PathVariable( "searchText" ) String searchText)
+            throws Exception
+    {
+        List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations());
+        return relations;
+    }
 }

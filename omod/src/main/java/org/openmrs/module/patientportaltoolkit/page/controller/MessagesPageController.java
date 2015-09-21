@@ -24,17 +24,4 @@ public class MessagesPageController {
         else
             model.addAttribute("messages",null);
     }
-
-    public Object returnRelationships( @RequestParam(value = "searchQuery", required = true) String searchQuery){
-        Patient patient = null;
-        List<String> returnnames=new ArrayList<>();
-        patient= Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
-        if (patient !=null) {
-            List<PatientPortalRelation> pptrelations = Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPatient(patient);
-        for( PatientPortalRelation pptr: pptrelations){
-            returnnames.add(pptr.getRelatedPersonName());
-        }
-        }
-        return returnnames;
-    }
 }
