@@ -6,16 +6,13 @@ jq(document).ready(function(){
     var OpenMRSInstance=window.location.href;
     jq(".imagePlaceHolders").attr("src",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/images/openmrs_logo_white.gif");
     jq(".gen-history-date").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq(".gen-history-date").val())));
-    var patientRelations =
     $('.dateFormatter').each(function() {
         var dateFormat = $(this).text();
         if(dateFormat == null || dateFormat==''){
             $(this).html(null);
         }
-        //console.log(dateFormat);
         else {
             var dateFormat = $.datepicker.formatDate('mm/dd/yy', new Date(dateFormat));
-            //alert(dateFormat);
             $(this).html(dateFormat);
         }
     });
@@ -23,9 +20,6 @@ jq(document).ready(function(){
         var str=$(this).text().toString();
         var newStr=str[0].toUpperCase()+str.slice(1).toLowerCase();
         $(this).text(newStr);
-        //console.log("----"+newStr+"----");
-       // var res = str.replace(/blue/g, "red");
-       // document.getElementById("demo").innerHTML = res;
     });
     jq(function() {
         jq('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -67,13 +61,6 @@ jq(document).ready(function(){
                 location.reload();
             });
         });
-    //jq("#searchPersonsInput").keydown(
-    //    function () {
-    //        if(jq("#searchPersonsInput").val().length>2)
-    //        jq.get("searchPersons/getPersonsFromSearch.action", {searchQuery:  jq("#searchPersonsInput").val()}, function(data){
-    //            alert(data);
-    //        });
-    //    });
 
     jq("#addrelationshipbutton").click(
         function () {
@@ -98,9 +85,6 @@ jq(document).ready(function(){
         function () {
             location.reload();
         });
-    //$('#edit-genHistory-modal').on('hidden.bs.modal', function () {
-    //    location.reload();
-    //})
     $('#saveGeneralHistorybutton').click(
         function () {
             jq.get("genHistoryModal/saveGenHistoryForm.action", {encounterId: jq("#genHistEncounterHolder").val(), cancerType:  jq("#genHistoryCancerTypeSelect").val(),cancerStage:  jq("#genHistoryCancerStageSelect").val(),cancerDate:jq("#genHistoryDate").val(),cancerAbnormalityBool:jq("#genHistoryCancerabnormalitySelect").val(),cancerAbnormalityType:jq("#genHistoryCancerabnormalityTypeSelect").val(),genHistoryCancerPcpName:jq("#genHistoryCancerPcpName").val(),genHistoryCancerPcpEmail:jq("#genHistoryCancerPcpEmail").val(),genHistoryCancerPcpPhone:jq("#genHistoryCancerPcpPhone").val()}, function(){
@@ -119,7 +103,6 @@ jq(document).ready(function(){
             $("#surgeryEncounterHolder").val(encounterID);
             var surgeryTypeList=[];
             $('.'+encounterID+'surgeryType').each(function() {
-               // console.log(($( this ).attr('id').split('surgeryType')[1]));
                 surgeryTypeList.push(($( this ).attr('id').split('surgeryType')[1]));
             });
             $('.surgeryTypesInModal').each(function() {
@@ -151,8 +134,7 @@ jq(document).ready(function(){
             var surgeryTypeList = '';
             $('.surgeryTypesInModal').each(function () {
                 if ($(this).is(':checked')) {
-                    // console.log($( this ).val().split('split')[0]);
-                    surgeryTypeList = surgeryTypeList + ($(this).val().split('split')[0]) + "split";
+                     surgeryTypeList = surgeryTypeList + ($(this).val().split('split')[0]) + "split";
                 }
             });
             if (jq("#surgeryEncounterHolder").val() == null || jq("#surgeryEncounterHolder").val() == '') {
@@ -168,15 +150,13 @@ jq(document).ready(function(){
                 surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
                 surgeryInstitutionState: jq("#surgeryInstitutionState").val()
             }, function () {
-                // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
-            });
+               });
             setTimeout(
                 function () {
                     location.reload();
                 }, 2000);
         }
-            //console.log(surgeryTypeList);
-            else {
+             else {
         jq.get("surgeriesModal/saveSurgeryForm.action", {
             encounterId: jq("#surgeryEncounterHolder").val(),
             surgeryTypes: surgeryTypeList,
@@ -190,8 +170,7 @@ jq(document).ready(function(){
             surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
             surgeryInstitutionState: jq("#surgeryInstitutionState").val()
         }, function () {
-            // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
-        });
+             });
         setTimeout(
             function () {
                 location.reload();
@@ -230,10 +209,8 @@ jq(document).ready(function(){
             else{
                 $('#centralLineBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             }
-           // console.log($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyStartDate').text()))+"");
             $('#chemoStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyStartDate').text())));
             $('#chemoEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyEndDate').text())));
-            // console.log($('#'+encounterID+'surgeryPCPName').text());
             $("#oncologistPcpName").val($('#'+encounterID+'chemotherapyPCPName').text());
             $("#oncologistPcpEmail").val($('#'+encounterID+'chemotherapyPCPEmail').text());
             $("#oncologistPcpPhone").val($('#'+encounterID+'chemotherapyPCPPhone').text());
@@ -248,7 +225,6 @@ jq(document).ready(function(){
             var chemotherapyMedTypesList='';
             $('.chemotherapyMedTypesInModal').each(function() {
                 if ( $(this).is(':checked')) {
-                    // console.log($( this ).val().split('split')[0]);
                     chemotherapyMedTypesList=chemotherapyMedTypesList+($( this ).val().split('split')[0])+"split";
                 }
             });
@@ -265,15 +241,13 @@ jq(document).ready(function(){
                     chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
                     chemotherapyInstitutionState: jq("#chemotherapyInstitutionState").val()
                 }, function () {
-                    // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
-                });
+                  });
                 setTimeout(
                     function () {
                         location.reload();
                     }, 2000);
             }
-            //console.log(surgeryTypeList);
-            else {
+             else {
                 jq.get("chemotherapyModal/saveChemotherapyForm.action", {
                     encounterId: jq("#chemotherapyEncounterHolder").val(),
                     chemotherapyMeds: chemotherapyMedTypesList,
@@ -287,7 +261,6 @@ jq(document).ready(function(){
                     chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
                     chemotherapyInstitutionState: jq("#chemotherapyInstitutionState").val()
                 }, function () {
-                    // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
                 });
                 setTimeout(
                     function () {
@@ -313,7 +286,6 @@ jq(document).ready(function(){
             $("#radiationEncounterHolder").val(encounterID);
             var radiationTypesList=[];
             $('.'+encounterID+'radiationType').each(function() {
-                // console.log(($( this ).attr('id').split('surgeryType')[1]));
                 radiationTypesList.push(($( this ).attr('id').split('radiationType')[1]));
             });
             $('.radiationTypesInModal').each(function() {
@@ -321,11 +293,9 @@ jq(document).ready(function(){
                     $(this).prop('checked', true);
                 }
             });
-            // console.log($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyStartDate').text()))+"");
             $('#radiationStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radStartDate').text())));
             if($('#'+encounterID+'radEndDate').text())
             $('#radiationEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radEndDate').text())));
-            // console.log($('#'+encounterID+'surgeryPCPName').text());
             $("#radiologistPcpName").val($('#'+encounterID+'radPCPName').text());
             $("#radiologistPcpEmail").val($('#'+encounterID+'radPCPEmail').text());
             $("#radiologistPcpPhone").val($('#'+encounterID+'radPCPPhone').text());
@@ -340,12 +310,10 @@ jq(document).ready(function(){
             var radiationTypesList = '';
             $('.radiationTypesInModal').each(function () {
                 if ($(this).is(':checked')) {
-                    // console.log($( this ).val().split('split')[0]);
                     radiationTypesList = radiationTypesList + ($(this).val().split('split')[0]) + "split";
                 }
             });
-            //console.log(surgeryTypeList);
-            if (jq("#radiationEncounterHolder").val() == null || jq("#radiationEncounterHolder").val() == '') {
+           if (jq("#radiationEncounterHolder").val() == null || jq("#radiationEncounterHolder").val() == '') {
             jq.get("radiationModal/saveNewRadiationForm.action", {
                 radiationTypes: radiationTypesList,
                 radiationStartDate: jq("#radiationStartDate").val(),
@@ -357,7 +325,6 @@ jq(document).ready(function(){
                 radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
                 radiationInstitutionState: jq("#radiologistInstitutionState").val()
             }, function () {
-                // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
             });
             setTimeout(
                 function () {
@@ -378,8 +345,7 @@ jq(document).ready(function(){
             radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
             radiationInstitutionState: jq("#radiologistInstitutionState").val()
         }, function () {
-            // jq.get("surgeriesModal/saveSurgeryForm.action", function(){
-        });
+             });
         setTimeout(
             function () {
                 location.reload();
@@ -399,6 +365,8 @@ jq(document).ready(function(){
         });
     $('.messagelistLink').click(
         function () {
+            $(".messagelistLink").css("background", "#FFFFFF");
+            $("#"+this.id).css("background", "#F8F8F8");
             $('#newMessageComposeDiv').hide();
             $('#showDetailedList').show();
            // console.log(this.id);
@@ -407,6 +375,24 @@ jq(document).ready(function(){
         });
     //------------------- Messages Page JS Ends ----------------------
 
+    //------------------- Reply message JS ----------------------
+    $('.sendReplyMessageButton').click(
+        function () {
+           var messageid=this.id.split("sendReplyMessageButton")[1];
+            jq.get("composeMessage/sendReplyMessage.action", {
+                personUuid: jq("#replypersonId"+messageid).val(),
+                subject: jq("#sendingReplyMessageSubject"+messageid).val(),
+                message: jq("#sendingReplyMessageText"+messageid).val(),
+                parentId: jq("#replythreadparentid"+messageid).val()
+            }, function () {
+            });
+            setTimeout(
+                function () {
+                    location.reload();
+                }, 2000);
+        });
+    //------------------- Reply message JS Ends ----------------------
+
     //------------------- compose message JS ----------------------
    var listOfRelationsData=[];
     $.when(  $.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/getallrelations",
@@ -414,7 +400,7 @@ jq(document).ready(function(){
 
             $.each(data, function(k, v) {
                 //display the key
-                var relationitem = {id:data[k]["id"], value:data[k]["relatedPerson"]["GivenName"]+data[k]["relatedPerson"]["FamilyName"]};
+                var relationitem = {id:data[k]["relatedPerson"]["id"], value:data[k]["relatedPerson"]["GivenName"]+data[k]["relatedPerson"]["FamilyName"]};
                 listOfRelationsData.push(relationitem);
                 console.log(relationitem);
             });
@@ -436,6 +422,21 @@ jq(document).ready(function(){
             }
         });
     });
+
+    $('#sendNewMessageButton').click(
+        function () {
+                jq.get("composeMessage/sendNewMessage.action", {
+                    personUuid: jq("#sendingPersonUUID").val(),
+                    subject: jq("#sendingNewMessageSubject").val(),
+                    message: jq("#sendingNewMessageText").val(),
+                }, function () {
+                });
+                setTimeout(
+                    function () {
+                        location.reload();
+                    }, 2000);
+        });
+
     //------------------- compose message JS ENDS ----------------------
 
     //------------------- Follow up care JS ----------------------

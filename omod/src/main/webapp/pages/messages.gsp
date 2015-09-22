@@ -12,7 +12,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
         <ul class="media-list">
 <% if (messages) { %>
 <% messages.each { message -> %>
-            <li class="media messagelistLink" id="${(message.uuid)}">
+            <li class="media messagelistLink" id="${(message.uuid)}" >
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object imagePlaceHolders" alt="Picture" width="40" height="40" />
@@ -21,7 +21,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 
                 <div class="media-body">
 
-
+                    <% if (!message.children) { %>
                     <h5 class="media-heading">
                         <strong>${(message.title)}</strong>
                         <br />
@@ -29,6 +29,21 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
                         <br />
                         <small>${(message.content)}</small>
                     </h5>
+                    <% }else if (message.children) { def counter1=0; def counter2=0; %>
+                    <% message.children.each { messageChild ->  counter1++%>
+                    <% } %>
+                    <% message.children.each { messageChild ->  counter2++%>
+                    <% if (counter1==counter2) { %>
+                    <h5 class="media-heading">
+                        <strong>${(messageChild.title)}</strong>
+                        <br />
+                        <small><strong>${(message.receiver.getPersonName())}</strong></small>
+                        <br />
+                        <small>${(messageChild.content)}</small>
+                    </h5>
+                    <% } %>
+                    <% } %>
+                    <% } %>
                 </div>
             </li>
 <% } %>
@@ -48,19 +63,32 @@ ${ ui.includeFragment("patientportaltoolkit", "composeMessage") }
             <h5 class="media-heading">
                 <strong>${(message.title)}</strong><small><strong>-${(message.sender.getPersonName())}</strong></small>
                 <br />
-                <small>${(message.content)}</small>
+                ${(message.content)}
             </h5>
             <% if (message.children) { %>
             <% message.children.each { messageChild -> %>
             <h5 class="media-heading">
                 <strong>${(messageChild.title)}</strong><small><strong>-${(messageChild.sender.getPersonName())}</strong></small>
                 <br />
-                <small>${(messageChild.content)}</small>
+                ${(messageChild.content)}
             </h5>
             <% } %>
             <% } %>
         </div>
-    </li>
+    <hr style= "marginTop: '8px'"/>
+    <div class="form-group">
+        <label htmlFor="sendingReplyMessageSubject${(message.getUuid())}">Reply</label>
+        <input id="sendingReplyMessageSubject${(message.getUuid())}" class="form-control" placeholder="subject" />
+    </div>
+    <textarea id="sendingReplyMessageText${(message.getUuid())}" class="form-control" placeholder="Write a Message"></textarea>
+    <br />
+    <div class="pull-right">
+        <div id="sendReplyMessageButton${(message.getUuid())}" class="btn btn-primary btn-sm sendReplyMessageButton">Reply</div>
+        <input type="hidden" id="replypersonId${(message.getUuid())}" value="${(message.receiver.getUuid())}" >
+        <input type="hidden" id="replythreadparentid${(message.getUuid())}" value="${(message.getId())}">
+
+    </div>
+</li>
 <% } %>
 <% } %>
 </ul>

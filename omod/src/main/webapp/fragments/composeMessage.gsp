@@ -6,15 +6,14 @@
                 <input id="sendingto" class="form-control" />
             </div>
             <div class="form-group">
-                <label htmlFor="subject">Subject</label>
-                <input id="subject" class="form-control" />
+                <input id="sendingNewMessageSubject" class="form-control" placeholder="Subject" />
             </div>
-            <textarea class="form-control" value="Write a Message"></textarea>
+            <textarea id="sendingNewMessageText" class="form-control" placeholder="Write a Message"></textarea>
 
 
             <br />
             <div class="pull-right">
-                <div class="btn btn-primary btn-sm">Send</div>
+                <div id="sendNewMessageButton" class="btn btn-primary btn-sm">Send</div>
                 <input type="hidden" id="sendingPersonUUID">
             </div>
         </form>

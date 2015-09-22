@@ -28,10 +28,11 @@ public class Message extends BaseOpenmrsObject {
     private Set<Message> children = new HashSet<Message>(0);
 
     public Message(String title, String content,Person sender,Person receiver) {
-        super();
         this.title = title;
         this.content = content;
         this.dateCreated = new Date();
+        this.sender=sender;
+        this.receiver=receiver;
     }
 
     /**
