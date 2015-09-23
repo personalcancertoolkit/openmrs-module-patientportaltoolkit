@@ -48,8 +48,8 @@
     </button>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-            <li id="patientPortalNavHome"><a href="home.page">Home</a></li>
-            <li id="patientPortalJournals"><a href="journals.page">Journals</a></li>
+            <li id="patientPortalJournals"><a href="journals.page">Home</a></li>
+            <li id="patientPortalNavHome"><a href="home.page">Profile</a></li>
             <li id="patientPortalConnections"><a href="patientconnections.page">Connections</a></li>
             </ul>
         <ul class="nav navbar-nav navbar-right">
