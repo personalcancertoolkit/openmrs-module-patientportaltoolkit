@@ -7,7 +7,9 @@
             <generator class="native" />
         </id>
         <property name="doctorName" type="java.lang.String" column="doctor_name"/>
+        <property name="responseType" type="java.lang.String" column="response_type"/>
         <property name="responseComments" type="java.lang.String" column="response_comments"/>
+        <property name="responseAttributes" type="java.lang.String" column="response_attributes"/>
         <many-to-one name="responseUser" class="org.openmrs.User" column="response_user" />
         <many-to-one name="patient" class="org.openmrs.Patient" column="patient_id" lazy="false" not-null="true"/>
         <many-to-one name="followProcedure" class="org.openmrs.Concept" column="followup_procedure" not-null="true"/>

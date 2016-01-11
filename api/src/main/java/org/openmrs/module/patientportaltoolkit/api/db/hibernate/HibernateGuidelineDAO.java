@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.openmrs.Concept;
 import org.openmrs.module.patientportaltoolkit.Guideline;
 import org.openmrs.module.patientportaltoolkit.api.db.GuidelineDAO;
 
@@ -37,5 +38,10 @@ public class HibernateGuidelineDAO implements GuidelineDAO {
     @Override
     public void saveGuideline(Guideline guideline) {
 
+    }
+    @Override
+    public  List<Guideline> getGuidelinesbyConditions(List<Concept> conditions) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(Guideline.class);
+        return c.list();
     }
 }
