@@ -442,7 +442,7 @@ jq(document).ready(function(){
 
     //------------------- Follow up care JS ----------------------
 
-    var data=[
+    var Bata=[
         {"CEA Tests":
             [
                 {
@@ -526,7 +526,7 @@ jq(document).ready(function(){
             margin = {top: 80, right: 50, bottom: 50, left: 150},
             margin2 = {top: 50, right: 50, bottom: 20, left: 150},
             width = 900 - margin.left - margin.right,
-            height = _.size(data) * margin.top - margin.top - margin.bottom,
+            height = _.size(Bata) * margin.top - margin.top - margin.bottom,
             height2 = 30,
             itemHeight = 15,
             itemPadding = 15;
@@ -575,7 +575,7 @@ jq(document).ready(function(){
 
         /*********** Data Transforms **************/
             // transform the dates into valid dates
-        data = _.map(data, function(d, i) {
+        Bata = _.map(Bata, function(d, i) {
             return {
                 name: _.keys(d)[0],
                 dates: _.map(_.values(d)[0], function(item, index) {
@@ -601,7 +601,7 @@ jq(document).ready(function(){
 
 
         // take all dates from all arrays and get the first and last values
-        var dateRange = _.sortBy(_.flatten(_.pluck(data, "dates")));
+        var dateRange = _.sortBy(_.flatten(_.pluck(Bata, "dates")));
         // get the oldest date and add subtract a month (we don't want it to be hanging off the edge of the chart)
         var oldestDate = _.first(dateRange);
         // get the most recent date and add one month
@@ -639,7 +639,7 @@ jq(document).ready(function(){
         // Context and Brush
         drawContext(dateRange);
         // item group
-        drawItems(data);
+        drawItems(Bata);
 
         function drawContext(data) {
             // small axis

@@ -21,6 +21,6 @@ public class ReminderController {
     public Object getAllRemindersforPatient(@PathVariable( "patientId" ) String patientId)
     {
         Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        return ToolkitResourceUtil.generateReminders(Context.getService(ReminderService.class).getAllRemindersByPatient(patient));
+        return ToolkitResourceUtil.generateReminders(Context.getService(ReminderService.class).getReminders(patient));
     }
 }

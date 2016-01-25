@@ -564,11 +564,12 @@ public class ToolkitResourceUtil {
 
 
         Map<String, Object> reminderMap = new HashMap<String, Object>();
-        reminderMap.put("id", reminder.getId());
-        reminderMap.put("patient",generatePerson(reminder.getPatient()));
-        reminderMap.put("followupProcedure",generateConcept(reminder.getFollowProcedure()));
-        reminderMap.put("followupProcedureName",reminder.getFollowProcedureName());
-        reminderMap.put("status",reminder.getStatus());
+       // reminderMap.put("id", reminder.getId());
+        //reminderMap.put("patient",generatePerson(reminder.getPatient()));
+        reminderMap.put("followProcedure",generateConcept(reminder.getFollowProcedure()));
+        reminderMap.put("followProcedureName",reminder.getFollowProcedureName());
+        reminderMap.put("targetData",reminder.getTargetDate());
+        //reminderMap.put("status",reminder.getStatus());
         return reminderMap;
     }
 }

@@ -1,7 +1,6 @@
 <div class="clearfix">
 
 
-
     <h4>Upcoming Appointments</h4>
     <div>
         <table class="table table-hover" id="due-appointments">
