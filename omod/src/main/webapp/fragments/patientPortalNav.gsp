@@ -53,7 +53,9 @@
             <li id="patientPortalConnections"><a href="patientconnections.page">Connections</a></li>
             </ul>
         <ul class="nav navbar-nav navbar-right">
+            <li><a href="userprofile.page"><span class="glyphicon glyphicon-user"></span></a></li>
             <li><a href="messages.page"><span class="glyphicon glyphicon-envelope"></span></a></li>
+            <li><a  href="feedbackform.page"><span class="glyphicon glyphicon-edit"></span></a></li>
             <li><a id="navigationLogout">Logout <span
                     class="glyphicon glyphicon-log-out"></span></a></li>
 
