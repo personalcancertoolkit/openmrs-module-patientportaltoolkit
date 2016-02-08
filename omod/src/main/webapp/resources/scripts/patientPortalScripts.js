@@ -806,5 +806,20 @@ jq(document).ready(function(){
 
     //------------------- Follow up care JS ENDS ----------------------
 
+    // JS for Feedback Form
+
+    $('#sendFeedback').click(
+        function () {
+            if(jq("#feedbacktextdata").val() != null || jq("#feedbacktextdata").val() != '') {
+                jq.get("feedback/sendFeedback.action", {
+                    feedbackMessage: jq("#feedbacktextdata").val()
+                }, function () {
+                });
+                setTimeout(
+                    function () {
+                        location.reload();
+                    }, 2000);
+            }
+        });
 
 });

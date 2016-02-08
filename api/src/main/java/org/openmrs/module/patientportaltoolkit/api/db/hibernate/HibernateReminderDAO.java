@@ -14,6 +14,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.Reminder;
 import org.openmrs.module.patientportaltoolkit.api.db.ReminderDAO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -60,22 +61,7 @@ public class HibernateReminderDAO implements ReminderDAO {
      */
     @Override
     public Reminder saveReminder(Reminder reminder) {
-        log.debug("Save reminder - reminder.getFollowProcedure()=" + reminder.getFollowProcedure() +
-                ", reminder.getFollowProcedureName() = " + reminder.getFollowProcedureName());
-
-        if(reminder.getFollowProcedureName() != null) {
-            reminder.setFollowProcedure(Context.getConceptService().getConceptByName(reminder.getFollowProcedureName()));
-            log.debug("New reminder.getFollowProcedure()=" + reminder.getFollowProcedure());
-        }
-
-        Session sess = sessionFactory.openSession();
-        Transaction tx = sess.beginTransaction();
-        sess.setFlushMode(FlushMode.COMMIT); // allow queries to return stale state
-        sess.saveOrUpdate(reminder);
-        tx.commit();
-        //sess.flush();
-        sess.close();
-        //sessionFactory.getCurrentSession().saveOrUpdate(token);
+        sessionFactory.getCurrentSession().saveOrUpdate(reminder);
         return reminder;
 
     }
@@ -127,7 +113,6 @@ public class HibernateReminderDAO implements ReminderDAO {
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(Reminder.class);
         crit.add(Restrictions.eq("patient", pat));
         crit.add(Restrictions.isNotNull("completeDate"));
-        crit.add(Restrictions.isNull("targetDate"));
         crit.addOrder(Order.asc("completeDate"));
         @SuppressWarnings("unchecked")
         List<Reminder> list = (List<Reminder>) crit.list();

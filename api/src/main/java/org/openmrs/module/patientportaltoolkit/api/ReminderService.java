@@ -19,10 +19,13 @@ public interface ReminderService extends OpenmrsService {
     @Transactional(readOnly = true)
     List<Reminder> getRemindersCompleted(Patient patient);
 
-    @Transactional(readOnly = true)
+    @Transactional
     public List<Reminder> getReminders(Patient pat);
 
     @Transactional(readOnly = true)
     public List<Reminder> getReminders(Patient pat, Date indexDate);
+
+    @Transactional
+    Reminder saveReminder(Reminder Reminder);
 
 }

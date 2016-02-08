@@ -28,4 +28,8 @@ public class PatientPortalToolkitConstants {
     public static final String GP_SYMPTOM_MANAGEMENT_PASSWORD = "patientportaltoolkit.symptommanagementPassword";
 
     public static final String GP_SYMPTOM_MANAGEMENT_URL = "patientportaltoolkit.symptommanagementURL";
+
+    public static final String GP_CONTACT_US_EMAIL = "patientportaltoolkit.contactUsEmail";
+
+    public static final String GP_CONTACT_US_FROM_EMAIL = "patientportaltoolkit.contactUsFromEmail";
 }

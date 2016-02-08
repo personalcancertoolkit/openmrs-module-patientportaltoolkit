@@ -12,6 +12,7 @@ import org.openmrs.module.patientportaltoolkit.Reminder;
 import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
 import org.openmrs.module.patientportaltoolkit.api.db.ReminderDAO;
+import org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernateReminderDAO;
 
 import java.text.ParseException;
 import java.util.*;
@@ -54,6 +55,10 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
      */
     public void setDao(ReminderDAO dao) {
         this.dao = dao;
+    }
+    @Override
+    public Reminder saveReminder(Reminder Reminder){
+        return dao.saveReminder(Reminder);
     }
 
     @Override
@@ -317,6 +322,25 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
             }
         }
 
+        boolean saveFlag;
+        Context.flushSession();
+        //dao= new HibernateReminderDAO();
+        List<Reminder> savedReminders = new ArrayList<>();
+        savedReminders= getAllRemindersByPatient(pat);
+        for(Reminder rem: reminders){
+            saveFlag=true;
+            for(Reminder rem2: savedReminders){
+                if (rem.getFollowProcedure().equals(rem2.getFollowProcedure()) && rem.getTargetDate().equals(rem2.getTargetDate())){
+                    saveFlag=false;
+                    break;
+                }
+            }
+            if(saveFlag){
+                //update cancer_patient_reminder table
+                saveReminder(rem);
+            }
+        }
+
         return reminders;
     }
 
@@ -440,13 +464,11 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
                     reminder.setPatient(pat);
                     reminder.setFollowProcedure(guideline.getFollowupProcedure());
                     reminder.setTargetDate(dt);
-                    //update cancer_patient_reminder table
-                    //reminderDao.saveLafReminder(reminder);
                     reminders.add(reminder);
                 }
             }
         } else {
-            log.error("Guideline is not found for cancer type:" + type + " and cancer stage: "+ stage);
+            log.error("Guideline is not found for cancer type:" + type + " and cancer stage: " + stage);
         }
 
         //add follow-up care recommended by patient's personal provider
@@ -456,7 +478,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         }
 
         //sort guidelines by target date
-        Collections.sort(reminders, Reminder.getDateComparator());
+        Collections.sort(dao.getAllRemindersByPatient(pat), Reminder.getDateComparator());
         return reminders;
     }
 
@@ -607,7 +629,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
 
         Date ssDate = null;
         String ssType = null;
-        if(reminder != null) {
+        if(reminder != null && reminder.getResponseAttributes()!=null) {
             String[] splits = reminder.getResponseAttributes().split("=");
             if(splits.length >=2) {
                 ssType = splits[0];
@@ -635,7 +657,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
 
         Date ssDate = null;
         String ssType = null;
-        if(reminder != null) {
+        if(reminder != null && reminder.getResponseAttributes()!=null) {
             String[] splits = reminder.getResponseAttributes().split("=");
             if(splits.length >=2) {
                 ssType = splits[0];
