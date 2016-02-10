@@ -12,7 +12,7 @@
             </tr>
             </thead>
             <tbody>
-            <% reminders.each { reminder -> %>
+            <% alertablereminders.each { reminder -> %>
             <% def date = new Date() %>
             <% if (reminder.targetDate < date-90 || reminder.targetDate > date+90) {%>
             <% }else { %>
@@ -22,7 +22,7 @@
                     <span class="pull-left"> ${(reminder.targetDate)}</span>
                 </td>
                 <td width="50%" class="clearfix">
-                    <button class="btn btn-primary btn-sm ">Mark Completed</button>
+                    <button id="markCompletedReminder${(reminder.id)}" class="btn btn-primary btn-sm markCompletedReminder">Mark Completed</button>
                     <button class="btn btn-primary btn-sm ">Mark Scheduled</button>
                     <button class="btn btn-primary btn-sm ">Snooze</button>
 

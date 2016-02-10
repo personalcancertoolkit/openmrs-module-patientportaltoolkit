@@ -72,6 +72,18 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     }
 
     @Override
+    public Reminder markCompletedReminder(Reminder reminder) {
+        Date today = new Date();
+        reminder.setCompleteDate(today);
+        return dao.saveReminder(reminder);
+    }
+
+    @Override
+    public Reminder getRemindersById(String Id) {
+       return dao.getReminder(Integer.parseInt(Id));
+    }
+
+    @Override
     public List<Reminder> getAllRemindersByPatient(Patient patient) {
         return dao.getAllRemindersByPatient(patient);
     }
@@ -341,7 +353,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
             }
         }
 
-        return reminders;
+        return getAllRemindersByPatient(pat);
     }
 
 

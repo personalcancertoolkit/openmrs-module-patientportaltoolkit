@@ -14,16 +14,22 @@ import java.util.List;
 public interface ReminderService extends OpenmrsService {
 
     @Transactional(readOnly = true)
+    Reminder getRemindersById(String Id);
+
+    @Transactional(readOnly = true)
     List<Reminder> getAllRemindersByPatient(Patient patient);
 
     @Transactional(readOnly = true)
     List<Reminder> getRemindersCompleted(Patient patient);
 
     @Transactional
-    public List<Reminder> getReminders(Patient pat);
+    List<Reminder> getReminders(Patient pat);
 
     @Transactional(readOnly = true)
-    public List<Reminder> getReminders(Patient pat, Date indexDate);
+    List<Reminder> getReminders(Patient pat, Date indexDate);
+
+    @Transactional
+    Reminder markCompletedReminder(Reminder reminder);
 
     @Transactional
     Reminder saveReminder(Reminder Reminder);

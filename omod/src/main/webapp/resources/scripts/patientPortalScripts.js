@@ -442,6 +442,23 @@ jq(document).ready(function(){
 
     //------------------- Follow up care JS ----------------------
 
+    //JS for the Button Events
+
+    $('.markCompletedReminder').click(
+        function () {
+            var reminderID=this.id.split("markCompletedReminder")[1];
+           // alert(this.id);
+            jq.get("appointments/markCompleted.action", {
+                reminderId: reminderID,
+            }, function () {
+            });
+            setTimeout(
+                function () {
+                    location.reload();
+                }, 2000);
+        });
+    //JS for the Button Events END
+    // JS for The Tool
     var Bata=[
         {"CEA Tests":
             [
