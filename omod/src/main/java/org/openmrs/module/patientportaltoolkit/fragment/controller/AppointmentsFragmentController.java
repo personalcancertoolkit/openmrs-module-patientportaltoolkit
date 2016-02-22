@@ -14,8 +14,13 @@ import org.openmrs.notification.MessageService;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by maurya on 10/29/15.
@@ -40,9 +45,17 @@ public class AppointmentsFragmentController {
     }
 
 
-    public void markCompleted(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId) {
+    public void markCompleted(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markCompletedDate", required = true) String markCompletedDate, @RequestParam(value = "doctorName", required = true) String doctorName, @RequestParam(value = "comments", required = true) String comments) {
 
-            Context.getService(ReminderService.class).markCompletedReminder(Context.getService(ReminderService.class).getRemindersById(reminderId));
+        //System.out.println("121212121212"+markCompletedDate);
+        DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        Date date = new Date();
+        try {
+            date = format.parse(markCompletedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Context.getService(ReminderService.class).markCompletedReminder(reminderId,date,doctorName,comments);
 
     }
 

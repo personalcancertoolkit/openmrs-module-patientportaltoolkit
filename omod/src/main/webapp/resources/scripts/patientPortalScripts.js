@@ -7,6 +7,16 @@ jq(document).ready(function(){
     jq("#navigationLogout").attr("href",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/logout");
     jq(".imagePlaceHolders").attr("src",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/images/openmrs_logo_white.gif");
     jq(".gen-history-date").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq(".gen-history-date").val())));
+    var nowTemp = new Date();
+    var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+    var markCompletedDatePicker= jq( "#markCompletedDate" ).datepicker({
+        onRender: function(date) {
+            return date.valueOf() > now.valueOf() ? 'disabled' : '';
+        },
+        format: 'mm/dd/yyyy'
+    }).on('changeDate', function() {
+        markCompletedDatePicker.hide();
+    }).data('datepicker');
     $('.dateFormatter').each(function() {
         var dateFormat = $(this).text();
         if(dateFormat == null || dateFormat==''){
@@ -444,7 +454,7 @@ jq(document).ready(function(){
 
     //JS for the Button Events
 
-    $('.markCompletedReminder').click(
+  /*  $('.markCompletedReminder').click(
         function () {
             var reminderID=this.id.split("markCompletedReminder")[1];
            // alert(this.id);
@@ -456,6 +466,38 @@ jq(document).ready(function(){
                 function () {
                     location.reload();
                 }, 2000);
+        });*/
+
+    $('.markCompletedReminder').click(
+        function () {
+            var reminderID=this.id.split("markCompletedReminder")[1];
+            $('#markCompletedIdHolder').val(reminderID);
+          /*  $("#radiationEncounterHolder").val(encounterID);
+            var radiationTypesList=[];
+            $('.'+encounterID+'radiationType').each(function() {
+                radiationTypesList.push(($( this ).attr('id').split('radiationType')[1]));
+            });
+            $('.radiationTypesInModal').each(function() {
+                if ( $.inArray(($( this ).val()).split('split')[1], radiationTypesList)>-1) {
+                    $(this).prop('checked', true);
+                }
+            });
+            $('#radiationStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radStartDate').text())));
+            if($('#'+encounterID+'radEndDate').text())
+                $('#radiationEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radEndDate').text())));
+            $("#radiologistPcpName").val($('#'+encounterID+'radPCPName').text());
+            $("#radiologistPcpEmail").val($('#'+encounterID+'radPCPEmail').text());
+            $("#radiologistPcpPhone").val($('#'+encounterID+'radPCPPhone').text());
+
+            $("#radiologistInstitutionName").val($('#'+encounterID+'radinstituteName').text());
+            $("#radiologistInstitutionCity").val($('#'+encounterID+'radCity').text());
+            $("#radiologistInstitutionState").val($('#'+encounterID+'radState').text());*/
+        });
+    $('#saveMarkCompletedButton').click(
+        function () {
+            jq.get("appointments/markCompleted.action", {reminderId: jq("#markCompletedIdHolder").val(), markCompletedDate: jq("#markCompletedDate").val(), doctorName:  jq("#markCompletedDoctor").val(),comments:  jq("#markCompletedComments").val()}, function(){
+            });
+            location.reload();
         });
     //JS for the Button Events END
     // JS for The Tool

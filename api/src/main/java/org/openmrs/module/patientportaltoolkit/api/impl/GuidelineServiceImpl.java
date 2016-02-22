@@ -85,7 +85,7 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
         for (Guideline guidlineIterator: allguidelines){
             if(guidlineIterator.getConditionsSet().equals(conditionConcepts))
                 guidelines.add(guidlineIterator);
-            System.out.print(guidlineIterator.getFollowupProcedure().getConceptId());
+           // System.out.print(guidlineIterator.getFollowupProcedure().getConceptId());
         }
         return guidelines;
     }
