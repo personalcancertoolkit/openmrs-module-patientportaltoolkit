@@ -7,6 +7,7 @@ jq(document).ready(function(){
     jq("#navigationLogout").attr("href",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/logout");
     jq(".imagePlaceHolders").attr("src",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/images/openmrs_logo_white.gif");
     jq(".gen-history-date").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq(".gen-history-date").val())));
+    jq("#userprofileDOB").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq("#userprofileDOB").val())));
     var nowTemp = new Date();
     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
     var markCompletedDatePicker= jq( "#markCompletedDate" ).datepicker({
@@ -17,6 +18,15 @@ jq(document).ready(function(){
     }).on('changeDate', function() {
         markCompletedDatePicker.hide();
     }).data('datepicker');
+    var userprofileDOBDatePicker= jq( "#userprofileDOB" ).datepicker({
+        onRender: function(date) {
+            return date.valueOf() > now.valueOf() ? 'disabled' : '';
+        },
+        format: 'mm/dd/yyyy'
+    }).on('changeDate', function() {
+        userprofileDOBDatePicker.hide();
+    }).data('datepicker');
+
     $('.dateFormatter').each(function() {
         var dateFormat = $(this).text();
         if(dateFormat == null || dateFormat==''){
@@ -386,6 +396,21 @@ jq(document).ready(function(){
         });
     //------------------- Messages Page JS Ends ----------------------
 
+    $('#saveuserprofile').click(
+        function () {
+                jq.get("profileEdit/saveProfileEditForm.action", {
+                    personId: jq("#personIdHolder").val(),
+                    givenName: jq("#userprofileGivenName").val(),
+                    familyName: jq("#userprofileFamilyName").val(),
+                    gender: jq("#userprofileGenderSelect").val(),
+                    birthDate: jq("#userprofileDOB").val(),
+                }, function () {
+                });
+                setTimeout(
+                    function () {
+                        location.reload();
+                    }, 4000);
+        });
     //------------------- Reply message JS ----------------------
     $('.sendReplyMessageButton').click(
         function () {
