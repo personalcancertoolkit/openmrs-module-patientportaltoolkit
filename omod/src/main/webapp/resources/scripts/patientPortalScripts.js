@@ -18,6 +18,14 @@ jq(document).ready(function(){
     }).on('changeDate', function() {
         markCompletedDatePicker.hide();
     }).data('datepicker');
+    var markScheduledDatePicker= jq( "#markScheduledDate" ).datepicker({
+        onRender: function(date) {
+            return date.valueOf() < now.valueOf() ? 'disabled' : '';
+        },
+        format: 'mm/dd/yyyy'
+    }).on('changeDate', function() {
+        markScheduledDatePicker.hide();
+    }).data('datepicker');
     var userprofileDOBDatePicker= jq( "#userprofileDOB" ).datepicker({
         onRender: function(date) {
             return date.valueOf() > now.valueOf() ? 'disabled' : '';
@@ -497,30 +505,22 @@ jq(document).ready(function(){
         function () {
             var reminderID=this.id.split("markCompletedReminder")[1];
             $('#markCompletedIdHolder').val(reminderID);
-          /*  $("#radiationEncounterHolder").val(encounterID);
-            var radiationTypesList=[];
-            $('.'+encounterID+'radiationType').each(function() {
-                radiationTypesList.push(($( this ).attr('id').split('radiationType')[1]));
-            });
-            $('.radiationTypesInModal').each(function() {
-                if ( $.inArray(($( this ).val()).split('split')[1], radiationTypesList)>-1) {
-                    $(this).prop('checked', true);
-                }
-            });
-            $('#radiationStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radStartDate').text())));
-            if($('#'+encounterID+'radEndDate').text())
-                $('#radiationEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radEndDate').text())));
-            $("#radiologistPcpName").val($('#'+encounterID+'radPCPName').text());
-            $("#radiologistPcpEmail").val($('#'+encounterID+'radPCPEmail').text());
-            $("#radiologistPcpPhone").val($('#'+encounterID+'radPCPPhone').text());
-
-            $("#radiologistInstitutionName").val($('#'+encounterID+'radinstituteName').text());
-            $("#radiologistInstitutionCity").val($('#'+encounterID+'radCity').text());
-            $("#radiologistInstitutionState").val($('#'+encounterID+'radState').text());*/
         });
     $('#saveMarkCompletedButton').click(
         function () {
             jq.get("appointments/markCompleted.action", {reminderId: jq("#markCompletedIdHolder").val(), markCompletedDate: jq("#markCompletedDate").val(), doctorName:  jq("#markCompletedDoctor").val(),comments:  jq("#markCompletedComments").val()}, function(){
+            });
+            location.reload();
+        });
+
+    $('.markScheduledReminder').click(
+        function () {
+            var reminderID=this.id.split("markScheduledReminder")[1];
+            $('#markScheduledIdHolder').val(reminderID);
+        });
+    $('#saveMarkScheduledButton').click(
+        function () {
+            jq.get("appointments/markScheduled.action", {reminderId: jq("#markScheduledIdHolder").val(), markScheduledDate: jq("#markScheduledDate").val()}, function(){
             });
             location.reload();
         });

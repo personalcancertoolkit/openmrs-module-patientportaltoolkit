@@ -2,6 +2,7 @@
 
 
     ${ ui.includeFragment("patientportaltoolkit", "markCompletedModal") }
+    ${ ui.includeFragment("patientportaltoolkit", "markScheduledModal") }
     <h4>Upcoming Appointments</h4>
     <div>
         <table class="table table-hover" id="due-appointments">
@@ -17,6 +18,8 @@
             <% def date = new Date() %>
             <% if (reminder.targetDate < date-90 || reminder.targetDate > date+90) {%>
             <% }else { %>
+            <% if (reminder.status == 2 && reminder.responseDate > date) {%>
+            <% }else { %>
             <tr class="datarow">
                 <td width="30%">  ${(reminder.followProcedureName)}</td>
                 <td width="30%" class="clearfix">
@@ -24,9 +27,10 @@
                 </td>
                 <td width="40%" class="clearfix">
                     <a id="markCompletedReminder${(reminder.id)}" class="btn btn-primary btn-sm markCompletedReminder" data-toggle="modal" data-target="#markCompleted-modal">Mark Completed</a>
-                    <button class="btn btn-primary btn-sm ">Mark Scheduled</button>
+                    <a id="markScheduledReminder${(reminder.id)}" class="btn btn-primary btn-sm markScheduledReminder"  data-toggle="modal" data-target="#markScheduled-modal">Mark Scheduled</a>
                 </td>
             </tr>
+            <% } %>
             <% } %>
             <% } %>
             </tbody>

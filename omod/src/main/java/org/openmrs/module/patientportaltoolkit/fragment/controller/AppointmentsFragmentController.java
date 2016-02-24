@@ -55,7 +55,21 @@ public class AppointmentsFragmentController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Context.getService(ReminderService.class).markCompletedReminder(reminderId,date,doctorName,comments);
+        Context.getService(ReminderService.class).markCompletedReminder(reminderId, date, doctorName, comments);
+
+    }
+
+    public void markScheduled(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markScheduledDate", required = true) String markScheduledDate) {
+
+        //System.out.println("121212121212"+markCompletedDate);
+        DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        Date date = new Date();
+        try {
+            date = format.parse(markScheduledDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Context.getService(ReminderService.class).markScheduledReminder(reminderId,date);
 
     }
 

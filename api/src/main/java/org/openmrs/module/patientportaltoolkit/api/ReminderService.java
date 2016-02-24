@@ -34,4 +34,7 @@ public interface ReminderService extends OpenmrsService {
     @Transactional
     Reminder markCompletedReminder(String reminderID,Date markCompleteDate,String doctorsName, String comments);
 
+    @Transactional
+    Reminder markScheduledReminder(String reminderId, Date date);
+
 }
