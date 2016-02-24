@@ -70,6 +70,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     public Reminder markCompletedReminder(Reminder reminder) {
         Date today = new Date();
         reminder.setCompleteDate(today);
+        reminder.setStatus(1);
         return dao.saveReminder(reminder);
     }
 
@@ -127,14 +128,10 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         //mark snoozed or scheduled reminders
         for(int ii = 0; ii< reminders.size(); ii++) {
             Reminder reminder = reminders.get(ii);
-            Date scheduleDate = this.findSnoozeOrScheduleDate(pat, reminder.getFollowProcedure(), reminder.getTargetDate(), "scheduleDate");
-            Date snoozeDate = this.findSnoozeOrScheduleDate(pat, reminder.getFollowProcedure(), reminder.getTargetDate(), "snoozeDate");
+            Date scheduleDate = this.findScheduleDate(pat, reminder.getFollowProcedure(), reminder.getTargetDate());
             if(scheduleDate!=null) {
-                reminder.setFlag(Reminder.FLAG_SCHEDULED);
+                reminder.setStatus(2);
                 reminder.setResponseDate(scheduleDate);
-            } else if(snoozeDate!=null) {
-                reminder.setFlag(Reminder.FLAG_SNOOZED);
-                reminder.setResponseDate(snoozeDate);
             }
         }
 
@@ -166,23 +163,23 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
                 for(Reminder reminderCompl : remindersCompleted) {
                     if(reminderCompl.getFollowProcedure().equals(reminder.getFollowProcedure())) {
                         if(reminderCompl.getCompleteDate().equals(reminder.getTargetDate())) {
-                            reminder.setFlag(Reminder.FLAG_COMPLETED);
+                            reminder.setStatus(1);
                             reminder.setResponseDate(reminderCompl.getCompleteDate());
                             break;
                         } else if(previousReminder==null && reminderCompl.getCompleteDate().before(reminder.getTargetDate())) {
-                            reminder.setFlag(Reminder.FLAG_COMPLETED);
+                            reminder.setStatus(1);
                             reminder.setResponseDate(reminderCompl.getCompleteDate());
                             break;
                         } else if(nextReminder==null && reminderCompl.getCompleteDate().after(reminder.getTargetDate())) {
-                            reminder.setFlag(Reminder.FLAG_COMPLETED);
+                            reminder.setStatus(1);
                             reminder.setResponseDate(reminderCompl.getCompleteDate());
                             break;
                         } else if(previousReminder!=null && reminderCompl.getCompleteDate().before(reminder.getTargetDate()) && reminderCompl.getCompleteDate().after(findMidDate(previousReminder.getTargetDate(), reminder.getTargetDate()))) {
-                            reminder.setFlag(Reminder.FLAG_COMPLETED);
+                            reminder.setStatus(1);
                             reminder.setResponseDate(reminderCompl.getCompleteDate());
                             break;
                         } else if(nextReminder!=null && reminderCompl.getCompleteDate().after(reminder.getTargetDate())&& reminderCompl.getCompleteDate().before(findMidDate(reminder.getTargetDate(), nextReminder.getTargetDate()))) {
-                            reminder.setFlag(Reminder.FLAG_COMPLETED);
+                            reminder.setStatus(1);
                             reminder.setResponseDate(reminderCompl.getCompleteDate());
                             break;
                         }
@@ -194,15 +191,13 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         //mark skipped reminders
         for(int ii = 0; ii< reminders.size(); ii++) {
             Reminder reminder = reminders.get(ii);
-            if(reminder.getTargetDate().before(today) && reminder.getFlag() == null) {
-                reminder.setFlag(Reminder.FLAG_SKIPPED);
+            if(reminder.getTargetDate().before(today) && (reminder.getStatus() != 1 || reminder.getStatus()!=2)) {
+                reminder.setStatus(-1);
             }
         }
 
         boolean saveFlag;
-        Context.flushSession();
-        //dao= new HibernateReminderDAO();
-        List<Reminder> savedReminders = new ArrayList<>();
+        List<Reminder> savedReminders;
         savedReminders= getAllRemindersByPatient(pat);
         for(Reminder rem: reminders){
             saveFlag=true;
@@ -325,7 +320,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     }
 
 
-        /**
+    /**
          * Auto generated method comment
          *
          * @param refDate1
@@ -391,53 +386,14 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         return cal.getTime();
     }
 
-    /**
-     * Auto generated method comment
-     * @param careType
-     * @param pat
-     *
-     * @param targetDate
-     * @return
-     */
-    private Date findAlertDate(Patient pat, Concept careType, Date targetDate) {
-        // TODO Auto-generated method stub
-        if(targetDate==null) return null;
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(targetDate);
-        cal.add(Calendar.DATE, -ALERT_DAYS);
-
-        log.debug("alertDate=" + cal.getTime() + " based on offset of " + ALERT_DAYS + "days");
-
-        return cal.getTime();
-    }
-
-    private Date findSnoozeOrScheduleDate(Patient patient, Concept careType, Date targetDate, String type) {
+    private Date findScheduleDate(Patient patient, Concept careType, Date targetDate) {
         Reminder reminder = this.dao.getReminder(patient, careType, targetDate);
 
-        Date ssDate = null;
-        String ssType = null;
-        if(reminder != null && reminder.getResponseAttributes()!=null) {
-            String[] splits = reminder.getResponseAttributes().split("=");
-            if(splits.length >=2) {
-                ssType = splits[0];
-                if(type.equals(ssType)) {
-                    try {
-                        ssDate = Context.getDateFormat().parse(splits[1]);
-                    } catch (ParseException e) {
-                        log.error("Bad date format: ssType=" + ssType + ", ssDate=" + ssDate);
-                    }
-                    log.debug("This reminder is snoozed or scheduled: ssType=" + ssType + ", ssDate=" + ssDate);
-                }
-            }
+        Date returnDate = null;
+        if(reminder != null && reminder.getStatus()==2) {
+            returnDate=reminder.getResponseDate();
         }
-
-        //void this date if it is older than today's date
-        if(ssDate!=null && ssDate.before(new Date())) {
-            ssDate = null;
-        }
-
-        return ssDate;
+        return returnDate;
     }
 
     /**
