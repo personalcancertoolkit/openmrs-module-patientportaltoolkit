@@ -191,7 +191,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         //mark skipped reminders
         for(int ii = 0; ii< reminders.size(); ii++) {
             Reminder reminder = reminders.get(ii);
-            if(reminder.getTargetDate().before(today) && (reminder.getStatus() != 1 || reminder.getStatus()!=2)) {
+            if(reminder.getTargetDate().before(today) && String.valueOf(reminder.getStatus()) == "null" ) {
                 reminder.setStatus(-1);
             }
         }
@@ -388,9 +388,9 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
 
     private Date findScheduleDate(Patient patient, Concept careType, Date targetDate) {
         Reminder reminder = this.dao.getReminder(patient, careType, targetDate);
-
         Date returnDate = null;
-        if(reminder != null && reminder.getStatus()==2) {
+        if(reminder != null && String.valueOf(reminder.getStatus()) != "null" ) {
+            if(reminder.getStatus() == 2)
             returnDate=reminder.getResponseDate();
         }
         return returnDate;

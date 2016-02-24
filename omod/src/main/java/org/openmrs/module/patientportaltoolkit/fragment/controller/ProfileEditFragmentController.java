@@ -57,7 +57,6 @@ public class ProfileEditFragmentController {
         if (gender != null)
             person.setGender(gender);
         Context.getPersonService().savePerson(person);
-        Context.refreshAuthenticatedUser();
     }
 
 }
