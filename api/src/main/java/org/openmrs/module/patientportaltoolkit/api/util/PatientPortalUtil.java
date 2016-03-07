@@ -1,5 +1,7 @@
 package org.openmrs.module.patientportaltoolkit.api.util;
 
+import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -9,7 +11,7 @@ import java.util.Date;
 public class PatientPortalUtil {
 
     public String formatDate(Date date){
-        return new SimpleDateFormat("MM/dd/yy").format(date);
+        return new SimpleDateFormat(PatientPortalToolkitConstants.DATE_FORMAT_MONTHDATEYEAR).format(date);
     }
 
     public String formatDateWithSpecifiedFormat(Date date,String dateFormat){
