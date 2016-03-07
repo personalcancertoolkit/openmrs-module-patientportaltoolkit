@@ -18,7 +18,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                 &ensp;
                     <span class="reformatText">${(genhistory.cancerStage)}</span>
                 </label>
-                <span>&emsp;<small class="dateFormatter">${(genhistory.diagnosisDate)}</small></span>
+                <span>&emsp;<small >${pptutil.formatDate((genhistory.diagnosisDate))}</small></span>
             </div>
             <% if (genhistory.hasGeneticOrPredisposingAbnormality) { %>
             <div>
@@ -55,7 +55,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
             </div>
             <div class="clearfix">
                 <div class="pull-left">
-                    <h5><label><% surgery.surgeryTypes.each { surgeryType -> %> <span class="${(surgery.encounterUuid)}surgeryType reformatText" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</span>; <% } %></label> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate"  class="dateFormatter">${(surgery.surgeryDate)}</small></h5>
+                    <h5><label><% surgery.surgeryTypes.each { surgeryType -> %> <span class="${(surgery.encounterUuid)}surgeryType reformatText" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</span>; <% } %></label> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate"  >${pptutil.formatDate((surgery.surgeryDate))}</small></h5>
                     <% if (surgery.hasMajorComplications) { %>
                     <div>
                         <label>Major Complications&emsp;</label>
@@ -104,7 +104,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                 <div class="clearfix">
                     <div class="pull-left">
                         <h5> <label> <% chemotherapy.chemoMedications.each { chemotherapymed -> %> <span class="${(chemotherapy.encounterUuid)}chemotherapymed reformatText" id="${(chemotherapy.encounterUuid)}chemotherapymed${(chemotherapymed)}">${(chemotherapymed)}</span>; <% } %></label>
-                            <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;<span id="${(chemotherapy.encounterUuid)}chemotherapyStartDate" class="dateFormatter">${(chemotherapy.chemoStartDate)}</span><% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash;<span id="${(chemotherapy.encounterUuid)}chemotherapyEndDate" class="dateFormatter"> ${(chemotherapy.chemoEndDate)}</span><% } %></small>
+                            <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;<span id="${(chemotherapy.encounterUuid)}chemotherapyStartDate">${pptutil.formatDate((chemotherapy.chemoStartDate))}</span><% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash;<span id="${(chemotherapy.encounterUuid)}chemotherapyEndDate" > ${pptutil.formatDate((chemotherapy.chemoEndDate))}</span><% } %></small>
                         </h5>
                         <div class="">
                             <label>Central Line</label> &ndash; <span><small id="${(chemotherapy.encounterUuid)}centralLine"><% if (chemotherapy.centralLine) { %>Yes<% } else{ %>No<% } %></small></span>
@@ -152,7 +152,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
                 <div class="clearfix">
                     <div class="pull-left">
                         <h5>  <label> <% radiation.radiationTypes.each { radiationType -> %> <span class="${(radiation.encounterUuid)}radiationType reformatText" id="${(radiation.encounterUuid)}radiationType${(radiationType)}">${(radiationType)}</span>; <% } %></label>
-                            <small> <% if (radiation.startDate) { %>&emsp;<span id="${(radiation.encounterUuid)}radStartDate" class="dateFormatter">${(radiation.startDate)}</span><% } %>  <% if (radiation.endDate) { %>&ndash; <span id="${(radiation.encounterUuid)}radEndDate" class="dateFormatter">${(radiation.endDate)}</span><% } %></small>
+                            <small> <% if (radiation.startDate) { %>&emsp;<span id="${(radiation.encounterUuid)}radStartDate">${pptutil.formatDate((radiation.startDate))}</span><% } %>  <% if (radiation.endDate) { %>&ndash; <span id="${(radiation.encounterUuid)}radEndDate">${pptutil.formatDate((radiation.endDate))}</span><% } %></small>
                         </h5>
                         <div class="">
                             <label>Radiation Location&emsp;</label>

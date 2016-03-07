@@ -23,7 +23,7 @@
             <tr class="datarow">
                 <td width="30%">  ${(reminder.followProcedureName)}</td>
                 <td width="30%" class="clearfix">
-                    <span class="pull-left"> ${(reminder.targetDate)}</span>
+                    <span class="pull-left"> ${pptutil.formatDate((reminder.targetDate))}</span>
                 </td>
                 <td width="40%" class="clearfix">
                     <a id="markCompletedReminder${(reminder.id)}" class="btn btn-primary btn-sm markCompletedReminder" data-toggle="modal" data-target="#markCompleted-modal">Mark Completed</a>

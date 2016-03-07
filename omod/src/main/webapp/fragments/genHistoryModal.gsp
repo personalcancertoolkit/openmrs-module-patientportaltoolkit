@@ -45,7 +45,7 @@
                 <% /* cancer Date*/ %>
                 <% if (obs.concept.uuid=="654e32f0-8b57-4d1f-845e-500922e800f6") { %>
                 <form class="form-inline" role="form"> <label class="reformatText">${(obs.concept.getName())}  </label>
-                    <input class="form-control gen-history-date" id="genHistoryDate" type="text" value="${(obs.getValueDatetime())}"/>
+                    <input class="form-control gen-history-date" id="genHistoryDate" type="text" value="${pptutil.formatDate((obs.getValueDatetime()))}"/>
                 </form>
                 <% } %>
                 <% } %>

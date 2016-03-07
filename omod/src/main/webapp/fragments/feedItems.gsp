@@ -13,7 +13,7 @@
 
                 <div class="media-body">
                     <h5 class="media-heading">${(journal.creator.getGivenName())}  - ${(journal.title)} <small>&emsp;
-                            ${ ui.formatDatetimePretty(journal.dateCreated)}</small></h5>
+                            ${ pptutil.formatDate(journal.dateCreated)}</small></h5>
 
                     <p>${(journal.content)}</p>
                 </div>
@@ -35,7 +35,7 @@
 
                             <div class="media-body">
                                 <h5 class="media-heading">${(it.creator.getGivenName())}  - ${
-                                        (it.title)} <small>&emsp; ${ ui.formatDatetimePretty(it.dateCreated) }</small></h5>
+                                        (it.title)} <small>&emsp; ${ pptutil.formatDate(it.dateCreated) }</small></h5>
 
                                 <p>${(it.content)}</p>
                             </div>

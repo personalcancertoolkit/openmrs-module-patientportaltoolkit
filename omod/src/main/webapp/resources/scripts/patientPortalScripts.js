@@ -6,8 +6,6 @@ jq(document).ready(function(){
     var OpenMRSInstance=window.location.href;
     jq("#navigationLogout").attr("href",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/logout");
     jq(".imagePlaceHolders").attr("src",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/images/openmrs_logo_white.gif");
-    jq(".gen-history-date").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq(".gen-history-date").val())));
-    jq("#userprofileDOB").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq("#userprofileDOB").val())));
     var nowTemp = new Date();
     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
     var markCompletedDatePicker= jq( "#markCompletedDate" ).datepicker({
@@ -35,16 +33,6 @@ jq(document).ready(function(){
         userprofileDOBDatePicker.hide();
     }).data('datepicker');
 
-    $('.dateFormatter').each(function() {
-        var dateFormat = $(this).text();
-        if(dateFormat == null || dateFormat==''){
-            $(this).html(null);
-        }
-        else {
-            var dateFormat = $.datepicker.formatDate('mm/dd/yy', new Date(dateFormat));
-            $(this).html(dateFormat);
-        }
-    });
     jq(".reformatText").each(function() {
         var str=$(this).text().toString();
         var newStr=str[0].toUpperCase()+str.slice(1).toLowerCase();

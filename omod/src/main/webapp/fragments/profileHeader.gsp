@@ -16,7 +16,7 @@ ${ ui.includeFragment("patientportaltoolkit", "profileEdit") }
                         <% if (person.age > 0) { %>
                         ${ui.message("coreapps.ageYears", person.age)}
                         <% } %>
-                        (<% if (person.birthdateEstimated) { %>~<% } %>${ ui.formatDatePretty(person.birthdate) })
+                        (<% if (person.birthdateEstimated) { %>~<% } %>${pptutil.formatDate(person.birthdate)})
                         <% } else { %>
                         ${ui.message("coreapps.unknownAge")}
                         <% } %>
