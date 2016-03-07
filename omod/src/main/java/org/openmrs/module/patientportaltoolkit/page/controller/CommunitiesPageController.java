@@ -1,5 +1,6 @@
 package org.openmrs.module.patientportaltoolkit.page.controller;
 
+import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.util.PatientPortalUtil;
 import org.openmrs.ui.framework.page.PageModel;
 
@@ -9,6 +10,7 @@ import org.openmrs.ui.framework.page.PageModel;
 public class CommunitiesPageController {
     public void controller(PageModel model) {
 
+        model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
         model.addAttribute("pptutil",new PatientPortalUtil());
 
     }
