@@ -51,7 +51,7 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     @Override
     public List<PatientPortalRelation> getAllPatientPortalRelation() {
         final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
-        crit.addOrder(Order.asc("patient"));
+        crit.addOrder(Order.asc("person"));
         this.log.debug("HibernatePatientPortalRelationDAO:getAllPatientPortalRelation->" + " | token count=" + crit.list().size());
         return crit.list();
     }
@@ -79,6 +79,20 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPerson->" + person + " | token count=" + list.size());
         if (list.size() >= 1) {
             return list;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<PatientPortalRelation> getPatientPortalRelationByRelatedPerson(Person person) {
+        final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
+        crit.add(Restrictions.eq("relatedPerson", person));
+        crit.addOrder(Order.desc("dateCreated"));
+        final List<PatientPortalRelation> pptlist = crit.list();
+        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPerson->" + person + " | token count=" + pptlist.size());
+        if (pptlist.size() >= 1) {
+            return pptlist;
         } else {
             return null;
         }

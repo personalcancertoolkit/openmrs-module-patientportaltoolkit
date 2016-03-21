@@ -64,7 +64,14 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
     @Override
     public List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person,Boolean includeRetired) {
 
-        List<PatientPortalRelation> patientPortalRelations = dao.getPatientPortalRelationByPerson(person);
+        List<PatientPortalRelation> patientPortalRelations = new ArrayList<PatientPortalRelation>();
+        if(dao.getPatientPortalRelationByPerson(person)!=null)
+        patientPortalRelations.addAll(dao.getPatientPortalRelationByPerson(person));
+        List<PatientPortalRelation> patientPortalRelationsByRelatedPerson = new ArrayList<PatientPortalRelation>();
+        if(dao.getPatientPortalRelationByRelatedPerson(person)!=null)
+        patientPortalRelationsByRelatedPerson.addAll(dao.getPatientPortalRelationByRelatedPerson(person));
+        if(patientPortalRelationsByRelatedPerson!=null && !patientPortalRelationsByRelatedPerson.isEmpty())
+        patientPortalRelations.addAll(patientPortalRelationsByRelatedPerson);
         if(includeRetired)
             return patientPortalRelations;
         else

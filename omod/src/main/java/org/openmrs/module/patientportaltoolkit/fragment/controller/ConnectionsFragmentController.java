@@ -18,12 +18,8 @@ import java.util.List;
 public class ConnectionsFragmentController {
 
     public void controller(PageModel model) {
-        Patient patient = null;
-        patient= Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
-        if (patient !=null)
-            model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(patient));
-        else
-            model.addAttribute("relationships",null);
+        model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(Context.getAuthenticatedUser().getPerson()));
         model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
+        model.addAttribute("user",Context.getAuthenticatedUser());
     }
 }

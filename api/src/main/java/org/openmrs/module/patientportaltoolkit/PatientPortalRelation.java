@@ -45,8 +45,8 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
         this.startDate = new Date();
     }
 
-    public PatientPortalRelation(Patient patient, Person person, String shareType) {
-        this(patient,person);
+    public PatientPortalRelation(Person person, Person relatedPersonperson, String shareType) {
+        this(person,relatedPersonperson);
         this.shareType=shareType;
     }
     @Override
@@ -78,8 +78,8 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      *
      * @param patient a Patient
      */
-    public void setPerson(final Patient patient) {
-        this.person = patient;
+    public void setPerson(final Person person) {
+        this.person = person;
     }
 
     /**
