@@ -335,7 +335,7 @@ public class ToolkitResourceUtil {
 
         Map<String, Object> relatedPersonMap = generatePerson(patientPortalRelation.getRelatedPerson());
         Map<String, Object> creatorPersonMap = generatePerson(patientPortalRelation.getCreator().getPerson());
-        Map<String, Object> patientPersonMap = generatePerson(patientPortalRelation.getPatient());
+        Map<String, Object> patientPersonMap = generatePerson(patientPortalRelation.getPerson());
 
         Map<String, Object> patientRelationMap = new HashMap<String, Object>();
         patientRelationMap.put("id", patientPortalRelation.getUuid());

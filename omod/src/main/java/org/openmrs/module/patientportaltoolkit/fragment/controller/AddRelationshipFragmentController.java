@@ -77,7 +77,7 @@ public class AddRelationshipFragmentController {
         String passworduuid = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
         User savedUser=Context.getUserService().saveUser(newUser,"Tester123");
         System.out.println("\nsystemout---password is " + "Test123" + passworduuid);
-        PatientPortalRelation ppr=new PatientPortalRelation(Context.getPatientService().getPatientByUuid(user.getPerson().getUuid()),person);
+        PatientPortalRelation ppr=new PatientPortalRelation(user.getPerson(),person);
         ppr.setRelatedPersonEmail(personEmail);
         ppr.setRelationType(personRelationType);
         Calendar date = Calendar.getInstance();

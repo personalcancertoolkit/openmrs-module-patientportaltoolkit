@@ -15,7 +15,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     /** Unique identifying id */
     private Integer id;
 
-    private Patient patient;
+    private Person person;
 
     private Person relatedPerson;
 
@@ -38,10 +38,10 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     private static final String STATUS_NOT_ACCEPTED_YET="Not yet";
 
 
-    public PatientPortalRelation(Patient patient, Person person) {
+    public PatientPortalRelation(Person person, Person relatedPerson) {
         super();
-        this.patient = patient;
-        this.relatedPerson = person;
+        this.person = person;
+        this.relatedPerson = relatedPerson;
         this.startDate = new Date();
     }
 
@@ -69,8 +69,8 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      *
      * @return a Patient
      */
-    public Patient getPatient() {
-        return this.patient;
+    public Person getPerson() {
+        return this.person;
     }
 
     /**
@@ -78,8 +78,8 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      *
      * @param patient a Patient
      */
-    public void setPatient(final Patient patient) {
-        this.patient = patient;
+    public void setPerson(final Patient patient) {
+        this.person = patient;
     }
 
     /**
