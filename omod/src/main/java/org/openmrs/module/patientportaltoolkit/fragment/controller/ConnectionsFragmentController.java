@@ -4,6 +4,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
+import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,5 +24,6 @@ public class ConnectionsFragmentController {
             model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPatient(patient));
         else
             model.addAttribute("relationships",null);
+        model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
     }
 }

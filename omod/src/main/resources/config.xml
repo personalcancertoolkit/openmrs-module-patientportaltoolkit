@@ -83,6 +83,7 @@
 		Guideline.hbm.xml
 		Reminder.hbm.xml
 		Message.hbm.xml
+		SecurityLayer.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->

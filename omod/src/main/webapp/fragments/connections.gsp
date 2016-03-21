@@ -31,9 +31,9 @@
                             </div>
                             <div class="form-group">
                                 <select class="form-control">
-                                    <option selected>All Connections</option>
-                                    <option>Personal Connections</option>
-                                    <option>Physician Connections</option>
+                                    <% securityLayers.each { securityLayer -> %>
+                                    <option value="${securityLayer.getUuid()} ">${securityLayer.getDescription()} </option>
+                                    <% } %>
                                 </select>
                             </div>
                             </form>
