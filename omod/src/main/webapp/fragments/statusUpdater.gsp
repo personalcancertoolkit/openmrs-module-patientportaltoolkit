@@ -8,12 +8,6 @@
             </div>
             <div class="panel-footer clearfix">
                 <div class="pull-right">
-                    <span>Share with&ensp;</span>
-                    <select>
-                        <option selected>All Connections</option>
-                        <option>Personal Connections</option>
-                        <option>Physician Connections</option>
-                    </select>
                     <button id="statusUpdaterButton" class="btn btn-primary btn-sm" >Post</button>
                 </div>
             </div>
