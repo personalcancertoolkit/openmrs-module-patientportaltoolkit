@@ -24,7 +24,10 @@
                     </div>
 
                     <div class="media-body">
-                        <h4 class="media-heading">${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) } </h4>
+                        <h4 class="media-heading">${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }
+                            <div class="pull-right">
+                                <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-chemotherapies-modal"></a>
+                            </div></h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
                                 ${ ui.includeFragment("patientportaltoolkit", "relationshipSelect",[selectedRelationShip: (relationship.relationType)]) }
@@ -32,11 +35,11 @@
                             <div class="form-group">
                                 <select class="form-control">
                                     <% securityLayers.each { securityLayer -> %>
-                                    <option value="${securityLayer.getUuid()} ">${securityLayer.getDescription()} </option>
+                                    <option  value="${securityLayer.getUuid()}"  <% if (relationship.getShareType() == securityLayer.getUuid()) { %>selected<% } %>>${securityLayer.getDescription()} </option>
                                     <% } %>
                                 </select>
                             </div>
-                            </form>
+                        </form>
 
                     </div>
                 </div>
