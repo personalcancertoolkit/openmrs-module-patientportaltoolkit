@@ -1,5 +1,6 @@
 package org.openmrs.module.patientportaltoolkit.api.impl;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.User;
@@ -36,7 +37,7 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
 
     @Override
     public List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient) {
-        return getPatientPortalRelationByPatient(patient,false);
+        return getPatientPortalRelationByPatient(patient, false);
     }
 
     @Override
@@ -57,7 +58,24 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
 
     @Override
     public List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person) {
-        return null;
+        return getPatientPortalRelationByPerson(person,false);
+    }
+
+    @Override
+    public List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person,Boolean includeRetired) {
+
+        List<PatientPortalRelation> patientPortalRelations = dao.getPatientPortalRelationByPerson(person);
+        if(includeRetired)
+            return patientPortalRelations;
+        else
+        {
+            List<PatientPortalRelation> patientPortalNotRetiredRelations = new ArrayList<PatientPortalRelation>();
+            for(PatientPortalRelation ppr: patientPortalRelations){
+                if (!ppr.getRetired())
+                    patientPortalNotRetiredRelations.add(ppr);
+            }
+            return patientPortalNotRetiredRelations;
+        }
     }
 
     @Override

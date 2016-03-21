@@ -21,7 +21,7 @@ public class ConnectionsFragmentController {
         Patient patient = null;
         patient= Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
         if (patient !=null)
-            model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPatient(patient));
+            model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(patient));
         else
             model.addAttribute("relationships",null);
         model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
