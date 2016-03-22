@@ -8,6 +8,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Person;
+import org.openmrs.User;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
 import org.openmrs.module.patientportaltoolkit.api.db.JournalEntryDAO;
 
@@ -61,7 +62,7 @@ public class HibernateJournalEntryDAO implements JournalEntryDAO {
     /**
      *
      */
-    public List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc) {
+    public List<JournalEntry> getJournalEntryForPerson(User user, Boolean orderByDateDesc) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(JournalEntry.class);
         if(orderByDateDesc != null){
             if(orderByDateDesc){
@@ -70,7 +71,7 @@ public class HibernateJournalEntryDAO implements JournalEntryDAO {
                 c.addOrder(Order.asc("dateCreated"));
             }
         }
-        c.add(Restrictions.eq("creator",p));
+        c.add(Restrictions.eq("creator",user));
         c.add(Restrictions.eq("deleted", false));
         return c.list();
     }

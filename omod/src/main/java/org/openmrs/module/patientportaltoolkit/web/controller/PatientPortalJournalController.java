@@ -29,7 +29,7 @@ public class PatientPortalJournalController {
             throws Exception
     {
         Person person=Context.getPersonService().getPersonByUuid(patientId);
-        List<Object> entries = (List<Object>) ToolkitResourceUtil.generateJournals(Context.getService(JournalEntryService.class).getJournalEntryForPerson(person, true));
+        List<Object> entries = (List<Object>) ToolkitResourceUtil.generateJournals(Context.getService(JournalEntryService.class).getJournalEntryForPerson(Context.getUserService().getUsersByPerson(person,false).get(0), true));
         return entries;
 
     }
@@ -52,7 +52,7 @@ public class PatientPortalJournalController {
     {
         JournalEntryService journalEntryService = Context.getService(JournalEntryService.class);
         JournalEntry journalEntry=ToolkitResourceUtil.transformJournal(journalObject);
-        journalEntry.setCreator(Context.getAuthenticatedUser().getPerson());
+        journalEntry.setCreator(Context.getAuthenticatedUser());
         journalEntryService.saveJournalEntry(journalEntry);
     }
 }

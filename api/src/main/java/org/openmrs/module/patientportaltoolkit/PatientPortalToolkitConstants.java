@@ -34,4 +34,10 @@ public class PatientPortalToolkitConstants {
     public static final String GP_CONTACT_US_FROM_EMAIL = "patientportaltoolkit.contactUsFromEmail";
 
     public static final String DATE_FORMAT_MONTHDATEYEAR ="MM/dd/yy";
+
+    public static final String CAN_SEE_POSTS ="canseeposts";
+
+    public static final String CAN_SEE_MEDICAL ="canseemedical";
+
+    public static final String CAN_SEE_BOTH ="canseeboth";
 }

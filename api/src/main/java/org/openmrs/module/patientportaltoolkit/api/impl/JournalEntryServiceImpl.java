@@ -3,11 +3,16 @@ package org.openmrs.module.patientportaltoolkit.api.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
+import org.openmrs.User;
 import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
+import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.JournalEntryService;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
+import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.db.JournalEntryDAO;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 
@@ -65,7 +70,7 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
      *
      */
     public void saveJournalEntry(JournalEntry entry) throws APIException {
-        entry.setCreator(Context.getAuthenticatedUser().getPerson());
+        entry.setCreator(Context.getAuthenticatedUser());
         Date date = new Date();
         entry.setDateCreated(date);
         dao.saveJournalEntry(entry);
@@ -74,8 +79,27 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
     /**
      *
      */
-    public List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc ) {
-        List<JournalEntry> totalJournalList= dao.getJournalEntryForPerson(p, orderByDateDesc);
+    public List<JournalEntry> getJournalEntryForPerson(User user, Boolean orderByDateDesc ) {
+        List<JournalEntry> totalJournalList = new ArrayList<JournalEntry>();
+        if(dao.getJournalEntryForPerson(user, orderByDateDesc)!=null)
+        totalJournalList.addAll(dao.getJournalEntryForPerson(user, orderByDateDesc));
+        List<PatientPortalRelation>  pprlist= Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(user.getPerson());
+        for (PatientPortalRelation ppr: pprlist){
+           if(ppr.getShareType().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) ||  ppr.getShareType().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)){
+               if(ppr.getPerson().equals(user.getPerson()))
+               totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getRelatedPerson(),false).get(0), orderByDateDesc)) ;
+               if(ppr.getRelatedPerson().equals(user.getPerson()))
+                   totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getPerson(),false).get(0), orderByDateDesc)) ;
+           }
+        }
+
+        Collections.sort(totalJournalList, new Comparator<JournalEntry>() {
+            public int compare(JournalEntry j1, JournalEntry j2) {
+                return j2.getDateCreated().compareTo(j1.getDateCreated());
+            }
+        });
+
+
         List<JournalEntry> returnJournalList = new ArrayList<JournalEntry>();
         for(JournalEntry je: totalJournalList){
             if(je.getParentEntryId() ==null)

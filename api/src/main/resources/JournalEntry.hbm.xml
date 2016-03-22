@@ -11,7 +11,7 @@
 
         <property name="title" type="java.lang.String"/>
         <property name="content" type="text"/>
-        <many-to-one name="creator" class="org.openmrs.Person" lazy="false" not-null="true"/>
+        <many-to-one name="creator" class="org.openmrs.User" lazy="false" not-null="true"/>
         <property name="dateCreated" column="date_created" type="java.util.Date" length="19"/>
         <property name="deleted" type="boolean" length="1"/>
         <property name="dateDeleted" column="date_deleted" type="java.util.Date" length="19"/>

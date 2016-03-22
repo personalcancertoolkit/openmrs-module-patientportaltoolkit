@@ -11,11 +11,6 @@ import org.openmrs.ui.framework.page.PageModel;
 public class FeedItemsFragmentController {
 
     public void controller(PageModel model) {
-        Patient patient = null;
-        patient= Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
-        if (patient !=null)
-            model.addAttribute("journals", Context.getService(JournalEntryService.class).getJournalEntryForPerson(patient,true));
-        else
-            model.addAttribute("journals",null);
+            model.addAttribute("journals", Context.getService(JournalEntryService.class).getJournalEntryForPerson(Context.getAuthenticatedUser(),true));
     }
 }

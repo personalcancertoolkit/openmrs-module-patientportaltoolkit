@@ -2,6 +2,7 @@ package org.openmrs.module.patientportaltoolkit;
 
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.Person;
+import org.openmrs.User;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public class JournalEntry extends BaseOpenmrsObject {
 
     private String title;
     private String content;
-    private Person creator;
+    private User creator;
     private Date dateCreated;
     private boolean deleted;
     private Date dateDeleted;
@@ -92,14 +93,14 @@ public class JournalEntry extends BaseOpenmrsObject {
     /**
      * @param creator the creator to set
      */
-    public void setCreator(Person creator) {
+    public void setCreator(User creator) {
         this.creator = creator;
     }
 
     /**
      * @return the creator
      */
-    public Person getCreator() {
+    public User getCreator() {
         return creator;
     }
 

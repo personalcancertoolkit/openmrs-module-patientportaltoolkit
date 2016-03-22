@@ -1,6 +1,7 @@
 package org.openmrs.module.patientportaltoolkit.api.db;
 
 import org.openmrs.Person;
+import org.openmrs.User;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface JournalEntryDAO {
 
     void saveJournalEntry(JournalEntry entry);
 
-    List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc);
+    List<JournalEntry> getJournalEntryForPerson(User user, Boolean orderByDateDesc);
 
     List<JournalEntry> findEntries(String searchText, Person p, Boolean orderByDateDesc);
 

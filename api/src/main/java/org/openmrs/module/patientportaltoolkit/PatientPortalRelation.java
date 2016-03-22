@@ -31,7 +31,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
 
     private Date expireDate;
 
-    private String shareType;
+    private SecurityLayer shareType;
 
     private static final String STATUS_ACCEPTED="Yes";
     private static final String STATUS_EXPIRED="Expired";
@@ -45,7 +45,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
         this.startDate = new Date();
     }
 
-    public PatientPortalRelation(Person person, Person relatedPersonperson, String shareType) {
+    public PatientPortalRelation(Person person, Person relatedPersonperson, SecurityLayer shareType) {
         this(person,relatedPersonperson);
         this.shareType=shareType;
     }
@@ -213,7 +213,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      *
      * @return a sharing type
      */
-    public String getShareType() {
+    public SecurityLayer getShareType() {
         return this.shareType;
     }
 
@@ -222,7 +222,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      *
      * @param shareType a sharing type
      */
-    public void setShareType(final String shareType) {
+    public void setShareType(final SecurityLayer shareType) {
         this.shareType = shareType;
     }
 

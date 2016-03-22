@@ -280,7 +280,7 @@ public class ToolkitResourceUtil {
     public static Object generateJournal(JournalEntry journalEntry) {
 
 
-        Map<String, Object> personMap = generatePerson(journalEntry.getCreator());
+        Map<String, Object> personMap = generatePerson(journalEntry.getCreator().getPerson());
 
         Map<String, Object> journalEntryMap = new HashMap<String, Object>();
         journalEntryMap.put("id", journalEntry.getUuid());

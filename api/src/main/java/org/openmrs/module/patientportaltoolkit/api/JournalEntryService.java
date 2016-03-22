@@ -1,6 +1,7 @@
 package org.openmrs.module.patientportaltoolkit.api;
 
 import org.openmrs.Person;
+import org.openmrs.User;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
@@ -35,7 +36,7 @@ public interface JournalEntryService extends OpenmrsService {
      * @should return entries ordered by date
      */
     @Transactional(readOnly = true)
-    List<JournalEntry> getJournalEntryForPerson(Person p, Boolean orderByDateDesc);
+    List<JournalEntry> getJournalEntryForPerson(User user, Boolean orderByDateDesc);
 
     /**
      * @param p the person who wrote the journal entries
