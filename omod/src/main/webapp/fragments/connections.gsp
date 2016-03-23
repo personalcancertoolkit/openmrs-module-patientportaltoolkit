@@ -36,7 +36,7 @@
                             <div class="form-group">
                                 <select class="form-control">
                                     <% securityLayers.each { securityLayer -> %>
-                                    <option  value="${securityLayer.getUuid()}"  <% if (relationship.getShareType() == securityLayer.getUuid()) { %>selected<% } %>>${securityLayer.getDescription()} </option>
+                                    <option  value="${securityLayer.getUuid()}"  <% if (relationship.getShareType().getUuid() == securityLayer.getUuid()) { %>selected<% } %>>${securityLayer.getDescription()} </option>
                                     <% } %>
                                 </select>
                             </div>
@@ -57,7 +57,7 @@
                             <div class="form-group">
                                 <select class="form-control">
                                     <% securityLayers.each { securityLayer -> %>
-                                    <option  value="${securityLayer.getUuid()}"  <% if (relationship.getShareType() == securityLayer.getUuid()) { %>selected<% } %>>${securityLayer.getDescription()} </option>
+                                    <option  value="${securityLayer.getUuid()}"  <% if (relationship.getShareType().getUuid() == securityLayer.getUuid()) { %>selected<% } %>>${securityLayer.getDescription()} </option>
                                     <% } %>
                                 </select>
                             </div>
