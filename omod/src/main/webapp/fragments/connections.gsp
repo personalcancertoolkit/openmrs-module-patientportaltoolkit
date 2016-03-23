@@ -31,14 +31,7 @@
                             </div></h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
-                                ${ ui.includeFragment("patientportaltoolkit", "relationshipSelect",[selectedRelationShip: (relationship.relationType)]) }
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <% securityLayers.each { securityLayer -> %>
-                                    <option  value="${securityLayer.getUuid()}"  <% if (relationship.getShareType().getUuid() == securityLayer.getUuid()) { %>selected<% } %>>${securityLayer.getDescription()} </option>
-                                    <% } %>
-                                </select>
+                                ${ (relationship.getRelationType()) } - ${relationship.getShareType().getDescription()}
                             </div>
                         </form>
 
@@ -52,14 +45,7 @@
                             </div></h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
-                                ${ ui.includeFragment("patientportaltoolkit", "relationshipSelect",[selectedRelationShip: (relationship.relationType)]) }
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <% securityLayers.each { securityLayer -> %>
-                                    <option  value="${securityLayer.getUuid()}"  <% if (relationship.getShareType().getUuid() == securityLayer.getUuid()) { %>selected<% } %>>${securityLayer.getDescription()} </option>
-                                    <% } %>
-                                </select>
+                                ${ (relationship.getRelationType()) } - ${relationship.getShareType().getDescription()}
                             </div>
                         </form>
 
