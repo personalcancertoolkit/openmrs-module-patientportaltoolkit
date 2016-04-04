@@ -51,5 +51,7 @@
 
     <property name="retireReason" type="string" column="retire_reason" />
 
+        <property name="shareStatus" type="int" column="share_status" />
+
 </class>
 </hibernate-mapping>

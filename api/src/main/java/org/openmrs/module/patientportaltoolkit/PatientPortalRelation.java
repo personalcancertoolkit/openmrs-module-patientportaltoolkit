@@ -1,5 +1,6 @@
 package org.openmrs.module.patientportaltoolkit;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Patient;
 import org.openmrs.Person;
@@ -32,6 +33,8 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     private Date expireDate;
 
     private SecurityLayer shareType;
+
+    private int shareStatus;
 
     private static final String STATUS_ACCEPTED="Yes";
     private static final String STATUS_EXPIRED="Expired";
@@ -76,7 +79,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     /**
      * Set Patient
      *
-     * @param patient a Patient
+     * @param person a Person
      */
     public void setPerson(final Person person) {
         this.person = person;
@@ -239,5 +242,13 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
         } else {
             return STATUS_NOT_ACCEPTED_YET;
         }
+    }
+
+    public int getShareStatus() {
+        return shareStatus;
+    }
+
+    public void setShareStatus(int shareStatus) {
+        this.shareStatus = shareStatus;
     }
 }
