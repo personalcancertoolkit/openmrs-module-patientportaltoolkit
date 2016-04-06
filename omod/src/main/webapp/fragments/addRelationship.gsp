@@ -34,16 +34,22 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="relationship-type">Relationship Type:</label>
                         <div class="col-sm-10" id="relationship-type">
-                            ${ ui.includeFragment("patientportaltoolkit", "relationshipSelect",[parentForm: "addRelation"]) }
+                            <% if (relationshipTypes) { %>
+                            <select class="form-control" id="addRelationshipSelect">
+                                <% relationshipTypes.each { relationshipType -> %>
+                                <option value="${(relationshipType.getUuid())}">${(relationshipType.aIsToB)}</option>
+                                <% } %>
+                            </select>
+                            <% } %>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="share-connections">Share With:</label>
+                        <label class="control-label col-sm-2" for="share-connections">Security Level:</label>
                         <div class="col-sm-10" id="share-connections">
-                            <select class="form-control">
-                                <option selected>All Connections</option>
-                                <option>Personal Connections</option>
-                                <option>Physician Connections</option>
+                            <select class="form-control" id="addRelationSecurityLevels">
+                                <% securityLayers.each { securityLayer -> %>
+                                <option  value="${securityLayer.getUuid()}">${securityLayer.getDescription()} </option>
+                                <% } %>
                             </select>
                         </div>
                     </div>

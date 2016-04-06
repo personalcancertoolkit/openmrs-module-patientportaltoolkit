@@ -6,12 +6,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
+import org.openmrs.RelationshipType;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
+import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,6 +35,7 @@ public class AddRelationshipFragmentController {
                                           @RequestParam(value = "family", required = true) String family,
                                         @RequestParam(value = "personEmail", required = true) String personEmail,
                                         @RequestParam(value = "personRelationType", required = true) String personRelationType,
+                                        @RequestParam(value = "securityLayerType", required = true) String securityLayerType,
                                         @RequestParam(value = "gender", required = true) String gender) {
         User user = Context.getAuthenticatedUser();
         UserService userService=Context.getUserService();
@@ -79,7 +82,9 @@ public class AddRelationshipFragmentController {
         System.out.println("\nsystemout---password is " + "Test123" + passworduuid);
         PatientPortalRelation ppr=new PatientPortalRelation(user.getPerson(),person);
         ppr.setRelatedPersonEmail(personEmail);
-        ppr.setRelationType(personRelationType);
+        RelationshipType selectedRelationType = Context.getPersonService().getRelationshipTypeByUuid(personRelationType);
+        ppr.setRelationType(selectedRelationType.getaIsToB());
+        ppr.setShareType(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(securityLayerType));
         Calendar date = Calendar.getInstance();
         date.setTime(new Date());
         SimpleDateFormat f = new SimpleDateFormat("dd-MMMM-yyyy");

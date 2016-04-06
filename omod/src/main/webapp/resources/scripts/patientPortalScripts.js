@@ -81,7 +81,7 @@ jq(document).ready(function(){
 
     jq("#addrelationshipbutton").click(
         function () {
-          jq.get("addRelationship/addRelationshipfromForm.action", {given:  jq("#givenpersonName").val(),family:  jq("#familypersonName").val(),gender:jq("#genderSelect").val(),personEmail:jq("#personEmail").val(),personRelationType:jq("#relationshipSelectaddRelation").val()}, function(){
+          jq.get("addRelationship/addRelationshipfromForm.action", {given:  jq("#givenpersonName").val(),family:  jq("#familypersonName").val(),gender:jq("#genderSelect").val(),personEmail:jq("#personEmail").val(),personRelationType:jq("#addRelationshipSelect").val(),securityLayerType:jq("#addRelationSecurityLevels").val()}, function(){
             });
             setTimeout(function(){
                 location.reload();
