@@ -22,8 +22,6 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
 
     private String relatedPersonName;
 
-    private String relatedPersonEmail;
-
     private String relationType;
 
     private Date startDate;
@@ -120,24 +118,6 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      */
     public void setRelatedPersonName(final String relatedPersonName) {
         this.relatedPersonName = relatedPersonName;
-    }
-
-    /**
-     * Get email of the related person
-     *
-     * @return email of the related person
-     */
-    public String getRelatedPersonEmail() {
-        return this.relatedPersonEmail;
-    }
-
-    /**
-     * Set email of the related person
-     *
-     * @param relatedPersonEmail email of the related person
-     */
-    public void setRelatedPersonEmail(final String relatedPersonEmail) {
-        this.relatedPersonEmail = relatedPersonEmail;
     }
 
     /**
