@@ -28,6 +28,9 @@ public interface PatientPortalRelationService extends OpenmrsService {
     List<PatientPortalRelation> getPatientPortalRelationByPatient(Patient patient, Boolean includeRetired);
 
     @Transactional(readOnly = true)
+    List<PatientPortalRelation> getAcceptedPatientPortalRelationByPerson(Person person);
+
+    @Transactional(readOnly = true)
     List<PatientPortalRelation> getPatientPortalRelationByPerson(Person person);
 
     @Transactional(readOnly = true)
