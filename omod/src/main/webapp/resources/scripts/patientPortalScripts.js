@@ -369,6 +369,35 @@ jq(document).ready(function(){
             }, 2000);
     }
         });
+
+//------------- Edit Relation Button JS ---------
+    $('.editRelationButton').click(
+        function () {
+            var relationshipID=this.id.split('relationedit')[1];
+            //console.log(relationshipID);
+            $("#editRelationshipIdHolder").val(relationshipID);
+            //console.log($('#'+relationshipID+'relationPerson').text());
+
+            // console.log($('#'+encounterID+'surgeryPCPName').text());
+            $("#editPersonName").text($('#'+relationshipID+'relationPerson').text());
+            $("#editRelationshipSelect").val($('#'+relationshipID+'relationType').text());
+            $("#editRelationSecurityLevels").val($('#'+relationshipID+'relationShareID').val());
+        });
+
+    //------------------- Edit Relation Button JS Ends ----------------------
+
+
+//------------- Edit Relation Button save JS ---------
+    $('#editRelationshipSaveButton').click(
+        function () {
+            jq.get("connections/saveRelationshipfromEdit.action", {relationshipId:  jq("#editRelationshipIdHolder").val(),personRelationType:  jq("#editRelationshipSelect").val(),personRelationSecurityLayer:jq("#editRelationSecurityLevels").val()}, function(){
+            });
+            setTimeout(function(){
+                location.reload();
+            }, 2000);
+        });
+
+    //------------------- Edit Relation Button save JS Ends ----------------------
     //------------------- Messages Page JS ----------------------
 
     $('#newMessageComposeDiv').hide();

@@ -34,6 +34,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
 
     private SecurityLayer shareType;
 
+    // 0 - not yet accepted, 1 - accepted , 2 - Rejected, -1 - retired
     private int shareStatus;
 
     private static final String STATUS_ACCEPTED="Yes";

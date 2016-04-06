@@ -1,6 +1,7 @@
 <div class="clearfix" id="friends-list">
     ${ ui.includeFragment("patientportaltoolkit", "removeRelationship") }
     ${ ui.includeFragment("patientportaltoolkit", "addRelationship") }
+    ${ ui.includeFragment("patientportaltoolkit", "editRelationshipModal") }
     <div class="clearfix">
         <div class="button-div pull-right">
             <button type="button" class="btn btn-default pad-left" data-toggle="modal" data-target="#add-relationship-modal">Add Connections</button>
@@ -25,13 +26,13 @@
 
                     <% if (relationship.getPerson() == user.getPerson()){%>
                     <div class="media-body">
-                        <h4 class="media-heading">${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }
+                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson">${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }
                             <div class="pull-right">
-                                <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-chemotherapies-modal"></a>
+                                <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
                             </div></h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
-                                ${ (relationship.getRelationType()) } - ${relationship.getShareType().getDescription()}
+                                <span id="${ relationship.uuid }relationType">${ (relationship.getRelationType()) }</span> -  <span id="${ relationship.uuid }relationShare">${relationship.getShareType().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareType().getUuid()}" type="hidden"/>
                             </div>
                         </form>
 
@@ -39,13 +40,13 @@
                     <% } %>
                     <% if (relationship.getRelatedPerson() == user.getPerson()){%>
                     <div class="media-body">
-                        <h4 class="media-heading">${ (relationship.person.getGivenName()) } ${ (relationship.person.getFamilyName()) }
+                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson">${ (relationship.person.getGivenName()) } ${ (relationship.person.getFamilyName()) }
                             <div class="pull-right">
-                                <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-chemotherapies-modal"></a>
+                                <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
                             </div></h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
-                                ${ (relationship.getRelationType()) } - ${relationship.getShareType().getDescription()}
+                                <span id="${ relationship.uuid }relationType">${ (relationship.getRelationType()) }</span> -  <span id="${ relationship.uuid }relationShare">${relationship.getShareType().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareType().getUuid()}" type="hidden"/>
                             </div>
                         </form>
 
