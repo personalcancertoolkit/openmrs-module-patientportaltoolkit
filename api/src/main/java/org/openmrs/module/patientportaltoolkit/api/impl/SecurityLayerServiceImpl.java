@@ -38,6 +38,15 @@ public class SecurityLayerServiceImpl extends BaseOpenmrsService implements Secu
     }
 
     @Override
+    public SecurityLayer getSecurityLayerByName(String name) {
+        for(SecurityLayer sl:getAllSecurityLayers()){
+           if(sl.getName().equals(name))
+               return sl;
+        }
+        return null;
+    }
+
+    @Override
     public List<SecurityLayer> getAllSecurityLayers() {
         return dao.getAllSecurityLayers();
     }

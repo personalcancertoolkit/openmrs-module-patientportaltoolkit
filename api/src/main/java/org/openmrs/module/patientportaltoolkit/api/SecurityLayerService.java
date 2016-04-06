@@ -14,5 +14,8 @@ public interface SecurityLayerService extends OpenmrsService {
     SecurityLayer getSecurityLayerByUuid(String uuid);
 
     @Transactional(readOnly = true)
+    SecurityLayer getSecurityLayerByName(String name);
+
+    @Transactional(readOnly = true)
     List<SecurityLayer> getAllSecurityLayers();
 }

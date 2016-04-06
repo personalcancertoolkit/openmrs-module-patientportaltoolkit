@@ -397,7 +397,31 @@ jq(document).ready(function(){
             }, 2000);
         });
 
-    //------------------- Edit Relation Button save JS Ends ----------------------
+    //------------------- Edit Relation Button save JS Ends -----
+
+    //------------- accept connection request Button JS ----------------
+    $('.acceptConnectionRequest').click(
+        function () {
+            var relationId = this.id.split("acceptConnectionRequest")[0];
+            jq.get("connections/acceptConnectionRequest.action", {relationshipId: relationId}, function(){
+            });
+            setTimeout(function(){
+                location.reload();
+            }, 2000);
+        });
+    //------------------- accept connection request Button save JS Ends -----
+
+    //------------- ignore connection request Button JS ----------------
+    $('.ignoreConnectionRequest').click(
+        function () {
+            var relationId = this.id.split("ignoreConnectionRequest")[0];
+            jq.get("connections/ignoreConnectionRequest.action", {relationshipId: relationId}, function(){
+            });
+            setTimeout(function(){
+                location.reload();
+            }, 2000);
+        });
+    //------------------- ignore connection request Button save JS Ends -----
     //------------------- Messages Page JS ----------------------
 
     $('#newMessageComposeDiv').hide();
