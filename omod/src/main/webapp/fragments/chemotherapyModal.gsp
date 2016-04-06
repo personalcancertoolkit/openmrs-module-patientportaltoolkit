@@ -8,6 +8,7 @@
             </div>
             <div class="modal-body">
                 <input id="chemotherapyEncounterHolder" type="hidden">
+                <% if (chemotherapyConcepts) { %>
                 <% chemotherapyConcepts.concepts.each { questions -> %>
                 <% /* chemotherapy medication used*/ %>
                 <% if (questions.uuid=="8481b9da-74e3-45a9-9124-d69ab572d636") { %>
@@ -89,6 +90,7 @@
                 <form class="form-inline" role="form"> <label>State </label>
                     <input class="form-control" id="chemotherapyInstitutionState" type="text"/>
                 </form>
+                <% } %>
                 <% } %>
                 <% } %>
                 <% } %>

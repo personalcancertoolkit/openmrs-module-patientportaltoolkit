@@ -18,9 +18,9 @@ public class TreatmentsFragmentController {
 
     public void controller(PageModel model) {
         Patient patient = null;
+        if(Context.getAuthenticatedUser().getPerson().isPatient()){
         patient= Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
         PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
-        if (patient !=null) {
             model.addAttribute("surgeryConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.SURGERY_ENCOUNTER));
             model.addAttribute("chemotherapyConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHEMOTHERAPY_ENCOUNTER));
             model.addAttribute("radiationConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.RADIATION_ENCOUNTER));
@@ -31,8 +31,12 @@ public class TreatmentsFragmentController {
             model.addAttribute("chemotherapyencounters",GenerateTreatmentClassesUtil.generateChemotherapies(patient));
         }
         else {
-            model.addAttribute("treatmentsummary",null);
-            model.addAttribute("radiationencounters",null);
+            model.addAttribute("surgeryConcepts",null);
+            model.addAttribute("chemotherapyConcepts", null);
+            model.addAttribute("radiationConcepts", null);
+            model.addAttribute("latestTreatmentSummary", null);
+            model.addAttribute("treatmentsummary", null);
+            model.addAttribute("radiationencounters", null);
             model.addAttribute("surgeryencounters",null);
             model.addAttribute("chemotherapyencounters",null);
         }

@@ -31,14 +31,16 @@ public class AppointmentsFragmentController {
 
     public void controller(FragmentModel model) {
         User user = Context.getAuthenticatedUser();
-        org.openmrs.api.PersonService personService=Context.getPersonService();
-        Patient patient= Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
-        List<Reminder> reminders=Context.getService(ReminderService.class).getReminders(patient);
-        model.addAttribute("reminders",reminders);
         List<Reminder> alertableReminders = new ArrayList<>();
-        for (Reminder r : reminders){
-            if(r.getCompleteDate() == null) {
-                alertableReminders.add(r);
+        org.openmrs.api.PersonService personService=Context.getPersonService();
+        if(Context.getAuthenticatedUser().getPerson().isPatient()) {
+            Patient patient = Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
+            List<Reminder> reminders = Context.getService(ReminderService.class).getReminders(patient);
+            model.addAttribute("reminders", reminders);
+            for (Reminder r : reminders) {
+                if (r.getCompleteDate() == null) {
+                    alertableReminders.add(r);
+                }
             }
         }
         model.addAttribute("alertablereminders",alertableReminders);

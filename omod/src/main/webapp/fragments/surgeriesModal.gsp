@@ -8,6 +8,7 @@
             </div>
             <div class="modal-body">
                 <input id="surgeryEncounterHolder" type="hidden">
+                <% if (surgeryConcepts) { %>
                 <% surgeryConcepts.concepts.each { questions -> %>
                 <% /* surgery Type*/ %>
                 <% if (questions.uuid=="d409122c-8a0b-4282-a17f-07abad81f278") { %>
@@ -87,6 +88,7 @@
                 <form class="form-inline" role="form"> <label>State </label>
                     <input class="form-control" id="surgeryInstitutionState" type="text"/>
                 </form>
+                <% } %>
                 <% } %>
                 <% } %>
                 <% } %>

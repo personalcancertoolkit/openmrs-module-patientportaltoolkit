@@ -9,6 +9,7 @@
 
             <div class="modal-body">
                 <input id="genHistEncounterHolder" type="hidden" value="">
+                <% if (latestTreatmentSummary) { %>
                 <% if (latestTreatmentSummary.obs) { %>
                 <% latestTreatmentSummary.obs.each { obs -> %>
                 <% /* cancer Type*/ %>
@@ -107,6 +108,7 @@
                 <form class="form-inline" role="form"> <label>Phone </label>
                     <input class="form-control" id="genHistoryCancerPcpPhone" type="text" value="${(obs.getValueText())}"/>
                 </form>
+                <% } %>
                 <% } %>
                 <% } %>
                 <% } %>

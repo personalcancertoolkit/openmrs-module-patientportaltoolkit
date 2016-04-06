@@ -8,6 +8,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 <body>
 <div class="container bgcontent col-sm-8 col-sm-offset-2">
     ${ ui.includeFragment("patientportaltoolkit", "profileHeader") }
+    <% if(person.isPatient()) { %>
     <ul class="nav nav-pills">
     <li class="active"><a data-toggle="tab" href="#treatments">Treatments</a></li>
     <li><a data-toggle="tab" href="#sideEffects">Side Effects</a></li>
@@ -15,6 +16,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
     <li><a data-toggle="tab" href="#community">Communities</a></li>
     <li><a data-toggle="tab" href="#symptomManagement">Symtom Management</a></li>
     </ul>
+
 
     <div class="tab-content">
         <div id="treatments" class="tab-pane fade in active">
@@ -33,5 +35,6 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
             ${ ui.includeFragment("patientportaltoolkit", "symptomManagement") }
         </div>
     </div>
+    <% } %>
 </div>
 </body>

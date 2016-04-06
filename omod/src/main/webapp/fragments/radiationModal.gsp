@@ -8,6 +8,7 @@
             </div>
             <div class="modal-body">
                 <input id="radiationEncounterHolder" type="hidden">
+                <% if (radiationConcepts) { %>
                 <% radiationConcepts.concepts.each { questions -> %>
                 <% /* radiation type used*/ %>
                 <% if (questions.uuid=="42fb7bb5-f840-4518-814c-893813211cba") { %>
@@ -78,6 +79,7 @@
                 <form class="form-inline" role="form"> <label>State </label>
                     <input class="form-control" id="radiologistInstitutionState" type="text"/>
                 </form>
+                <% } %>
                 <% } %>
                 <% } %>
                 <% } %>
