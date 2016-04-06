@@ -57,8 +57,13 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
     }
 
     @Override
-    public List<PatientPortalRelation> getAcceptedPatientPortalRelationByPerson(Person person) {
-        return dao.getPatientPortalRelationByPerson(person);
+    public List<PatientPortalRelation> getPatientPortalRelationByRelatedPerson(Person person) {
+        return dao.getPatientPortalRelationByRelatedPerson(person);
+    }
+
+    @Override
+    public List<PatientPortalRelation> getAcceptedPatientPortalRelationByRelatedPerson(Person person) {
+        return dao.getAcceptedPatientPortalRelationByRelatedPerson(person);
     }
 
     @Override

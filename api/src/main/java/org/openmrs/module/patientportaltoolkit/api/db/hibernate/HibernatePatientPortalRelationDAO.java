@@ -99,6 +99,21 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     }
 
     @Override
+    public List<PatientPortalRelation> getAcceptedPatientPortalRelationByRelatedPerson(Person person) {
+        final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
+        crit.add(Restrictions.eq("relatedPerson", person));
+        crit.add(Restrictions.eq("shareStatus", 1));
+        crit.addOrder(Order.desc("dateCreated"));
+        final List<PatientPortalRelation> pptlist = crit.list();
+        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPerson->" + person + " | token count=" + pptlist.size());
+        if (pptlist.size() >= 1) {
+            return pptlist;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public PatientPortalRelation getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User requestingUser) {
         Patient pat = requestedPatient;
 

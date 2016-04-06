@@ -53,6 +53,8 @@ public interface PatientPortalRelationDAO {
      */
     List<PatientPortalRelation> getPatientPortalRelationByRelatedPerson(Person person);
 
+    List<PatientPortalRelation> getAcceptedPatientPortalRelationByRelatedPerson(Person person);
+
     /**
      *
      */
