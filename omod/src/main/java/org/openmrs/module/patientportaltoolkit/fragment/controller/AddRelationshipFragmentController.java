@@ -85,6 +85,7 @@ public class AddRelationshipFragmentController {
         RelationshipType selectedRelationType = Context.getPersonService().getRelationshipTypeByUuid(personRelationType);
         ppr.setRelationType(selectedRelationType.getaIsToB());
         ppr.setShareType(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(securityLayerType));
+        ppr.setShareStatus(0);
         Calendar date = Calendar.getInstance();
         date.setTime(new Date());
         SimpleDateFormat f = new SimpleDateFormat("dd-MMMM-yyyy");
