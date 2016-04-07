@@ -2,6 +2,7 @@ package org.openmrs.module.patientportaltoolkit.fragment.controller;
 
 import org.openmrs.Encounter;
 import org.openmrs.Patient;
+import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
@@ -18,8 +19,10 @@ public class TreatmentsFragmentController {
 
     public void controller(PageModel model) {
         Patient patient = null;
-        if(Context.getAuthenticatedUser().getPerson().isPatient()){
-        patient= Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
+        Person person = (Person) model.get("person");
+       // if(Context.getAuthenticatedUser().getPerson().isPatient()){
+        if(person.isPatient()){
+        patient= Context.getPatientService().getPatientByUuid(person.getUuid());
         PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
             model.addAttribute("surgeryConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.SURGERY_ENCOUNTER));
             model.addAttribute("chemotherapyConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHEMOTHERAPY_ENCOUNTER));

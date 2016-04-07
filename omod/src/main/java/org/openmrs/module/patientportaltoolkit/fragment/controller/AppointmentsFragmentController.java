@@ -3,6 +3,7 @@ package org.openmrs.module.patientportaltoolkit.fragment.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
+import org.openmrs.Person;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
@@ -12,6 +13,7 @@ import org.openmrs.module.patientportaltoolkit.api.ReminderService;
 import org.openmrs.notification.MessageException;
 import org.openmrs.notification.MessageService;
 import org.openmrs.ui.framework.fragment.FragmentModel;
+import org.openmrs.ui.framework.page.PageModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.DateFormat;
@@ -29,12 +31,13 @@ public class AppointmentsFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(FragmentModel model) {
+    public void controller(PageModel model) {
         User user = Context.getAuthenticatedUser();
         List<Reminder> alertableReminders = new ArrayList<>();
+        Person person = (Person) model.get("person");
         org.openmrs.api.PersonService personService=Context.getPersonService();
-        if(Context.getAuthenticatedUser().getPerson().isPatient()) {
-            Patient patient = Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
+        if(person.isPatient()) {
+            Patient patient = Context.getPatientService().getPatientByUuid(person.getUuid());
             List<Reminder> reminders = Context.getService(ReminderService.class).getReminders(patient);
             model.addAttribute("reminders", reminders);
             for (Reminder r : reminders) {
