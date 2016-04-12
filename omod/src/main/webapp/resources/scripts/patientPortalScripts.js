@@ -452,6 +452,13 @@ jq(document).ready(function(){
         margin: 0,
         size: 30
     });
+    $('.profileBadgeHeader').profileBadge({
+        border: {
+            width: 0
+        },
+        margin: 0,
+        size: 90
+    });
 
     $('#saveuserprofile').click(
         function () {

@@ -1,9 +1,9 @@
 ${ ui.includeFragment("patientportaltoolkit", "profileEdit") }
 <div class="jumbotron">
     <div class="container clearfix">
-        <div class="pull-left profile-image">
+        <div class="pull-left">
             <a href="#">
-                <img class="imagePlaceHolders" alt="Default Profile Picture" />
+                <div class="profileBadgeHeader">${ (person.getGivenName()) } ${ (person.getFamilyName()) }</div>
             </a>
         </div>
         <div class="pull-left" id="profile-name">
