@@ -58,7 +58,7 @@ public interface PatientPortalRelationDAO {
     /**
      *
      */
-    PatientPortalRelation getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User requestingUser);
+    PatientPortalRelation getPatientPortalRelation(Person person, Person requestedPerson, User requestingUser);
 
 
     /**

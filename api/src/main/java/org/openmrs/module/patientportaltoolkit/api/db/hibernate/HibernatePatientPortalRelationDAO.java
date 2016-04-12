@@ -114,24 +114,18 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     }
 
     @Override
-    public PatientPortalRelation getPatientPortalRelation(Patient requestedPatient, Person requestedPerson, User requestingUser) {
-        Patient pat = requestedPatient;
+    public PatientPortalRelation getPatientPortalRelation(Person person, Person requestedPerson, User requestingUser) {
 
-        if ((pat == null) && (requestedPerson != null)) {
-            pat = Context.getPatientService().getPatient(requestedPerson.getPersonId());
-            this.log.debug("getSharingToken for person|patient->" + requestedPerson + "|" + pat);
-        }
-
-        Person per = requestingUser.getPerson();
+        Person user = requestingUser.getPerson();
 
         Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
-        crit.add(Restrictions.eq("relatedPerson", per));
-        crit.add(Restrictions.eq("patient", pat));
+        crit.add(Restrictions.eq("relatedPerson", requestedPerson));
+        crit.add(Restrictions.eq("person", person));
         crit.addOrder(Order.desc("dateCreated"));
 
         List<PatientPortalRelation> list = crit.list();
 
-        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingToken->" + requestedPatient + "|" + requestedPerson + "|"
+        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingToken->" + person + "|" + requestedPerson + "|"
                 + requestingUser + "|token count=" + list.size());
 
         if (list.size() >= 1) {
