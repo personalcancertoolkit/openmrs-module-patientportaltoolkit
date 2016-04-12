@@ -18,14 +18,18 @@ public class HomePageController {
         if(personId != null && personId != ""){
            Person person = Context.getPersonService().getPersonByUuid(personId);
             PatientPortalRelation ppr = Context.getService(PatientPortalRelationService.class).getPatientPortalRelation(person,Context.getAuthenticatedUser().getPerson(),Context.getAuthenticatedUser());
-            if(ppr !=null && ppr.getShareStatus() == 1 && (ppr.getShareType().getName().equals(PatientPortalToolkitConstants.CAN_SEE_MEDICAL) || ppr.getShareType().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)))
-            model.addAttribute("person", person);
-            else
-                model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
+            if(ppr !=null && ppr.getShareStatus() == 1 && (ppr.getShareType().getName().equals(PatientPortalToolkitConstants.CAN_SEE_MEDICAL) || ppr.getShareType().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH))) {
+                model.addAttribute("person", person);
+                model.addAttribute("securitylevel", 2);
+            }
+            else {
+                model.addAttribute("person", person);
+                model.addAttribute("securitylevel", 1);
+            }
         }
         else {
             model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
-
+            model.addAttribute("securitylevel", 0);
         }
         model.addAttribute("pptutil", new PatientPortalUtil());
 

@@ -8,7 +8,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 <body>
 <div class="container bgcontent col-sm-8 col-sm-offset-2">
     ${ ui.includeFragment("patientportaltoolkit", "profileHeader") }
-    <% if(person.isPatient()) { %>
+    <% if(person.isPatient() && securitylevel != 1) { %>
     <ul class="nav nav-pills">
     <li class="active"><a data-toggle="tab" href="#treatments">Treatments</a></li>
     <li><a data-toggle="tab" href="#sideEffects">Side Effects</a></li>
