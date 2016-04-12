@@ -54,7 +54,7 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson">${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }
+                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a href="http://localhost:8081/openmrs2/patientportaltoolkit/home.page?personId=${ relationship.relatedPerson.uuid }"> ${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }</a>
                             <div class="pull-right">
                                 <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
                             </div></h4>
