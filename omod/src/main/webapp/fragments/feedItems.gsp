@@ -6,8 +6,7 @@
             <div class="panel-body">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object imagePlaceHolders" alt="sample" width="30"
-                             height="30"/>
+                        <div class="profileBadgeJournals">${ (journal.creator.getGivenName()) } ${ (journal.creator.getFamilyName()) }</div>
                     </a>
                 </div>
 
@@ -28,8 +27,7 @@
                         <div>
                             <div class="media-left">
                                 <a href="#">
-                                    <img class="media-object imagePlaceHolders" alt="sfs"
-                                         width="30" height="30"/>
+                                    <div class="profileBadgeJournals">${ (it.creator.getGivenName()) } ${ (it.creator.getFamilyName()) }</div>
                                 </a>
                             </div>
 
@@ -47,7 +45,7 @@
                         <div class="separator">
                             <div class="media-left">
                                 <a href="#">
-                                    <img class="media-object imagePlaceHolders" alt="alt" width="30" height="30" />
+                                    <div class="profileBadgeJournals">${ (journal.creator.getGivenName()) } ${ (journal.creator.getFamilyName()) }</div>
                                 </a>
                             </div>
                             <div class="media-body" style="width: 100%">

@@ -444,6 +444,14 @@ jq(document).ready(function(){
             $('#mediaList'+this.id).show();
         });
     //------------------- Messages Page JS Ends ----------------------
+        $('.profileBadge').profileBadge();
+    $('.profileBadgeJournals').profileBadge({
+        border: {
+            width: 0
+        },
+        margin: 0,
+        size: 30
+    });
 
     $('#saveuserprofile').click(
         function () {

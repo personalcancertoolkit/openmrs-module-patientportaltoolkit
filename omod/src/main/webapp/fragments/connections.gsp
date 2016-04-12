@@ -18,7 +18,7 @@
                 <div class="panel-body">
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object imagePlaceHolders" alt="Default Picture" width="60" height="60"/>
+                            <div class="profileBadge">${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }</div>
                         </a>
                     </div>
                     <div class="media-body">
@@ -50,7 +50,7 @@
 
                     <div class="media-left">
                         <a href="#">
-                            <img class="media-object imagePlaceHolders" alt="Default Picture" width="60" height="60"/>
+                            <div class="profileBadge">${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }</div>
                         </a>
                     </div>
                     <div class="media-body">

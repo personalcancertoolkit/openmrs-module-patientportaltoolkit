@@ -38,6 +38,12 @@
 
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/d3.min.js") }"></script>
+    <script type="text/javascript"
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/profilePicturesBadge.js") }"></script>
+
+    <script type="text/javascript">
+        jq('.profileBadge').profileBadge();
+    </script>
 
 </head>
 <div class="navbar navbar-default container">
