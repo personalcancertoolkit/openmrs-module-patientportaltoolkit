@@ -1,5 +1,7 @@
 package org.openmrs.module.patientportaltoolkit.page.controller;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
@@ -17,7 +19,9 @@ import java.util.List;
  */
 public class MessagesPageController {
 
+    protected final Log log = LogFactory.getLog(getClass());
     public void controller(PageModel model) {
+        log.info("Messages Page Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
         Patient patient = null;
         model.addAttribute("pptutil",new PatientPortalUtil());
         patient= Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());

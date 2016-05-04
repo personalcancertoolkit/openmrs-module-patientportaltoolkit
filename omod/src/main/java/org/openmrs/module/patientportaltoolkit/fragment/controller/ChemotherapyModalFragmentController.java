@@ -34,6 +34,7 @@ public class ChemotherapyModalFragmentController {
                                         @RequestParam(value = "chemotherapyInstitutionCity", required = false) String chemotherapyInstitutionCity,
                                         @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState) throws ParseException {
 
+        log.info("Save New Chemotherapy for -" + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")"+ " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
         EncounterService encounterService= Context.getEncounterService();
         Encounter newChemotherapyEncounter = new Encounter();
         newChemotherapyEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
@@ -47,6 +48,7 @@ public class ChemotherapyModalFragmentController {
         for(String s: str_array){
             chemotherapyMedictionConcepts.add(s);
         }
+
 
         List<String> allTheEnteredValues = new ArrayList<>();
         allTheEnteredValues.add("centralLine");
@@ -158,6 +160,7 @@ public class ChemotherapyModalFragmentController {
                                      @RequestParam(value = "chemotherapyInstitutionCity", required = false) String chemotherapyInstitutionCity,
                                      @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState) throws ParseException {
 
+        log.info("Update Chemotherapy for -" + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")"+ " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
         EncounterService encounterService= Context.getEncounterService();
         ConceptService conceptService=Context.getConceptService();
         String[] str_array = chemotherapyMeds.split("split");

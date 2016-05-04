@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.PersonAttribute;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
@@ -46,12 +47,15 @@ public class AppointmentsFragmentController {
                 }
             }
         }
+        log.info( "Appointments for -"+ person.getPersonName() + "(id="+person.getPersonId()+",uuid="+person.getUuid()+")"+" Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")" );
         model.addAttribute("alertablereminders",alertableReminders);
     }
 
 
     public void markCompleted(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markCompletedDate", required = true) String markCompletedDate, @RequestParam(value = "doctorName", required = true) String doctorName, @RequestParam(value = "comments", required = true) String comments) {
 
+        Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
+        log.info( "Mark Completed for -"+ person.getPersonName() + "(id="+person.getPersonId()+",uuid="+person.getUuid()+")"+" Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")" );
         //System.out.println("121212121212"+markCompletedDate);
         DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         Date date = new Date();
@@ -66,6 +70,8 @@ public class AppointmentsFragmentController {
 
     public void markScheduled(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markScheduledDate", required = true) String markScheduledDate) {
 
+        Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
+        log.info( "Mark Scheduled for -"+ person.getPersonName() + "(id="+person.getPersonId()+",uuid="+person.getUuid()+")"+" Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")" );
         //System.out.println("121212121212"+markCompletedDate);
         DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         Date date = new Date();

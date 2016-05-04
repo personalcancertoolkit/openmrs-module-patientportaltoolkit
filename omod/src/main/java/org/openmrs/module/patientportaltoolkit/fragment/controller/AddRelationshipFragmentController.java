@@ -34,6 +34,7 @@ public class AddRelationshipFragmentController {
                                         @RequestParam(value = "personRelationType", required = true) String personRelationType,
                                         @RequestParam(value = "securityLayerType", required = true) String securityLayerType,
                                         @RequestParam(value = "gender", required = true) String gender) {
+        log.info("Add Relationship/Connection with -"+ given + " " + family + " ("+ personEmail +", "+ personRelationType +", "+ securityLayerType +", "+ gender+") " + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         int checkIfPersonExists=0;
         User user = Context.getAuthenticatedUser();
         UserService userService=Context.getUserService();
@@ -95,7 +96,7 @@ public class AddRelationshipFragmentController {
             newUser.addRole(userService.getRole(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE_ROLE));
             String passworduuid = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
             User savedUser = Context.getUserService().saveUser(newUser, "Tester123");
-            System.out.println("\nsystemout---password is " + "Test123" + passworduuid);
+            //System.out.println("\nsystemout---password is " + "Test123" + passworduuid);
         }
         PatientPortalRelation ppr=new PatientPortalRelation(user.getPerson(),person);
         RelationshipType selectedRelationType = Context.getPersonService().getRelationshipTypeByUuid(personRelationType);
