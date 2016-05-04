@@ -146,6 +146,7 @@ public class SurgeriesModalFragmentController {
         newSurgeryEncounter.addObs(suregeryInstitution);
         newSurgeryEncounter.addObs(surgeon);
         encounterService.saveEncounter(newSurgeryEncounter);
+        log.info("Save New Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
     public void saveSurgeryForm(FragmentModel model,  @RequestParam(value = "encounterId", required = false) String encounterId,
                          @RequestParam(value = "surgeryTypes", required = false) String surgeryTypes,
@@ -234,7 +235,8 @@ public class SurgeriesModalFragmentController {
                 surgeryEncounter.addObs(o);
             }
             encounterService.saveEncounter(surgeryEncounter);
-            }
+            log.info("Update Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        }
 
         }
 }

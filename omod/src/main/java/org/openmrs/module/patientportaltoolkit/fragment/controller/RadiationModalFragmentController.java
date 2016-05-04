@@ -135,6 +135,7 @@ public class RadiationModalFragmentController {
         newRadiationEncounter.addObs(radiationInstitution);
         newRadiationEncounter.addObs(raidationSpecialist);
         encounterService.saveEncounter(newRadiationEncounter);
+        log.info("Save new Radiation Form for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
     public void saveRadiationForm(FragmentModel model,  @RequestParam(value = "encounterId", required = false) String encounterId,
@@ -338,6 +339,8 @@ public class RadiationModalFragmentController {
             }
 
             encounterService.saveEncounter(chemotherapyEncounter);
+            log.info("Edit Radiation Form for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+
         }
 
     }

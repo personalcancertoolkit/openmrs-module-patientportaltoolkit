@@ -67,6 +67,7 @@ public class FeedbackFragmentController {
 
             System.out.println("Done");
 
+            log.info("Feedback/Contact message sent by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }

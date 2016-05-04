@@ -1,5 +1,7 @@
 package org.openmrs.module.patientportaltoolkit.fragment.controller;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
 import org.openmrs.api.context.Context;
@@ -16,6 +18,9 @@ import java.util.Set;
  * Created by maurya on 2/22/16.
  */
 public class ProfileEditFragmentController {
+
+    protected final Log log = LogFactory.getLog(getClass());
+
     public void controller() {
     }
     public void saveProfileEditForm(FragmentModel model,@RequestParam(value = "personId", required = true) int personId,
@@ -57,6 +62,7 @@ public class ProfileEditFragmentController {
         if (gender != null)
             person.setGender(gender);
         Context.getPersonService().savePerson(person);
+        log.info("Profile Details saved for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
 }

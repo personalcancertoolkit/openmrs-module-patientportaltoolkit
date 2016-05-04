@@ -1,5 +1,7 @@
 package org.openmrs.module.patientportaltoolkit.fragment.controller;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.RelationshipType;
@@ -27,6 +29,8 @@ import java.util.List;
  */
 public class ConnectionsFragmentController {
 
+    protected final Log log = LogFactory.getLog(getClass());
+
     public void controller(PageModel model) {
         model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(Context.getAuthenticatedUser().getPerson()));
         model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
@@ -45,6 +49,7 @@ public class ConnectionsFragmentController {
         ppr.setShareType(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(personRelationSecurityLayer));
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
 
+        log.info("Edit Relationship/Connection -"+ relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         //return "Success";
     }
 
@@ -74,6 +79,7 @@ public class ConnectionsFragmentController {
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(pprNew);
         ppr.setShareStatus(1);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
+        log.info("Accept Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         //return "Success";
     }
 
@@ -83,5 +89,6 @@ public class ConnectionsFragmentController {
         PatientPortalRelation ppr=Context.getService(PatientPortalRelationService.class).getPatientPortalRelation(relationshipId);
         ppr.setShareStatus(2);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
+        log.info("Ignore Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 }

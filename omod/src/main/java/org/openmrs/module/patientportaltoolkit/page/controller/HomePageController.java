@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Created by maurya on 3/7/16.
  */
 public class HomePageController {
+
     protected final Log log = LogFactory.getLog(getClass());
 
     public void controller(PageModel model, @RequestParam(value = "personId", required = false) String personId) {

@@ -32,5 +32,6 @@ public class SymptomManagementFragmentController {
         url += "&password=" + password;
         url += "&omrs_user=" + user.getUuid();
         model.addAttribute("SymptomManagementPortalUrl",url);
+        log.info("Symptom Management for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 }

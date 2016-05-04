@@ -34,7 +34,6 @@ public class ChemotherapyModalFragmentController {
                                         @RequestParam(value = "chemotherapyInstitutionCity", required = false) String chemotherapyInstitutionCity,
                                         @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState) throws ParseException {
 
-        log.info("Save New Chemotherapy for -" + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")"+ " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
         EncounterService encounterService= Context.getEncounterService();
         Encounter newChemotherapyEncounter = new Encounter();
         newChemotherapyEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
@@ -146,6 +145,7 @@ public class ChemotherapyModalFragmentController {
         newChemotherapyEncounter.addObs(chemotherapyInstitution);
         newChemotherapyEncounter.addObs(oncologist);
         encounterService.saveEncounter(newChemotherapyEncounter);
+        log.info("Save New Chemotherapy for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
     public void saveChemotherapyForm(FragmentModel model,  @RequestParam(value = "encounterId", required = false) String encounterId,
@@ -160,7 +160,6 @@ public class ChemotherapyModalFragmentController {
                                      @RequestParam(value = "chemotherapyInstitutionCity", required = false) String chemotherapyInstitutionCity,
                                      @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState) throws ParseException {
 
-        log.info("Update Chemotherapy for -" + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")"+ " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
         EncounterService encounterService= Context.getEncounterService();
         ConceptService conceptService=Context.getConceptService();
         String[] str_array = chemotherapyMeds.split("split");
@@ -363,6 +362,7 @@ public class ChemotherapyModalFragmentController {
             }
 
             encounterService.saveEncounter(chemotherapyEncounter);
+            log.info("Update Chemotherapy for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         }
 
     }
