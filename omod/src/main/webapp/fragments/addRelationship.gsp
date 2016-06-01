@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="relationship-type">Relationship Type:</label>
+                        <label class="control-label col-sm-2" for="relationship-type">Is My:</label>
                         <div class="col-sm-10" id="relationship-type">
                             <% if (relationshipTypes) { %>
                             <select class="form-control" id="addRelationshipSelect">
