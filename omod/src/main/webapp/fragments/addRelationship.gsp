@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="share-connections">Security Level:</label>
+                        <label class="control-label col-sm-2" for="share-connections">Have Access:</label>
                         <div class="col-sm-10" id="share-connections">
                             <select class="form-control" id="addRelationSecurityLevels">
                                 <% securityLayers.each { securityLayer -> %>
