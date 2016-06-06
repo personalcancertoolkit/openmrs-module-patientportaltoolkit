@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="editRelationSecurityLevels">Security Level:</label>
+                        <label class="control-label col-sm-2" for="editRelationSecurityLevels">Have Access:</label>
                         <div class="col-sm-10 form-group">
                             <select class="form-control" id="editRelationSecurityLevels">
                                 <% securityLayers.each { securityLayer -> %>
