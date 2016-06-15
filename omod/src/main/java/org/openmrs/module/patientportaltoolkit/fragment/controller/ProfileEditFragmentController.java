@@ -5,7 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
+import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.DateFormat;
@@ -21,15 +23,16 @@ public class ProfileEditFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller() {
+    public void controller(PageRequest pageRequest) {
+        log.info(PPTLogAppender.appendLog("REQUEST_PROFILEEDIT_FRAGMENT", pageRequest.getRequest()));
     }
     public void saveProfileEditForm(FragmentModel model,@RequestParam(value = "personId", required = true) int personId,
                                     @RequestParam(value = "givenName", required = true) String givenName,
                                     @RequestParam(value = "familyName", required = true) String familyName,
                                     @RequestParam(value = "gender", required = true) String gender,
-                                    @RequestParam(value = "birthDate", required = true) String birthDate)  {
+                                    @RequestParam(value = "birthDate", required = true) String birthDate, PageRequest pageRequest)  {
 
-
+        log.info(PPTLogAppender.appendLog("SAVE_PROFILEEDIT", pageRequest.getRequest(), "personId:", personId+"","givenName:",givenName, "familyName", familyName, "gender", gender, "birthDate", birthDate));
         Person person = Context.getPersonService().getPerson(personId);
         PersonName personName = new PersonName();
         personName.setGivenName(givenName);
@@ -62,7 +65,7 @@ public class ProfileEditFragmentController {
         if (gender != null)
             person.setGender(gender);
         Context.getPersonService().savePerson(person);
-        log.info("Profile Details saved for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        //log.info("Profile Details saved for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
 }

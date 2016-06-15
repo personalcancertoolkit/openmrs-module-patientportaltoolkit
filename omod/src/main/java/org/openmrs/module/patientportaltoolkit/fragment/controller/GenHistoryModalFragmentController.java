@@ -8,7 +8,9 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
+import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.ParseException;
@@ -22,8 +24,8 @@ public class GenHistoryModalFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller() {
-
+    public void controller(PageRequest pageRequest) {
+        log.info(PPTLogAppender.appendLog("REQUEST_GENERALHISTORY_FRAGMENT", pageRequest.getRequest()));
     }
 
     public void saveGenHistoryForm(FragmentModel model,  @RequestParam(value = "encounterId", required = true) String encounterId,
@@ -34,8 +36,9 @@ public class GenHistoryModalFragmentController {
                                    @RequestParam(value = "cancerAbnormalityType", required = true) String cancerAbnormalityType,
                                    @RequestParam(value = "genHistoryCancerPcpName", required = true) String genHistoryCancerPcpName,
                                    @RequestParam(value = "genHistoryCancerPcpEmail", required = true) String genHistoryCancerPcpEmail,
-                                   @RequestParam(value = "genHistoryCancerPcpPhone", required = true) String genHistoryCancerPcpPhone) throws ParseException {
+                                   @RequestParam(value = "genHistoryCancerPcpPhone", required = true) String genHistoryCancerPcpPhone, PageRequest pageRequest) throws ParseException {
 
+        log.info(PPTLogAppender.appendLog("SAVE_GENERALHISTORY", pageRequest.getRequest(), "encounterId:", encounterId, "cancerType:", cancerType, "cancerStage:", cancerStage, "cancerDate:", cancerDate, "cancerAbnormalityBool:", cancerAbnormalityBool, "cancerAbnormalityType:", cancerAbnormalityType, "genHistoryCancerPcpName:", genHistoryCancerPcpName, "genHistoryCancerPcpEmail:", genHistoryCancerPcpEmail, "genHistoryCancerPcpPhone:", genHistoryCancerPcpPhone));
         EncounterService encounterService=Context.getEncounterService();
         ConceptService conceptService=Context.getConceptService();
         Encounter genHistoryEncounter = encounterService.getEncounterByUuid(encounterId);
@@ -180,6 +183,6 @@ public class GenHistoryModalFragmentController {
             }
         }
         encounterService.saveEncounter(genHistoryEncounter);
-        log.info("Save General History for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+       // log.info("Save General History for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 }

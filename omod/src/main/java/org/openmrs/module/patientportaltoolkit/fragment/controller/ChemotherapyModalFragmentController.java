@@ -8,7 +8,9 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
+import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.ParseException;
@@ -21,7 +23,9 @@ import java.util.*;
 public class ChemotherapyModalFragmentController {
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(FragmentModel model){}
+    public void controller(FragmentModel model, PageRequest pageRequest) {
+        log.info(PPTLogAppender.appendLog("REQUEST_CHEMOTHERAPY_FRAGMENT", pageRequest.getRequest()));
+    }
 
     public void saveNewChemotherapyForm(FragmentModel model, @RequestParam(value = "chemotherapyMeds", required = false) String chemotherapyMeds,
                                         @RequestParam(value = "centralLine", required = false) String centralLine,
@@ -32,19 +36,20 @@ public class ChemotherapyModalFragmentController {
                                         @RequestParam(value = "chemotherapyPcpPhone", required = false) String chemotherapyPcpPhone,
                                         @RequestParam(value = "chemotherapyInstitutionName", required = false) String chemotherapyInstitutionName,
                                         @RequestParam(value = "chemotherapyInstitutionCity", required = false) String chemotherapyInstitutionCity,
-                                        @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState) throws ParseException {
+                                        @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState, PageRequest pageRequest) throws ParseException {
 
-        EncounterService encounterService= Context.getEncounterService();
+        log.info(PPTLogAppender.appendLog("NEW_CHEMOTHERAPY", pageRequest.getRequest(), "chemotherapyMeds:", chemotherapyMeds, "centralLine:", centralLine, "chemoStartDate:", chemoStartDate, "chemoEndDate:", chemoEndDate, "chemotherapyPcpName:", chemotherapyPcpName, "chemotherapyPcpEmail:", chemotherapyPcpEmail, "chemotherapyPcpPhone:", chemotherapyPcpPhone, "chemotherapyInstitutionName:", chemotherapyInstitutionName, "chemotherapyInstitutionCity:", chemotherapyInstitutionCity, "chemotherapyInstitutionState:", chemotherapyInstitutionState));
+        EncounterService encounterService = Context.getEncounterService();
         Encounter newChemotherapyEncounter = new Encounter();
         newChemotherapyEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
         Date date = new Date();
         newChemotherapyEncounter.setDateCreated(new Date());
         newChemotherapyEncounter.setEncounterDatetime(date);
         newChemotherapyEncounter.setEncounterType(encounterService.getEncounterType(PatientPortalToolkitConstants.CHEMOTHERAPY_ENCOUNTER));
-        ConceptService conceptService=Context.getConceptService();
+        ConceptService conceptService = Context.getConceptService();
         String[] str_array = chemotherapyMeds.split("split");
         List<String> chemotherapyMedictionConcepts = new ArrayList<>();
-        for(String s: str_array){
+        for (String s : str_array) {
             chemotherapyMedictionConcepts.add(s);
         }
 
@@ -59,7 +64,7 @@ public class ChemotherapyModalFragmentController {
         allTheEnteredValues.add("chemotherapyInstitutionName");
         allTheEnteredValues.add("chemotherapyInstitutionCity");
         allTheEnteredValues.add("chemotherapyInstitutionState");
-        for (String s : chemotherapyMedictionConcepts){
+        for (String s : chemotherapyMedictionConcepts) {
             Obs o = new Obs();
             o.setConcept(conceptService.getConceptByUuid("8481b9da-74e3-45a9-9124-d69ab572d636"));
             o.setValueCoded(conceptService.getConceptByUuid(s));
@@ -71,9 +76,8 @@ public class ChemotherapyModalFragmentController {
         Obs oncologist = new Obs();
         oncologist.setConcept(conceptService.getConceptByUuid("5cbdb3c4-a531-4da5-b1e3-d5fd6420693a"));
 
-        for (String entry : allTheEnteredValues)
-        {
-            if(entry !=null) {
+        for (String entry : allTheEnteredValues) {
+            if (entry != null) {
                 switch (entry) {
                     case "centralLine":
                         if (centralLine != null && centralLine != "") {
@@ -145,10 +149,10 @@ public class ChemotherapyModalFragmentController {
         newChemotherapyEncounter.addObs(chemotherapyInstitution);
         newChemotherapyEncounter.addObs(oncologist);
         encounterService.saveEncounter(newChemotherapyEncounter);
-        log.info("Save New Chemotherapy for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        //log.info("Save New Chemotherapy for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
-    public void saveChemotherapyForm(FragmentModel model,  @RequestParam(value = "encounterId", required = false) String encounterId,
+    public void saveChemotherapyForm(FragmentModel model, @RequestParam(value = "encounterId", required = false) String encounterId,
                                      @RequestParam(value = "chemotherapyMeds", required = false) String chemotherapyMeds,
                                      @RequestParam(value = "centralLine", required = false) String centralLine,
                                      @RequestParam(value = "chemoStartDate", required = false) String chemoStartDate,
@@ -158,13 +162,14 @@ public class ChemotherapyModalFragmentController {
                                      @RequestParam(value = "chemotherapyPcpPhone", required = false) String chemotherapyPcpPhone,
                                      @RequestParam(value = "chemotherapyInstitutionName", required = false) String chemotherapyInstitutionName,
                                      @RequestParam(value = "chemotherapyInstitutionCity", required = false) String chemotherapyInstitutionCity,
-                                     @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState) throws ParseException {
+                                     @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState, PageRequest pageRequest) throws ParseException {
 
-        EncounterService encounterService= Context.getEncounterService();
-        ConceptService conceptService=Context.getConceptService();
+        log.info(PPTLogAppender.appendLog("UPDATE_CHEMOTHERAPY", pageRequest.getRequest(), "chemotherapyMeds:", chemotherapyMeds, "centralLine:", centralLine, "chemoStartDate:", chemoStartDate, "chemoEndDate:", chemoEndDate, "chemotherapyPcpName:", chemotherapyPcpName, "chemotherapyPcpEmail:", chemotherapyPcpEmail, "chemotherapyPcpPhone:", chemotherapyPcpPhone, "chemotherapyInstitutionName:", chemotherapyInstitutionName, "chemotherapyInstitutionCity:", chemotherapyInstitutionCity, "chemotherapyInstitutionState:", chemotherapyInstitutionState));
+        EncounterService encounterService = Context.getEncounterService();
+        ConceptService conceptService = Context.getConceptService();
         String[] str_array = chemotherapyMeds.split("split");
         List<String> chemotherapyMedictionConcepts = new ArrayList<>();
-        for(String s: str_array){
+        for (String s : str_array) {
             chemotherapyMedictionConcepts.add(s);
         }
         List<String> existingChemotherapyMedictionConcepts = new ArrayList<>();
@@ -179,25 +184,22 @@ public class ChemotherapyModalFragmentController {
         allTheEnteredValues.add("chemotherapyInstitutionName");
         allTheEnteredValues.add("chemotherapyInstitutionCity");
         allTheEnteredValues.add("chemotherapyInstitutionState");
-        if(encounterId !=null) {
+        if (encounterId != null) {
             Encounter chemotherapyEncounter = encounterService.getEncounterByUuid(encounterId);
-            Map<String,List<Obs>> observationConceptUUIDToObsMap = new HashMap<>();
-            for (Obs o:chemotherapyEncounter.getObs()){
-                if(observationConceptUUIDToObsMap.get(o.getConcept().getUuid())== null) {
-                    List<Obs> newObsList=new ArrayList<>();
+            Map<String, List<Obs>> observationConceptUUIDToObsMap = new HashMap<>();
+            for (Obs o : chemotherapyEncounter.getObs()) {
+                if (observationConceptUUIDToObsMap.get(o.getConcept().getUuid()) == null) {
+                    List<Obs> newObsList = new ArrayList<>();
                     newObsList.add(o);
-                    observationConceptUUIDToObsMap.put(o.getConcept().getUuid(),newObsList);
-                }
-                else
-                {
-                    List<Obs> existingObsList= observationConceptUUIDToObsMap.get(o.getConcept().getUuid());
+                    observationConceptUUIDToObsMap.put(o.getConcept().getUuid(), newObsList);
+                } else {
+                    List<Obs> existingObsList = observationConceptUUIDToObsMap.get(o.getConcept().getUuid());
                     existingObsList.add(o);
-                    observationConceptUUIDToObsMap.put(o.getConcept().getUuid(),existingObsList);
+                    observationConceptUUIDToObsMap.put(o.getConcept().getUuid(), existingObsList);
                 }
             }
-            for (String entry : allTheEnteredValues)
-            {
-                if(entry !=null) {
+            for (String entry : allTheEnteredValues) {
+                if (entry != null) {
                     switch (entry) {
                         case "chemotherapyMeds":
                             for (Obs o : observationConceptUUIDToObsMap.get("8481b9da-74e3-45a9-9124-d69ab572d636"))
@@ -341,7 +343,7 @@ public class ChemotherapyModalFragmentController {
                     }
                 }
             }
-            for(String s: existingChemotherapyMedictionConcepts){
+            for (String s : existingChemotherapyMedictionConcepts) {
                 if (chemotherapyMedictionConcepts.contains(s))
                     chemotherapyMedictionConcepts.remove(s);
                 else {
@@ -354,7 +356,7 @@ public class ChemotherapyModalFragmentController {
                 }
 
             }
-            for (String s : chemotherapyMedictionConcepts){
+            for (String s : chemotherapyMedictionConcepts) {
                 Obs o = new Obs();
                 o.setConcept(conceptService.getConceptByUuid("8481b9da-74e3-45a9-9124-d69ab572d636"));
                 o.setValueCoded(conceptService.getConceptByUuid(s));
@@ -362,7 +364,8 @@ public class ChemotherapyModalFragmentController {
             }
 
             encounterService.saveEncounter(chemotherapyEncounter);
-            log.info("Update Chemotherapy for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+            //log.info(PPTLogAppender.appendLog("Saved_Update_Chemotherapy", pageRequest.getRequest()));
+            //log.info("Update Chemotherapy for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         }
 
     }

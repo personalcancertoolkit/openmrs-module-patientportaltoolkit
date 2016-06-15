@@ -11,7 +11,9 @@ import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
+import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
+import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.SimpleDateFormat;
@@ -24,8 +26,8 @@ public class AddRelationshipFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller() {
-
+    public void controller(PageRequest pageRequest) {
+        log.info(PPTLogAppender.appendLog("REQUEST_ADDRELATIONSHIP_FRAGMENT", pageRequest.getRequest()));
     }
 
     public void addRelationshipfromForm(FragmentModel model, @RequestParam(value = "given", required = true) String given,
@@ -33,8 +35,9 @@ public class AddRelationshipFragmentController {
                                         @RequestParam(value = "personEmail", required = true) String personEmail,
                                         @RequestParam(value = "personRelationType", required = true) String personRelationType,
                                         @RequestParam(value = "securityLayerType", required = true) String securityLayerType,
-                                        @RequestParam(value = "gender", required = true) String gender) {
-        log.info("Add Relationship/Connection with -"+ given + " " + family + " ("+ personEmail +", "+ personRelationType +", "+ securityLayerType +", "+ gender+") " + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+                                        @RequestParam(value = "gender", required = true) String gender, PageRequest pageRequest) {
+        log.info(PPTLogAppender.appendLog("ADD_RELATION", pageRequest.getRequest(), "GIVEN_NAME:", given, "FAMILY_NAME:", family, "EMAIL:", personEmail,"RELATION_TYPE:", personRelationType, "SECURITY_TYPE:", securityLayerType, "GENDER:", gender));
+        //log.info("~ADD_RELATION~"+ Context.getAuthenticatedUser().getUsername() + "~USER_ENTERED_DATA~"+ "GIVEN_NAME:"+  given + "^FAMILY_NAME:" + family + "^EMAIL:"+ personEmail +"^RELATION_TYPE:"+ personRelationType +"^SECURITY_TYPE:"+ securityLayerType +"^GENDER:"+ gender);
         int checkIfPersonExists=0;
         User user = Context.getAuthenticatedUser();
         UserService userService=Context.getUserService();

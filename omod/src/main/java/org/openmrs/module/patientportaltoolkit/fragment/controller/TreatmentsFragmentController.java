@@ -9,7 +9,9 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.module.patientportaltoolkit.api.util.GenerateTreatmentClassesUtil;
+import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.page.PageModel;
+import org.openmrs.ui.framework.page.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,8 @@ public class TreatmentsFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(PageModel model) {
+    public void controller(PageModel model, PageRequest pageRequest) {
+        log.info(PPTLogAppender.appendLog("REQUEST_TREATMENTS_FRAGMENT", pageRequest.getRequest()));
         Patient patient = null;
         Person person = (Person) model.get("person");
        // if(Context.getAuthenticatedUser().getPerson().isPatient()){
@@ -48,7 +51,7 @@ public class TreatmentsFragmentController {
             model.addAttribute("surgeryencounters",null);
             model.addAttribute("chemotherapyencounters",null);
         }
-        log.info("Treatments requested for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        //log.info("Treatments requested for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
 }

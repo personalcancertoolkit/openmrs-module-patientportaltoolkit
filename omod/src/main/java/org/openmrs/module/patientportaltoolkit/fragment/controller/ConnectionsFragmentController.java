@@ -13,8 +13,10 @@ import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.SecurityLayer;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
+import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageModel;
+import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.management.relation.RelationType;
@@ -31,16 +33,18 @@ public class ConnectionsFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(PageModel model) {
+    public void controller(PageModel model,PageRequest pageRequest) {
         model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(Context.getAuthenticatedUser().getPerson()));
         model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
         model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());
         model.addAttribute("user",Context.getAuthenticatedUser());
+        log.info(PPTLogAppender.appendLog("REQUEST_CONNECTIONS_FRAGMENT", pageRequest.getRequest()));
+
     }
 
     public void saveRelationshipfromEdit(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId,
                                         @RequestParam(value = "personRelationType", required = true) String personRelationType,
-                                        @RequestParam(value = "personRelationSecurityLayer", required = true) String personRelationSecurityLayer) {
+                                        @RequestParam(value = "personRelationSecurityLayer", required = true) String personRelationSecurityLayer, PageRequest pageRequest) {
         User user = Context.getAuthenticatedUser();
         UserService userService=Context.getUserService();
 
@@ -49,11 +53,12 @@ public class ConnectionsFragmentController {
         ppr.setShareType(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(personRelationSecurityLayer));
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
 
-        log.info("Edit Relationship/Connection -"+ relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        log.info(PPTLogAppender.appendLog("EDIT_RELATIONSHIP", pageRequest.getRequest()));
+        //log.info("Edit Relationship/Connection -"+ relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         //return "Success";
     }
 
-    public void acceptConnectionRequest(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId) {
+    public void acceptConnectionRequest(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId, PageRequest pageRequest) {
         User user = Context.getAuthenticatedUser();
         UserService userService=Context.getUserService();
 
@@ -79,16 +84,18 @@ public class ConnectionsFragmentController {
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(pprNew);
         ppr.setShareStatus(1);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
-        log.info("Accept Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        log.info(PPTLogAppender.appendLog("ACCEPT_RELATIONSHIP", pageRequest.getRequest(),"Relationship Id:", relationshipId));
+        //log.info("Accept Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         //return "Success";
     }
 
-    public void ignoreConnectionRequest(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId) {
+    public void ignoreConnectionRequest(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId, PageRequest pageRequest) {
         User user = Context.getAuthenticatedUser();
         UserService userService=Context.getUserService();
         PatientPortalRelation ppr=Context.getService(PatientPortalRelationService.class).getPatientPortalRelation(relationshipId);
         ppr.setShareStatus(2);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
-        log.info("Ignore Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        log.info(PPTLogAppender.appendLog("IGNORE_RELATIONSHIP", pageRequest.getRequest(), "Relationship Id:", relationshipId));
+        //log.info("Ignore Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 }

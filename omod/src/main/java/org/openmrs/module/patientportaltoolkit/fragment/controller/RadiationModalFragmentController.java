@@ -8,7 +8,9 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
+import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.ParseException;
@@ -22,7 +24,9 @@ public class RadiationModalFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(FragmentModel model){}
+    public void controller(FragmentModel model, PageRequest pageRequest){
+        log.info(PPTLogAppender.appendLog("REQUEST_RADIATION_FRAGMENT", pageRequest.getRequest()));
+    }
 
     public void saveNewRadiationForm(FragmentModel model, @RequestParam(value = "radiationTypes", required = false) String radiationTypes,
                                         @RequestParam(value = "radiationStartDate", required = false) String radiationStartDate,
@@ -32,8 +36,9 @@ public class RadiationModalFragmentController {
                                         @RequestParam(value = "radiationPcpPhone", required = false) String radiationPcpPhone,
                                         @RequestParam(value = "radiationInstitutionName", required = false) String radiationInstitutionName,
                                         @RequestParam(value = "radiationInstitutionCity", required = false) String radiationInstitutionCity,
-                                        @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState) throws ParseException {
+                                        @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState, PageRequest pageRequest) throws ParseException {
 
+        log.info(PPTLogAppender.appendLog("NEW_RADIATION", pageRequest.getRequest(), "radiationTypes:", radiationTypes, "radiationStartDate:", radiationStartDate, "radiationEndDate:", radiationEndDate, "radiationPcpName:", radiationPcpName, "radiationPcpEmail:", radiationPcpEmail, "radiationPcpPhone:", radiationPcpPhone, "radiationInstitutionName:", radiationInstitutionName, "radiationInstitutionCity:", radiationInstitutionCity, "radiationInstitutionState:", radiationInstitutionState));
         EncounterService encounterService= Context.getEncounterService();
         Encounter newRadiationEncounter = new Encounter();
         newRadiationEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
@@ -135,7 +140,7 @@ public class RadiationModalFragmentController {
         newRadiationEncounter.addObs(radiationInstitution);
         newRadiationEncounter.addObs(raidationSpecialist);
         encounterService.saveEncounter(newRadiationEncounter);
-        log.info("Save new Radiation Form for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        //log.info("Save new Radiation Form for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
     public void saveRadiationForm(FragmentModel model,  @RequestParam(value = "encounterId", required = false) String encounterId,
@@ -147,8 +152,9 @@ public class RadiationModalFragmentController {
                                      @RequestParam(value = "radiationPcpPhone", required = false) String radiationPcpPhone,
                                      @RequestParam(value = "radiationInstitutionName", required = false) String radiationInstitutionName,
                                   @RequestParam(value = "radiationInstitutionCity", required = false) String radiationInstitutionCity,
-                                     @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState) throws ParseException {
+                                     @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState, PageRequest pageRequest) throws ParseException {
 
+        log.info(PPTLogAppender.appendLog("SAVE_EXISTING_RADIATION", pageRequest.getRequest(), "encounterId:", encounterId, "radiationTypes:", radiationTypes, "radiationStartDate:", radiationStartDate, "radiationEndDate:", radiationEndDate, "radiationPcpName:", radiationPcpName, "radiationPcpEmail:", radiationPcpEmail, "radiationPcpPhone:", radiationPcpPhone, "radiationInstitutionName:", radiationInstitutionName, "radiationInstitutionCity:", radiationInstitutionCity, "radiationInstitutionState:", radiationInstitutionState));
         EncounterService encounterService= Context.getEncounterService();
         ConceptService conceptService=Context.getConceptService();
         String[] str_array = radiationTypes.split("split");
@@ -339,7 +345,7 @@ public class RadiationModalFragmentController {
             }
 
             encounterService.saveEncounter(chemotherapyEncounter);
-            log.info("Edit Radiation Form for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+            //log.info("Edit Radiation Form for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
 
         }
 

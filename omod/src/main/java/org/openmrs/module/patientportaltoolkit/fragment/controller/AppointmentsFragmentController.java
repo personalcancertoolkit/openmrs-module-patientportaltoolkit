@@ -11,10 +11,12 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.Reminder;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
+import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.notification.MessageException;
 import org.openmrs.notification.MessageService;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageModel;
+import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.DateFormat;
@@ -32,7 +34,7 @@ public class AppointmentsFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(PageModel model) {
+    public void controller(PageModel model, PageRequest pageRequest) {
         User user = Context.getAuthenticatedUser();
         List<Reminder> alertableReminders = new ArrayList<>();
         Person person = (Person) model.get("person");
@@ -47,15 +49,17 @@ public class AppointmentsFragmentController {
                 }
             }
         }
-        log.info( "Appointments for -"+ person.getPersonName() + "(id="+person.getPersonId()+",uuid="+person.getUuid()+")"+" Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")" );
+        log.info(PPTLogAppender.appendLog("REQUEST_APPOINTMENTS_FRAGMENT", pageRequest.getRequest()));
+        //log.info( "~REQUEST_APPOINTMENTS~"+ user.getUsername() + "~REQ_FOR:" + Context.getUserService().getUsersByPerson(person,false).get(0).getUsername() );
         model.addAttribute("alertablereminders",alertableReminders);
     }
 
 
-    public void markCompleted(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markCompletedDate", required = true) String markCompletedDate, @RequestParam(value = "doctorName", required = true) String doctorName, @RequestParam(value = "comments", required = true) String comments) {
+    public void markCompleted(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markCompletedDate", required = true) String markCompletedDate, @RequestParam(value = "doctorName", required = true) String doctorName, @RequestParam(value = "comments", required = true) String comments, PageRequest pageRequest) {
 
         Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
-        log.info( "Mark Completed for -"+ person.getPersonName() + "(id="+person.getPersonId()+",uuid="+person.getUuid()+")"+" Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")" );
+        log.info(PPTLogAppender.appendLog("MARK_COMPLETED_APPOINTMENTS", pageRequest.getRequest()));
+       // log.info("~MARK_COMPLETED_APPOINTMENTS~"+ Context.getAuthenticatedUser().getUsername()+ "~REQ_FOR:"+ Context.getUserService().getUsersByPerson(person,false).get(0).getUsername());
         //System.out.println("121212121212"+markCompletedDate);
         DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         Date date = new Date();
@@ -68,10 +72,11 @@ public class AppointmentsFragmentController {
 
     }
 
-    public void markScheduled(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markScheduledDate", required = true) String markScheduledDate) {
+    public void markScheduled(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markScheduledDate", required = true) String markScheduledDate, PageRequest pageRequest) {
 
         Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
-        log.info( "Mark Scheduled for -"+ person.getPersonName() + "(id="+person.getPersonId()+",uuid="+person.getUuid()+")"+" Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")" );
+        log.info(PPTLogAppender.appendLog("MARK_SCHEDULED_APPOINTMENTS", pageRequest.getRequest()));
+        //log.info("~MARK_SCHEDULED_APPOINTMENTS~" + Context.getAuthenticatedUser().getUsername()+ "~REQ_FOR:"+ Context.getUserService().getUsersByPerson(person,false).get(0).getUsername());
         //System.out.println("121212121212"+markCompletedDate);
         DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         Date date = new Date();

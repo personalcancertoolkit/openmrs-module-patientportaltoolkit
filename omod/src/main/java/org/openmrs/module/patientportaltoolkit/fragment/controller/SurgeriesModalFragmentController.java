@@ -9,7 +9,9 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
+import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.text.ParseException;
@@ -25,7 +27,8 @@ public class SurgeriesModalFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(FragmentModel model) {
+    public void controller(FragmentModel model, PageRequest pageRequest) {
+        log.info(PPTLogAppender.appendLog("REQUEST_SURGERIES_FRAGMENT", pageRequest.getRequest()));
     }
 
     public void saveNewSurgeryForm(FragmentModel model, @RequestParam(value = "surgeryTypes", required = false) String surgeryTypes,
@@ -37,8 +40,9 @@ public class SurgeriesModalFragmentController {
                                    @RequestParam(value = "surgeonPcpPhone", required = false) String surgeonPcpPhone,
                                    @RequestParam(value = "surgeryInstitutionName", required = false) String surgeryInstitutionName,
                                    @RequestParam(value = "surgeryInstitutionCity", required = false) String surgeryInstitutionCity,
-                                   @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState) throws ParseException {
+                                   @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState, PageRequest pageRequest) throws ParseException {
 
+        log.info(PPTLogAppender.appendLog("NEW_SURGERY", pageRequest.getRequest(), "surgeryTypes:", surgeryTypes, "surgeryComplications:", surgeryComplications, "majorComplicationsTypeAnswer:", majorComplicationsTypeAnswer, "surgeryDate:", surgeryDate, "surgeonPcpName:", surgeonPcpName, "surgeonPcpEmail:", surgeonPcpEmail, "surgeonPcpPhone:", surgeonPcpPhone, "surgeryInstitutionName:", surgeryInstitutionName, "surgeryInstitutionCity:", surgeryInstitutionCity, "surgeryInstitutionState:", surgeryInstitutionState));
         EncounterService encounterService= Context.getEncounterService();
         Encounter newSurgeryEncounter = new Encounter();
         newSurgeryEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
@@ -146,7 +150,7 @@ public class SurgeriesModalFragmentController {
         newSurgeryEncounter.addObs(suregeryInstitution);
         newSurgeryEncounter.addObs(surgeon);
         encounterService.saveEncounter(newSurgeryEncounter);
-        log.info("Save New Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        //log.info("Save New Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
     public void saveSurgeryForm(FragmentModel model,  @RequestParam(value = "encounterId", required = false) String encounterId,
                          @RequestParam(value = "surgeryTypes", required = false) String surgeryTypes,
@@ -158,8 +162,9 @@ public class SurgeriesModalFragmentController {
                          @RequestParam(value = "surgeonPcpPhone", required = false) String surgeonPcpPhone,
                          @RequestParam(value = "surgeryInstitutionName", required = false) String surgeryInstitutionName,
                          @RequestParam(value = "surgeryInstitutionCity", required = false) String surgeryInstitutionCity,
-                         @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState) throws ParseException {
+                         @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState, PageRequest pageRequest) throws ParseException {
 
+        log.info(PPTLogAppender.appendLog("UPDATE_SURGERY", pageRequest.getRequest(),"encounterId:", encounterId ,"surgeryTypes:", surgeryTypes, "surgeryComplications:", surgeryComplications, "majorComplicationsTypeAnswer:", majorComplicationsTypeAnswer, "surgeryDate:", surgeryDate, "surgeonPcpName:", surgeonPcpName, "surgeonPcpEmail:", surgeonPcpEmail, "surgeonPcpPhone:", surgeonPcpPhone, "surgeryInstitutionName:", surgeryInstitutionName, "surgeryInstitutionCity:", surgeryInstitutionCity, "surgeryInstitutionState:", surgeryInstitutionState));
         EncounterService encounterService= Context.getEncounterService();
         ConceptService conceptService=Context.getConceptService();
         String[] str_array = surgeryTypes.split("split");
@@ -235,7 +240,7 @@ public class SurgeriesModalFragmentController {
                 surgeryEncounter.addObs(o);
             }
             encounterService.saveEncounter(surgeryEncounter);
-            log.info("Update Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+          //  log.info("Update Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         }
 
         }
