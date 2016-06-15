@@ -18,7 +18,7 @@ public class PPTLogAppender {
             ipAddress = request.getRemoteAddr();
         }*/
 
-        String message = Context.getAuthenticatedUser().getSystemId() +" "+ Context.getAuthenticatedUser().getUsername() +" "+ token +" "+ request.getRequestURI()+" "+request.getMethod()+""+request.getHeader("User-Agent");
+        String message = Context.getAuthenticatedUser().getSystemId() +" "+ Context.getAuthenticatedUser().getUsername() +" "+ token +" "+ request.getRequestURI()+" "+request.getMethod()+" "+request.getHeader("User-Agent");
         for(String iter: data){
             message=message+" "+iter;
         }
