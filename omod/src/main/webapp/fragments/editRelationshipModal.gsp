@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="editRelationship-type">Relationship Type:</label>
+                        <label class="control-label col-sm-2" for="editRelationship-type">Is My:</label>
                         <div class="col-sm-10" id="editRelationship-type">
                             <% if (relationshipTypes) { %>
                             <select class="form-control" id="editRelationshipSelect">
