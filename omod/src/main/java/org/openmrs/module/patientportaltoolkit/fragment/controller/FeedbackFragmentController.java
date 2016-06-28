@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.util.MailHelper;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.notification.MessageException;
 import org.openmrs.notification.MessageService;
@@ -55,7 +56,7 @@ public class FeedbackFragmentController {
             e.printStackTrace();
         }*/
 
-        log.info(PPTLogAppender.appendLog("SEND_FEEDBACK", pageRequest.getRequest(), "Feedback:", feedback));
+       /* log.info(PPTLogAppender.appendLog("SEND_FEEDBACK", pageRequest.getRequest(), "Feedback:", feedback));
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -86,7 +87,8 @@ public class FeedbackFragmentController {
             //log.info("Feedback/Contact message sent by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         } catch (MessagingException e) {
             throw new RuntimeException(e);
-        }
+        }*/
+        MailHelper.sendMail("Testing Subject",feedback, Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_CONTACT_US_EMAIL));
 
     }
 }

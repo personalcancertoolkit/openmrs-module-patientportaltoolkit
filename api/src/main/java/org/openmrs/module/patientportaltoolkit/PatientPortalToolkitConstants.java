@@ -44,7 +44,11 @@ public class PatientPortalToolkitConstants {
 
     public static final String GP_CONTACT_US_EMAIL = "patientportaltoolkit.contactUsEmail";
 
-    public static final String GP_CONTACT_US_FROM_EMAIL = "patientportaltoolkit.contactUsFromEmail";
+   // public static final String GP_CONTACT_US_FROM_EMAIL = "patientportaltoolkit.contactUsFromEmail";
+
+    public static final String GP_SENDING_EMAIL = "patientportaltoolkit.sendingEmail";
+
+    public static final String GP_SENDING_EMAIL_PASSWORD = "patientportaltoolkit.sendingEmailPassword";
 
     public static final String DATE_FORMAT_MONTHDATEYEAR ="MM/dd/yy";
 

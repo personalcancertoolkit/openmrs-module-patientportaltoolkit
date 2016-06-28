@@ -20,6 +20,7 @@ package org.openmrs.module.patientportaltoolkit.web.filter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.MDC;
 import org.openmrs.api.context.Context;
 
 import javax.servlet.*;
@@ -98,6 +99,20 @@ public class AuthorizationFilter
                     }
                 }
             }
+          /*  if(request.getRemoteAddr()!=null)
+                MDC.put("xforwardedfor", request.getRemoteAddr());
+           // if(((HttpServletRequest) request).getHeader("X-FORWARDED-FOR")!=null)
+           // MDC.put("xforwardedfor", ((HttpServletRequest) request).getHeader("X-FORWARDED-FOR"));
+            if(Context.getAuthenticatedUser().getSystemId()!=null)
+            MDC.put("userid",  Context.getAuthenticatedUser().getSystemId());
+            if(Context.getAuthenticatedUser().getUsername()!=null)
+            MDC.put("username", Context.getAuthenticatedUser().getUsername());
+            if(((HttpServletRequest) request).getHeader("User-Agent")!=null)
+            MDC.put("useragent", ((HttpServletRequest) request).getHeader("User-Agent"));
+            if(((HttpServletRequest) request).getMethod()!=null)
+            MDC.put("usermethod", ((HttpServletRequest) request).getMethod());
+            if(((HttpServletRequest) request).getRequestURI()!=null)
+            MDC.put("URI", ((HttpServletRequest) request).getRequestURI());*/
         }
         // continue with the filter chain in all circumstances
         chain.doFilter( request, response );
