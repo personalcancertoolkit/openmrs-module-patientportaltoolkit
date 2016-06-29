@@ -51,7 +51,7 @@ public class ComposeMessageFragmentController {
         Person person = personService.getPersonByUuid(personUuid);
         Message newMessage= new Message(subject,message,user.getPerson(),person);
         Context.getService(MessageService.class).saveMessage(newMessage);
-        MailHelper.sendMail("New Message", "Hello "+ person.getPersonName()+"you have received a new message on your patient portal module please log into www.personalcancertoolkit.org to view the message", person.getAttribute("Email").toString());
+        MailHelper.sendMail("New Message", "Hello "+ person.getPersonName()+"\n you have received a new message on your patient portal module please log into www.personalcancertoolkit.org to view the message", person.getAttribute("Email").toString());
         //log.info("Send New Message to -" + person.getPersonName() + "(id=" + person.getPersonId() + ",uuid=" + person.getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
@@ -67,7 +67,7 @@ public class ComposeMessageFragmentController {
         newMessage.setParentEntryId(Integer.valueOf(parentId));
         Context.getService(MessageService.class).saveMessage(newMessage);
         //log.info("Send Reply Message to -" + person.getPersonName() + "(id=" + person.getPersonId() + ",uuid=" + person.getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
-        MailHelper.sendMail("New Message", "Hello"+ person.getPersonName()+"you have received a new message on your patient portal module please log into www.personalcancertoolkit.org to view the message", person.getAttribute("Email").toString());
+        MailHelper.sendMail("New Message", "Hello"+ person.getPersonName()+"\nyou have received a new message on your patient portal module please log into www.personalcancertoolkit.org to view the message", person.getAttribute("Email").toString());
 
     }
 

@@ -24,11 +24,14 @@ import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
+import org.openmrs.module.patientportaltoolkit.api.util.MailHelper;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
+import org.openmrs.module.patientportaltoolkit.api.util.PasswordUtil;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -48,8 +51,8 @@ public class AddRelationshipFragmentController {
                                         @RequestParam(value = "personEmail", required = true) String personEmail,
                                         @RequestParam(value = "personRelationType", required = true) String personRelationType,
                                         @RequestParam(value = "securityLayerType", required = true) String securityLayerType,
-                                        @RequestParam(value = "gender", required = true) String gender, PageRequest pageRequest) {
-        log.info(PPTLogAppender.appendLog("ADD_RELATION", pageRequest.getRequest(), "GIVEN_NAME:", given, "FAMILY_NAME:", family, "EMAIL:", personEmail,"RELATION_TYPE:", personRelationType, "SECURITY_TYPE:", securityLayerType, "GENDER:", gender));
+                                        @RequestParam(value = "gender", required = true) String gender, HttpServletRequest servletRequest) {
+        log.info(PPTLogAppender.appendLog("ADD_RELATION", servletRequest, "GIVEN_NAME:", given, "FAMILY_NAME:", family, "EMAIL:", personEmail,"RELATION_TYPE:", personRelationType, "SECURITY_TYPE:", securityLayerType, "GENDER:", gender));
         //log.info("~ADD_RELATION~"+ Context.getAuthenticatedUser().getUsername() + "~USER_ENTERED_DATA~"+ "GIVEN_NAME:"+  given + "^FAMILY_NAME:" + family + "^EMAIL:"+ personEmail +"^RELATION_TYPE:"+ personRelationType +"^SECURITY_TYPE:"+ securityLayerType +"^GENDER:"+ gender);
         int checkIfPersonExists=0;
         User user = Context.getAuthenticatedUser();
@@ -110,9 +113,14 @@ public class AddRelationshipFragmentController {
             User newUser = new User(person);
             newUser.setUsername(given + family);
             newUser.addRole(userService.getRole(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE_ROLE));
-            String passworduuid = RandomStringUtils.randomAlphanumeric(20).toUpperCase();
-            User savedUser = Context.getUserService().saveUser(newUser, "Tester123");
+            String newPassword = String.valueOf(PasswordUtil.getNewPassword());
+            newUser.setUserProperty("forcePassword", "true");
+            User savedUser = Context.getUserService().saveUser(newUser, newPassword);
             //System.out.println("\nsystemout---password is " + "Test123" + passworduuid);
+            MailHelper.sendMail("Welcome", "Hello " + person.getPersonName() + ", \n you have been added as a connection to one of the members of www.personalcancertoolkit.org, please log on to www.personalcancertoolkit.org to create your account and to accept or ignore the connection request. The username for your account is "+savedUser.getUsername()+" and password is " +newPassword+ " .Please change your password on your first login", person.getAttribute("Email").toString());
+        }
+        else{
+            MailHelper.sendMail("Welcome", "Hello " + person.getPersonName() + ", \n you have been added as a connection to one of the members of www.personalcancertoolkit.org, please log on to www.personalcancertoolkit.org to accept or ignore the connection request.", person.getAttribute("Email").toString());
         }
         PatientPortalRelation ppr=new PatientPortalRelation(user.getPerson(),person);
         RelationshipType selectedRelationType = Context.getPersonService().getRelationshipTypeByUuid(personRelationType);
@@ -123,7 +131,7 @@ public class AddRelationshipFragmentController {
         date.setTime(new Date());
         SimpleDateFormat f = new SimpleDateFormat("dd-MMMM-yyyy");
         //System.out.println(f.format(date.getTime()));
-        date.add(Calendar.YEAR,20);
+        date.add(Calendar.YEAR, 20);
         ppr.setExpireDate(date.getTime());
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
         //return "Success";

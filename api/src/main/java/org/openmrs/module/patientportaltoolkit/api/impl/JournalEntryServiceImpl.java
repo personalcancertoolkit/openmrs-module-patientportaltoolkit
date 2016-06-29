@@ -97,7 +97,7 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
         if(dao.getJournalEntryForPerson(user, orderByDateDesc)!=null)
         totalJournalList.addAll(dao.getJournalEntryForPerson(user, orderByDateDesc));
         List<PatientPortalRelation>  pprlist= new ArrayList<PatientPortalRelation>();
-        if(Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByRelatedPerson(user.getPerson())!=null) {
+        if(Context.getService(PatientPortalRelationService.class).getAcceptedPatientPortalRelationByRelatedPerson(user.getPerson())!=null) {
             pprlist.addAll(Context.getService(PatientPortalRelationService.class).getAcceptedPatientPortalRelationByRelatedPerson(user.getPerson()));
             for (PatientPortalRelation ppr : pprlist) {
                 if (ppr.getShareType().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareType().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
