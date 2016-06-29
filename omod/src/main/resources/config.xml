@@ -62,13 +62,13 @@
 		<defaultValue>project*Connector-909</defaultValue>
 		<description>Password for allowing OpenMRS to log into the Symptom Management Portal</description>
 	</globalProperty>
-	<!--<globalProperty>
+	<globalProperty>
 		<property>${project.parent.artifactId}.contactUsEmail</property>
-		<defaultValue>maurya@openmrs.org</defaultValue>
+		<defaultValue>PleaseSetThisToContactUs:Email</defaultValue>
 		<description>Email to send contact us responses</description>
 	</globalProperty>
 
-    <globalProperty>
+	<!--<globalProperty>
         <property>${project.parent.artifactId}.contactUsFromEmail</property>
         <defaultValue>kummamuru.srimaurya@gmail.com</defaultValue>
         <description>Email to send from the contact us responses</description>
