@@ -21,9 +21,9 @@
                                 </div>
                                 <div class="media-body">
                                     <h4 class="media-heading" id="editPersonName"></h4>
-                    </div>
                                 </div>
                         </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="editRelationship-type">Is My:</label>
                         <div class="col-sm-10" id="editRelationship-type">
