@@ -2,11 +2,13 @@
     ${ ui.includeFragment("patientportaltoolkit", "removeRelationship") }
     ${ ui.includeFragment("patientportaltoolkit", "addRelationship") }
     ${ ui.includeFragment("patientportaltoolkit", "editRelationshipModal") }
+    <% if (user.getPerson().isPatient()){%>
     <div class="clearfix">
         <div class="button-div pull-right">
             <button type="button" class="btn btn-default pad-left" data-toggle="modal" data-target="#add-relationship-modal">Add Connections</button>
         </div>
     </div>
+    <% } %>
     <% if (relationships) { %>
 
     <% relationships.each { relationship -> %>
