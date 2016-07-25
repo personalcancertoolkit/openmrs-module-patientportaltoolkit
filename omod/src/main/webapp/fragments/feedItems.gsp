@@ -45,7 +45,7 @@
                         <div class="separator">
                             <div class="media-left">
                                 <a href="#">
-                                    <div class="profileBadgeJournals">${ (journal.creator.getGivenName()) } ${ (journal.creator.getFamilyName()) }</div>
+                                    <div class="profileBadgeJournals">${ (user.getPerson().getGivenName()) } ${ (user.getPerson().getFamilyName()) }</div>
                                 </a>
                             </div>
                             <div class="media-body" style="width: 100%">

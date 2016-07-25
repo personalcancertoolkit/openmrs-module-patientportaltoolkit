@@ -30,6 +30,7 @@ public class FeedItemsFragmentController {
 
     public void controller(PageModel model, PageRequest pageRequest) {
         log.info(PPTLogAppender.appendLog("ReQUEST_FEEDITEMS_FRAGMENT", pageRequest.getRequest()));
-            model.addAttribute("journals", Context.getService(JournalEntryService.class).getJournalEntryForPerson(Context.getAuthenticatedUser(),true));
+            model.addAttribute("journals", Context.getService(JournalEntryService.class).getJournalEntryForPerson(Context.getAuthenticatedUser(), true));
+        model.addAttribute("user",Context.getAuthenticatedUser());
     }
 }

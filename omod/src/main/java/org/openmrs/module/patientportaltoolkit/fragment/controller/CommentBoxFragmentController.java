@@ -24,6 +24,8 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by Maurya on 19/06/2015.
  */
@@ -35,8 +37,8 @@ public class CommentBoxFragmentController {
         model.addAttribute("parentId",parentId);
     }
 
-    public void saveComment(FragmentModel model,@RequestParam(value = "commentContent", required = true) String content,@RequestParam(value = "parentId", required = true) String parentId, PageRequest pageRequest) {
-        log.info(PPTLogAppender.appendLog("SAVE_NEW_COMMENT", pageRequest.getRequest(), "commentContent:", content, "parentId:",parentId));
+    public void saveComment(FragmentModel model,@RequestParam(value = "commentContent", required = true) String content,@RequestParam(value = "parentId", required = true) String parentId, HttpServletRequest servletRequest) {
+        log.info(PPTLogAppender.appendLog("SAVE_NEW_COMMENT", servletRequest, "commentContent:", content, "parentId:",parentId));
         //log.info("Save New Comment by -" + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
         String title=Context.getAuthenticatedUser().getGivenName()+" "+Context.getAuthenticatedUser().getFamilyName();
         JournalEntry journalEntry = new JournalEntry(title,content);
