@@ -22,7 +22,7 @@
                     </select>
                 </form>
                 <form class="form-inline" role="form"> <label>Date of Birth </label>
-                    <input class="form-control" id="userprofileDOB" type="text" value="<% if (person.birthdateEstimated) { %>${pptutil.formatDate(person.birthdate)}<% } %>"/>
+                    <input class="form-control" id="userprofileDOB" type="text" value="${pptutil.formatDate(person.birthdate)}"/>
                 </form>
             </div>
             <div class="modal-footer">
