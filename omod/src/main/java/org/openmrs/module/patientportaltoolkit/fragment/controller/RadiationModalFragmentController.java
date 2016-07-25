@@ -26,6 +26,7 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -49,9 +50,9 @@ public class RadiationModalFragmentController {
                                         @RequestParam(value = "radiationPcpPhone", required = false) String radiationPcpPhone,
                                         @RequestParam(value = "radiationInstitutionName", required = false) String radiationInstitutionName,
                                         @RequestParam(value = "radiationInstitutionCity", required = false) String radiationInstitutionCity,
-                                        @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState, PageRequest pageRequest) throws ParseException {
+                                        @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState, HttpServletRequest servletRequest) throws ParseException {
 
-        log.info(PPTLogAppender.appendLog("NEW_RADIATION", pageRequest.getRequest(), "radiationTypes:", radiationTypes, "radiationStartDate:", radiationStartDate, "radiationEndDate:", radiationEndDate, "radiationPcpName:", radiationPcpName, "radiationPcpEmail:", radiationPcpEmail, "radiationPcpPhone:", radiationPcpPhone, "radiationInstitutionName:", radiationInstitutionName, "radiationInstitutionCity:", radiationInstitutionCity, "radiationInstitutionState:", radiationInstitutionState));
+        log.info(PPTLogAppender.appendLog("NEW_RADIATION",servletRequest, "radiationTypes:", radiationTypes, "radiationStartDate:", radiationStartDate, "radiationEndDate:", radiationEndDate, "radiationPcpName:", radiationPcpName, "radiationPcpEmail:", radiationPcpEmail, "radiationPcpPhone:", radiationPcpPhone, "radiationInstitutionName:", radiationInstitutionName, "radiationInstitutionCity:", radiationInstitutionCity, "radiationInstitutionState:", radiationInstitutionState));
         EncounterService encounterService= Context.getEncounterService();
         Encounter newRadiationEncounter = new Encounter();
         newRadiationEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
@@ -165,9 +166,9 @@ public class RadiationModalFragmentController {
                                      @RequestParam(value = "radiationPcpPhone", required = false) String radiationPcpPhone,
                                      @RequestParam(value = "radiationInstitutionName", required = false) String radiationInstitutionName,
                                   @RequestParam(value = "radiationInstitutionCity", required = false) String radiationInstitutionCity,
-                                     @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState, PageRequest pageRequest) throws ParseException {
+                                     @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState, HttpServletRequest servletRequest) throws ParseException {
 
-        log.info(PPTLogAppender.appendLog("SAVE_EXISTING_RADIATION", pageRequest.getRequest(), "encounterId:", encounterId, "radiationTypes:", radiationTypes, "radiationStartDate:", radiationStartDate, "radiationEndDate:", radiationEndDate, "radiationPcpName:", radiationPcpName, "radiationPcpEmail:", radiationPcpEmail, "radiationPcpPhone:", radiationPcpPhone, "radiationInstitutionName:", radiationInstitutionName, "radiationInstitutionCity:", radiationInstitutionCity, "radiationInstitutionState:", radiationInstitutionState));
+        log.info(PPTLogAppender.appendLog("SAVE_EXISTING_RADIATION", servletRequest, "encounterId:", encounterId, "radiationTypes:", radiationTypes, "radiationStartDate:", radiationStartDate, "radiationEndDate:", radiationEndDate, "radiationPcpName:", radiationPcpName, "radiationPcpEmail:", radiationPcpEmail, "radiationPcpPhone:", radiationPcpPhone, "radiationInstitutionName:", radiationInstitutionName, "radiationInstitutionCity:", radiationInstitutionCity, "radiationInstitutionState:", radiationInstitutionState));
         EncounterService encounterService= Context.getEncounterService();
         ConceptService conceptService=Context.getConceptService();
         String[] str_array = radiationTypes.split("split");

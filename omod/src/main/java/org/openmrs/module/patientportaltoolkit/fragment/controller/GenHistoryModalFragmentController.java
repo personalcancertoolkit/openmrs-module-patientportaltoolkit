@@ -26,6 +26,7 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -49,9 +50,9 @@ public class GenHistoryModalFragmentController {
                                    @RequestParam(value = "cancerAbnormalityType", required = true) String cancerAbnormalityType,
                                    @RequestParam(value = "genHistoryCancerPcpName", required = true) String genHistoryCancerPcpName,
                                    @RequestParam(value = "genHistoryCancerPcpEmail", required = true) String genHistoryCancerPcpEmail,
-                                   @RequestParam(value = "genHistoryCancerPcpPhone", required = true) String genHistoryCancerPcpPhone, PageRequest pageRequest) throws ParseException {
+                                   @RequestParam(value = "genHistoryCancerPcpPhone", required = true) String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
 
-        log.info(PPTLogAppender.appendLog("SAVE_GENERALHISTORY", pageRequest.getRequest(), "encounterId:", encounterId, "cancerType:", cancerType, "cancerStage:", cancerStage, "cancerDate:", cancerDate, "cancerAbnormalityBool:", cancerAbnormalityBool, "cancerAbnormalityType:", cancerAbnormalityType, "genHistoryCancerPcpName:", genHistoryCancerPcpName, "genHistoryCancerPcpEmail:", genHistoryCancerPcpEmail, "genHistoryCancerPcpPhone:", genHistoryCancerPcpPhone));
+        log.info(PPTLogAppender.appendLog("SAVE_GENERALHISTORY", servletRequest, "encounterId:", encounterId, "cancerType:", cancerType, "cancerStage:", cancerStage, "cancerDate:", cancerDate, "cancerAbnormalityBool:", cancerAbnormalityBool, "cancerAbnormalityType:", cancerAbnormalityType, "genHistoryCancerPcpName:", genHistoryCancerPcpName, "genHistoryCancerPcpEmail:", genHistoryCancerPcpEmail, "genHistoryCancerPcpPhone:", genHistoryCancerPcpPhone));
         EncounterService encounterService=Context.getEncounterService();
         ConceptService conceptService=Context.getConceptService();
         Encounter genHistoryEncounter = encounterService.getEncounterByUuid(encounterId);

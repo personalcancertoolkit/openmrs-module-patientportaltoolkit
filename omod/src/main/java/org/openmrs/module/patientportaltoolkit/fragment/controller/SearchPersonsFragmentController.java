@@ -24,6 +24,7 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -36,8 +37,8 @@ public class SearchPersonsFragmentController {
         model.addAttribute("searchPersons",null);
     }
 
-    public String getPersonsFromSearch(FragmentModel model,@RequestParam(value = "searchQuery", required = true) String searchQuery,UiUtils ui, PageRequest pageRequest) {
-        log.info(PPTLogAppender.appendLog("GET_PERSONS_FROMSEARCH", pageRequest.getRequest(), "searchQuery:", searchQuery));
+    public String getPersonsFromSearch(FragmentModel model,@RequestParam(value = "searchQuery", required = true) String searchQuery,UiUtils ui, HttpServletRequest servletRequest) {
+        log.info(PPTLogAppender.appendLog("GET_PERSONS_FROMSEARCH", servletRequest, "searchQuery:", searchQuery));
         List<Person> persons =Context.getPersonService().getPeople(searchQuery, false);
        return "json";
     }

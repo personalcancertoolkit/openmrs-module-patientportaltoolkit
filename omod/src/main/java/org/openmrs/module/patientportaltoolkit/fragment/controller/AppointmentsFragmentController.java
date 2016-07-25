@@ -32,6 +32,7 @@ import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -68,10 +69,10 @@ public class AppointmentsFragmentController {
     }
 
 
-    public void markCompleted(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markCompletedDate", required = true) String markCompletedDate, @RequestParam(value = "doctorName", required = true) String doctorName, @RequestParam(value = "comments", required = true) String comments, PageRequest pageRequest) {
+    public void markCompleted(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markCompletedDate", required = true) String markCompletedDate, @RequestParam(value = "doctorName", required = true) String doctorName, @RequestParam(value = "comments", required = true) String comments, HttpServletRequest servletRequest) {
 
         Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
-        log.info(PPTLogAppender.appendLog("MARK_COMPLETED_APPOINTMENTS", pageRequest.getRequest()));
+        log.info(PPTLogAppender.appendLog("MARK_COMPLETED_APPOINTMENTS", servletRequest));
        // log.info("~MARK_COMPLETED_APPOINTMENTS~"+ Context.getAuthenticatedUser().getUsername()+ "~REQ_FOR:"+ Context.getUserService().getUsersByPerson(person,false).get(0).getUsername());
         //System.out.println("121212121212"+markCompletedDate);
         DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
@@ -85,10 +86,10 @@ public class AppointmentsFragmentController {
 
     }
 
-    public void markScheduled(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markScheduledDate", required = true) String markScheduledDate, PageRequest pageRequest) {
+    public void markScheduled(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markScheduledDate", required = true) String markScheduledDate, HttpServletRequest servletRequest) {
 
         Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
-        log.info(PPTLogAppender.appendLog("MARK_SCHEDULED_APPOINTMENTS", pageRequest.getRequest()));
+        log.info(PPTLogAppender.appendLog("MARK_SCHEDULED_APPOINTMENTS", servletRequest));
         //log.info("~MARK_SCHEDULED_APPOINTMENTS~" + Context.getAuthenticatedUser().getUsername()+ "~REQ_FOR:"+ Context.getUserService().getUsersByPerson(person,false).get(0).getUsername());
         //System.out.println("121212121212"+markCompletedDate);
         DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);

@@ -33,6 +33,7 @@ import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.management.relation.RelationType;
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,7 +58,7 @@ public class ConnectionsFragmentController {
 
     public void saveRelationshipfromEdit(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId,
                                         @RequestParam(value = "personRelationType", required = true) String personRelationType,
-                                        @RequestParam(value = "personRelationSecurityLayer", required = true) String personRelationSecurityLayer, PageRequest pageRequest) {
+                                        @RequestParam(value = "personRelationSecurityLayer", required = true) String personRelationSecurityLayer, HttpServletRequest servletRequest) {
         User user = Context.getAuthenticatedUser();
         UserService userService=Context.getUserService();
 
@@ -66,12 +67,12 @@ public class ConnectionsFragmentController {
         ppr.setShareType(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(personRelationSecurityLayer));
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
 
-        log.info(PPTLogAppender.appendLog("EDIT_RELATIONSHIP", pageRequest.getRequest()));
+        log.info(PPTLogAppender.appendLog("EDIT_RELATIONSHIP", servletRequest));
         //log.info("Edit Relationship/Connection -"+ relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         //return "Success";
     }
 
-    public void acceptConnectionRequest(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId, PageRequest pageRequest) {
+    public void acceptConnectionRequest(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId, HttpServletRequest servletRequest) {
         User user = Context.getAuthenticatedUser();
         UserService userService=Context.getUserService();
 
@@ -97,18 +98,18 @@ public class ConnectionsFragmentController {
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(pprNew);
         ppr.setShareStatus(1);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
-        log.info(PPTLogAppender.appendLog("ACCEPT_RELATIONSHIP", pageRequest.getRequest(),"Relationship Id:", relationshipId));
+        log.info(PPTLogAppender.appendLog("ACCEPT_RELATIONSHIP", servletRequest,"Relationship Id:", relationshipId));
         //log.info("Accept Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         //return "Success";
     }
 
-    public void ignoreConnectionRequest(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId, PageRequest pageRequest) {
+    public void ignoreConnectionRequest(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId, HttpServletRequest servletRequest) {
         User user = Context.getAuthenticatedUser();
         UserService userService=Context.getUserService();
         PatientPortalRelation ppr=Context.getService(PatientPortalRelationService.class).getPatientPortalRelation(relationshipId);
         ppr.setShareStatus(2);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
-        log.info(PPTLogAppender.appendLog("IGNORE_RELATIONSHIP", pageRequest.getRequest(), "Relationship Id:", relationshipId));
+        log.info(PPTLogAppender.appendLog("IGNORE_RELATIONSHIP", servletRequest, "Relationship Id:", relationshipId));
         //log.info("Ignore Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 }

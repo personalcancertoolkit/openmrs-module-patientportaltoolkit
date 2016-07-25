@@ -26,6 +26,7 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -49,9 +50,9 @@ public class ChemotherapyModalFragmentController {
                                         @RequestParam(value = "chemotherapyPcpPhone", required = false) String chemotherapyPcpPhone,
                                         @RequestParam(value = "chemotherapyInstitutionName", required = false) String chemotherapyInstitutionName,
                                         @RequestParam(value = "chemotherapyInstitutionCity", required = false) String chemotherapyInstitutionCity,
-                                        @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState, PageRequest pageRequest) throws ParseException {
+                                        @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState, HttpServletRequest servletRequest) throws ParseException {
 
-        log.info(PPTLogAppender.appendLog("NEW_CHEMOTHERAPY", pageRequest.getRequest(), "chemotherapyMeds:", chemotherapyMeds, "centralLine:", centralLine, "chemoStartDate:", chemoStartDate, "chemoEndDate:", chemoEndDate, "chemotherapyPcpName:", chemotherapyPcpName, "chemotherapyPcpEmail:", chemotherapyPcpEmail, "chemotherapyPcpPhone:", chemotherapyPcpPhone, "chemotherapyInstitutionName:", chemotherapyInstitutionName, "chemotherapyInstitutionCity:", chemotherapyInstitutionCity, "chemotherapyInstitutionState:", chemotherapyInstitutionState));
+        log.info(PPTLogAppender.appendLog("NEW_CHEMOTHERAPY", servletRequest, "chemotherapyMeds:", chemotherapyMeds, "centralLine:", centralLine, "chemoStartDate:", chemoStartDate, "chemoEndDate:", chemoEndDate, "chemotherapyPcpName:", chemotherapyPcpName, "chemotherapyPcpEmail:", chemotherapyPcpEmail, "chemotherapyPcpPhone:", chemotherapyPcpPhone, "chemotherapyInstitutionName:", chemotherapyInstitutionName, "chemotherapyInstitutionCity:", chemotherapyInstitutionCity, "chemotherapyInstitutionState:", chemotherapyInstitutionState));
         EncounterService encounterService = Context.getEncounterService();
         Encounter newChemotherapyEncounter = new Encounter();
         newChemotherapyEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
@@ -175,9 +176,9 @@ public class ChemotherapyModalFragmentController {
                                      @RequestParam(value = "chemotherapyPcpPhone", required = false) String chemotherapyPcpPhone,
                                      @RequestParam(value = "chemotherapyInstitutionName", required = false) String chemotherapyInstitutionName,
                                      @RequestParam(value = "chemotherapyInstitutionCity", required = false) String chemotherapyInstitutionCity,
-                                     @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState, PageRequest pageRequest) throws ParseException {
+                                     @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState, HttpServletRequest servletRequest) throws ParseException {
 
-        log.info(PPTLogAppender.appendLog("UPDATE_CHEMOTHERAPY", pageRequest.getRequest(), "chemotherapyMeds:", chemotherapyMeds, "centralLine:", centralLine, "chemoStartDate:", chemoStartDate, "chemoEndDate:", chemoEndDate, "chemotherapyPcpName:", chemotherapyPcpName, "chemotherapyPcpEmail:", chemotherapyPcpEmail, "chemotherapyPcpPhone:", chemotherapyPcpPhone, "chemotherapyInstitutionName:", chemotherapyInstitutionName, "chemotherapyInstitutionCity:", chemotherapyInstitutionCity, "chemotherapyInstitutionState:", chemotherapyInstitutionState));
+        log.info(PPTLogAppender.appendLog("UPDATE_CHEMOTHERAPY", servletRequest, "chemotherapyMeds:", chemotherapyMeds, "centralLine:", centralLine, "chemoStartDate:", chemoStartDate, "chemoEndDate:", chemoEndDate, "chemotherapyPcpName:", chemotherapyPcpName, "chemotherapyPcpEmail:", chemotherapyPcpEmail, "chemotherapyPcpPhone:", chemotherapyPcpPhone, "chemotherapyInstitutionName:", chemotherapyInstitutionName, "chemotherapyInstitutionCity:", chemotherapyInstitutionCity, "chemotherapyInstitutionState:", chemotherapyInstitutionState));
         EncounterService encounterService = Context.getEncounterService();
         ConceptService conceptService = Context.getConceptService();
         String[] str_array = chemotherapyMeds.split("split");

@@ -24,6 +24,7 @@ import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -37,8 +38,8 @@ public class StatusUpdaterFragmentController {
         log.info(PPTLogAppender.appendLog("REQUEST_STATUSUPDATER_FRAGMENT", pageRequest.getRequest()));
     }
     public String savePost(@RequestParam(value = "title", required = true) String title,
-                       @RequestParam(value = "content", required = true) String content, PageRequest pageRequest) {
-        log.info(PPTLogAppender.appendLog("SAVE_POST", pageRequest.getRequest(), "title:", title, "content:", content));
+                       @RequestParam(value = "content", required = true) String content, HttpServletRequest servletRequest) {
+        log.info(PPTLogAppender.appendLog("SAVE_POST", servletRequest, "title:", title, "content:", content));
         JournalEntry journalEntry = new JournalEntry(title,content);
         Context.getService(JournalEntryService.class).saveJournalEntry(journalEntry);
         //log.info("Save Post/Journal of -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");

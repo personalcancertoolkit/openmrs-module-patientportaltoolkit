@@ -23,6 +23,7 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,9 +44,9 @@ public class ProfileEditFragmentController {
                                     @RequestParam(value = "givenName", required = true) String givenName,
                                     @RequestParam(value = "familyName", required = true) String familyName,
                                     @RequestParam(value = "gender", required = true) String gender,
-                                    @RequestParam(value = "birthDate", required = true) String birthDate, PageRequest pageRequest)  {
+                                    @RequestParam(value = "birthDate", required = true) String birthDate, HttpServletRequest servletRequest)  {
 
-        log.info(PPTLogAppender.appendLog("SAVE_PROFILEEDIT", pageRequest.getRequest(), "personId:", personId+"","givenName:",givenName, "familyName", familyName, "gender", gender, "birthDate", birthDate));
+        log.info(PPTLogAppender.appendLog("SAVE_PROFILEEDIT", servletRequest, "personId:", personId+"","givenName:",givenName, "familyName", familyName, "gender", gender, "birthDate", birthDate));
         Person person = Context.getPersonService().getPerson(personId);
         PersonName personName = new PersonName();
         personName.setGivenName(givenName);

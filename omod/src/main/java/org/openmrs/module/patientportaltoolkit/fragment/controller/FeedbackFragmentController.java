@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Properties;
 
 /**
@@ -41,7 +42,7 @@ public class FeedbackFragmentController {
         log.info(PPTLogAppender.appendLog("REQUEST_SEND_FEEDBACK", pageRequest.getRequest()));
     }
 
-    public void sendFeedback(FragmentModel model, @RequestParam(value = "feedbackMessage", required = true) String feedback, PageRequest pageRequest) {
+    public void sendFeedback(FragmentModel model, @RequestParam(value = "feedbackMessage", required = true) String feedback, HttpServletRequest servletRequest) {
 
 
        /* String to = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_CONTACT_US_EMAIL);
@@ -56,8 +57,8 @@ public class FeedbackFragmentController {
             e.printStackTrace();
         }*/
 
-       /* log.info(PPTLogAppender.appendLog("SEND_FEEDBACK", pageRequest.getRequest(), "Feedback:", feedback));
-        Properties props = new Properties();
+        log.info(PPTLogAppender.appendLog("SEND_FEEDBACK", servletRequest, "Feedback:", feedback));
+       /* Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.socketFactory.class",

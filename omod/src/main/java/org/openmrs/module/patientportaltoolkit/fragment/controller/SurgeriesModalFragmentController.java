@@ -27,6 +27,7 @@ import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,9 +54,9 @@ public class SurgeriesModalFragmentController {
                                    @RequestParam(value = "surgeonPcpPhone", required = false) String surgeonPcpPhone,
                                    @RequestParam(value = "surgeryInstitutionName", required = false) String surgeryInstitutionName,
                                    @RequestParam(value = "surgeryInstitutionCity", required = false) String surgeryInstitutionCity,
-                                   @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState, PageRequest pageRequest) throws ParseException {
+                                   @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState, HttpServletRequest servletRequestest) throws ParseException {
 
-        log.info(PPTLogAppender.appendLog("NEW_SURGERY", pageRequest.getRequest(), "surgeryTypes:", surgeryTypes, "surgeryComplications:", surgeryComplications, "majorComplicationsTypeAnswer:", majorComplicationsTypeAnswer, "surgeryDate:", surgeryDate, "surgeonPcpName:", surgeonPcpName, "surgeonPcpEmail:", surgeonPcpEmail, "surgeonPcpPhone:", surgeonPcpPhone, "surgeryInstitutionName:", surgeryInstitutionName, "surgeryInstitutionCity:", surgeryInstitutionCity, "surgeryInstitutionState:", surgeryInstitutionState));
+        log.info(PPTLogAppender.appendLog("NEW_SURGERY", servletRequestest, "surgeryTypes:", surgeryTypes, "surgeryComplications:", surgeryComplications, "majorComplicationsTypeAnswer:", majorComplicationsTypeAnswer, "surgeryDate:", surgeryDate, "surgeonPcpName:", surgeonPcpName, "surgeonPcpEmail:", surgeonPcpEmail, "surgeonPcpPhone:", surgeonPcpPhone, "surgeryInstitutionName:", surgeryInstitutionName, "surgeryInstitutionCity:", surgeryInstitutionCity, "surgeryInstitutionState:", surgeryInstitutionState));
         EncounterService encounterService= Context.getEncounterService();
         Encounter newSurgeryEncounter = new Encounter();
         newSurgeryEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
@@ -175,9 +176,9 @@ public class SurgeriesModalFragmentController {
                          @RequestParam(value = "surgeonPcpPhone", required = false) String surgeonPcpPhone,
                          @RequestParam(value = "surgeryInstitutionName", required = false) String surgeryInstitutionName,
                          @RequestParam(value = "surgeryInstitutionCity", required = false) String surgeryInstitutionCity,
-                         @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState, PageRequest pageRequest) throws ParseException {
+                         @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState, HttpServletRequest servletRequest) throws ParseException {
 
-        log.info(PPTLogAppender.appendLog("UPDATE_SURGERY", pageRequest.getRequest(),"encounterId:", encounterId ,"surgeryTypes:", surgeryTypes, "surgeryComplications:", surgeryComplications, "majorComplicationsTypeAnswer:", majorComplicationsTypeAnswer, "surgeryDate:", surgeryDate, "surgeonPcpName:", surgeonPcpName, "surgeonPcpEmail:", surgeonPcpEmail, "surgeonPcpPhone:", surgeonPcpPhone, "surgeryInstitutionName:", surgeryInstitutionName, "surgeryInstitutionCity:", surgeryInstitutionCity, "surgeryInstitutionState:", surgeryInstitutionState));
+        log.info(PPTLogAppender.appendLog("UPDATE_SURGERY",servletRequest,"encounterId:", encounterId ,"surgeryTypes:", surgeryTypes, "surgeryComplications:", surgeryComplications, "majorComplicationsTypeAnswer:", majorComplicationsTypeAnswer, "surgeryDate:", surgeryDate, "surgeonPcpName:", surgeonPcpName, "surgeonPcpEmail:", surgeonPcpEmail, "surgeonPcpPhone:", surgeonPcpPhone, "surgeryInstitutionName:", surgeryInstitutionName, "surgeryInstitutionCity:", surgeryInstitutionCity, "surgeryInstitutionState:", surgeryInstitutionState));
         EncounterService encounterService= Context.getEncounterService();
         ConceptService conceptService=Context.getConceptService();
         String[] str_array = surgeryTypes.split("split");
