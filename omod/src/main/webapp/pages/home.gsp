@@ -14,7 +14,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
     <li><a data-toggle="tab" href="#sideEffects">Side Effects</a></li>
     <li><a data-toggle="tab" href="#followUpCare">Follow up Care</a></li>
     <li><a data-toggle="tab" href="#community">Communities</a></li>
-    <li><a data-toggle="tab" href="#symptomManagement">Symtom Management</a></li>
+    <li><a data-toggle="tab" href="#symptomManagement">Symptom Management</a></li>
     </ul>
 
 
