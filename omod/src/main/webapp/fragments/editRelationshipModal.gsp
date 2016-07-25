@@ -10,12 +10,20 @@
             <div class="modal-body">
                 <input id="editRelationshipIdHolder" type="hidden"/>
                 <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="personName">Person's Name:</label>
-                        <div class="col-sm-10 form-inline" id="personName">
-                            <label class="form-control" id="editPersonName"></label>
-                        </div>
+                    <div class="form-group ">
+                        <div class="media">
+                                <div class="media-left">
+                                    <a href="#"> 
+                                        <div class="profileBadge" id="editRelationProfileBadge">
+                                            P B
+                                        </div> 
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading" id="editPersonName"></h4>
                     </div>
+                                </div>
+                        </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="editRelationship-type">Is My:</label>
                         <div class="col-sm-10" id="editRelationship-type">

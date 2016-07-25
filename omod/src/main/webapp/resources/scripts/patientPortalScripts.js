@@ -380,6 +380,7 @@ jq(document).ready(function(){
 
             // console.log($('#'+encounterID+'surgeryPCPName').text());
             $("#editPersonName").text($('#'+relationshipID+'relationPerson').text());
+            $("#editRelationProfileBadge").text($('#'+relationshipID+'relationPerson').text().match(/\b(\w)/g).join(''));
             $("#editRelationshipSelect").val($('#'+relationshipID+'relationType').text());
             $("#editRelationSecurityLevels").val($('#'+relationshipID+'relationShareID').val());
         });
