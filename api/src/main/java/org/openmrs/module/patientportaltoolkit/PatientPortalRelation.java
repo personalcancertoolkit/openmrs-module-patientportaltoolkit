@@ -17,6 +17,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.RelationshipType;
 
 import java.util.Date;
 
@@ -35,7 +36,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
 
     private String relatedPersonName;
 
-    private String relationType;
+    private RelationshipType relationType;
 
     private Date startDate;
 
@@ -138,7 +139,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      *
      * @return a relation type as a string
      */
-    public String getRelationType() {
+    public RelationshipType getRelationType() {
         return this.relationType;
     }
 
@@ -147,7 +148,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      *
      * @param relationType a relation type
      */
-    public void setRelationType(final String relationType) {
+    public void setRelationType(final RelationshipType relationType) {
         this.relationType = relationType;
     }
 

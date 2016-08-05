@@ -30,7 +30,7 @@
                             <% if (relationshipTypes) { %>
                             <select class="form-control" id="editRelationshipSelect">
                                 <% relationshipTypes.each { relationshipType -> %>
-                                <option value="${(relationshipType.aIsToB)}">${(relationshipType.aIsToB)}</option>
+                                <option value="${(relationshipType.getId())}">${(relationshipType.aIsToB)}</option>
                             <% } %>
                             </select>
                             <% } %>

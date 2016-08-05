@@ -49,10 +49,10 @@ public class AddRelationshipFragmentController {
     public void addRelationshipfromForm(FragmentModel model, @RequestParam(value = "given", required = true) String given,
                                           @RequestParam(value = "family", required = true) String family,
                                         @RequestParam(value = "personEmail", required = true) String personEmail,
-                                        @RequestParam(value = "personRelationType", required = true) String personRelationType,
+                                        @RequestParam(value = "personRelationType", required = true) Integer personRelationType,
                                         @RequestParam(value = "securityLayerType", required = true) String securityLayerType,
                                         @RequestParam(value = "gender", required = true) String gender, HttpServletRequest servletRequest) {
-        log.info(PPTLogAppender.appendLog("ADD_RELATION", servletRequest, "GIVEN_NAME:", given, "FAMILY_NAME:", family, "EMAIL:", personEmail,"RELATION_TYPE:", personRelationType, "SECURITY_TYPE:", securityLayerType, "GENDER:", gender));
+        log.info(PPTLogAppender.appendLog("ADD_RELATION", servletRequest, "GIVEN_NAME:", given, "FAMILY_NAME:", family, "EMAIL:", personEmail,"RELATION_TYPE:", personRelationType.toString(), "SECURITY_TYPE:", securityLayerType, "GENDER:", gender));
         //log.info("~ADD_RELATION~"+ Context.getAuthenticatedUser().getUsername() + "~USER_ENTERED_DATA~"+ "GIVEN_NAME:"+  given + "^FAMILY_NAME:" + family + "^EMAIL:"+ personEmail +"^RELATION_TYPE:"+ personRelationType +"^SECURITY_TYPE:"+ securityLayerType +"^GENDER:"+ gender);
         int checkIfPersonExists=0;
         User user = Context.getAuthenticatedUser();
@@ -60,13 +60,16 @@ public class AddRelationshipFragmentController {
         //check if person already exists in the system
         PersonAttributeType paType=Context.getPersonService().getPersonAttributeTypeByName("Email");
         Person person = new Person();
-        List<User> previoususers = Context.getUserService().getUsersByName(given,family,false);
+        List<User> previoususers = Context.getUserService().getAllUsers();
+        //getUsersByName(given,family,false);
         if(previoususers!=null){
             for (User u: previoususers){
-                if(u.getPerson().getAttribute(paType).getValue().equals(personEmail)){
-                    checkIfPersonExists=1;
-                    person=u.getPerson();
+                if(u.getPerson()!=null && u.getPerson().getAttribute(paType)!=null){
+                if(u.getPerson().getAttribute(paType).getValue().equals(personEmail)) {
+                    checkIfPersonExists = 1;
+                    person = u.getPerson();
                     break;
+                }
                 }
             }
         }
@@ -123,8 +126,7 @@ public class AddRelationshipFragmentController {
             MailHelper.sendMail("Welcome", "Hello " + person.getPersonName() + ", \n you have been added as a connection to one of the members of www.personalcancertoolkit.org, please log on to www.personalcancertoolkit.org to accept or ignore the connection request.", person.getAttribute("Email").toString());
         }
         PatientPortalRelation ppr=new PatientPortalRelation(user.getPerson(),person);
-        RelationshipType selectedRelationType = Context.getPersonService().getRelationshipTypeByUuid(personRelationType);
-        ppr.setRelationType(selectedRelationType.getaIsToB());
+        ppr.setRelationType(Context.getPersonService().getRelationshipType(personRelationType));
         ppr.setShareType(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(securityLayerType));
         ppr.setShareStatus(0);
         Calendar date = Calendar.getInstance();
