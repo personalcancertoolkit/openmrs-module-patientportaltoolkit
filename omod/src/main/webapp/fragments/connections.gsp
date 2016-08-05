@@ -21,7 +21,7 @@
                 <div class="panel-body">
                     <div class="media-left">
                         <a href="#">
-                            <div class="profileBadge">${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }</div>
+                            <div class="profileBadge">${ (relationship.person.getGivenName()) } ${ (relationship.person.getFamilyName()) }</div>
                         </a>
                     </div>
                     <div class="media-body">
@@ -84,7 +84,7 @@
     <% relationships.each { relationship -> %>
 
     <ul class="media-list">
-        <% if (relationship.getShareStatus()==1 ){%>
+        <% if ( relationship.getPerson() == user.getPerson() && relationship.getShareStatus()==1 ){%>
         <li class="media friendlist-item">
 
             <div class="panel panel-default">
@@ -115,6 +115,44 @@
             </div>
         </li>
     <% } %>
+    </ul>
+
+    <% } %>
+
+    <% relationships.each { relationship -> %>
+
+    <ul class="media-list">
+        <% if ( relationship.getRelatedPerson() == user.getPerson() && relationship.getShareStatus()==1 ){%>
+        <li class="media friendlist-item">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <button type="button" id="removeRelation${ relationship.uuid }" class="close removeRelationCloseButton" aria-label="remove" data-toggle="modal" data-target="#confirm-friend-delete">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <div class="media-left">
+                        <a href="#">
+                            <div class="profileBadge">${ (relationship.person.getGivenName()) } ${ (relationship.person.getFamilyName()) }</div>
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a href="http://localhost:8081/openmrs2/patientportaltoolkit/home.page?personId=${ relationship.person.uuid }"> ${ (relationship.person.getGivenName()) } ${ (relationship.person.getFamilyName()) }</a>
+                            <div class="pull-right">
+                                <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
+                            </div></h4>
+                        <form class="form-inline" role="form">
+                            <div class="form-group">
+                                <span id="${ relationship.uuid }relationType" hidden>${ (relationship.getRelationType().getId()) }</span> ${ (relationship.getRelationType().getbIsToA()) } -  <span id="${ relationship.uuid }relationShare">${relationship.getShareType().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareType().getUuid()}" type="hidden"/>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </li>
+        <% } %>
     </ul>
 
     <% } %>
