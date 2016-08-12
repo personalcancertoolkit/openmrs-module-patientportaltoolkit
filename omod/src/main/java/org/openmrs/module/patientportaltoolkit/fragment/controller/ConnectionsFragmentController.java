@@ -51,7 +51,7 @@ public class ConnectionsFragmentController {
         model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(Context.getAuthenticatedUser().getPerson()));
         model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
         model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());
-        model.addAttribute("user",Context.getAuthenticatedUser());
+        model.addAttribute("user", Context.getAuthenticatedUser());
         log.info(PPTLogAppender.appendLog("REQUEST_CONNECTIONS_FRAGMENT", pageRequest.getRequest()));
 
     }
@@ -64,7 +64,12 @@ public class ConnectionsFragmentController {
 
         PatientPortalRelation ppr=Context.getService(PatientPortalRelationService.class).getPatientPortalRelation(relationshipId);
         ppr.setRelationType(Context.getPersonService().getRelationshipType(personRelationType));
-        ppr.setShareType(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(personRelationSecurityLayer));
+        if(ppr.getPerson().equals(user.getPerson())) {
+            ppr.setShareTypeA(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(personRelationSecurityLayer));
+        }
+        if(ppr.getRelatedPerson().equals(user.getPerson())) {
+            ppr.setShareTypeB(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(personRelationSecurityLayer));
+        }
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
 
         log.info(PPTLogAppender.appendLog("EDIT_RELATIONSHIP", servletRequest));

@@ -67,7 +67,7 @@
                             </div></h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
-                                <span id="${ relationship.uuid }relationType" hidden>${ (relationship.getRelationType().getId()) }</span> ${ (relationship.getRelationType()) } -  <span id="${ relationship.uuid }relationShare">${relationship.getShareType().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareType().getUuid()}" type="hidden"/>
+                                <span id="${ relationship.uuid }relationType" hidden>${ (relationship.getRelationType().getId()) }</span> ${ (relationship.getRelationType()) } -  <span id="${ relationship.uuid }relationShare">${relationship.getShareTypeA().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareTypeA().getUuid()}" type="hidden"/>
                             </div>
 
                         </form>
@@ -105,7 +105,7 @@
                             </div></h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
-                                <span id="${ relationship.uuid }relationType" hidden>${ (relationship.getRelationType().getId()) }</span> ${ (relationship.getRelationType()) } -  <span id="${ relationship.uuid }relationShare">${relationship.getShareType().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareType().getUuid()}" type="hidden"/>
+                                <span id="${ relationship.uuid }relationType" hidden>${ (relationship.getRelationType().getId()) }</span> ${ (relationship.getRelationType()) } -  <span id="${ relationship.uuid }relationShare">${relationship.getShareTypeA().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareTypeA().getUuid()}" type="hidden"/>
                             </div>
                         </form>
 
@@ -143,7 +143,7 @@
                             </div></h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
-                                <span id="${ relationship.uuid }relationType" hidden>${ (relationship.getRelationType().getId()) }</span> ${ (relationship.getRelationType().getbIsToA()) } -  <span id="${ relationship.uuid }relationShare">${relationship.getShareType().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareType().getUuid()}" type="hidden"/>
+                                <span id="${ relationship.uuid }relationType" hidden>${ (relationship.getRelationType().getId()) }</span> ${ (relationship.getRelationType().getbIsToA()) } -  <span id="${ relationship.uuid }relationShare">${relationship.getShareTypeB().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareTypeB().getUuid()}" type="hidden"/>
                             </div>
                         </form>
 

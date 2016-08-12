@@ -43,7 +43,7 @@ public class HomePageController {
            Person person = Context.getPersonService().getPersonByUuid(personId);
             log.info(PPTLogAppender.appendLog(token, pageRequest.getRequest(),"RequestedUserId:",Context.getUserService().getUsersByPerson(person,false).get(0).getSystemId(),"RequestedUserName:", Context.getUserService().getUsersByPerson(person,false).get(0).getUsername()));
             PatientPortalRelation ppr = Context.getService(PatientPortalRelationService.class).getPatientPortalRelation(person,Context.getAuthenticatedUser().getPerson(),Context.getAuthenticatedUser());
-            if(ppr !=null && ppr.getShareStatus() == 1 && (ppr.getShareType().getName().equals(PatientPortalToolkitConstants.CAN_SEE_MEDICAL) || ppr.getShareType().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH))) {
+            if(ppr !=null && ppr.getShareStatus() == 1 && (ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_MEDICAL) || ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH))) {
                 model.addAttribute("person", person);
                 model.addAttribute("securitylevel", 2);
             }

@@ -44,7 +44,9 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
 
     private Date expireDate;
 
-    private SecurityLayer shareType;
+    private SecurityLayer shareTypeA;
+
+    private SecurityLayer shareTypeB;
 
     // 0 - not yet accepted, 1 - accepted , 2 - Rejected, -1 - retired
     private int shareStatus;
@@ -61,9 +63,10 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
         this.startDate = new Date();
     }
 
-    public PatientPortalRelation(Person person, Person relatedPersonperson, SecurityLayer shareType) {
+    public PatientPortalRelation(Person person, Person relatedPersonperson, SecurityLayer shareTypeA, SecurityLayer shareTypeB) {
         this(person,relatedPersonperson);
-        this.shareType=shareType;
+        this.shareTypeA=shareTypeA;
+        this.shareTypeB=shareTypeB;
     }
     @Override
     public int compareTo(PatientPortalRelation patientPortalRelation) {
@@ -211,17 +214,35 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      *
      * @return a sharing type
      */
-    public SecurityLayer getShareType() {
-        return this.shareType;
+    public SecurityLayer getShareTypeB() {
+        return this.shareTypeB;
     }
 
     /**
      * Set sharing type
      *
-     * @param shareType a sharing type
+     * @param shareTypeB a sharing type
      */
-    public void setShareType(final SecurityLayer shareType) {
-        this.shareType = shareType;
+    public void setShareTypeB(final SecurityLayer shareTypeB) {
+        this.shareTypeB = shareTypeB;
+    }
+
+    /**
+     * Get share type
+     *
+     * @return a sharing type
+     */
+    public SecurityLayer getShareTypeA() {
+        return this.shareTypeA;
+    }
+
+    /**
+     * Set sharing type
+     *
+     * @param shareTypeA a sharing type
+     */
+    public void setShareTypeA(final SecurityLayer shareTypeA) {
+        this.shareTypeA = shareTypeA;
     }
 
     /**

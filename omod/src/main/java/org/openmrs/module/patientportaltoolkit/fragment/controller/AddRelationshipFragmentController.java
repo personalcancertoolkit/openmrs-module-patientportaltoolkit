@@ -13,7 +13,6 @@
 
 package org.openmrs.module.patientportaltoolkit.fragment.controller;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -127,7 +126,8 @@ public class AddRelationshipFragmentController {
         }
         PatientPortalRelation ppr=new PatientPortalRelation(user.getPerson(),person);
         ppr.setRelationType(Context.getPersonService().getRelationshipType(personRelationType));
-        ppr.setShareType(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(securityLayerType));
+        ppr.setShareTypeA(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(securityLayerType));
+        ppr.setShareTypeB(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid("c21b5749-5972-425b-a8dc-15dc8f899a96")); //share posts by default
         ppr.setShareStatus(0);
         Calendar date = Calendar.getInstance();
         date.setTime(new Date());
