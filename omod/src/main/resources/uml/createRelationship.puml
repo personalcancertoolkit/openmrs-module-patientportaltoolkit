@@ -1,0 +1,29 @@
+@startuml
+activate Patient
+Patient-> Anyone: Requesting to add you as my connection
+note left of Patient: connection shown as pending
+
+alt Anyone's email is not in the System
+note right of Anyone: Anyone's profile is created as a person in the system
+note right of Anyone: Anyone is sent an email notification that he has been invited by patient and an account has been created and he is given a username and password 
+note right of Anyone: Anyone is forced to change his password the first time he logs into the system  
+else Anyone's email is in the System
+note right of Anyone: Anyone is sent an email notification that he has been invited by patient and he can see the request in the portal
+end
+
+activate Anyone
+note right of Anyone: connection shown as waiting for response, Accept request and Ignore Request
+alt Accept
+Anyone--> Patient: Accept your Request
+note over Patient,Anyone: Connection Created
+note left of Patient: Connection shown and is editable. Can change Connection Type and Share type
+note right of Anyone: Connection shown and is editable. Can change Connection Type and Share type
+else Ignore
+Anyone--> Patient: Ignore your Request
+note over Patient,Anyone: Connection Deleted
+note left of Patient: connection is not shown 
+note right of Anyone: Connection is not shown
+end
+deactivate Anyone
+deactivate Patient
+@enduml
