@@ -15,6 +15,7 @@
 package org.openmrs.module.patientportal.api;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
@@ -51,6 +52,7 @@ public class PatientServiceTest extends BaseModuleContextSensitiveTest {
      * @verifies not return null value
      * @see PatientService#getPatient(String)
      */
+    @Ignore
     @Test
     public void getPatient_shouldNotReturnNullValue() throws Exception {
         String patientUuid = "61b38324-e2fd-4feb-95b7-9e9a2a4400df";
@@ -59,6 +61,7 @@ public class PatientServiceTest extends BaseModuleContextSensitiveTest {
         assertEquals(patientObject.get("id"), patientUuid);
     }
 
+    @Ignore
     @Test
     public void getAllPatients_shouldNotReturnNullValue() throws Exception {
         List<Patient> patientObjects = getService().getAllPatients();
