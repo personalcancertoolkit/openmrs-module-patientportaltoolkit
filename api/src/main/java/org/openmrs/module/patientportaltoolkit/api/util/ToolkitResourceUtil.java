@@ -336,18 +336,36 @@ public class ToolkitResourceUtil {
         Map<String, Object> relatedPersonMap = generatePerson(patientPortalRelation.getRelatedPerson());
         Map<String, Object> creatorPersonMap = generatePerson(patientPortalRelation.getCreator().getPerson());
         Map<String, Object> patientPersonMap = generatePerson(patientPortalRelation.getPerson());
+        Map<String, Object> relationshipTypeMap = (Map<String, Object>) generateRelationType(patientPortalRelation.getRelationType());
 
         Map<String, Object> patientRelationMap = new HashMap<String, Object>();
         patientRelationMap.put("id", patientPortalRelation.getUuid());
-        patientRelationMap.put("relationType", patientPortalRelation.getRelationType());
+        patientRelationMap.put("relationType", relationshipTypeMap);
         patientRelationMap.put("shareType", patientPortalRelation.getShareTypeA());
         patientRelationMap.put("dateStarted", new SimpleDateFormat().format(new Date(patientPortalRelation.getStartDate().getTime())));
         patientRelationMap.put("patient", patientPersonMap);
         patientRelationMap.put("creator", creatorPersonMap);
         patientRelationMap.put("relatedPerson", relatedPersonMap);
+       // patientRelationMap.put("relatedPerson", relatedPersonMap);
 
         return patientRelationMap;
     }
+
+    public static Object generateRelationType(RelationshipType relationshipType) {
+
+
+
+        Map<String, Object> relationTypeMap = new HashMap<String, Object>();
+        relationTypeMap.put("id", relationshipType.getRelationshipTypeId());
+        relationTypeMap.put("aIsToB", relationshipType.getaIsToB());
+        relationTypeMap.put("bIsToA", relationshipType.getbIsToA());
+
+        // patientRelationMap.put("relatedPerson", relatedPersonMap);
+
+        return relationTypeMap;
+    }
+
+
 
     public static Object generateEncounterTypes(List<EncounterType> encounterTypes) {
 
@@ -572,4 +590,6 @@ public class ToolkitResourceUtil {
         //reminderMap.put("status",reminder.getStatus());
         return reminderMap;
     }
+
+
 }
