@@ -62,9 +62,12 @@
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a href="http://localhost:8081/openmrs2/patientportaltoolkit/home.page?personId=${ relationship.relatedPerson.uuid }"> ${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }</a>
+                            <% if(person.isPatient()) { %>
                             <div class="pull-right">
                                 <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
-                            </div></h4>
+                            </div>
+                            <% } %>
+                        </h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
                                 <span id="${ relationship.uuid }relationType" hidden>${ (relationship.getRelationType().getId()) }</span> ${ (relationship.getRelationType()) } -  <span id="${ relationship.uuid }relationShare">${relationship.getShareTypeA().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareTypeA().getUuid()}" type="hidden"/>
@@ -100,9 +103,12 @@
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a href="http://localhost:8081/openmrs2/patientportaltoolkit/home.page?personId=${ relationship.relatedPerson.uuid }"> ${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }</a>
+                            <% if(person.isPatient()) { %>
                             <div class="pull-right">
                                 <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
-                            </div></h4>
+                            </div>
+                            <% } %>
+                        </h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
                                 <span id="${ relationship.uuid }relationType" hidden>${ (relationship.getRelationType().getId()) }</span> ${ (relationship.getRelationType()) } -  <span id="${ relationship.uuid }relationShare">${relationship.getShareTypeA().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareTypeA().getUuid()}" type="hidden"/>
@@ -138,9 +144,12 @@
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a href="http://localhost:8081/openmrs2/patientportaltoolkit/home.page?personId=${ relationship.person.uuid }"> ${ (relationship.person.getGivenName()) } ${ (relationship.person.getFamilyName()) }</a>
+                            <% if(person.isPatient()) { %>
                             <div class="pull-right">
                                 <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
-                            </div></h4>
+                            </div>
+                            <% } %>
+                        </h4>
                         <form class="form-inline" role="form">
                             <div class="form-group">
                                 <span id="${ relationship.uuid }relationType" hidden>${ (relationship.getRelationType().getId()) }</span> ${ (relationship.getRelationType().getbIsToA()) } -  <span id="${ relationship.uuid }relationShare">${relationship.getShareTypeB().getDescription()}</span> <input id="${ relationship.uuid }relationShareID" value="${relationship.getShareTypeB().getUuid()}" type="hidden"/>
