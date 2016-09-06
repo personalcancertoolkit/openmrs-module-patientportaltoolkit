@@ -28,7 +28,9 @@
                         <form class="form-inline" role="form">
                             <span class="media-heading form-group form-inline">
                                 <h4 id = "${ relationship.uuid }relationPerson">${ (relationship.person.getGivenName()) } ${ (relationship.person.getFamilyName()) } <small>sent you a connection request</small></h4>
-                                <button type="button" class="btn btn-primary acceptConnectionRequest" id="${ relationship.uuid }acceptConnectionRequest">Accept Request</button> <button type="button" class="btn btn-default ignoreConnectionRequest" id="${ relationship.uuid }ignoreConnectionRequest">Ignore Request</button>
+                                <button type="button" class="btn btn-primary acceptConnectionRequest" id="${ relationship.uuid }acceptConnectionRequest">Accept Request</button>
+                                <% def date = new Date() %>
+                                <% if (relationship.getDateCreated()  < date-180){%><button type="button" class="btn btn-default ignoreConnectionRequest" id="${ relationship.uuid }ignoreConnectionRequest">Ignore Request</button>  <% } %>
                             </span>
                         </form>
 
