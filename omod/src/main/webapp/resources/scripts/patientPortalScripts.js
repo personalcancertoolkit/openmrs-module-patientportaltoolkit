@@ -383,6 +383,10 @@ jq(document).ready(function(){
             $("#editRelationProfileBadge").text($('#'+relationshipID+'relationPerson').text().match(/\b(\w)/g).join(''));
             $("#editRelationshipSelect").val($('#'+relationshipID+'relationType').text());
             $("#editRelationSecurityLevels").val($('#'+relationshipID+'relationShareID').val());
+            if($('#checkPersonInRelation'+relationshipID).val()== "0"){
+                $("#editRelationshipSelect").attr('disabled',true);
+            }
+
         });
 
     //------------------- Edit Relation Button JS Ends ----------------------

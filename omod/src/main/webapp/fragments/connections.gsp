@@ -48,7 +48,7 @@
     <ul class="media-list">
         <% if (relationship.getPerson() == user.getPerson() && relationship.getShareStatus()==0){%>
         <li class="media friendlist-item">
-
+            <input id="checkPersonInRelation${ relationship.uuid }" value="1" hidden>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <button type="button" id="removeRelation${ relationship.uuid }" class="close removeRelationCloseButton" aria-label="remove" data-toggle="modal" data-target="#confirm-friend-delete">
@@ -91,7 +91,7 @@
     <ul class="media-list">
         <% if ( relationship.getPerson() == user.getPerson() && relationship.getShareStatus()==1 ){%>
         <li class="media friendlist-item">
-
+        <input id="checkPersonInRelation${ relationship.uuid }" value="1" hidden>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <button type="button" id="removeRelation${ relationship.uuid }" class="close removeRelationCloseButton" aria-label="remove" data-toggle="modal" data-target="#confirm-friend-delete">
@@ -132,7 +132,7 @@
     <ul class="media-list">
         <% if ( relationship.getRelatedPerson() == user.getPerson() && relationship.getShareStatus()==1 ){%>
         <li class="media friendlist-item">
-
+         <input id="checkPersonInRelation${ relationship.uuid }" value="0" hidden>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <button type="button" id="removeRelation${ relationship.uuid }" class="close removeRelationCloseButton" aria-label="remove" data-toggle="modal" data-target="#confirm-friend-delete">
