@@ -13,10 +13,9 @@
 
 package org.openmrs.module.patientportaltoolkit;
 
-import org.openmrs.BaseOpenmrsObject;
-import org.openmrs.Person;
-import org.openmrs.User;
+import org.openmrs.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +23,7 @@ import java.util.Set;
 /**
  * Created by Maurya on 25/05/2015.
  */
-public class JournalEntry extends BaseOpenmrsObject {
+public class JournalEntry extends BaseOpenmrsData implements OpenmrsData {
 
     private JournalEntry(){}
 

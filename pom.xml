@@ -35,6 +35,7 @@
 	<properties>
 		<openMRSVersion>1.10.0</openMRSVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<webservices.restVersion>2.14</webservices.restVersion>
 	</properties>
 
 	<dependencyManagement>
@@ -104,7 +105,6 @@
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
 

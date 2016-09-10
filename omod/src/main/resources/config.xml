@@ -44,6 +44,7 @@
 		<require_module>
 			org.openmrs.module.uiframework
 		</require_module>
+		<require_module version="${webservices.restVersion}">org.openmrs.module.webservices.rest</require_module>
 	</require_modules>
 
 	<!-- Global Properties -->
