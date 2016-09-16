@@ -7,11 +7,12 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
         <div>
             <% if (treatmentsummary) { %>
             <% treatmentsummary.each { genhistory -> %>
+            <% if(isACareGiver != 1) { %>
             <div class="pull-right">
                 <a id="${(genhistory.encounterUuid)}"
                    class="glyphicon glyphicon-pencil editGenHistButton" data-toggle="modal" data-target="#edit-genHistory-modal"></a>
             </div>
-
+            <% } %>
             <div>
                 <label>
                     <span class="reformatText">${(genhistory.cancerType)}</span>
@@ -50,9 +51,11 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
         <div>
             <% if (surgeryencounters) { %>
             <% surgeryencounters.each { surgery -> %>
+            <% if(isACareGiver != 1) { %>
             <div class="pull-right">
                 <a id="${(surgery.encounterUuid)}" class="glyphicon glyphicon-pencil editSurgeryButton"  data-toggle="modal" data-target="#edit-surgeries-modal"></a>
             </div>
+            <% } %>
             <div class="clearfix">
                 <div class="pull-left">
                     <h5><label><% surgery.surgeryTypes.each { surgeryType -> %> <span class="${(surgery.encounterUuid)}surgeryType reformatText" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</span>; <% } %></label> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate"  >${pptutil.formatDate((surgery.surgeryDate))}</small></h5>
@@ -98,9 +101,11 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
             <div class="clearfix">
                 <% if (chemotherapyencounters) { %>
                 <% chemotherapyencounters.each { chemotherapy -> %>
+                <% if(isACareGiver != 1) { %>
                 <div class="pull-right">
                     <a id="${(chemotherapy.encounterUuid)}" class="glyphicon glyphicon-pencil editChemotherapyButton"  data-toggle="modal" data-target="#edit-chemotherapies-modal"></a>
                 </div>
+                <% } %>
                 <div class="clearfix">
                     <div class="pull-left">
                         <h5> <label> <% chemotherapy.chemoMedications.each { chemotherapymed -> %> <span class="${(chemotherapy.encounterUuid)}chemotherapymed reformatText" id="${(chemotherapy.encounterUuid)}chemotherapymed${(chemotherapymed)}">${(chemotherapymed)}</span>; <% } %></label>
@@ -146,9 +151,11 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
             <div class="clearfix">
                 <% if (radiationencounters) { %>
                 <% radiationencounters.each { radiation -> %>
+                <% if(isACareGiver != 1) { %>
                 <div class="pull-right">
                     <a id="${(radiation.encounterUuid)}" class="glyphicon glyphicon-pencil editRadiationButton" data-toggle="modal" data-target="#edit-radiation-modal"></a>
                 </div>
+                <% } %>
                 <div class="clearfix">
                     <div class="pull-left">
                         <h5>  <label> <% radiation.radiationTypes.each { radiationType -> %> <span class="${(radiation.encounterUuid)}radiationType reformatText" id="${(radiation.encounterUuid)}radiationType${(radiationType)}">${(radiationType)}</span>; <% } %></label>

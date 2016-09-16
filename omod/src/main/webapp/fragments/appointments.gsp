@@ -10,7 +10,9 @@
             <tr>
                 <th width="25%">Appointment Type</th>
                 <th width="25%">Recommended Date</th>
+                <% if(isACareGiver != 1) { %>
                 <th width="50%">Actions</th>
+                <% } %>
             </tr>
             </thead>
             <tbody>
@@ -25,10 +27,12 @@
                 <td width="30%" class="clearfix">
                     <span class="pull-left"> ${pptutil.formatDate((reminder.targetDate))}</span>
                 </td>
+                <% if(isACareGiver != 1) { %>
                 <td width="40%" class="clearfix">
                     <a id="markCompletedReminder${(reminder.id)}" class="btn btn-primary btn-sm markCompletedReminder" data-toggle="modal" data-target="#markCompleted-modal">Mark Completed</a>
                     <a id="markScheduledReminder${(reminder.id)}" class="btn btn-primary btn-sm markScheduledReminder"  data-toggle="modal" data-target="#markScheduled-modal">Mark Scheduled</a>
                 </td>
+                <% } %>
             </tr>
             <% } %>
             <% } %>
@@ -36,6 +40,6 @@
             </tbody>
             </table>
     </div>
-    <div id="chart" width="100%">
-    </div>
+   <!-- <div id="chart" width="100%">
+    </div>-->
 </div>

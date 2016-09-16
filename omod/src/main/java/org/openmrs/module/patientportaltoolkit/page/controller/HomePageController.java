@@ -55,13 +55,19 @@ public class HomePageController {
                 model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
                 model.addAttribute("securitylevel", 0);
             }
+            if(!(ppr.getRelationType().getaIsToB().equals("Doctor")))
+            model.addAttribute("isACareGiver",1);
+            else
+                model.addAttribute("isACareGiver",0);
         }
         else {
             model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
             model.addAttribute("securitylevel", 0);
-            log.info(PPTLogAppender.appendLog(token,pageRequest.getRequest(),Context.getAuthenticatedUser().getSystemId(), Context.getAuthenticatedUser().getUsername()));
-            }
+            log.info(PPTLogAppender.appendLog(token, pageRequest.getRequest(), Context.getAuthenticatedUser().getSystemId(), Context.getAuthenticatedUser().getUsername()));
+            model.addAttribute("isACareGiver",0);
+        }
         model.addAttribute("pptutil", new PatientPortalUtil());
+
 
     }
 }

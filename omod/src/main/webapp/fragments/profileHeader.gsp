@@ -7,7 +7,7 @@ ${ ui.includeFragment("patientportaltoolkit", "profileEdit") }
             </a>
         </div>
         <div class="pull-left" id="profile-name">
-            <h2>${ (person.getGivenName()) } ${ (person.getFamilyName()) }   <a id="${(person.id)}" class="glyphicon glyphicon-pencil editProfileButton"  data-toggle="modal" data-target="#profileEdit-modal"></a>
+            <h2>${ (person.getGivenName()) } ${ (person.getFamilyName()) }  <% if(isACareGiver != 1) { %> <a id="${(person.id)}" class="glyphicon glyphicon-pencil editProfileButton"  data-toggle="modal" data-target="#profileEdit-modal"></a> <% } %>
             </h2>
               <div>
                 <span class="gender-age">
