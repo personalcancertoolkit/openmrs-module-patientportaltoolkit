@@ -1,4 +1,4 @@
-<div class="modal fade modal-wide"  id="profileEdit-modal" role="dialog" aria-labelledby="profileEditLabel" aria-hidden="true">
+<!--<div class="modal fade modal-wide"  id="profileEdit-modal" role="dialog" aria-labelledby="profileEditLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -33,4 +33,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->

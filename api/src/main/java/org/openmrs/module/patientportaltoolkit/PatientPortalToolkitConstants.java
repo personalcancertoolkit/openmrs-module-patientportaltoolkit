@@ -50,7 +50,7 @@ public class PatientPortalToolkitConstants {
 
     public static final String GP_SENDING_EMAIL_PASSWORD = "patientportaltoolkit.sendingEmailPassword";
 
-    public static final String DATE_FORMAT_MONTHDATEYEAR ="MM/dd/yy";
+    public static final String DATE_FORMAT_MONTHDATEYEAR ="MM/dd/yyyy";
 
     public static final String CAN_SEE_POSTS ="canseeposts";
 

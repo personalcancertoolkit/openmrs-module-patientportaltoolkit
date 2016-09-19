@@ -59,7 +59,7 @@
             <li id="patientPortalConnections"><a href="patientconnections.page">My Connections</a></li>
             </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a><span class="glyphicon glyphicon-user"></span> ${ (username) }</a></li>
+            <li id="patientPortalUserName"><a href="editprofile.page"><span class="glyphicon glyphicon-user"></span> ${ (username) }</a></li>
             <li><a href="messages.page"><span class="glyphicon glyphicon-envelope"></span></a></li>
             <li><a  href="feedbackform.page"><span class="glyphicon glyphicon-edit"></span></a></li>
             <li><a id="navigationLogout">Logout <span

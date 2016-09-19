@@ -477,8 +477,10 @@ jq(document).ready(function(){
                 });
                 setTimeout(
                     function () {
-                        location.reload();
-                    }, 4000);
+                        $('#alertContainer').html( "<div class='alert alert-dismissible alert-info'> <button type='button' class='close' data-dismiss='alert'>&times;</button> <strong>Message from Admin:</strong> Your Profile information has been saved!  please <a href="+OpenMRSInstance.split('/patientportaltoolkit')[0]+'/logout'+ " class='alert-link'>logout</a> and log back in to see your changes applied </div>");
+                    }, 500);
+
+
         });
     //------------------- Reply message JS ----------------------
     $('.sendReplyMessageButton').click(

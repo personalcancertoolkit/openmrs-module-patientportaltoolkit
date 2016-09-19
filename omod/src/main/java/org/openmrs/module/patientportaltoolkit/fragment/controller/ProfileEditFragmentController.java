@@ -55,17 +55,20 @@ public class ProfileEditFragmentController {
 
         boolean personNameExists = false;
         for (PersonName pn : personNames) {
-            if (pn.equalsContent(personName))
+            if (pn.getPreferred())
+                pn.setPreferred(false);
+        }
+        for (PersonName pn : personNames) {
+            if (pn.equalsContent(personName)) {
                 personNameExists = true;
+                pn.setPreferred(true);
+            }
         }
         if (!personNameExists) {
-            for (PersonName pn : personNames) {
-                if (pn.getPreferred())
-                    pn.setPreferred(false);
-            }
             personName.setPreferred(true);
             personNames.add(personName);
         }
+
 
         person.setNames(personNames);
 
