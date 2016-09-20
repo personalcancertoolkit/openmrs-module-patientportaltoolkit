@@ -97,6 +97,7 @@
 		Reminder.hbm.xml
 		Message.hbm.xml
 		SecurityLayer.hbm.xml
+		PersonPreferences.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->

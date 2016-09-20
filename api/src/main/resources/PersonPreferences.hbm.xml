@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.openmrs.module.patientportaltoolkit">
+    <class name="PersonPreferences" table="patientportal_preferences">
+
+        <id name="id" type="int" column="id" unsaved-value="0">
+            <generator class="native" />
+        </id>
+
+        <many-to-one name="person" class="org.openmrs.Person" not-null="true" column="person_id"/>
+
+        <property name="myCancerBuddies" type="boolean" column="mycancerbuddies"
+                  not-null="true" />
+
+        <property name="myCancerBuddiesName" type="java.lang.String" column="mycancerbuddiesname"/>
+
+        <property name="myCancerBuddiesDescription" type="java.lang.String" column="mycancerbuddiesdesc"/>
+
+
+        <property name="uuid" type="string" length="38" not-null="false" />
+
+
+
+    </class>
+</hibernate-mapping>

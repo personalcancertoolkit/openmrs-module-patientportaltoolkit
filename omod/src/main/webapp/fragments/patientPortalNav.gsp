@@ -55,8 +55,9 @@
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
             <li id="patientPortalJournals"><a href="journals.page">Posts</a></li>
-            <li id="patientPortalNavHome"><a href="home.page">My Medical Profile</a></li>
+            <% if(person.isPatient()) { %><li id="patientPortalNavHome"><a href="home.page">My Medical Profile</a></li> <% } %>
             <li id="patientPortalConnections"><a href="patientconnections.page">My Connections</a></li>
+            <% if(person.isPatient()) { %> <li id="patientPortalMyCancerBuddies"><a href="myCancerBuddies.page">MyCancerBuddies</a></li><% } %>
             </ul>
         <ul class="nav navbar-nav navbar-right">
             <li id="patientPortalUserName"><a href="editprofile.page"><span class="glyphicon glyphicon-user"></span> ${ (username) }</a></li>
