@@ -239,3 +239,10 @@ text.item-key {
 	fill-opacity: .125;
 	shape-rendering: crispEdges;
 }
+h6 {
+	word-wrap: break-word;
+}
+
+.thumbnail {
+	padding:0;
+}

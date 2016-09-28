@@ -30,6 +30,9 @@
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/styles.css") }"
           type="text/css">
+    <link rel="stylesheet"
+          href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-editable.css") }"
+          type="text/css">
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}"></script>
 
@@ -40,6 +43,10 @@
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/d3.min.js") }"></script>
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/profilePicturesBadge.js") }"></script>
+    <script type="text/javascript"
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/jquery.mockjax.js") }"></script>
+    <script type="text/javascript"
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-editable.min.js") }"></script>
 
     <script type="text/javascript">
         jq('.profileBadge').profileBadge();

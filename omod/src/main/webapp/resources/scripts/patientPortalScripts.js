@@ -3,6 +3,12 @@
  */
 jq = jQuery;
 jq(document).ready(function(){
+
+    // setting defaults for the editable
+    $.fn.editable.defaults.mode = 'inline';
+    $.fn.editable.defaults.showbuttons = true;
+    $.fn.editable.defaults.type = 'text';
+
     var OpenMRSInstance=window.location.href;
     jq("#navigationLogout").attr("href",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/logout");
     jq(".imagePlaceHolders").attr("src",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/images/openmrs_logo_white.gif");
@@ -967,6 +973,18 @@ jq(document).ready(function(){
                         location.reload();
                     }, 2000);
             }
+        });
+
+    // make all items having class 'edit' editable
+    $('.edit').editable();
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+
+    $('.mycancerbuddies').click(
+        function () {
+            $('#mycancerbuddiesSave').removeClass('disabled');
+            $('#mycancerbuddiesSave').prop('disabled', false);
         });
 
 });
