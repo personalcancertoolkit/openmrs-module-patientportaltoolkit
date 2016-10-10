@@ -47,8 +47,6 @@ public class HibernatePersonPreferencesDAO implements PersonPreferencesDAO {
     @Override
     public List<PersonPreferences> getAllPersonPreferences() {
         final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PersonPreferences.class);
-        crit.addOrder(Order.asc("person"));
-        this.log.debug("HibernatePersonPreferencesDAO:getAllPersonPreferences->" + " | token count=" + crit.list().size());
         return crit.list();
     }
 

@@ -1,10 +1,12 @@
 package org.openmrs.module.patientportaltoolkit.api.impl;
 
 import org.openmrs.Person;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PersonPreferences;
 import org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService;
 import org.openmrs.module.patientportaltoolkit.api.db.PersonPreferencesDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,7 +32,15 @@ public class PersonPreferencesServiceImpl implements PersonPreferencesService {
 
     @Override
     public List<PersonPreferences> getAllPersonPreferences() {
-        return getAllPersonPreferences();
+        List<PersonPreferences> personPreferences= dao.getAllPersonPreferences();
+        List<PersonPreferences> newPersonPreferences= new ArrayList<PersonPreferences>();
+        Person person= Context.getAuthenticatedUser().getPerson();
+        for (PersonPreferences pp: personPreferences){
+            if(!pp.getPerson().equals(person))
+                newPersonPreferences.add(pp);
+        }
+        return  newPersonPreferences;
+
     }
 
     @Override

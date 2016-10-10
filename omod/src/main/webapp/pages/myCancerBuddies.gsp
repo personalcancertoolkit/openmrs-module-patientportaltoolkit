@@ -9,7 +9,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 <div class="container bgcontent col-sm-8 col-sm-offset-2">
     ${ ui.includeFragment("patientportaltoolkit", "myCancerBuddiesProfileCard",[person: person]) }
 
-    ${ ui.includeFragment("patientportaltoolkit", "myCancerBuddiesProfileThumbnails") }
+    ${ ui.includeFragment("patientportaltoolkit", "myCancerBuddiesProfileThumbnails",[person: person]) }
 
 </div>
 </body>

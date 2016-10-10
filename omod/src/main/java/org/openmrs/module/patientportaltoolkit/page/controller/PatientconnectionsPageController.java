@@ -15,7 +15,9 @@ package org.openmrs.module.patientportaltoolkit.page.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Person;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.module.patientportaltoolkit.api.util.PatientPortalUtil;
 import org.openmrs.ui.framework.page.PageModel;
@@ -30,8 +32,15 @@ public class PatientconnectionsPageController {
 
         log.info(PPTLogAppender.appendLog("REQUEST_CONNECTIONS_PAGE", pageRequest.getRequest()));
         //log.info("Connections Page Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
-        model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
+        Person person = Context.getAuthenticatedUser().getPerson();
+        model.addAttribute("person", person);
         model.addAttribute("pptutil",new PatientPortalUtil());
 
+        if ( Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person) == null) {
+            model.addAttribute("personPreferences", null);
+        }
+        else{
+            model.addAttribute("personPreferences",Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person));
+        }
     }
 }
