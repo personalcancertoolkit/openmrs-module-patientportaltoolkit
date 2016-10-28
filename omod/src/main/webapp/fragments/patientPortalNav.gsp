@@ -1,23 +1,25 @@
 
 <head>
-<title>OpenMRS Patient Portal</title>
-<link rel="shortcut icon" type="image/ico"
+    <title>OpenMRS Patient Portal</title>
+    <link rel="shortcut icon" type="image/ico"
 	href="/openmrs/images/openmrs-favicon.ico">
-<link rel="icon" type="image/png\"
+    <link rel="icon" type="image/png\"
 	href="/openmrs/images/openmrs-favicon.png">
-<script type="text/javascript"
+    <script type="text/javascript"
 	src="${ ui.resourceLink("patientportaltoolkit", "/scripts/jquery-1.11.1.min.js") }"></script>
-<script type="text/javascript"
+    <script type="text/javascript"
 	src="${ ui.resourceLink("uicommons", "/scripts/jquery-ui-1.9.2.custom.min.js")}"></script>
-<script type="text/javascript"
+    <script type="text/javascript"
 	src="${ ui.resourceLink("uicommons", "/scripts/underscore-min.js")}"></script>
 
-<script type="text/javascript"
+    <script type="text/javascript"
 	src="${ ui.resourceLink("uicommons", "/scripts/jquery.toastmessage.js")}"></script>
-<script type="text/javascript"
+    <script type="text/javascript"
 	src="${ ui.resourceLink("uicommons", "/scripts/jquery.simplemodal.1.4.4.min.js")}"></script>
-<script type="text/javascript"
+    <script type="text/javascript"
 	src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap.min.js") }"></script>
+    <script type="text/javascript"
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-year-calendar.min.js") }"></script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
@@ -32,6 +34,9 @@
           type="text/css">
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-editable.css") }"
+          type="text/css">
+    <link rel="stylesheet"
+          href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-year-calendar.min.css") }"
           type="text/css">
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}"></script>

@@ -4,6 +4,7 @@
 jq = jQuery;
 jq(document).ready(function(){
 
+    $('.calendar').calendar();
     // setting defaults for the editable
     $.fn.editable.defaults.mode = 'inline';
     $.fn.editable.defaults.showbuttons = true;

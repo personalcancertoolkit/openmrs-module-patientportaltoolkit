@@ -40,6 +40,8 @@
             </tbody>
             </table>
     </div>
-   <!-- <div id="chart" width="100%">
+    <!--<div id="chart" width="100%">
     </div>-->
+    <br/>
+    <div id='calendar' class="calendar" width="100%"></div>
 </div>
