@@ -13,7 +13,11 @@
 
 package org.openmrs.module.patientportaltoolkit.api.util;
 
+import org.openmrs.Person;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,5 +33,10 @@ public class PatientPortalUtil {
 
     public String formatDateWithSpecifiedFormat(Date date,String dateFormat){
         return new SimpleDateFormat(dateFormat).format(date);
+    }
+
+    public PatientPortalRelation getRelationbetweenTwoPeople(Person person, Person requestedPerson){
+        PatientPortalRelationService pprs = Context.getService(PatientPortalRelationService.class);
+        return pprs.getPatientPortalRelation(person,requestedPerson,Context.getAuthenticatedUser());
     }
 }
