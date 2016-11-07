@@ -12,7 +12,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
             <h3 class="panel-title">MyCancerBuddies</h3>
         </div>
         <div class="panel-body">
-            Would you like to MyCancerBuddies - to interact with patients in this program in similar situations?
+            Would you like to join My CancerBuddies - to interact with patients in this program in similar situations?
         </div>
     </div>
     <% } %>

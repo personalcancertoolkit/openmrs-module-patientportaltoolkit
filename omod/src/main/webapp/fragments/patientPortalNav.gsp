@@ -19,7 +19,7 @@
     <script type="text/javascript"
 	src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap.min.js") }"></script>
     <script type="text/javascript"
-            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-year-calendar.min.js") }"></script>
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-year-calendar.js") }"></script>
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
@@ -69,7 +69,7 @@
             <li id="patientPortalJournals"><a href="journals.page">Posts</a></li>
             <% if(person.isPatient()) { %><li id="patientPortalNavHome"><a href="home.page">My Medical Profile</a></li> <% } %>
             <li id="patientPortalConnections"><a href="patientconnections.page">My Connections</a></li>
-            <% if(person.isPatient()) { %> <li id="patientPortalMyCancerBuddies"><a href="myCancerBuddies.page">MyCancerBuddies</a></li><% } %>
+            <% if(person.isPatient()) { %> <li id="patientPortalMyCancerBuddies"><a href="myCancerBuddies.page">My CancerBuddies</a></li><% } %>
             </ul>
         <ul class="nav navbar-nav navbar-right">
             <li id="patientPortalUserName"><a href="editprofile.page"><span class="glyphicon glyphicon-user"></span> ${ (username) }</a></li>
