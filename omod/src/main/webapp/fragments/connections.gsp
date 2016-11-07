@@ -24,6 +24,7 @@
                             <div class="profileBadge">${ (relationship.person.getGivenName()) } ${ (relationship.person.getFamilyName()) }</div>
                         </a>
                     </div>
+
                     <div class="media-body">
                         <form class="form-inline" role="form">
                             <span class="media-heading form-group form-inline">
@@ -33,6 +34,9 @@
                                 <% if (relationship.getDateCreated()  < date-180){%><button type="button" class="btn btn-default ignoreConnectionRequest" id="${ relationship.uuid }ignoreConnectionRequest">Ignore Request</button>  <% } %>
                             </span>
                         </form>
+                        <% if (relationship.addConnectionNote){%>
+                        <p class="text-warning">${ relationship.addConnectionNote }</p>
+                        <% } %>
 
                     </div>
 

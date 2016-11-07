@@ -53,5 +53,8 @@
 
         <property name="shareStatus" type="int" column="share_status" />
 
-</class>
+        <property name="addConnectionNote" type="java.lang.String" column="add_connection_note"/>
+
+
+    </class>
 </hibernate-mapping>

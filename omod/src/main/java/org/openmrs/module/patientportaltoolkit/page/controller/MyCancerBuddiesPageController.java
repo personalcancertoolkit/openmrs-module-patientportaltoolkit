@@ -27,6 +27,7 @@ public class MyCancerBuddiesPageController {
         Person person =Context.getAuthenticatedUser().getPerson();
         //log.info("Connections Page Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
         model.addAttribute("person", person);
+        model.addAttribute("user", Context.getAuthenticatedUser());
         if ( Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person) == null) {
             model.addAttribute("personPreferences", null);
         }

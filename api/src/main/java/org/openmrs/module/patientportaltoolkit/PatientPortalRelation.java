@@ -51,6 +51,8 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     // 0 - not yet accepted, 1 - accepted , 2 - Rejected, -1 - retired
     private int shareStatus;
 
+    private String addConnectionNote;
+
     private static final String STATUS_ACCEPTED="Yes";
     private static final String STATUS_EXPIRED="Expired";
     private static final String STATUS_NOT_ACCEPTED_YET="Not yet";
@@ -267,4 +269,13 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     public void setShareStatus(int shareStatus) {
         this.shareStatus = shareStatus;
     }
+
+    public String getAddConnectionNote() {
+        return this.addConnectionNote;
+    }
+
+    public void setAddConnectionNote(final String addConnectionNote) {
+        this.addConnectionNote = addConnectionNote;
+    }
+
 }
