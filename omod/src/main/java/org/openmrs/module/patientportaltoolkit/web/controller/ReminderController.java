@@ -42,7 +42,7 @@ public class ReminderController {
     public Object getSampleDates()
     {
 
-        return "  {\n" +
+        return " [ {\n" +
                 "                id: 0,\n" +
                 "                name: 'Google I/O',\n" +
                 "                location: 'San Francisco, CA',\n" +
@@ -111,6 +111,85 @@ public class ReminderController {
                 "                location: 'Los Angeles, CA',\n" +
                 "                startDate: new Date(currentYear, 10, 17),\n" +
                 "                endDate: new Date(currentYear, 10, 17)\n" +
-                "            }";
+                "            } ]";
+    }
+    @RequestMapping( value = "/patientportaltoolkit/getsampledates2")
+    @ResponseBody
+    public Object getSampleDates2()
+    {
+
+        return " [ \n" +
+                " {\n" +
+                "                id: 0,\n" +
+                "                name: 'Google I/O',\n" +
+                "                location: 'San Francisco, CA',\n" +
+                "                startDate: new Date(currentYear, 4, 28),\n" +
+                "                endDate: new Date(currentYear, 4, 29)\n" +
+                "            },\n" +
+                "            {\n" +
+                "                id: 1,\n" +
+                "                name: 'Microsoft Convergence',\n" +
+                "                location: 'New Orleans, LA',\n" +
+                "                startDate: new Date(currentYear, 2, 16),\n" +
+                "                endDate: new Date(currentYear, 2, 19)\n" +
+                "            },\n" +
+                "            {\n" +
+                "                id: 2,\n" +
+                "                name: 'Microsoft Build Developer Conference',\n" +
+                "                location: 'San Francisco, CA',\n" +
+                "                startDate: new Date(currentYear, 3, 29),\n" +
+                "                endDate: new Date(currentYear, 4, 1)\n" +
+                "            },\n" +
+                "            {\n" +
+                "                id: 3,\n" +
+                "                name: 'Apple Special Event',\n" +
+                "                location: 'San Francisco, CA',\n" +
+                "                startDate: new Date(currentYear, 8, 1),\n" +
+                "                endDate: new Date(currentYear, 8, 1)\n" +
+                "            },\n" +
+                "            {\n" +
+                "                id: 4,\n" +
+                "                name: 'Apple Keynote',\n" +
+                "                location: 'San Francisco, CA',\n" +
+                "                startDate: new Date(currentYear, 8, 9),\n" +
+                "                endDate: new Date(currentYear, 8, 9)\n" +
+                "            },\n" +
+                "            {\n" +
+                "                id: 5,\n" +
+                "                name: 'Chrome Developer Summit',\n" +
+                "                location: 'Mountain View, CA',\n" +
+                "                startDate: new Date(currentYear, 10, 17),\n" +
+                "                endDate: new Date(currentYear, 10, 18)\n" +
+                "            },\n" +
+                "            {\n" +
+                "                id: 6,\n" +
+                "                name: 'F8 2015',\n" +
+                "                location: 'San Francisco, CA',\n" +
+                "                startDate: new Date(currentYear, 2, 25),\n" +
+                "                endDate: new Date(currentYear, 2, 26)\n" +
+                "            },\n" +
+                "            {\n" +
+                "                id: 7,\n" +
+                "                name: 'Yahoo Mobile Developer Conference',\n" +
+                "                location: 'New York',\n" +
+                "                startDate: new Date(currentYear, 7, 25),\n" +
+                "                endDate: new Date(currentYear, 7, 26)\n" +
+                "            },\n" +
+                "            {\n" +
+                "                id: 8,\n" +
+                "                name: 'Android Developer Conference',\n" +
+                "                location: 'Santa Clara, CA',\n" +
+                "                startDate: new Date(currentYear, 11, 1),\n" +
+                "                endDate: new Date(currentYear, 11, 4)\n" +
+                "            },\n" +
+                "            {\n" +
+                "                id: 9,\n" +
+                "                name: 'LA Tech Summit',\n" +
+                "                location: 'Los Angeles, CA',\n" +
+                "                startDate: new Date(currentYear, 10, 17),\n" +
+                "                endDate: new Date(currentYear, 10, 17)\n" +
+                "            } \n"+
+                "             ]"
+                ;
     }
 }
