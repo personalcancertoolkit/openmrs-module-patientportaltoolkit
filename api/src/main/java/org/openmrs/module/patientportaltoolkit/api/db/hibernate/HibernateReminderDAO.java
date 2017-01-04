@@ -76,7 +76,6 @@ public class HibernateReminderDAO implements ReminderDAO {
     public Reminder saveReminder(Reminder reminder) {
         sessionFactory.getCurrentSession().saveOrUpdate(reminder);
         return reminder;
-
     }
 
 
@@ -169,7 +168,6 @@ public class HibernateReminderDAO implements ReminderDAO {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         Date dateWithoutTime = cal.getTime();
-
         return dateWithoutTime;
     }
 }

@@ -147,12 +147,62 @@ jq(document).ready(function(){
     ];
     function foo () {
         //hardcoded data to be modified
-        $.get("http://localhost:8081/openmrs2/ws/patientportaltoolkit/getremindersforpatient/d99d2110-7cad-4282-9e00-ede06b92c965", function (dataa) {
-            alert(dataa);
-            $('#calendar').data('calendar').setDataSource(dataa);
+        $.get("http://localhost:8081/openmrs2/ws/patientportaltoolkit/getremindersforpatient/d99d2110-7cad-4282-9e00-ede06b92c965", function (reminderData) {
+            //alert(dataa);
+            $('#calendar').data('calendar').setDataSource(reminderData);
         });
     }
-    var calendar= $('.calendar').calendar({
+    var calendar= $('#preventativeCareCalendar').calendar({
+        customDayRenderer: function(element, date) {
+            if(date.getTime() == circleDateTime) {
+                $(element).css('background-color', 'red');
+                $(element).css('color', 'white');
+                $(element).css('border-radius', '15px');
+            }
+        },
+        enableContextMenu: true,
+        contextMenuItems:[
+            {
+                text: 'Update',
+                click: editEvent
+            },
+            {
+                text: 'Delete',
+                click: deleteEvent
+            }
+        ],
+        selectRange: function(e) {
+            editEvent({ startDate: e.startDate, endDate: e.endDate });
+        },
+        mouseOnDay: function(e) {
+            if(e.events.length > 0) {
+                var content = '';
+
+                for(var i in e.events) {
+                    content += '<div class="event-tooltip-content">'
+                        + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
+                        + '<div class="event-location">' + e.events[i].location + '</div>'
+                        + '</div>';
+                }
+
+                $(e.element).popover({
+                    trigger: 'manual',
+                    container: 'body',
+                    html:true,
+                    content: content
+                });
+
+                $(e.element).popover('show');
+            }
+        },
+        mouseOutDay: function(e) {
+            if(e.events.length > 0) {
+                $(e.element).popover('hide');
+            }
+        }
+
+    });
+    var calendar= $('#calendar').calendar({
         customDayRenderer: function(element, date) {
             if(date.getTime() == circleDateTime) {
                 $(element).css('background-color', 'red');
@@ -279,7 +329,7 @@ jq(document).ready(function(){
         //alert(new Date(currentYear, 10, 17));
     }*/
 
-    setTimeout(foo, 5000);
+    setTimeout(foo, 1000);
    // calendar.setYear(new Date().getFullYear());
 
 

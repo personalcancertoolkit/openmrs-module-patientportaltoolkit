@@ -95,7 +95,7 @@
 
         <% if (mycancerbuddiespeople) { %>
         <% mycancerbuddiespeople.each { mycancerbuddiesperson -> %>
-        <% if (pptutil.getRelationbetweenTwoPeople(person,mycancerbuddiesperson.person).getShareStatus()==0) { %>
+        <% if (pptutil.getRelationbetweenTwoPeople(person,mycancerbuddiesperson.person).getShareStatus()==0 && pptutil.getRelationbetweenTwoPeople(person,mycancerbuddiesperson.person).getRetired() == 0)  { %>
         <div class="col-xs-18 col-sm-6 col-md-3">
             <div class="thumbnail">
                 <div class="caption">

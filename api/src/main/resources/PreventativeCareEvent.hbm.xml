@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.openmrs.module.patientportaltoolkit">
+    <class table="patientportal_preventativecare_event" name="PreventativeCareEvent" lazy="false">
+        <id name="id" type="int" column="id"  unsaved-value="0">
+            <generator class="native" />
+        </id>
+        <property name="doctorName" type="java.lang.String" column="doctor_name"/>
+        <property name="responseComments" type="java.lang.String" column="response_comments"/>
+        <many-to-one name="responseUser" class="org.openmrs.User" column="response_user" />
+        <many-to-one name="patient" class="org.openmrs.Patient" column="patient_id" lazy="false" not-null="true"/>
+        <property name="targetDate" type="java.util.Date" column="target_date" not-null="false"
+                  length="19" />
+        <property name="responseDate" type="java.util.Date" column="response_date" not-null="false"
+                  length="19" />
+        <property name="completeDate" type="java.util.Date" column="complete_date" not-null="false"
+                  length="19" />
+        <property name="status" type="int" column="status"/>
+
+    </class>
+</hibernate-mapping>

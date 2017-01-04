@@ -1,6 +1,12 @@
 ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
 <div>
     <div class="clearfix">
+
+        <h4>Reminder Trigger Date</h4>
+        ${pptutil.formatDate((pptpersonAttributes.reminderTriggerDate))}
+
+        <hr/>
+
         <h4>General History</h4>
 
 

@@ -98,6 +98,9 @@
 		Message.hbm.xml
 		SecurityLayer.hbm.xml
 		PersonPreferences.hbm.xml
+		PreventativeCareEvent.hbm.xml
+		PreventativeCareRule.hbm.xml
+		PatientPortalPersonAttributes.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->

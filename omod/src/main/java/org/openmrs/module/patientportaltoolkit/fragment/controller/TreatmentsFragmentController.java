@@ -19,8 +19,10 @@ import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.PatientPortalPersonAttributes;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalPersonAttributesService;
 import org.openmrs.module.patientportaltoolkit.api.util.GenerateTreatmentClassesUtil;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.page.PageModel;
@@ -45,6 +47,7 @@ public class TreatmentsFragmentController {
         if(person.isPatient()){
         patient= Context.getPatientService().getPatientByUuid(person.getUuid());
         PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
+            PatientPortalPersonAttributes pptpersonAttributes = Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
             model.addAttribute("surgeryConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.SURGERY_ENCOUNTER));
             model.addAttribute("chemotherapyConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHEMOTHERAPY_ENCOUNTER));
             model.addAttribute("radiationConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.RADIATION_ENCOUNTER));
@@ -53,6 +56,7 @@ public class TreatmentsFragmentController {
             model.addAttribute("radiationencounters", GenerateTreatmentClassesUtil.generateRadiations(patient));
             model.addAttribute("surgeryencounters",GenerateTreatmentClassesUtil.generateSurgeries(patient));
             model.addAttribute("chemotherapyencounters",GenerateTreatmentClassesUtil.generateChemotherapies(patient));
+            model.addAttribute("pptpersonAttributes", pptpersonAttributes);
         }
         else {
             model.addAttribute("surgeryConcepts",null);

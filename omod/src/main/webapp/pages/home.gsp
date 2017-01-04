@@ -15,6 +15,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
     <li><a data-toggle="tab" href="#followUpCare">Follow up Care</a></li>
     <li><a data-toggle="tab" href="#community">Communities</a></li>
     <li><a data-toggle="tab" href="#symptomManagement">Symptom Management</a></li>
+    <li><a data-toggle="tab" href="#preventativeCare">Preventive Care</a></li>
     </ul>
 
 
@@ -33,6 +34,9 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
         </div>
         <div id="symptomManagement" class="tab-pane fade">
             ${ ui.includeFragment("patientportaltoolkit", "symptomManagement") }
+        </div>
+        <div id="preventativeCare" class="tab-pane fade">
+            ${ ui.includeFragment("patientportaltoolkit", "preventativeCare") }
         </div>
     </div>
     <% } %>
