@@ -1,11 +1,17 @@
 ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
 <div>
     <div class="clearfix">
+    <h4>Reminder Trigger Date</h4>
+    <div class="col-xs-6">
+        <div class="col-xs-6"><p><strong id="remindertriggerdatevalue" class="edit remindertriggerdate">${pptutil.formatDate((pptpersonAttributes.reminderTriggerDate))}</strong></p></div>
+        <div class="col-sm-8 pull-right">
+            <button id="remindertriggerdateSave" class="pull-right btn btn-primary btn-sm disabled" disabled>save</button>
+        </div>
+    </div>
+    </div>
+    <hr/>
+    <div class="clearfix">
 
-        <h4>Reminder Trigger Date</h4>
-        ${pptutil.formatDate((pptpersonAttributes.reminderTriggerDate))}
-
-        <hr/>
 
         <h4>General History</h4>
 

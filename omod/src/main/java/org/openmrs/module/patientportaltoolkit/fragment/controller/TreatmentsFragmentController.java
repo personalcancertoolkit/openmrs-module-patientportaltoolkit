@@ -27,9 +27,16 @@ import org.openmrs.module.patientportaltoolkit.api.util.GenerateTreatmentClasses
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Maurya on 19/06/2015.
@@ -69,6 +76,27 @@ public class TreatmentsFragmentController {
             model.addAttribute("chemotherapyencounters",null);
         }
         //log.info("Treatments requested for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+    }
+
+    public void saveReminderTriggerDate(@RequestParam(value = "reminderTriggerDate") String reminderTriggerDate,
+                                               HttpServletRequest servletRequest) throws ParseException {
+
+        log.info(PPTLogAppender.appendLog("Save_TriggerData", servletRequest, "reminderTriggerDate:", reminderTriggerDate));
+        Person person = Context.getAuthenticatedUser().getPerson();
+        Patient patient = null;
+        if(person.isPatient()) {
+            patient= Context.getPatientService().getPatientByUuid(person.getUuid());
+            PatientPortalPersonAttributes patientPortalPersonAttributes = Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
+            DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+            Date date = new Date();
+            try {
+                date = format.parse(reminderTriggerDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            patientPortalPersonAttributes.setReminderTriggerDate(date);
+            Context.getService(PatientPortalPersonAttributesService.class).savePatientPortalPersonAttributes(patientPortalPersonAttributes);
+        }
     }
 
 }

@@ -9,4 +9,6 @@ import org.openmrs.module.patientportaltoolkit.PatientPortalPersonAttributes;
 public interface PatientPortalPersonAttributesDAO {
 
     PatientPortalPersonAttributes getPatientPortalPersonAttributesByPatient(Patient patient);
+
+    PatientPortalPersonAttributes savePatientPortalPersonAttributes(PatientPortalPersonAttributes patientPortalPersonAttributes);
 }

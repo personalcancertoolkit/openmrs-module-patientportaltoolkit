@@ -27,4 +27,10 @@ public class HibernatePatientPortalPersonAttributesDAO implements PatientPortalP
         c.add(Restrictions.eq("patient", patient));
         return (PatientPortalPersonAttributes) c.uniqueResult();
     }
+
+    @Override
+    public PatientPortalPersonAttributes savePatientPortalPersonAttributes(PatientPortalPersonAttributes patientPortalPersonAttributes) {
+            sessionFactory.getCurrentSession().saveOrUpdate(patientPortalPersonAttributes);
+            return patientPortalPersonAttributes;
+    }
 }

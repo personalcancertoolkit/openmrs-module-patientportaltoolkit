@@ -1315,4 +1315,25 @@ jq(document).ready(function(){
             $('#mycancerbuddiesSave').removeClass('disabled');
             $('#mycancerbuddiesSave').prop('disabled', false);
         });
+
+    $('.remindertriggerdate').click(
+        function () {
+            $('#remindertriggerdateSave').removeClass('disabled');
+            $('#remindertriggerdateSave').prop('disabled', false);
+        });
+
+    $('#remindertriggerdateSave').click(
+        function () {
+            if(jq("#remindertriggerdatevalue").text() != null ) {
+                jq.get("treatments/saveReminderTriggerDate.action", {
+                    reminderTriggerDate: jq("#remindertriggerdatevalue").text()
+                }, function () {
+                });
+                setTimeout(
+                    function () {
+                        location.reload();
+                    }, 1000);
+            }
+        });
+
 });

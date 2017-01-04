@@ -12,4 +12,8 @@ public interface PatientPortalPersonAttributesService {
     @Transactional(readOnly = true)
     PatientPortalPersonAttributes getPatientPortalPersonAttributesByPatient(Patient patient);
 
+    @Transactional(readOnly = false)
+    PatientPortalPersonAttributes savePatientPortalPersonAttributes(PatientPortalPersonAttributes patientPortalPersonAttributes);
+
+
 }

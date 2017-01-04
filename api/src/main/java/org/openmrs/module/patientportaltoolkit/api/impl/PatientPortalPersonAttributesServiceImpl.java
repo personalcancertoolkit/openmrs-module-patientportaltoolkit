@@ -33,4 +33,9 @@ public class PatientPortalPersonAttributesServiceImpl extends BaseOpenmrsService
     public PatientPortalPersonAttributes getPatientPortalPersonAttributesByPatient(Patient patient) {
         return dao.getPatientPortalPersonAttributesByPatient(patient);
     }
+
+    @Override
+    public PatientPortalPersonAttributes savePatientPortalPersonAttributes(PatientPortalPersonAttributes patientPortalPersonAttributes) {
+        return dao.savePatientPortalPersonAttributes(patientPortalPersonAttributes);
+    }
 }
