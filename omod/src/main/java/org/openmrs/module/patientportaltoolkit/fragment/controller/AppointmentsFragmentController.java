@@ -57,11 +57,14 @@ public class AppointmentsFragmentController {
         org.openmrs.api.PersonService personService=Context.getPersonService();
         if(person.isPatient()) {
             Patient patient = Context.getPatientService().getPatientByUuid(person.getUuid());
-            List<Reminder> reminders = Context.getService(ReminderService.class).getReminders(patient);
+            List<Reminder> reminders =  new ArrayList<>();
+            reminders= Context.getService(ReminderService.class).getReminders(patient);
             model.addAttribute("reminders", reminders);
-            for (Reminder r : reminders) {
-                if (r.getCompleteDate() == null) {
-                    alertableReminders.add(r);
+            if (reminders!=null) {
+                for (Reminder r : reminders) {
+                    if (r.getCompleteDate() == null) {
+                        alertableReminders.add(r);
+                    }
                 }
             }
         }

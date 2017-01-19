@@ -1316,7 +1316,7 @@ jq(document).ready(function(){
             $('#mycancerbuddiesSave').prop('disabled', false);
         });
 
-    $('.remindertriggerdate').click(
+  /*  $('.remindertriggerdate').click(
         function () {
             $('#remindertriggerdateSave').removeClass('disabled');
             $('#remindertriggerdateSave').prop('disabled', false);
@@ -1334,6 +1334,6 @@ jq(document).ready(function(){
                         location.reload();
                     }, 1000);
             }
-        });
+        });*/
 
 });
