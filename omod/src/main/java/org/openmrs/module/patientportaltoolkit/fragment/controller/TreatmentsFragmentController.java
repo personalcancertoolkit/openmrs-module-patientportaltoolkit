@@ -21,6 +21,7 @@ import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalPersonAttributes;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.Surgery;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalPersonAttributesService;
 import org.openmrs.module.patientportaltoolkit.api.util.GenerateTreatmentClassesUtil;
@@ -52,9 +53,12 @@ public class TreatmentsFragmentController {
         Person person = (Person) model.get("person");
        // if(Context.getAuthenticatedUser().getPerson().isPatient()){
         if(person.isPatient()){
+            Date firstSurgeryDate=null;
         patient= Context.getPatientService().getPatientByUuid(person.getUuid());
         PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
-            PatientPortalPersonAttributes pptpersonAttributes = Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
+           // PatientPortalPersonAttributes pptpersonAttributes = Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
+            List<Surgery> surgeryEncounters = new ArrayList<>();
+            surgeryEncounters = GenerateTreatmentClassesUtil.generateSurgeries(patient);
             model.addAttribute("surgeryConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.SURGERY_ENCOUNTER));
             model.addAttribute("chemotherapyConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHEMOTHERAPY_ENCOUNTER));
             model.addAttribute("radiationConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.RADIATION_ENCOUNTER));
@@ -63,7 +67,21 @@ public class TreatmentsFragmentController {
             model.addAttribute("radiationencounters", GenerateTreatmentClassesUtil.generateRadiations(patient));
             model.addAttribute("surgeryencounters",GenerateTreatmentClassesUtil.generateSurgeries(patient));
             model.addAttribute("chemotherapyencounters",GenerateTreatmentClassesUtil.generateChemotherapies(patient));
-            model.addAttribute("pptpersonAttributes", pptpersonAttributes);
+           // model.addAttribute("pptpersonAttributes", pptpersonAttributes);
+            if (!surgeryEncounters.isEmpty()) {
+                for (Surgery surgery : surgeryEncounters){
+                    if (firstSurgeryDate == null)
+                        firstSurgeryDate = surgery.getSurgeryDate();
+                    else{
+                        if (firstSurgeryDate.after(surgery.getSurgeryDate()))
+                            firstSurgeryDate=surgery.getSurgeryDate();
+                    }
+                }
+                model.addAttribute("firstSurgeryDate", firstSurgeryDate);
+            }
+            else{
+                model.addAttribute("firstSurgeryDate", null);
+            }
         }
         else {
             model.addAttribute("surgeryConcepts",null);
