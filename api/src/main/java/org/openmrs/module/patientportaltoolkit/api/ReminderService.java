@@ -15,6 +15,7 @@ package org.openmrs.module.patientportaltoolkit.api;
 
 import org.openmrs.Patient;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
 import org.openmrs.module.patientportaltoolkit.Reminder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,5 +50,11 @@ public interface ReminderService extends OpenmrsService {
 
     @Transactional
     Reminder markScheduledReminder(String reminderId, Date date);
+
+    @Transactional
+    GuidelineConditionSet generateGuidelineConditionSet(Patient patient);
+
+    @Transactional
+    List<Reminder> generateRemindersbyGuidelineConditions(Patient patient);
 
 }

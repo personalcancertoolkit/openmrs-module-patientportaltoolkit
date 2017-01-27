@@ -15,18 +15,21 @@ package org.openmrs.module.patientportaltoolkit.fragment.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.PersonAttribute;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.patientportaltoolkit.PatientPortalPersonAttributes;
-import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
-import org.openmrs.module.patientportaltoolkit.Reminder;
+import org.openmrs.module.patientportaltoolkit.*;
+import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalPersonAttributesService;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
+import org.openmrs.module.patientportaltoolkit.api.util.GenerateTreatmentClassesUtil;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
+import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 import org.openmrs.notification.MessageException;
 import org.openmrs.notification.MessageService;
 import org.openmrs.ui.framework.fragment.FragmentModel;
@@ -58,7 +61,7 @@ public class AppointmentsFragmentController {
         if(person.isPatient()) {
             Patient patient = Context.getPatientService().getPatientByUuid(person.getUuid());
             List<Reminder> reminders =  new ArrayList<>();
-            reminders= Context.getService(ReminderService.class).getReminders(patient);
+            reminders= Context.getService(ReminderService.class).generateRemindersbyGuidelineConditions(patient);
             model.addAttribute("reminders", reminders);
             if (reminders!=null) {
                 for (Reminder r : reminders) {

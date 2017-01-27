@@ -596,5 +596,21 @@ public class ToolkitResourceUtil {
         return reminderMap;
     }
 
+    public static Date getFirstSurgeryDate(Patient patient) {
+        Date firstSurgeryDate = null;
+        List<Surgery> surgeryEncounters = new ArrayList<>();
+        surgeryEncounters = GenerateTreatmentClassesUtil.generateSurgeries(patient);
+        if (!surgeryEncounters.isEmpty()) {
+            for (Surgery surgery : surgeryEncounters) {
+                if (firstSurgeryDate == null)
+                    firstSurgeryDate = surgery.getSurgeryDate();
+                else {
+                    if (firstSurgeryDate.after(surgery.getSurgeryDate()))
+                        firstSurgeryDate = surgery.getSurgeryDate();
+                }
+            }
+        }
+        return firstSurgeryDate;
+    }
 
 }

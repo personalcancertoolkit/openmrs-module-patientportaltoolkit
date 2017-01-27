@@ -19,6 +19,7 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.openmrs.Concept;
 import org.openmrs.module.patientportaltoolkit.Guideline;
+import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
 import org.openmrs.module.patientportaltoolkit.api.db.GuidelineDAO;
 
 import java.util.List;
@@ -55,6 +56,12 @@ public class HibernateGuidelineDAO implements GuidelineDAO {
     @Override
     public  List<Guideline> getGuidelinesbyConditions(List<Concept> conditions) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(Guideline.class);
+        return c.list();
+    }
+
+    @Override
+    public List<GuidelineConditionSet> getAllGuidelineConditionSet() {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(GuidelineConditionSet.class);
         return c.list();
     }
 }

@@ -16,5 +16,9 @@
             <column name="concept_id" not-null="true" />
         </many-to-many>
     </set>
+    <set name="guidelineIntervalSet" table="patientportal_guideline_interval" inverse="true" fetch="select">
+        <key column="guideline_id" not-null="true" />
+        <one-to-many entity-name="org.openmrs.module.patientportaltoolkit.GuidelineInterval"/>
+    </set>
 </class>
 </hibernate-mapping>

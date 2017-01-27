@@ -17,6 +17,7 @@ import org.openmrs.Concept;
 import org.openmrs.Patient;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.patientportaltoolkit.Guideline;
+import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -35,4 +36,7 @@ public interface GuidelineService extends OpenmrsService {
 
     @Transactional(readOnly = true)
     public List<Guideline>  findGuidelines(Patient pat);
+
+    @Transactional(readOnly = true)
+    GuidelineConditionSet getGuidlineConditionSetbyConditions(Set<Concept> conditions);
 }

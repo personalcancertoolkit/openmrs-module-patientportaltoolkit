@@ -26,6 +26,7 @@ import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalPersonAttributesService;
 import org.openmrs.module.patientportaltoolkit.api.util.GenerateTreatmentClassesUtil;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
+import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,20 +69,8 @@ public class TreatmentsFragmentController {
             model.addAttribute("surgeryencounters",GenerateTreatmentClassesUtil.generateSurgeries(patient));
             model.addAttribute("chemotherapyencounters",GenerateTreatmentClassesUtil.generateChemotherapies(patient));
            // model.addAttribute("pptpersonAttributes", pptpersonAttributes);
-            if (!surgeryEncounters.isEmpty()) {
-                for (Surgery surgery : surgeryEncounters){
-                    if (firstSurgeryDate == null)
-                        firstSurgeryDate = surgery.getSurgeryDate();
-                    else{
-                        if (firstSurgeryDate.after(surgery.getSurgeryDate()))
-                            firstSurgeryDate=surgery.getSurgeryDate();
-                    }
-                }
-                model.addAttribute("firstSurgeryDate", firstSurgeryDate);
-            }
-            else{
-                model.addAttribute("firstSurgeryDate", null);
-            }
+            firstSurgeryDate= ToolkitResourceUtil.getFirstSurgeryDate(patient);
+            model.addAttribute("firstSurgeryDate",firstSurgeryDate);
         }
         else {
             model.addAttribute("surgeryConcepts",null);

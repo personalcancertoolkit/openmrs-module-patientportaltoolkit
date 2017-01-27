@@ -28,6 +28,7 @@ public class Guideline {
     private Concept followupProcedure;
     private Set<Concept> conditionsSet = new HashSet<Concept>(0);
     private String followupTimline;
+    private Set<GuidelineInterval> guidelineIntervalSet = new HashSet<GuidelineInterval>(0);
 
     public Integer getId() {
         return id;
@@ -68,4 +69,11 @@ public class Guideline {
         this.followupTimline = followupTimline;
     }
 
+    public Set<GuidelineInterval> getGuidelineIntervalSet() {
+        return guidelineIntervalSet;
+    }
+
+    public void setGuidelineIntervalSet(Set<GuidelineInterval> guidelineIntervalSet) {
+        this.guidelineIntervalSet = guidelineIntervalSet;
+    }
 }

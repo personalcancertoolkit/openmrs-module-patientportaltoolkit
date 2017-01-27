@@ -15,17 +15,21 @@ package org.openmrs.module.patientportaltoolkit.api.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.LocalDate;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.Guideline;
+import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
+import org.openmrs.module.patientportaltoolkit.GuidelineInterval;
 import org.openmrs.module.patientportaltoolkit.Reminder;
 import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
 import org.openmrs.module.patientportaltoolkit.api.db.ReminderDAO;
 import org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernateReminderDAO;
+import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 
 import java.text.ParseException;
 import java.util.*;
@@ -441,6 +445,103 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         }
 
         return latest;
+    }
+
+    @Override
+    public  GuidelineConditionSet generateGuidelineConditionSet(Patient patient) {
+        //find cancer type
+        Concept cancerTypeConcept = Context.getConceptService().getConcept(CANCER_TYPE);
+        Obs cancerType = findLatest(Context.getObsService().getObservationsByPersonAndConcept(patient, cancerTypeConcept));
+        Concept type = cancerType==null? null : cancerType.getValueCoded();
+        //find cancer stage
+        Concept cancerStageConcept = Context.getConceptService().getConcept(CANCER_STAGE);
+        Obs cancerStage = findLatest(Context.getObsService().getObservationsByPersonAndConcept(patient, cancerStageConcept));
+        Concept stage = cancerStage==null? null : cancerStage.getValueCoded();
+
+        Set<Concept> conditionConcepts = new HashSet<>();
+        conditionConcepts.add(type);
+        conditionConcepts.add(stage);
+        GuidelineConditionSet guidelineConditionSet = Context.getService(GuidelineService.class).getGuidlineConditionSetbyConditions(conditionConcepts);
+
+        return guidelineConditionSet;
+    }
+    public  List<Reminder> generateRemindersbyGuidelineConditions(Patient patient) {
+
+        //Pre - Conditions for reminders
+
+        //find genetic_abnormality flag and answer
+        //block any follow-up tests from appearing:
+        //	1)       IF the patient answers YES to genetic abnormality, and
+        //	2)       THEN answers FAP/HNPCC/or INFLAMMATORY BOWEL DISORDER
+        //find genetic abnormality flag
+        Concept cancerAbnormalityToldConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_TOLD);
+        Concept cancerAbnormalityToldYesConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_TOLD_YES);
+        Concept cancerAbnormalityConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY);
+        Concept cancerAbnormalityFapConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_FAP);
+        Concept cancerAbnormalityHnpccConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_HNPCC);
+        Concept cancerAbnormalityInflbdConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_INFLBD);
+
+        Obs cancerAbnormalityToldObs = findLatest(Context.getObsService().getObservationsByPersonAndConcept(patient, cancerAbnormalityToldConcept));
+        Concept cancerAbnormalityToldAns = (cancerAbnormalityToldObs==null? null : cancerAbnormalityToldObs.getValueCoded());
+        if(cancerAbnormalityToldAns != null && cancerAbnormalityToldAns.equals(cancerAbnormalityToldYesConcept)) {
+            Obs cancerAbnormalityObs = findLatest(Context.getObsService().getObservationsByPersonAndConcept(patient, cancerAbnormalityConcept));
+            Concept cancerAbnormalityAns = (cancerAbnormalityObs==null? null : cancerAbnormalityObs.getValueCoded());
+            if(cancerAbnormalityAns != null &&
+                    (cancerAbnormalityAns.equals(cancerAbnormalityFapConcept) ||
+                            cancerAbnormalityAns.equals(cancerAbnormalityHnpccConcept) ||
+                            cancerAbnormalityAns.equals(cancerAbnormalityInflbdConcept))) {
+                return null;
+            }
+        }
+        //find surgery date
+        Concept surgeryDateConcept = Context.getConceptService().getConcept(SURGERY_DATE);
+        Obs surgeryDate = findLatest(Context.getObsService().getObservationsByPersonAndConcept(patient, surgeryDateConcept));
+        Date surgDate = surgeryDate==null? null : surgeryDate.getValueDatetime();
+        if(surgDate == null) {
+            log.warn("No surgery is found for this patient: " + patient);
+            return null;
+        }
+        //Pre - Conditions Done
+
+
+
+        GuidelineConditionSet guidelineConditionSet = generateGuidelineConditionSet(patient);
+        Date firstSurgeryDate= ToolkitResourceUtil.getFirstSurgeryDate(patient);
+        //Generating Reminders
+        LocalDate modifiableDate=null;
+        List<Reminder> reminders = new ArrayList<>();
+
+        List<Reminder> databaseReminders = new ArrayList<>();
+        databaseReminders = getAllRemindersByPatient(patient);
+        reminders.addAll(databaseReminders);
+        for (Guideline g:  guidelineConditionSet.getGuidelines()) {
+            for (GuidelineInterval gi: g.getGuidelineIntervalSet()) {
+                modifiableDate = new LocalDate(firstSurgeryDate);
+                if(findReminderByFollowupCareAndDate(databaseReminders,g.getFollowupProcedure(),modifiableDate.plusMonths(gi.getIntervalLength()).toDate())!=null){
+                    continue;
+                }
+                else {
+                    Reminder reminder= new Reminder();
+                    reminder.setTargetDate(modifiableDate.plusMonths(gi.getIntervalLength()).toDate());
+                    reminder.setFollowProcedure(g.getFollowupProcedure());
+                    reminder.setStatus(0);
+                    reminders.add(reminder);
+                }
+            }
+        }
+
+        return reminders;
+    }
+    Reminder findReminderByFollowupCareAndDate (List<Reminder> findInReminderList,Concept reminderProcedure,Date reminderDate){
+        Reminder exactReminder = null;
+        for(Reminder r:findInReminderList) {
+            if(r.getTargetDate() == null)
+                continue;
+            if(r.getFollowProcedure().equals(reminderProcedure) && r.getTargetDate().equals(reminderDate)){
+                exactReminder=r;
+            }
+        }
+        return exactReminder;
     }
 
 }

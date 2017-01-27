@@ -94,6 +94,8 @@
 		PatientPortalForm.hbm.xml
 		SideEffect.hbm.xml
 		Guideline.hbm.xml
+		GuidelineConditionSet.hbm.xml
+		GuidelineInterval.hbm.xml
 		Reminder.hbm.xml
 		Message.hbm.xml
 		SecurityLayer.hbm.xml

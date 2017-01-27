@@ -15,6 +15,7 @@ package org.openmrs.module.patientportaltoolkit.api.db;
 
 import org.openmrs.Concept;
 import org.openmrs.module.patientportaltoolkit.Guideline;
+import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
 
 import java.util.List;
 
@@ -31,4 +32,6 @@ public interface GuidelineDAO {
     void saveGuideline(Guideline guideline);
 
     List<Guideline> getGuidelinesbyConditions(List<Concept> conditions);
+
+    List<GuidelineConditionSet> getAllGuidelineConditionSet();
 }

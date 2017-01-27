@@ -21,6 +21,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.Guideline;
+import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
 import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
 import org.openmrs.module.patientportaltoolkit.api.db.GuidelineDAO;
 
@@ -101,6 +102,19 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
            // System.out.print(guidlineIterator.getFollowupProcedure().getConceptId());
         }
         return guidelines;
+    }
+
+    @Override
+    public GuidelineConditionSet getGuidlineConditionSetbyConditions(Set<Concept> conditions) {
+        List<GuidelineConditionSet> allGuidelineConditionSet=dao.getAllGuidelineConditionSet();
+        GuidelineConditionSet guidelineConditionSet = new GuidelineConditionSet();
+        for(GuidelineConditionSet guidelineConditionSetIter:allGuidelineConditionSet){
+            Set<Concept> guidelineConditionConcepts = guidelineConditionSetIter.getConceptSet();
+            if (guidelineConditionConcepts.size() == conditions.size() && guidelineConditionConcepts.containsAll(conditions)) {
+                guidelineConditionSet=guidelineConditionSetIter;
+            }
+        }
+        return guidelineConditionSet;
     }
 
     private Concept getCancerType(Patient pat) {
