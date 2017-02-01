@@ -152,7 +152,13 @@ jq(document).ready(function(){
             $('#calendar').data('calendar').setDataSource(reminderData);
         });
     }
-    var calendar= $('#preventativeCareCalendar').calendar({
+    function foo2 () {
+        //hardcoded data to be modified
+        $.get("http://localhost:8081/openmrs2/ws/patientportaltoolkit/getpreventivecareforpatient/d99d2110-7cad-4282-9e00-ede06b92c965", function (pcgeData) {
+            $('#preventativeCareCalendar').data('calendar').setDataSource(pcgeData);
+        });
+    }
+    var preventivecalendar= $('#preventativeCareCalendar').calendar({
         customDayRenderer: function(element, date) {
             if(date.getTime() == circleDateTime) {
                 $(element).css('background-color', 'red');
@@ -252,6 +258,9 @@ jq(document).ready(function(){
         }
 
     });
+//js for preventative care events
+
+
    /* function foo (){
         console.info("foo ftw");
         $('#calendar').data('calendar').setDataSource([
@@ -330,6 +339,7 @@ jq(document).ready(function(){
     }*/
 
     setTimeout(foo, 1000);
+    setTimeout(foo2, 1000);
    // calendar.setYear(new Date().getFullYear());
 
 

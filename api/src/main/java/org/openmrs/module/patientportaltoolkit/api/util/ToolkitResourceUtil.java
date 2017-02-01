@@ -31,6 +31,7 @@ public class ToolkitResourceUtil {
 
     public static final String PHONE_NUMBER_ATTRIBUTE = "Telephone Number";
     public static final String EMAIL_ATTRIBUTE = "Email";
+    public static Integer i=0;
 
 
     public static Date clearDate(Date dateTime) {
@@ -588,12 +589,41 @@ public class ToolkitResourceUtil {
         reminderMap.put("followProcedureName",reminder.getFollowProcedureName());
         reminderMap.put("targetDate",reminder.getTargetDate());
         //details for calendar
+
         reminderMap.put("id", reminder.getId());
         reminderMap.put("startDate",reminder.getTargetDate());
         reminderMap.put("endDate",reminder.getTargetDate());
         reminderMap.put("name",reminder.getFollowProcedureName());
         //reminderMap.put("status",reminder.getStatus());
         return reminderMap;
+    }
+
+    public static Object generatePreventiveCareEvents(List<PreventativeCareEvent> pcgEvents) {
+
+        List<Object> pcgEventsMap = new ArrayList<Object>();
+        for (PreventativeCareEvent pcgEvent : pcgEvents) {
+            i=i+1;
+            pcgEventsMap.add(generatePreventiveCareEvent(pcgEvent));
+        }
+        return pcgEventsMap;
+    }
+
+    public static Object generatePreventiveCareEvent(PreventativeCareEvent pcgevent) {
+
+
+        Map<String, Object> preventiveCareMap = new HashMap<String, Object>();
+
+        preventiveCareMap.put("followProcedure",generateConcept(pcgevent.getFollowProcedure()));
+        preventiveCareMap.put("followProcedureName",pcgevent.getFollowProcedureName());
+        preventiveCareMap.put("targetDate",pcgevent.getTargetDate());
+        if(pcgevent.getId()==null)
+            preventiveCareMap.put("id", i);
+        else
+            preventiveCareMap.put("id", pcgevent.getId());
+        preventiveCareMap.put("startDate",pcgevent.getTargetDate());
+        preventiveCareMap.put("endDate",pcgevent.getTargetDate());
+        preventiveCareMap.put("name",pcgevent.getFollowProcedureName());
+        return preventiveCareMap;
     }
 
     public static Date getFirstSurgeryDate(Patient patient) {

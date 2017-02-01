@@ -16,6 +16,7 @@ package org.openmrs.module.patientportaltoolkit.web.controller;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.Reminder;
+import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,14 @@ public class ReminderController {
     {
         Patient patient= Context.getPatientService().getPatientByUuid(patientId);
         return ToolkitResourceUtil.generateReminders(Context.getService(ReminderService.class).getReminders(patient));
+    }
+
+    @RequestMapping( value = "/patientportaltoolkit/getpreventivecareforpatient/{patientId}")
+    @ResponseBody
+    public Object getAllPreventiveCareforPatient(@PathVariable( "patientId" ) String patientId)
+    {
+        Patient patient= Context.getPatientService().getPatientByUuid(patientId);
+        return ToolkitResourceUtil.generatePreventiveCareEvents(Context.getService(PreventativeCareService.class).getAllPreventativeCareEventByPatient(patient));
     }
 
     @RequestMapping( value = "/patientportaltoolkit/getsampledates")
