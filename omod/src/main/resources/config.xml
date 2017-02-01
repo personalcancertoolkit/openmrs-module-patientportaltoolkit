@@ -102,6 +102,8 @@
 		PersonPreferences.hbm.xml
 		PreventativeCareEvent.hbm.xml
 		PreventativeCareRule.hbm.xml
+		PreventiveCareGuideline.hbm.xml
+		PreventiveCareGuidelineInterval.hbm.xml
 		PatientPortalPersonAttributes.hbm.xml
 	</mappingFiles>
 

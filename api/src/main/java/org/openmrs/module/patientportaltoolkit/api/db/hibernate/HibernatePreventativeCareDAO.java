@@ -10,6 +10,7 @@ import org.hibernate.classic.Session;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
 import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
+import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
 import org.openmrs.module.patientportaltoolkit.api.db.PreventativeCareDAO;
 
 import java.util.List;
@@ -52,6 +53,17 @@ public class HibernatePreventativeCareDAO implements PreventativeCareDAO {
 
     @Override
     public PreventativeCareEvent getPreventativeCareEvent(Integer id) {
-        return (PreventativeCareEvent) sessionFactory.getCurrentSession().get(PreventativeCareDAO.class, id);
+        return (PreventativeCareEvent) sessionFactory.getCurrentSession().get(PreventativeCareEvent.class, id);
+    }
+
+    @Override
+    public List<PreventiveCareGuideline> getAllPreventativeCareGuidelines() {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(PreventiveCareGuideline.class);
+        return c.list();
+    }
+
+    @Override
+    public PreventiveCareGuideline getPreventativeCareGuidelinebyID(Integer id) {
+        return (PreventiveCareGuideline) sessionFactory.getCurrentSession().get(PreventiveCareGuideline.class, id);
     }
 }

@@ -1,9 +1,13 @@
 package org.openmrs.module.patientportaltoolkit.api.impl;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
+import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
 import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
+import org.openmrs.module.patientportaltoolkit.api.db.PreventativeCareDAO;
 
 import java.util.Date;
 import java.util.List;
@@ -12,6 +16,24 @@ import java.util.List;
  * Created by maurya on 11/30/16.
  */
 public class PreventativeCareServiceImpl extends BaseOpenmrsService implements PreventativeCareService {
+    protected PreventativeCareDAO dao;
+
+    protected final Log log = LogFactory.getLog(this.getClass());
+
+    /**
+     * @return the dao
+     */
+    public PreventativeCareDAO getDao() {
+        return dao;
+    }
+
+    /**
+     * @param dao the dao to set
+     */
+    public void setDao(PreventativeCareDAO dao) {
+        this.dao = dao;
+    }
+
 
     @Override
     public PreventativeCareEvent getPreventativeCareEventById(String Id) {
@@ -46,5 +68,18 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
     @Override
     public PreventativeCareEvent markScheduledPreventativeCareEvent(String PreventativeCareEventId, Date date) {
         return null;
+    }
+
+    @Override
+    public List<PreventiveCareGuideline> getPreventativeCareGuideline(Patient patient) {
+        List<PreventiveCareGuideline> totalPreventiveCareGuidelines = dao.getAllPreventativeCareGuidelines();
+        if (patient.getGender().equals("M")) {
+            totalPreventiveCareGuidelines.remove(dao.getPreventativeCareGuidelinebyID(5));
+            totalPreventiveCareGuidelines.remove(dao.getPreventativeCareGuidelinebyID(6));
+        }
+        if (patient.getGender().equals("F") && patient.getAge()<45 || patient.getGender().equals("M") && patient.getAge()<35) {
+            totalPreventiveCareGuidelines.remove(dao.getPreventativeCareGuidelinebyID(7));
+        }
+        return totalPreventiveCareGuidelines;
     }
 }

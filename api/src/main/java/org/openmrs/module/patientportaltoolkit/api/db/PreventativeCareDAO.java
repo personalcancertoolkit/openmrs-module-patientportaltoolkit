@@ -2,6 +2,7 @@ package org.openmrs.module.patientportaltoolkit.api.db;
 
 import org.openmrs.Patient;
 import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
+import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
 
 import java.util.List;
 
@@ -16,5 +17,9 @@ public interface PreventativeCareDAO {
 
     PreventativeCareEvent savePreventativeCareEvent(PreventativeCareEvent preventativeCareEvent);
 
-    public PreventativeCareEvent getPreventativeCareEvent(Integer id);
+    PreventativeCareEvent getPreventativeCareEvent(Integer id);
+
+    List<PreventiveCareGuideline> getAllPreventativeCareGuidelines ();
+
+    PreventiveCareGuideline getPreventativeCareGuidelinebyID (Integer id);
 }

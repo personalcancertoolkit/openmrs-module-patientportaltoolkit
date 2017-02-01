@@ -2,6 +2,7 @@ package org.openmrs.module.patientportaltoolkit.api;
 
 import org.openmrs.Patient;
 import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
+import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -32,4 +33,7 @@ public interface PreventativeCareService {
 
     @Transactional
     PreventativeCareEvent markScheduledPreventativeCareEvent(String PreventativeCareEventId, Date date);
+
+    @Transactional
+    List<PreventiveCareGuideline> getPreventativeCareGuideline(Patient patient);
 }
