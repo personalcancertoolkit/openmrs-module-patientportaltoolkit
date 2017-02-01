@@ -1,5 +1,6 @@
 package org.openmrs.module.patientportaltoolkit;
 
+import org.openmrs.Concept;
 import org.openmrs.Patient;
 import org.openmrs.User;
 
@@ -19,6 +20,8 @@ public class PreventativeCareEvent {
     private Date completeDate;
     private String doctorName;
     private Integer status; //0-not completed, 1-completed, -1-skipped, 2-scheduled
+    private Concept followProcedure;
+    private String followProcedureName;
 
     private PreventativeCareRule preventativeCareRule;
 
@@ -100,5 +103,24 @@ public class PreventativeCareEvent {
 
     public void setPreventativeCareRule(PreventativeCareRule preventativeCareRule) {
         this.preventativeCareRule = preventativeCareRule;
+    }
+
+    public Concept getFollowProcedure() {
+        return followProcedure;
+    }
+
+    public void setFollowProcedure(Concept followProcedure) {
+        this.followProcedure = followProcedure;
+    }
+
+    public String getFollowProcedureName() {
+        if(followProcedureName == null && followProcedure != null) {
+            followProcedureName = followProcedure.getName().getName();
+        }
+        return followProcedureName;
+    }
+
+    public void setFollowProcedureName(String followProcedureName) {
+        this.followProcedureName = followProcedureName;
     }
 }

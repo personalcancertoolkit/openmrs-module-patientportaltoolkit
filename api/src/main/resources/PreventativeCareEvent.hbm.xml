@@ -17,6 +17,7 @@
         <property name="completeDate" type="java.util.Date" column="complete_date" not-null="false"
                   length="19" />
         <property name="status" type="int" column="status"/>
+        <many-to-one name="followProcedure" class="org.openmrs.Concept" column="followup_procedure" not-null="true"/>
 
     </class>
 </hibernate-mapping>

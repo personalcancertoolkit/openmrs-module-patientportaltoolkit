@@ -2,13 +2,16 @@ package org.openmrs.module.patientportaltoolkit.api.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.LocalDate;
 import org.openmrs.Patient;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
 import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
+import org.openmrs.module.patientportaltoolkit.PreventiveCareGuidelineInterval;
 import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
 import org.openmrs.module.patientportaltoolkit.api.db.PreventativeCareDAO;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +45,24 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
 
     @Override
     public List<PreventativeCareEvent> getAllPreventativeCareEventByPatient(Patient patient) {
-        return null;
+       Date dateOfJoin = patient.getDateCreated();
+        LocalDate modifiableDate=null;
+        List<PreventativeCareEvent> preventiveEvents = new ArrayList<>();
+        List<PreventativeCareEvent> databasePreventiveEvents = new ArrayList<>();
+        databasePreventiveEvents = dao.getAllPreventativeCareEventsByPatient(patient);
+        preventiveEvents.addAll(databasePreventiveEvents);
+
+        for (PreventiveCareGuideline pcg:  getPreventativeCareGuideline(patient)) {
+            for (PreventiveCareGuidelineInterval pcgi: pcg.getPcgguidelineIntervalSet()){
+                modifiableDate = new LocalDate(dateOfJoin);
+                PreventativeCareEvent pcge = new PreventativeCareEvent();
+                pcge.setTargetDate(modifiableDate.plusMonths(pcgi.getIntervalLength()).toDate());
+                pcge.setFollowProcedure(pcg.getFollowupProcedure());
+                pcge.setStatus(0);
+                preventiveEvents.add(pcge);
+            }
+        }
+       return preventiveEvents;
     }
 
     @Override
