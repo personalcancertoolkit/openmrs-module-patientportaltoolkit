@@ -594,6 +594,27 @@ public class ToolkitResourceUtil {
         reminderMap.put("startDate",reminder.getTargetDate());
         reminderMap.put("endDate",reminder.getTargetDate());
         reminderMap.put("name",reminder.getFollowProcedureName());
+        ////
+        switch (reminder.getFollowProcedure().getConceptId()) {
+            //Colonoscopy
+            case 162900: reminderMap.put("color", "yellow");
+                            break;
+            //H & E
+            case 162901 : reminderMap.put("color", "red");
+                break;
+            //CEA Tests
+            case 162902 : reminderMap.put("color", "blue");
+                break;
+            //CT Scans
+            case 162903 : reminderMap.put("color", "green");
+                break;
+            //CT Scan Pelvis
+            case 162904 : reminderMap.put("color", "purple");
+                break;
+            //Flex Sigmoidoscopy
+            case 162905 : reminderMap.put("color", "orange");
+                break;
+        }
         //reminderMap.put("status",reminder.getStatus());
         return reminderMap;
     }
