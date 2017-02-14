@@ -37,6 +37,8 @@ public class PatientPortalUtil {
 
     public PatientPortalRelation getRelationbetweenTwoPeople(Person person, Person requestedPerson){
         PatientPortalRelationService pprs = Context.getService(PatientPortalRelationService.class);
-        return pprs.getPatientPortalRelation(person,requestedPerson,Context.getAuthenticatedUser());
+        PatientPortalRelation ppr=null;
+              ppr = pprs.getPatientPortalRelation(person,requestedPerson,Context.getAuthenticatedUser());
+        return ppr;
     }
 }

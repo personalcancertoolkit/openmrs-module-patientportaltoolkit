@@ -8,7 +8,6 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 <body>
 <div class="container bgcontent col-sm-8 col-sm-offset-2">
     <% if (user.getPerson().isPatient()){%>
-    ${ ui.includeFragment("patientportaltoolkit", "addCancerBuddies") }
 
     ${ ui.includeFragment("patientportaltoolkit", "myCancerBuddiesProfileCard",[person: person]) }
 

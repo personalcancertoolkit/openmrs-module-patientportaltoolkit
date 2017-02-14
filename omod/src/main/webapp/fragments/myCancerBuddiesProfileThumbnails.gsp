@@ -95,7 +95,17 @@
 
         <% if (mycancerbuddiespeople) { %>
         <% mycancerbuddiespeople.each { mycancerbuddiesperson -> %>
-        <% if (pptutil.getRelationbetweenTwoPeople(person,mycancerbuddiesperson.person).getShareStatus()==0 && pptutil.getRelationbetweenTwoPeople(person,mycancerbuddiesperson.person).getRetired() == 0)  { %>
+        <% def pptrelation= null
+            if (pptutil.getRelationbetweenTwoPeople(person,mycancerbuddiesperson.person)) {
+                pptrelation = pptutil.getRelationbetweenTwoPeople(person, mycancerbuddiesperson.person)
+
+            }
+            if (pptutil.getRelationbetweenTwoPeople(mycancerbuddiesperson.person,person)) {
+                pptrelation = pptutil.getRelationbetweenTwoPeople(mycancerbuddiesperson.person, person)
+            }
+        %>
+        <% if (pptrelation  && pptrelation.retired ==false) { %>
+        <% if (pptrelation.shareStatus==0)  { %>
         <div class="col-xs-18 col-sm-6 col-md-3">
             <div class="thumbnail">
                 <div class="caption">
@@ -111,7 +121,8 @@
             </div>
         </div>
         <% } %>
-        <% if (pptutil.getRelationbetweenTwoPeople(person,mycancerbuddiesperson.person).getShareStatus()==1) { %>
+        <% } %>
+        <% if (pptrelation==null || pptrelation.getShareStatus()==2) { %>
         <div class="col-xs-18 col-sm-6 col-md-3">
             <div class="thumbnail">
                 <div class="caption">
@@ -123,6 +134,20 @@
                     <hr>
                     <p id="addFellowPatientDesc${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesDescription) } </p>
                     <button id="addFellowPatient${mycancerbuddiesperson.person.uuid}" class="btn btn-info btn-xs addFellowPatient" role="button" data-toggle="modal" data-target="#add-mycancerbuddies-relationship-modal">Add Connection</button>
+                </div>
+            </div>
+        </div>
+        <% } else if (pptrelation.getShareStatus()==1) { %>
+        <div class="col-xs-18 col-sm-6 col-md-3">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h4 id="addFellowPatientName${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesName) }</h4>
+                    <p><span id="addFellowPatientAge${mycancerbuddiesperson.person.uuid}"><% if (mycancerbuddiesperson.person.birthdate && !mycancerbuddiesperson.person.getBirthdate().is(null) ){ %>
+                    <% if (mycancerbuddiesperson.person.age > 0) { %>
+                    ${ui.message("coreapps.ageYears", mycancerbuddiesperson.person.age)}
+                        <% }} %></span> ~ <span id="addFellowPatientGender${mycancerbuddiesperson.person.uuid}">${ui.message("coreapps.gender." + mycancerbuddiesperson.person.gender)}</span> </p>
+                    <hr>
+                    <p id="addFellowPatientDesc${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesDescription) } </p>
                 </div>
             </div>
         </div>
