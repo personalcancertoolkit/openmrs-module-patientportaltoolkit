@@ -80,7 +80,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
 
     @Override
     public List<Reminder> getReminders(Patient pat) {
-        return findReminders(pat);
+        return generateRemindersbyGuidelineConditions(pat);
     }
 
     @Override

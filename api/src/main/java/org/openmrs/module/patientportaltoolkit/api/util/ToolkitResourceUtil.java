@@ -589,8 +589,10 @@ public class ToolkitResourceUtil {
         reminderMap.put("followProcedureName",reminder.getFollowProcedureName());
         reminderMap.put("targetDate",reminder.getTargetDate());
         //details for calendar
-
-        reminderMap.put("id", reminder.getId());
+        if(reminder.getId()==null)
+            reminderMap.put("id", i);
+        else
+            reminderMap.put("id", reminder.getId());
         reminderMap.put("startDate",reminder.getTargetDate());
         reminderMap.put("endDate",reminder.getTargetDate());
         reminderMap.put("name",reminder.getFollowProcedureName());
