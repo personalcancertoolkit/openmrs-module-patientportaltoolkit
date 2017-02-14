@@ -32,6 +32,7 @@ public class MyCancerBuddiesProfileThumbnailsFragmentController {
     public void controller(FragmentModel model, PageRequest pageRequest, @FragmentParam(value="person") Person person ) {
         log.info(PPTLogAppender.appendLog("REQUEST_MYCANCERBUDDIESTHUMBNAILS_FRAGMENT", pageRequest.getRequest()));
 
+        model.addAttribute("mycancerbuddiespreferences",Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person));
         model.addAttribute("mycancerbuddiespeople",Context.getService(PersonPreferencesService.class).getAllPersonPreferences());
         model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
         model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());

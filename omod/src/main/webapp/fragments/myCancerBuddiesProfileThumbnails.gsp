@@ -95,6 +95,8 @@
 
         <% if (mycancerbuddiespeople) { %>
         <% mycancerbuddiespeople.each { mycancerbuddiesperson -> %>
+        <% if (mycancerbuddiespreferences.myCancerBuddies==true) { %>
+
         <% def pptrelation= null
             if (pptutil.getRelationbetweenTwoPeople(person,mycancerbuddiesperson.person)) {
                 pptrelation = pptutil.getRelationbetweenTwoPeople(person, mycancerbuddiesperson.person)
@@ -138,6 +140,21 @@
             </div>
         </div>
         <% } else if (pptrelation.getShareStatus()==1) { %>
+        <div class="col-xs-18 col-sm-6 col-md-3">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h4 id="addFellowPatientName${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesName) }</h4>
+                    <p><span id="addFellowPatientAge${mycancerbuddiesperson.person.uuid}"><% if (mycancerbuddiesperson.person.birthdate && !mycancerbuddiesperson.person.getBirthdate().is(null) ){ %>
+                    <% if (mycancerbuddiesperson.person.age > 0) { %>
+                    ${ui.message("coreapps.ageYears", mycancerbuddiesperson.person.age)}
+                        <% }} %></span> ~ <span id="addFellowPatientGender${mycancerbuddiesperson.person.uuid}">${ui.message("coreapps.gender." + mycancerbuddiesperson.person.gender)}</span> </p>
+                    <hr>
+                    <p id="addFellowPatientDesc${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesDescription) } </p>
+                </div>
+            </div>
+        </div>
+        <% } %>
+        <% } else { %>
         <div class="col-xs-18 col-sm-6 col-md-3">
             <div class="thumbnail">
                 <div class="caption">
