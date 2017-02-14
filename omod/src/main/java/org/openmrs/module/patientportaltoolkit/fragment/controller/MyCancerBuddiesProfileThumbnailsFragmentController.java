@@ -38,7 +38,7 @@ public class MyCancerBuddiesProfileThumbnailsFragmentController {
         model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());
     }
 
-    public void addRelationshipforFellowPatients(FragmentModel model, @RequestParam(value = "securityLayerType", required = true) String securityLayerType,  @RequestParam(value = "relationshipPersonId", required = true) String relationshipPersonId, HttpServletRequest servletRequest) {
+    public void addRelationshipforFellowPatients(FragmentModel model, @RequestParam(value = "securityLayerType", required = true) String securityLayerType,  @RequestParam(value = "relationshipPersonId", required = true) String relationshipPersonId, @RequestParam(value = "relationshipNote", required = false) String relationshipNote, HttpServletRequest servletRequest) {
         log.info(PPTLogAppender.appendLog("ADD_FellowPatientRelation", servletRequest));
 
         User user = Context.getAuthenticatedUser();
@@ -56,6 +56,8 @@ public class MyCancerBuddiesProfileThumbnailsFragmentController {
         date.setTime(new Date());
         date.add(Calendar.YEAR, 20);
         ppr.setExpireDate(date.getTime());
+        if(relationshipNote!=null)
+            ppr.setAddConnectionNote(relationshipNote);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
     }
 }

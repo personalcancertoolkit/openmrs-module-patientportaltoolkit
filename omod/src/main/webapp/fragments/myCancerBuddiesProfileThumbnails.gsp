@@ -31,7 +31,7 @@
                 });
         jq("#addmycancerbuddiesrelationshipbutton").click(
                 function () {
-                    jq.get("myCancerBuddiesProfileThumbnails/addRelationshipforFellowPatients.action", {relationshipPersonId: jq("#addFellowPatientPersonIdHolder").val(),securityLayerType:jq("#mycancerbuddiesrelationshipshare-connectionsaddRelationSecurityLevels").val()}, function(){
+                    jq.get("myCancerBuddiesProfileThumbnails/addRelationshipforFellowPatients.action", {relationshipPersonId: jq("#addFellowPatientPersonIdHolder").val(),securityLayerType:jq("#mycancerbuddiesrelationshipshare-connectionsaddRelationSecurityLevels").val(),relationshipNote:jq("#mycancerbuddiesrelationshipnoteInput").val()}, function(){
                     });
                     setTimeout(function(){
                         location.reload();
@@ -77,6 +77,12 @@
                                 <option  value="${securityLayer.getUuid()}">${securityLayer.getDescription()} </option>
                                 <% } %>
                             </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="mycancerbuddiesrelationshipnote">Add a note?</label>
+                        <div class="col-sm-10" id="mycancerbuddiesrelationshipnote">
+                            <textarea id="mycancerbuddiesrelationshipnoteInput"></textarea>
                         </div>
                     </div>
                 </form>
