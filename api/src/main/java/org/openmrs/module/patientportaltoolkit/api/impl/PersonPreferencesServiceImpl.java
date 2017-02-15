@@ -44,6 +44,17 @@ public class PersonPreferencesServiceImpl implements PersonPreferencesService {
     }
 
     @Override
+    public List<PersonPreferences> getAllEnrolledPersonPreferences() {
+        List<PersonPreferences> allpersonPreferences = getAllPersonPreferences ();
+        List<PersonPreferences> enrolledpersonPreferences = new ArrayList<>();
+        for(PersonPreferences pp: allpersonPreferences){
+            if(pp.getMyCancerBuddies()==true)
+                enrolledpersonPreferences.add(pp);
+        }
+        return enrolledpersonPreferences;
+    }
+
+    @Override
     public PersonPreferences savePersonPreferences(PersonPreferences personPreferences) {
         return dao.savePersonPreferences(personPreferences);
     }

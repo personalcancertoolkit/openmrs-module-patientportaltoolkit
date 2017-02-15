@@ -22,6 +22,9 @@ public interface PersonPreferencesService {
     @Transactional(readOnly = true)
     List<PersonPreferences> getAllPersonPreferences();
 
+    @Transactional(readOnly = true)
+    List<PersonPreferences> getAllEnrolledPersonPreferences();
+
     @Transactional(readOnly = false)
     PersonPreferences savePersonPreferences(PersonPreferences personPreferences);
 
