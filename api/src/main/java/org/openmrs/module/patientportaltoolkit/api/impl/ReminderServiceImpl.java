@@ -105,7 +105,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         return dao.saveReminder(reminder);
     }
 
-    @Override
+/*    @Override
     public Reminder markScheduledReminder(String reminderId, Date date) {
         Date today = new Date();
         Reminder reminder=getRemindersById(reminderId);
@@ -113,7 +113,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setStatus(2);
         reminder.setResponseUser(Context.getAuthenticatedUser());
         return dao.saveReminder(reminder);
-    }
+    }*/
 
     @Override
     public Reminder getRemindersById(String Id) {

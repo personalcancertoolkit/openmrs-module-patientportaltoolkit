@@ -140,10 +140,10 @@
         <table class="table table-hover" id="due-appointments">
             <thead>
             <tr>
-                <th width="25%">Appointment Type</th>
-                <th width="25%">Recommended Date</th>
+                <th>Appointment Type</th>
+                <th>Recommended Date</th>
                 <% if(isACareGiver != 1) { %>
-                <th width="50%">Actions</th>
+                <th>Actions</th>
                 <% } %>
             </tr>
             </thead>
@@ -155,14 +155,13 @@
             <% if (reminder.status == 2 && reminder.responseDate > date) {%>
             <% }else { %>
             <tr class="datarow">
-                <td width="30%">  ${(reminder.followProcedureName)}</td>
-                <td width="30%" class="clearfix">
+                <td>  ${(reminder.followProcedureName)}</td>
+                <td class="clearfix">
                     <span class="pull-left"> ${pptutil.formatDate((reminder.targetDate))}</span>
                 </td>
                 <% if(isACareGiver != 1) { %>
-                <td width="40%" class="clearfix">
+                <td class="clearfix">
                     <a id="markCompletedReminder${(reminder.id)}" class="btn btn-primary btn-sm markCompletedReminder" data-toggle="modal" data-target="#markCompleted-modal">Mark Completed</a>
-                    <a id="markScheduledReminder${(reminder.id)}" class="btn btn-primary btn-sm markScheduledReminder"  data-toggle="modal" data-target="#markScheduled-modal">Mark Scheduled</a>
                 </td>
                 <% } %>
             </tr>

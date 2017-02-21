@@ -94,7 +94,7 @@ public class AppointmentsFragmentController {
 
     }
 
-    public void markScheduled(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markScheduledDate", required = true) String markScheduledDate, HttpServletRequest servletRequest) {
+ /*   public void markScheduled(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markScheduledDate", required = true) String markScheduledDate, HttpServletRequest servletRequest) {
 
         Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
         log.info(PPTLogAppender.appendLog("MARK_SCHEDULED_APPOINTMENTS", servletRequest));
@@ -109,6 +109,6 @@ public class AppointmentsFragmentController {
         }
         Context.getService(ReminderService.class).markScheduledReminder(reminderId,date);
 
-    }
+    }*/
 
 }
