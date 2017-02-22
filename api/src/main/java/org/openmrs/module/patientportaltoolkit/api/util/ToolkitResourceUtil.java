@@ -646,6 +646,30 @@ public class ToolkitResourceUtil {
         preventiveCareMap.put("startDate",pcgevent.getTargetDate());
         preventiveCareMap.put("endDate",pcgevent.getTargetDate());
         preventiveCareMap.put("name",pcgevent.getFollowProcedureName());
+
+        switch (pcgevent.getFollowProcedure().getConceptId()) {
+            //Influenza Vaccine
+            case 162938: preventiveCareMap.put("color", "brown");
+                break;
+            //Pneumococcal Vaccine
+            case 162939 : preventiveCareMap.put("color", "red");
+                break;
+            //Blood Pressure Screening
+            case 162941 : preventiveCareMap.put("color", "blue");
+                break;
+            //HIV Screening
+            case 162942 : preventiveCareMap.put("color", "green");
+                break;
+            //Screening Mammography
+            case 162943 : preventiveCareMap.put("color", "purple");
+                break;
+            //Cervical Cancer Screening
+            case 162944 : preventiveCareMap.put("color", "orange");
+                break;
+            //Cholesterol Screening
+            case 162940 : preventiveCareMap.put("color", "black");
+                break;
+        }
         return preventiveCareMap;
     }
 
