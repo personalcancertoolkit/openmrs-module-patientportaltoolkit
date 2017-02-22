@@ -93,13 +93,19 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
     @Override
     public List<PreventiveCareGuideline> getPreventativeCareGuideline(Patient patient) {
         List<PreventiveCareGuideline> totalPreventiveCareGuidelines = dao.getAllPreventativeCareGuidelines();
-        if (patient.getGender().equals("M")) {
+        //Screening Mammography
+        if (patient.getGender().equals("M") || (patient.getGender().equals("F") && patient.getAge()<40)) {
             totalPreventiveCareGuidelines.remove(dao.getPreventativeCareGuidelinebyID(5));
+        }
+        //Cervical Cancer Screening
+        if (patient.getGender().equals("M") || (patient.getGender().equals("F") && (patient.getAge()<21 || patient.getAge()>65))) {
             totalPreventiveCareGuidelines.remove(dao.getPreventativeCareGuidelinebyID(6));
         }
-        if (patient.getGender().equals("F") && patient.getAge()<45 || patient.getGender().equals("M") && patient.getAge()<35) {
+        //Cholesterol Screening
+        if ((patient.getGender().equals("F") && patient.getAge()<45) || (patient.getGender().equals("M") && patient.getAge()<35)) {
             totalPreventiveCareGuidelines.remove(dao.getPreventativeCareGuidelinebyID(7));
         }
+
         return totalPreventiveCareGuidelines;
     }
 }
