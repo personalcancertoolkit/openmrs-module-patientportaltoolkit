@@ -599,7 +599,7 @@ public class ToolkitResourceUtil {
         ////
         switch (reminder.getFollowProcedure().getConceptId()) {
             //Colonoscopy
-            case 162900: reminderMap.put("color", "yellow");
+            case 162900: reminderMap.put("color", "brown");
                             break;
             //H & E
             case 162901 : reminderMap.put("color", "red");
