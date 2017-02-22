@@ -133,7 +133,6 @@
 
 
     ${ ui.includeFragment("patientportaltoolkit", "markCompletedModal") }
-    ${ ui.includeFragment("patientportaltoolkit", "markScheduledModal") }
     <input id="personUuid" value="${ person.uuid}" type="hidden">
     <h4>Upcoming Appointments</h4>
     <div>
