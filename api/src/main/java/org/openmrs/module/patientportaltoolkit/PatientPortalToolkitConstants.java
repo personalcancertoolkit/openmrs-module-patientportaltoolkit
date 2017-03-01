@@ -57,4 +57,19 @@ public class PatientPortalToolkitConstants {
     public static final String CAN_SEE_MEDICAL ="canseemedical";
 
     public static final String CAN_SEE_BOTH ="canseeboth";
+
+    public static final String INFLUENZA_VACCINE ="Influenza Vaccine Form";
+
+    public static final String PNEUMOCOCCAL_VACCINE ="Pneumococcal Vaccine Form";
+
+    public static final String CHOLESTEROL_SCREENING ="Cholesterol Screening Form";
+
+    public static final String BP_SCREENING ="Blood Pressure Screening Form";
+
+    public static final String HIV_SCREENING ="HIV Screening Form";
+
+    public static final String MAMMOGRAPHY_SCREENING ="Screening Mammography Form";
+
+    public static final String CERVICAL_CANCER_SCREENING ="Cervical Cancer Screening Form";
+
 }

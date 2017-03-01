@@ -125,10 +125,39 @@
 
     });
     setTimeout(foo2, 1000);
+        jq('.markPreventiveCompletedReminder').click(
+            function () {
+                var preventiveReminderID=this.id.split("markPreventiveCompletedReminder")[0];
+                //console.log(preventiveReminderID);
+                jq("#preventiveCareTypeUuid").val(preventiveReminderID);
+                switch (preventiveReminderID){
+                    case "162938":
+                        jq("#influenza-modal").show();
+                        break;
+                    case "162939":
+                        jq("#pneumococcal-modal").show();
+                        break;
+                    case "162940":
+                        jq("#cholesterol-modal").show();
+                        break;
+                    case "162941":
+                        jq("#bp-modal").show();
+                        break;
+                    case "162942":
+                        jq("#hiv-modal").show();
+                        break;
+                    case "162943":
+                        jq("#mammography-modal").show();
+                        break;
+                    case "162944":
+                        jq("#cervical-modal").show();
+                        break;
+                }
+            });
     });
 </script>
 <div class="clearfix">
-    ${ ui.includeFragment("patientportaltoolkit", "markCompletedModal") }
+    ${ ui.includeFragment("patientportaltoolkit", "preventiveCareModal") }
     <input id="preventivepersonUuid" value="${ person.uuid}" type="hidden">
     <h4>Upcoming Preventative Care Appointments</h4>
     <div>
@@ -156,7 +185,7 @@
                 </td>
                 <% if(isACareGiver != 1) { %>
                 <td class="clearfix">
-                    <a id="markCompletedReminder${(events.id)}" class="btn btn-primary btn-sm markCompletedReminder" data-toggle="modal" data-target="#markCompleted-modal">Mark Completed</a>
+                    <a id="${(events.followProcedure.id)}markPreventiveCompletedReminder${(events.id)}" class="btn btn-primary btn-sm markPreventiveCompletedReminder" data-toggle="modal" data-target="#preventiveCare-modal">Mark Completed</a>
                 </td>
                 <% } %>
             </tr>
