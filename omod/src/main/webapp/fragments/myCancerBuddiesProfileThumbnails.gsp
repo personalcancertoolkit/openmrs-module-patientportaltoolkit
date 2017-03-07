@@ -1,4 +1,7 @@
 <script>
+    /////////////////////////////////////////////////////
+    // Initialize buttons and actions on thumbnails
+    /////////////////////////////////////////////////////
     jq(document).ready(function(){
         jq('#mycancerbuddiesSave').click(
                 function () {
@@ -39,6 +42,9 @@
                 });
     });
 </script>
+
+
+<!-- Start Popup Add Cancer Buddy Dialog --->
 <div class="modal fade" id="add-mycancerbuddies-relationship-modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -95,87 +101,67 @@
         </div>
     </div>
 </div>
+<!-- End Popup Add Cancer Buddy Dialog --->
 
-<hr>
-    <div class="row">
 
-        <% if (mycancerbuddiespeople) { %>
+<!-- Begin Listing Cancer Buddies -->
+<div id = 'thumbnailSetHolderElement' class="row">
+    <% if (mycancerbuddiespeople) { %> <!-- begin if(mycancerbuddiespeople) -->
         <% mycancerbuddiespeople.each { mycancerbuddiesperson -> %>
-        <% if (mycancerbuddiespreferences.myCancerBuddies==true) { %>
+            <%   
+                // Determine whether a button, and if so which button, should be displayed
+                the_button_to_display = "";
+                if (mycancerbuddiespreferences.myCancerBuddies==true) { 
+                    ///////////////
+                    // Define pptrelation
+                    ///////////////
+                    def pptrelation = null;
+                    if (pptutil.getRelationbetweenTwoPeople(person,mycancerbuddiesperson.person)) {
+                        pptrelation = pptutil.getRelationbetweenTwoPeople(person, mycancerbuddiesperson.person)
 
-        <% def pptrelation= null
-            if (pptutil.getRelationbetweenTwoPeople(person,mycancerbuddiesperson.person)) {
-                pptrelation = pptutil.getRelationbetweenTwoPeople(person, mycancerbuddiesperson.person)
+                    }
+                    if (pptutil.getRelationbetweenTwoPeople(mycancerbuddiesperson.person,person)) {
+                        pptrelation = pptutil.getRelationbetweenTwoPeople(mycancerbuddiesperson.person, person)
+                    }
 
-            }
-            if (pptutil.getRelationbetweenTwoPeople(mycancerbuddiesperson.person,person)) {
-                pptrelation = pptutil.getRelationbetweenTwoPeople(mycancerbuddiesperson.person, person)
-            }
-        %>
-        <% if (pptrelation  && pptrelation.retired ==false) { %>
-        <% if (pptrelation.shareStatus==0)  { %>
-        <div class="col-xs-18 col-sm-6 col-md-3">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4 id="addFellowPatientName${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesName) }</h4>
-                    <p><span id="addFellowPatientAge${mycancerbuddiesperson.person.uuid}"><% if (mycancerbuddiesperson.person.birthdate && !mycancerbuddiesperson.person.getBirthdate().is(null) ){ %>
-                    <% if (mycancerbuddiesperson.person.age > 0) { %>
-                    ${ui.message("coreapps.ageYears", mycancerbuddiesperson.person.age)}
-                    <% }} %></span> ~ <span id="addFellowPatientGender${mycancerbuddiesperson.person.uuid}">${ui.message("coreapps.gender." + mycancerbuddiesperson.person.gender)}</span> </p>
-                    <hr>
-                    <p id="addFellowPatientDesc${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesDescription) } </p>
-                     <button  class="btn btn-info btn-xs disabled" role="button" data-toggle="modal">Pending</button>
+                    if (pptrelation  && pptrelation.retired == false && pptrelation.shareStatus==0) { 
+                        the_button_to_display = '<button  class="btn btn-info btn-xs disabled" role="button" data-toggle="modal">Pending</button>';
+                    }
+                    if (pptrelation==null || pptrelation.getShareStatus()==2) { 
+                       the_button_to_display = '<button id="addFellowPatient${mycancerbuddiesperson.person.uuid}" class="btn btn-info btn-xs addFellowPatient" role="button" data-toggle="modal" data-target="#add-mycancerbuddies-relationship-modal">Add Connection</button>';
+                    }
+                } 
+            %>
+            <%
+                // Display Templated Thumbnail  
+            %>
+            <div id = 'thumbnailElementFor_${mycancerbuddiesperson.person.uuid}' class="col-xs-18 col-sm-6 col-md-3">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h4 id="addFellowPatientName${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesName) }</h4>
+                        <p>
+                            <span id="addFellowPatientAge${mycancerbuddiesperson.person.uuid}">
+                                <% if (mycancerbuddiesperson.person.birthdate && !mycancerbuddiesperson.person.getBirthdate().is(null) ){ %>
+                                    <% if (mycancerbuddiesperson.person.age > 0) { %>
+                                        ${ui.message("coreapps.ageYears", mycancerbuddiesperson.person.age)}
+                                    <% } %>
+                                <% } %>
+                            </span>
+                                ~
+                            <span id="addFellowPatientGender${mycancerbuddiesperson.person.uuid}">${ui.message("coreapps.gender." + mycancerbuddiesperson.person.gender)}</span>
+                        </p>
+                        <hr>
+                        <p id="addFellowPatientDesc${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesDescription) } </p>
+                        ${the_button_to_display}
+                    </div>
                 </div>
             </div>
-        </div>
-        <% } %>
-        <% } %>
-        <% if (pptrelation==null || pptrelation.getShareStatus()==2) { %>
-        <div class="col-xs-18 col-sm-6 col-md-3">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4 id="addFellowPatientName${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesName) }</h4>
-                    <p><span id="addFellowPatientAge${mycancerbuddiesperson.person.uuid}"><% if (mycancerbuddiesperson.person.birthdate && !mycancerbuddiesperson.person.getBirthdate().is(null) ){ %>
-                    <% if (mycancerbuddiesperson.person.age > 0) { %>
-                    ${ui.message("coreapps.ageYears", mycancerbuddiesperson.person.age)}
-                        <% }} %></span> ~ <span id="addFellowPatientGender${mycancerbuddiesperson.person.uuid}">${ui.message("coreapps.gender." + mycancerbuddiesperson.person.gender)}</span> </p>
-                    <hr>
-                    <p id="addFellowPatientDesc${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesDescription) } </p>
-                    <button id="addFellowPatient${mycancerbuddiesperson.person.uuid}" class="btn btn-info btn-xs addFellowPatient" role="button" data-toggle="modal" data-target="#add-mycancerbuddies-relationship-modal">Add Connection</button>
-                </div>
-            </div>
-        </div>
-        <% } else if (pptrelation.getShareStatus()==1) { %>
-        <div class="col-xs-18 col-sm-6 col-md-3">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4 id="addFellowPatientName${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesName) }</h4>
-                    <p><span id="addFellowPatientAge${mycancerbuddiesperson.person.uuid}"><% if (mycancerbuddiesperson.person.birthdate && !mycancerbuddiesperson.person.getBirthdate().is(null) ){ %>
-                    <% if (mycancerbuddiesperson.person.age > 0) { %>
-                    ${ui.message("coreapps.ageYears", mycancerbuddiesperson.person.age)}
-                        <% }} %></span> ~ <span id="addFellowPatientGender${mycancerbuddiesperson.person.uuid}">${ui.message("coreapps.gender." + mycancerbuddiesperson.person.gender)}</span> </p>
-                    <hr>
-                    <p id="addFellowPatientDesc${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesDescription) } </p>
-                </div>
-            </div>
-        </div>
-        <% } %>
-        <% } else { %>
-        <div class="col-xs-18 col-sm-6 col-md-3">
-            <div class="thumbnail">
-                <div class="caption">
-                    <h4 id="addFellowPatientName${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesName) }</h4>
-                    <p><span id="addFellowPatientAge${mycancerbuddiesperson.person.uuid}"><% if (mycancerbuddiesperson.person.birthdate && !mycancerbuddiesperson.person.getBirthdate().is(null) ){ %>
-                    <% if (mycancerbuddiesperson.person.age > 0) { %>
-                    ${ui.message("coreapps.ageYears", mycancerbuddiesperson.person.age)}
-                        <% }} %></span> ~ <span id="addFellowPatientGender${mycancerbuddiesperson.person.uuid}">${ui.message("coreapps.gender." + mycancerbuddiesperson.person.gender)}</span> </p>
-                    <hr>
-                    <p id="addFellowPatientDesc${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesDescription) } </p>
-                </div>
-            </div>
-        </div>
-        <% } %>
-        <% } %>
-        <% } %>
+           
+        <% } %> <!-- END for mycancerbuddiespeople.each { mycancerbuddiesperson ->  -->
+    <% } %> <!-- end if(mycancerbuddiespeople) -->
 
-    </div><!--/row-->
+</div>
+<!-- End Listing Cancer Buddies -->
+            
+            
+            
