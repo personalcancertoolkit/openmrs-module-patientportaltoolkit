@@ -103,6 +103,31 @@
 </div>
 <!-- End Popup Add Cancer Buddy Dialog --->
 
+<hr>
+<div style = 'width:100%; display:flex;'>
+    <div style = 'margin:Auto; margin-left:0px;'>
+        <div style = 'margin-left:25px; font-size:18px;'>
+            Cancer Buddies Near You
+        </div>
+    </div>
+    <div class="dropdown" style = 'margin:Auto; margin-right:25px;'>
+      <button class="btn btn-info btn-xs addFellowPatient" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style = 'height:32px; width:125px;'>
+        Sort By...
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style = 'font-size:14px;'>
+        <li><a href="#" onclick = 'thumbnailSortingManager.sortBy("age", "closest");'>Age - Closest to You</a></li>
+        <li><a href="#" onclick = 'thumbnailSortingManager.sortBy("age", "desc");'>Age - Oldest to Youngest</a></li>
+        <li><a href="#" onclick = 'thumbnailSortingManager.sortBy("age", "asc");'>Age - Youngest to Oldest</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#" onclick = 'thumbnailSortingManager.sortBy("gender", "asc");'>Gender - Female then Male</a></li>
+        <li><a href="#" onclick = 'thumbnailSortingManager.sortBy("gender", "desc");'>Gender - Male then Female</a></li>
+      </ul>
+    </div>
+</div>        
+        <Br>
+        
+        
 
 <!-- Begin Listing Cancer Buddies -->
 <div id = 'thumbnailSetHolderElement' class="row">
@@ -156,7 +181,20 @@
                     </div>
                 </div>
             </div>
-           
+            <script>
+                ////////////////////////////
+                // Store 'buddy' data in a global variable for use in sorting.
+                /////////////////////////////
+                if(window['cancerBuddyData'] == undefined){
+                    window['cancerBuddyData'] = {};   
+                }
+                window['cancerBuddyData']['${mycancerbuddiesperson.person.uuid}'] = {
+                    name : '${mycancerbuddiesperson.myCancerBuddiesName}',
+                    age : parseInt('${mycancerbuddiesperson.person.age}'),
+                    gender : '${mycancerbuddiesperson.person.gender}',
+                };
+                //console.log(window['cancer_buddy_data']);
+            </script>
         <% } %> <!-- END for mycancerbuddiespeople.each { mycancerbuddiesperson ->  -->
     <% } %> <!-- end if(mycancerbuddiespeople) -->
 
@@ -165,3 +203,126 @@
             
             
             
+<script>
+    ///////////////////////////
+    // Define Handler for Sorting Thumbnails 
+    ///////////////////////////
+    var thumbnailSortingManager = {
+        thumbnailSetHolderElement : null,
+        thumbnailData : null,
+        thumbnailHolderElementBaseID: null,
+        thumbnailRootUserData : null,
+        
+        sortBy : function(attribute, type){
+            /////////////
+            // Ensure type requested is valid
+            /////////////
+            valid_types = ["asc", "desc", "closest", "furthest"];
+            if (valid_types.indexOf(type) == -1){
+                console.error(' sort type requested ('+type+') is not a valid sort type');
+            }
+            
+            /////////////
+            // If type is closest, grab the distance copmarison value
+            /////////////
+            if(type == 'closest'){
+                distance_comparison_value = this.thumbnailRootUserData[attribute];
+            }
+            
+            ///////////
+            // Generate key value pair to sort on, key is uuid for person
+            ///////////
+            var keyValuePairs = {};
+            var thumbkeys = Object.keys(this.thumbnailData);
+            for (var i = 0; i < thumbkeys.length; i++){
+                var this_key = thumbkeys[i];
+                var this_thumbnail_data = this.thumbnailData[this_key];
+                var this_value = this_thumbnail_data[attribute];
+                
+                // Note : for closest comparisons we are evaluating distance; i.e., the less similar the larger the_value
+                if(type == "closest" && attribute == "age"){
+                    this_value = Math.abs(distance_comparison_value - this_value);
+                } else if (type == "closest" && attribute == "gender"){
+                    this_value = (distance_comparison_value == this_value)? 0 : 1;   
+                }
+                keyValuePairs[this_key] = this_value;
+            }
+            
+            ///////////
+            // Run ascending sort on the keyValuePairs
+            ///////////
+            //console.log(keyValuePairs);
+            var sortedKeys = this.sortKeyValuePairsByValueAsc(keyValuePairs);
+            //console.log(sortedKeys);
+            
+            ///////////
+            // If descending sort, reverse the list order
+            ///////////
+            if(type == 'desc' || type == 'furthest'){
+                sortedKeys = sortedKeys.reverse();   
+                //console.log(sortedKeys);
+            }
+            
+            ///////////
+            // Update the order of elements inside of the thumbnailHolder
+            ///////////
+            var concatenatedSortedElements = document.createDocumentFragment();
+            for (var i = 0; i < sortedKeys.length; i++){
+                this_key = sortedKeys[i];
+                this_element = document.getElementById(this.thumbnailHolderElementBaseID + this_key);
+                concatenatedSortedElements.appendChild(this_element);
+            }
+            //console.log(concatenatedSortedElements);
+            this.thumbnailSetHolderElement.innerHTML = null;
+            this.thumbnailSetHolderElement.appendChild(concatenatedSortedElements);
+            
+        },
+        
+        sortKeyValuePairsByValueAsc(sourceKeyValuePairs){
+            /////////////
+            // Simple, very inefficient, sorting technique
+            ////////////  
+            var keyValuePairs = JSON.parse(JSON.stringify(sourceKeyValuePairs));  // Deep copy the source keyvaluepairs,
+                                                                                  // useful for debuging, so as to not delete the original array
+            var sortedKeys = [];
+            while (Object.keys(keyValuePairs).length > 0){
+                var the_keys = Object.keys(keyValuePairs);
+                var min_value = null;
+                var min_key = null;
+                for(var i=0; i < the_keys.length; i++){
+                    var this_key = the_keys[i];
+                    var this_value = keyValuePairs[this_key];
+                    if(min_value == null || this_value < min_value) {
+                        min_value = this_value;
+                        min_key = this_key;
+                    }
+                }
+                sortedKeys.push(min_key);
+                delete keyValuePairs[min_key];
+            }
+            return sortedKeys;
+        },
+        
+        
+    }
+    
+    ////////////////////////////
+    // Initialize Handler for Sorting Thumbnails
+    ////////////////////////////
+    function theFunction(){
+        thumbnailSortingManager.thumbnailSetHolderElement = document.getElementById('thumbnailSetHolderElement');
+        thumbnailSortingManager.thumbnailData = window['cancerBuddyData'];
+        thumbnailSortingManager.thumbnailHolderElementBaseID = 'thumbnailElementFor_';
+        thumbnailSortingManager.thumbnailRootUserData = { 
+            age : parseInt('${personPreferences.person.age}'),
+            gender : '${personPreferences.person.gender}',
+        }
+        
+        
+        thumbnailSortingManager.sortBy("age", "closest");
+    }
+    window.addEventListener("load", theFunction);
+    
+    
+    
+</script>
