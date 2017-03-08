@@ -117,7 +117,8 @@ public class AddRelationshipFragmentController {
             newUser.addRole(userService.getRole(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE_ROLE));
             String newPassword = String.valueOf(PasswordUtil.getNewPassword());
             newUser.setUserProperty("forcePassword", "true");
-            User savedUser = Context.getUserService().saveUser(newUser, newPassword);
+
+            User savedUser = Context.getUserService().createUser(newUser, newPassword);
             //System.out.println("\nsystemout---password is " + "Test123" + passworduuid);
             MailHelper.sendMail("Welcome", "Hello " + person.getPersonName() + ", \n you have been added as a connection to one of the members of www.personalcancertoolkit.org, please log on to www.personalcancertoolkit.org to create your account and to accept or ignore the connection request. The username for your account is "+savedUser.getUsername()+" and password is " +newPassword+ " .Please change your password on your first login", person.getAttribute("Email").toString());
         }
