@@ -638,13 +638,31 @@ public class ToolkitResourceUtil {
 
         preventiveCareMap.put("followProcedure",generateConcept(pcgevent.getFollowProcedure()));
         preventiveCareMap.put("followProcedureName",pcgevent.getFollowProcedureName());
-        preventiveCareMap.put("targetDate",pcgevent.getTargetDate());
+        
+        
+        // Enforce that, if event is influenza, the date falls between oct and march
+        Date targetDate = pcgevent.getTargetDate();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(targetDate);
+        int month = cal.get(Calendar.MONTH);
+        if (pcgevent.getFollowProcedure().getConceptId() == 162938){ // If this event is Influenza Vaccine
+            if(!(month >= (10-1) || month <= (3-1))){ // Ensure that date is between oct and march. Note, minus 1 due to jan = 0
+                System.out.println("chaning date!");
+                cal.set(Calendar.MONTH, Calendar.OCTOBER);
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                System.out.println("Changing date to...");
+                targetDate = cal.getTime();
+                System.out.println(targetDate);
+            }
+        }
+        
+        preventiveCareMap.put("targetDate", targetDate);
         if(pcgevent.getId()==null)
             preventiveCareMap.put("id", i);
         else
             preventiveCareMap.put("id", pcgevent.getId());
-        preventiveCareMap.put("startDate",pcgevent.getTargetDate());
-        preventiveCareMap.put("endDate",pcgevent.getTargetDate());
+        preventiveCareMap.put("startDate",targetDate);
+        preventiveCareMap.put("endDate",targetDate);
         preventiveCareMap.put("name",pcgevent.getFollowProcedureName());
 
         switch (pcgevent.getFollowProcedure().getConceptId()) {
