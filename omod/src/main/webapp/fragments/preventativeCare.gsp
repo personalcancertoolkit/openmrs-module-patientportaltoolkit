@@ -172,6 +172,7 @@
             var preventiveReminderID=this.id.split("markPreventiveCompletedReminder")[0];
             //console.log(preventiveReminderID);
             jq("#preventiveCareTypeUuid").val(preventiveReminderID);
+            jq(".preventiveModal").hide(); // hide any shown modal sections
             switch (preventiveReminderID){
                 case "162938":
                     jq("#influenza-modal").show();
