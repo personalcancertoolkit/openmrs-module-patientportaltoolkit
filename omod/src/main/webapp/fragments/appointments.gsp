@@ -75,13 +75,49 @@
                 jq('#calendar').data('calendar').setDataSource(reminderData);
             });
         }
+        function colourNameToHex(colour) {
+                var colours = {"black":"#000000", "blue":"#0000ff", "blueviolet":"#8a2be2", "brown":"#a52a2a", "crimson":"#dc143c", "cyan":"#00ffff", "darkred":"#8b0000", "gold":"#ffd700", "gray":"#808080", "grey"
+    :"#808080", "green":"#008000", "ivory":"#fffff0", "lavender":"#e6e6fa", "magenta":"#ff00ff", "maroon":"#800000", "navy":"#000080", "orange":"#ffa500", "orangered":"#ff4500", "plum":"#dda0dd", "powderblue":"#b0e0e6", "purple":"#800080", "red":"#ff0000", "royalblue":"#4169e1", "salmon":"#fa8072", "sandybrown":"#f4a460", "seagreen":"#2e8b57", "tan":"#d2b48c", "teal":"#008080", "turquoise":"#40e0d0", "violet":"#ee82ee", "white":"#ffffff", "yellow":"#ffff00"};
+
+                if (typeof colours[colour.toLowerCase()] != 'undefined')
+                    return colours[colour.toLowerCase()];
+                console.log(colour + "was not found" )
+                return  colours["gray"];
+        }
         var calendar= jq('#calendar').calendar({
+            style : 'custom', // required for customDataSourceRenderer to be triggered
             customDayRenderer: function(element, date) {
                 if(date.getTime() == circleDateTime) {
-                    jq(element).css('background-color', 'red');
-                    jq(element).css('color', 'white');
+                    jq(element).css('border', '1px dashed red');
+                    //jq(element).css('border-color', 'red');
+                    //jq(element).css('color', 'white');
                     jq(element).css('border-radius', '15px');
+                } 
+            },
+            customDataSourceRenderer: function(element, date, events){ 
+                var colors = events.map(function(a) {return a.color;});
+                //console.log(colors);  
+
+                the_colors = colors;
+                //the_colors = ["red", "blue"];
+                var c = "#";
+                for(var i = 0; i<3; i++) {
+                     var total_value = 0;
+                     for(var j = 0; j < the_colors.length; j++){
+                         this_color = colourNameToHex(the_colors[j]);
+                         var this_sub = this_color.substring(1+2*i, 3+2*i);
+                         var this_value = parseInt(this_sub, 16);
+                         total_value += this_value;
+                     }
+                     var v = Math.floor(total_value / the_colors.length);
+                     var sub = v.toString(16).toUpperCase();
+                     var padsub = ('0'+sub).slice(-2);
+                     c += padsub;
                 }
+                //console.log(c);
+                jq(element).css('background-color', c);
+                jq(element).css('color', 'white');
+                jq(element).css('border-radius', '15px');
             },
             enableContextMenu: true,
             contextMenuItems:[
