@@ -58,6 +58,7 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
                 PreventativeCareEvent pcge = new PreventativeCareEvent();
                 pcge.setTargetDate(modifiableDate.plusMonths(pcgi.getIntervalLength()).toDate());
                 pcge.setFollowProcedure(pcg.getFollowupProcedure());
+                pcge.setPatient(patient);
                 pcge.setStatus(0);
                 preventiveEvents.add(pcge);
             }

@@ -19,9 +19,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Maurya on 01/07/2015.
@@ -216,5 +214,141 @@ public class GenerateTreatmentClassesUtil {
             }
         }
         return treatmentEncounter;
+    }
+
+    public static  List<Object> generateInfluenzaVaccines (Patient patient){
+        List<Encounter> encounters = getEncountersByTreatment(patient, PatientPortalToolkitConstants.INFLUENZA_VACCINE);
+        List<Object> influenzaVaccineList=new ArrayList<>();
+        for(Encounter e: encounters){
+            Map<String, String> influenzaVaccineValues=new HashMap<>();
+            Set<Obs> obsList= e.getObs();
+            influenzaVaccineValues.put("uuid", e.getUuid());
+            for(Obs o: obsList){
+                if(o.getConcept().getUuid().equals("f1cba252-751f-470b-871b-2399565af396"))
+                    influenzaVaccineValues.put("completedDate", o.getValueDate().toString());
+                if(o.getConcept().getUuid().equals("13b3f829-50ca-48a0-b5fe-340fc96e1a2b"))
+                    influenzaVaccineValues.put("completed", o.getValueBoolean().toString());
+            }
+            influenzaVaccineList.add(influenzaVaccineValues);
+        }
+        return influenzaVaccineList;
+    }
+
+    public static  List<Object> generatePneumococcalVaccines (Patient patient){
+        List<Encounter> encounters = getEncountersByTreatment(patient, PatientPortalToolkitConstants.PNEUMOCOCCAL_VACCINE);
+        List<Object> pneumococcalVaccineList=new ArrayList<>();
+        for(Encounter e: encounters){
+            Map<String, String> pneumococcalVaccineValues=new HashMap<>();
+            Set<Obs> obsList= e.getObs();
+            pneumococcalVaccineValues.put("uuid", e.getUuid());
+            for(Obs o: obsList){
+                if(o.getConcept().getUuid().equals("c93df44f-d5b7-49a6-8539-e8265c03dbb3"))
+                    pneumococcalVaccineValues.put("completedDate", o.getValueDate().toString());
+                if(o.getConcept().getUuid().equals("3242085f-b88b-4852-afc0-f45911e1d4d7"))
+                    pneumococcalVaccineValues.put("completed", o.getValueBoolean().toString());
+            }
+            pneumococcalVaccineList.add(pneumococcalVaccineValues);
+        }
+        return pneumococcalVaccineList;
+    }
+
+    public static  List<Object> generateBPScreenings (Patient patient){
+        List<Encounter> encounters = getEncountersByTreatment(patient, PatientPortalToolkitConstants.BP_SCREENING);
+        List<Object> bPScreeningList=new ArrayList<>();
+        for(Encounter e: encounters){
+            Map<String, String> bPScreeningValues=new HashMap<>();
+            Set<Obs> obsList= e.getObs();
+            bPScreeningValues.put("uuid", e.getUuid());
+            for(Obs o: obsList){
+                if(o.getConcept().getUuid().equals("bec04eab-2be5-4f9e-a017-873e3a0b32ab"))
+                    bPScreeningValues.put("completedDate", o.getValueDate().toString());
+                if(o.getConcept().getUuid().equals("63ee5099-567e-4b55-936c-c4c8d71d1144"))
+                    bPScreeningValues.put("bpTopNumber", o.getValueNumeric().toString());
+                if(o.getConcept().getUuid().equals("02310664-f7bb-477c-a703-0325af4c3f46"))
+                    bPScreeningValues.put("bpBottomNumber", o.getValueNumeric().toString());
+            }
+            bPScreeningList.add(bPScreeningValues);
+        }
+        return bPScreeningList;
+    }
+
+    public static  List<Object> generateCholesterolScreenings (Patient patient){
+        List<Encounter> encounters = getEncountersByTreatment(patient, PatientPortalToolkitConstants.CHOLESTEROL_SCREENING);
+        List<Object> cholesterolScreeningList=new ArrayList<>();
+        for(Encounter e: encounters) {
+            Map<String, String> cholesterolScreeningValues = new HashMap<>();
+            Set<Obs> obsList = e.getObs();
+            cholesterolScreeningValues.put("uuid", e.getUuid());
+            for (Obs o : obsList) {
+                if (o.getConcept().getUuid().equals("01f5d7c7-f0c5-4329-8b2d-2053155a962f"))
+                    cholesterolScreeningValues.put("completedDate", o.getValueDate().toString());
+                if (o.getConcept().getUuid().equals("4788cb2c-6324-412f-b617-31ef341e7455"))
+                    cholesterolScreeningValues.put("cholesterolTotalNumber", o.getValueNumeric().toString());
+                if (o.getConcept().getUuid().equals("b0a44f7a-4188-44b3-b86f-955a32d8f4cd"))
+                    cholesterolScreeningValues.put("cholesterolLDLNumber", o.getValueNumeric().toString());
+            }
+            cholesterolScreeningList.add(cholesterolScreeningList);
+        }
+        return cholesterolScreeningList;
+    }
+
+    public static  List<Object> generateHivScreenings (Patient patient){
+        List<Encounter> encounters = getEncountersByTreatment(patient, PatientPortalToolkitConstants.HIV_SCREENING);
+        List<Object> hivScreeningList=new ArrayList<>();
+        for(Encounter e: encounters){
+            Map<String, String> hivScreeningValues=new HashMap<>();
+            Set<Obs> obsList= e.getObs();
+            hivScreeningValues.put("uuid", e.getUuid());
+            for(Obs o: obsList){
+                if(o.getConcept().getUuid().equals("695ccb4a-a01f-4039-9e00-8f2679b63065"))
+                    hivScreeningValues.put("completedDate", o.getValueDate().toString());
+                if(o.getConcept().getUuid().equals("785fd684-c6ca-48d7-9f71-07ae9b5e93d2"))
+                    hivScreeningValues.put("hivResult", o.getValueBoolean().toString());
+            }
+            hivScreeningList.add(hivScreeningValues);
+        }
+        return hivScreeningList;
+    }
+
+    public static  List<Object> generateMammographyScreenings (Patient patient) {
+        List<Encounter> encounters = getEncountersByTreatment(patient, PatientPortalToolkitConstants.MAMMOGRAPHY_SCREENING);
+        List<Object> mammographyScreeningList = new ArrayList<>();
+        for (Encounter e : encounters) {
+            Map<String, String> mammographyScreeningValues = new HashMap<>();
+            Set<Obs> obsList = e.getObs();
+            mammographyScreeningValues.put("uuid", e.getUuid());
+            for (Obs o : obsList) {
+                if (o.getConcept().getUuid().equals("d32ef213-d270-4682-bf3a-b81d40b1d661"))
+                    mammographyScreeningValues.put("completedDate", o.getValueDate().toString());
+                if (o.getConcept().getUuid().equals("39ca0f60-ffe3-49cc-9dcf-7cce8f69c0f5"))
+                    mammographyScreeningValues.put("mammographyResult", o.getValueBoolean().toString());
+                if (o.getConcept().getUuid().equals("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"))
+                    mammographyScreeningValues.put("mammographyDoctor", o.getValueText().toString());
+
+            }
+            mammographyScreeningList.add(mammographyScreeningValues);
+        }
+        return mammographyScreeningList;
+    }
+
+    public static  List<Object> generateCervicalCancerScreenings (Patient patient){
+        List<Encounter> encounters = getEncountersByTreatment(patient, PatientPortalToolkitConstants.CERVICAL_CANCER_SCREENING);
+        List<Object> cervicalCancerScreeningList=new ArrayList<>();
+        for(Encounter e: encounters){
+            Map<String, String> cervicalCancerScreeningValues=new HashMap<>();
+            Set<Obs> obsList= e.getObs();
+            cervicalCancerScreeningValues.put("uuid", e.getUuid());
+            for(Obs o: obsList){
+                if(o.getConcept().getUuid().equals("baf0de5b-17e7-47c5-a8f5-87d3df4966b4"))
+                    cervicalCancerScreeningValues.put("completedDate", o.getValueDate().toString());
+                if(o.getConcept().getUuid().equals("838800a3-9991-4fd8-9df1-d6c4f9c2ffae"))
+                    cervicalCancerScreeningValues.put("cervicalCancerResult", o.getValueBoolean().toString());
+                if(o.getConcept().getUuid().equals("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"))
+                    cervicalCancerScreeningValues.put("cervicalCancerDoctor", o.getValueText().toString());
+
+            }
+            cervicalCancerScreeningList.add(cervicalCancerScreeningValues);
+        }
+        return cervicalCancerScreeningList;
     }
 }

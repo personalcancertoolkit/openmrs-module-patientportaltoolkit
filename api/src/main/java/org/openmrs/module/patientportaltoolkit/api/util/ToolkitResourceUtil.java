@@ -621,7 +621,7 @@ public class ToolkitResourceUtil {
         return reminderMap;
     }
 
-    public static Object generatePreventiveCareEvents(List<PreventativeCareEvent> pcgEvents) {
+    public static Object generatePreventiveCareEvents(List<PreventativeCareEvent> pcgEvents) throws ParseException {
 
         List<Object> pcgEventsMap = new ArrayList<Object>();
         for (PreventativeCareEvent pcgEvent : pcgEvents) {
@@ -631,10 +631,27 @@ public class ToolkitResourceUtil {
         return pcgEventsMap;
     }
 
-    public static Object generatePreventiveCareEvent(PreventativeCareEvent pcgevent) {
+    public static Object generatePreventiveCareEvent(PreventativeCareEvent pcgevent) throws ParseException {
 
 
         Map<String, Object> preventiveCareMap = new HashMap<String, Object>();
+
+        List<Object> influenzaVaccines = new ArrayList<>();
+        influenzaVaccines = GenerateTreatmentClassesUtil.generateInfluenzaVaccines(pcgevent.getPatient());
+        List<Object> pneumococcalVaccines = new ArrayList<>();
+        pneumococcalVaccines = GenerateTreatmentClassesUtil.generatePneumococcalVaccines(pcgevent.getPatient());
+        List<Object> bPScreenings = new ArrayList<>();
+        bPScreenings = GenerateTreatmentClassesUtil.generateBPScreenings(pcgevent.getPatient());
+        List<Object> cholesterolScreenings = new ArrayList<>();
+        cholesterolScreenings = GenerateTreatmentClassesUtil.generateCholesterolScreenings(pcgevent.getPatient());
+        List<Object> hivScreenings = new ArrayList<>();
+        hivScreenings = GenerateTreatmentClassesUtil.generateHivScreenings(pcgevent.getPatient());
+        List<Object> mammographyScreenings = new ArrayList<>();
+        mammographyScreenings = GenerateTreatmentClassesUtil.generateMammographyScreenings(pcgevent.getPatient());
+        List<Object> cervicalCancerScreenings = new ArrayList<>();
+        cervicalCancerScreenings = GenerateTreatmentClassesUtil.generateCervicalCancerScreenings(pcgevent.getPatient());
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
         preventiveCareMap.put("followProcedure",generateConcept(pcgevent.getFollowProcedure()));
         preventiveCareMap.put("followProcedureName",pcgevent.getFollowProcedureName());
@@ -647,7 +664,7 @@ public class ToolkitResourceUtil {
         int month = cal.get(Calendar.MONTH);
         if (pcgevent.getFollowProcedure().getConceptId() == 162938){ // If this event is Influenza Vaccine
             if(!(month >= (10-1) || month <= (3-1))){ // Ensure that date is between oct and march. Note, minus 1 due to jan = 0
-                System.out.println("chaning date!");
+                System.out.println("changing date!");
                 cal.set(Calendar.MONTH, Calendar.OCTOBER);
                 cal.set(Calendar.DAY_OF_MONTH, 1);
                 System.out.println("Changing date to...");
@@ -655,7 +672,20 @@ public class ToolkitResourceUtil {
                 System.out.println(targetDate);
             }
         }
-        
+        //Calendar currentDate = Calendar.getInstance();
+        Date currentDate = new Date();
+        Calendar minDate = Calendar.getInstance();
+        minDate.setTime(targetDate);
+        minDate.add(Calendar.DATE, -90);
+        Calendar maxDate = Calendar.getInstance();
+        maxDate.setTime(targetDate);
+        maxDate.add(Calendar.DATE, 90);
+        Calendar completedDateCal = Calendar.getInstance();
+
+
+
+      //  if(cal.after(minDate) && cal.before(maxDate))
+      //      System.out.println("\nFullDate");
         preventiveCareMap.put("targetDate", targetDate);
         if(pcgevent.getId()==null)
             preventiveCareMap.put("id", i);
@@ -667,25 +697,126 @@ public class ToolkitResourceUtil {
 
         switch (pcgevent.getFollowProcedure().getConceptId()) {
             //Influenza Vaccine
-            case 162938: preventiveCareMap.put("color", "brown");
+            case 162938:
+                preventiveCareMap.put("color", "brown");
+                if (!influenzaVaccines.isEmpty()) {
+                    for (Object influenzaVac : influenzaVaccines) {
+                        HashMap<String, String> map = (HashMap<String, String>) influenzaVac;
+                        Date completedDate = formatter.parse(map.get("completedDate"));
+                        completedDateCal.setTime(completedDate);
+                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
+                            preventiveCareMap.put("startDate", completedDate);
+                            preventiveCareMap.put("endDate", completedDate);
+                            preventiveCareMap.put("location", "Completed");
+                        }
+                    }
+                } else
+                    preventiveCareMap.put("location", "Due Next");
+
                 break;
             //Pneumococcal Vaccine
-            case 162939 : preventiveCareMap.put("color", "red");
+            case 162939:
+                preventiveCareMap.put("color", "red");
+                if (!pneumococcalVaccines.isEmpty()) {
+                    for (Object pneumococcalVaccine : pneumococcalVaccines) {
+                        HashMap<String, String> map = (HashMap<String, String>) pneumococcalVaccine;
+                        Date completedDate = formatter.parse(map.get("completedDate"));
+                        completedDateCal.setTime(completedDate);
+                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
+                            preventiveCareMap.put("startDate", completedDate);
+                            preventiveCareMap.put("endDate", completedDate);
+                            preventiveCareMap.put("location", "Completed");
+                        }
+                    }
+        }
+                else
+                    preventiveCareMap.put("location", "Due Next");
+
                 break;
             //Blood Pressure Screening
             case 162941 : preventiveCareMap.put("color", "blue");
+                if(!bPScreenings.isEmpty()) {
+                    for (Object bPScreening : bPScreenings) {
+                        HashMap<String, String> map = (HashMap<String, String>) bPScreening;
+                        Date completedDate = formatter.parse(map.get("completedDate"));
+                        completedDateCal.setTime(completedDate);
+                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
+                            preventiveCareMap.put("startDate", completedDate);
+                            preventiveCareMap.put("endDate", completedDate);
+                            preventiveCareMap.put("location", "Completed");
+                        }
+                    }
+                }
+                else
+                    preventiveCareMap.put("location", "Due Next");
                 break;
             //HIV Screening
             case 162942 : preventiveCareMap.put("color", "green");
+                if(!hivScreenings.isEmpty()) {
+                    for (Object hivScreening : hivScreenings) {
+                        HashMap<String, String> map = (HashMap<String, String>) hivScreening;
+                        Date completedDate = formatter.parse(map.get("completedDate"));
+                        completedDateCal.setTime(completedDate);
+                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
+                            preventiveCareMap.put("startDate", completedDate);
+                            preventiveCareMap.put("endDate", completedDate);
+                            preventiveCareMap.put("location", "Completed");
+                        }
+                    }
+                }
+                else
+                    preventiveCareMap.put("location", "Due Next");
                 break;
             //Screening Mammography
             case 162943 : preventiveCareMap.put("color", "purple");
+                if(!mammographyScreenings.isEmpty()) {
+                    for (Object mammographyScreening : mammographyScreenings) {
+                        HashMap<String, String> map = (HashMap<String, String>) mammographyScreening;
+                        Date completedDate = formatter.parse(map.get("completedDate"));
+                        completedDateCal.setTime(completedDate);
+                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
+                            preventiveCareMap.put("startDate", completedDate);
+                            preventiveCareMap.put("endDate", completedDate);
+                            preventiveCareMap.put("location", "Completed");
+                        }
+                    }
+                }
+                else
+                    preventiveCareMap.put("location", "Due Next");
                 break;
             //Cervical Cancer Screening
             case 162944 : preventiveCareMap.put("color", "orange");
+                if(!cervicalCancerScreenings.isEmpty()) {
+                    for (Object cervicalCancerScreening : cervicalCancerScreenings) {
+                        HashMap<String, String> map = (HashMap<String, String>) cervicalCancerScreening;
+                        Date completedDate = formatter.parse(map.get("completedDate"));
+                        completedDateCal.setTime(completedDate);
+                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
+                            preventiveCareMap.put("startDate", completedDate);
+                            preventiveCareMap.put("endDate", completedDate);
+                            preventiveCareMap.put("location", "Completed");
+                        }
+                    }
+                }
+                else
+                    preventiveCareMap.put("location", "Due Next");
                 break;
             //Cholesterol Screening
             case 162940 : preventiveCareMap.put("color", "black");
+                if(!cholesterolScreenings.isEmpty()) {
+                    for (Object cholesterolScreening : cholesterolScreenings) {
+                        HashMap<String, String> map = (HashMap<String, String>) cholesterolScreening;
+                        Date completedDate = formatter.parse(map.get("completedDate"));
+                        completedDateCal.setTime(completedDate);
+                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
+                            preventiveCareMap.put("startDate", completedDate);
+                            preventiveCareMap.put("endDate", completedDate);
+                            preventiveCareMap.put("location", "Completed");
+                        }
+                    }
+                }
+                else
+                    preventiveCareMap.put("location", "Due Next");
                 break;
         }
         return preventiveCareMap;

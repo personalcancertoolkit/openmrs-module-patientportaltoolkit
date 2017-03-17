@@ -50,8 +50,65 @@ public class PreventiveCareModalFragmentController {
             Date parsedDate = formatter.parse(influenzaDate);
             o.setValueDate(parsedDate);
             newInfluenzaEncounter.addObs(o);
+            encounterService.saveEncounter(newInfluenzaEncounter);
         }
-        encounterService.saveEncounter(newInfluenzaEncounter);
+
+        //log.info("Save New Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+    }
+
+    public void savePneumococcalForm(FragmentModel model, @RequestParam(value = "pneumococcalDate") String pneumococcalDate, HttpServletRequest servletRequestest) throws ParseException {
+
+        EncounterService encounterService= Context.getEncounterService();
+        ConceptService conceptService=Context.getConceptService();
+        Encounter newPneumococcalEncounter = new Encounter();
+        newPneumococcalEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        Date date = new Date();
+        newPneumococcalEncounter.setDateCreated(new Date());
+        newPneumococcalEncounter.setEncounterDatetime(date);
+        newPneumococcalEncounter.setEncounterType(encounterService.getEncounterType(PatientPortalToolkitConstants.PNEUMOCOCCAL_VACCINE));
+        if (pneumococcalDate != null && pneumococcalDate != "") {
+            Obs o = new Obs();
+            o.setConcept(conceptService.getConceptByUuid("c93df44f-d5b7-49a6-8539-e8265c03dbb3"));
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+            Date parsedDate = formatter.parse(pneumococcalDate);
+            o.setValueDate(parsedDate);
+            newPneumococcalEncounter.addObs(o);
+            encounterService.saveEncounter(newPneumococcalEncounter);
+        }
+        //log.info("Save New Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+    }
+
+    public void saveCholesterolForm(FragmentModel model, @RequestParam(value = "cholesterolDate") String cholesterolDate,  @RequestParam(value = "cholesterolLDLNumber") Integer cholesterolLDLNumber, @RequestParam(value = "cholesterolTotalNumber") Integer cholesterolTotalNumber, HttpServletRequest servletRequestest) throws ParseException {
+
+        EncounterService encounterService = Context.getEncounterService();
+        ConceptService conceptService=Context.getConceptService();
+        Encounter newCholesterolEncounter = new Encounter();
+        newCholesterolEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        Date date = new Date();
+        newCholesterolEncounter.setDateCreated(new Date());
+        newCholesterolEncounter.setEncounterDatetime(date);
+        newCholesterolEncounter.setEncounterType(encounterService.getEncounterType(PatientPortalToolkitConstants.CHOLESTEROL_SCREENING));
+        if (cholesterolDate != null && cholesterolDate != "") {
+            Obs o = new Obs();
+            o.setConcept(conceptService.getConceptByUuid("01f5d7c7-f0c5-4329-8b2d-2053155a962f"));
+            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+            Date parsedDate = formatter.parse(cholesterolDate);
+            o.setValueDate(parsedDate);
+            newCholesterolEncounter.addObs(o);
+        }
+        if (cholesterolLDLNumber != null) {
+            Obs o = new Obs();
+            o.setConcept(conceptService.getConceptByUuid("b0a44f7a-4188-44b3-b86f-955a32d8f4cd"));
+            o.setValueNumeric(Double.valueOf(cholesterolLDLNumber));
+            newCholesterolEncounter.addObs(o);
+        }
+        if (cholesterolTotalNumber != null) {
+            Obs o = new Obs();
+            o.setConcept(conceptService.getConceptByUuid("4788cb2c-6324-412f-b617-31ef341e7455"));
+            o.setValueNumeric(Double.valueOf(cholesterolTotalNumber));
+            newCholesterolEncounter.addObs(o);
+        }
+        encounterService.saveEncounter(newCholesterolEncounter);
         //log.info("Save New Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 }

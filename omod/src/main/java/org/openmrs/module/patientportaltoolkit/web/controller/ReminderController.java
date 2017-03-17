@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.ParseException;
+
 /**
  * Created by Maurya on 08/06/2015.
  */
@@ -40,8 +42,7 @@ public class ReminderController {
 
     @RequestMapping( value = "/patientportaltoolkit/getpreventivecareforpatient/{patientId}")
     @ResponseBody
-    public Object getAllPreventiveCareforPatient(@PathVariable( "patientId" ) String patientId)
-    {
+    public Object getAllPreventiveCareforPatient(@PathVariable( "patientId" ) String patientId) throws ParseException {
         Patient patient= Context.getPatientService().getPatientByUuid(patientId);
         return ToolkitResourceUtil.generatePreventiveCareEvents(Context.getService(PreventativeCareService.class).getAllPreventativeCareEventByPatient(patient));
     }

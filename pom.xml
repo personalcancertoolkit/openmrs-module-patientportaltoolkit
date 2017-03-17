@@ -35,7 +35,7 @@
 	<properties>
 		<openMRSVersion>2.0.4</openMRSVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<webservices.restVersion>2.14</webservices.restVersion>
+		<webservices.restVersion>2.16</webservices.restVersion>
 	</properties>
 
 	<dependencyManagement>
