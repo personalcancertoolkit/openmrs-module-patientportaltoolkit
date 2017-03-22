@@ -1,5 +1,14 @@
+
+    
 <h3>
-    <u>Useful Contacts</u>
+    Healthy Lifestyle Locations 
+</h3>
+<br>
+${ui.includeFragment("patientportaltoolkit", "communityLifestyleMap")}
+
+<br>
+<h3>
+    Useful Contacts
 </h3>
 <br>
 
@@ -33,7 +42,7 @@
 </table>
 <br>
 <h3>
-    <u>Cancer Survivor Resources for Patients and their Caregivers</u>
+    Cancer Survivor Resources for Patients and their Caregivers
 </h3>
 <ol>
     <li>Support Groups - check at your treating hospital, in your
