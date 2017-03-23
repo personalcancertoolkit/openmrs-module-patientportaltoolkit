@@ -4,6 +4,8 @@ var communities_map_handler = {
     // Public Properties 
     ///////////////
     search_term : null,
+    current_position : null,
+    current_zoom : null,
     
     ///////////////
     // Private` Properties (` => private other than for initialization)
@@ -15,16 +17,22 @@ var communities_map_handler = {
     infowindow : null, 
     places_search_service : null,
     // Place Processing Data
-    mapped_places : [],         // Array to store mapped places
-    marker_list : [],           // Array to store marker references
-    places_waiting_to_be_listed : 0, // Used to track when list can be drawn, as map_this_place() is async
-    draw_full_list_timeout : null, // Used to track when list can be drawn, in conjunction with above variable
-    
+    mapped_places : [],                 // Array to store mapped places
+    marker_list : [],                   // Array to store marker references
+    places_waiting_to_be_listed : 0,    // Used to track when list can be drawn, as map_this_place() is async
+    draw_full_list_timeout : null,      // Used to track when list can be drawn, in conjunction with above variable
+    locator_marker : null,              //reference to the locator marker
+    initialized_visible_already : false,
+    google_initialized : false,
     
     ///////////////////////////////////////////////////////////
     // Service and Map initialization
     ///////////////////////////////////////////////////////////
-    initialize_map : function() {
+    initialize_map : function(visible) {
+        //console.log("Initializing! " + visible);
+        if(visible == undefined) this.google_initialized = true;
+        if(visible && this.google_initialized == false) return // This means that the tab was initially loaded on. Dont let it continue because google object has not loaded yet.
+        if(visible && this.initialized_visible_already) return; // Used to trigger initialization on tab selection the first time. Google does not line display:hidden initialization
         // Define and initialize the map object
         this.map_object = new google.maps.Map(this.map_element, {
             center: this.current_position,
@@ -43,11 +51,20 @@ var communities_map_handler = {
 				  
         // Set listener to re-search any time map boundaries are changed. Note: this will fire when map loads.
 		this.map_object.addListener('bounds_changed',  this.run_a_search.bind(this));
+        
+        // Display user position
+        this.display_current_position();
     },
     
     ///////////////////////////////////////////////////////////
     // Search Methods
     ///////////////////////////////////////////////////////////
+    get_venues : function(new_search_term){
+        if(this.search_term == new_search_term) return;
+        this.clear_previous_places();
+        this.search_term = new_search_term;
+        this.run_a_search();
+    },
     run_a_search : function(){
 		var request = this.build_search_request_for_term(this.search_term);	
 		this.places_search_service.nearbySearch(request, this.search_callback_function.bind(this));
@@ -80,6 +97,15 @@ var communities_map_handler = {
         }
 		return request;	
 	},
+    clear_previous_places : function(){
+        this.mapped_places = [];
+        for (var i = 0; i < this.marker_list.length; i++) {
+            this.marker_list[i].setMap(null);
+        }
+        this.marker_list = [];
+        this.list_element.empty();
+        this.list_title_element.html("Loading...");
+    },
     
     
     /////////////////////////////////////////////////////////////
@@ -89,7 +115,7 @@ var communities_map_handler = {
         if(this_place.permanently_closed) return false; // If this place is permanently closed, do not map it.
         var mapped_place_ids = this.mapped_places.map(function(a) {return a.place_id;}); // return list of id's for all mapped places
         if(mapped_place_ids.indexOf(this_place.place_id) != -1) return false; // If this place's id is in mapped_place_ids then we have already mapped it.
-        if (this.search_term == "farmers markets"){ 
+        if (this.search_term == "farmers market"){ 
             var place_score = this.rank_farmers_market(this_place); // rank this place 
             if (place_score <= 1) return false; // if score is too low, dont map it.
         }
@@ -111,7 +137,7 @@ var communities_map_handler = {
         // Create and place marker on map
         var marker = new google.maps.Marker({
             map: this.map_object,
-            position: this_place.geometry.location
+            position: this_place.geometry.location,
         });
 
         
@@ -128,15 +154,10 @@ var communities_map_handler = {
         
 
         this.places_waiting_to_be_listed -= 1; // required as places_search_service.getDetails is async
-        return;
         google.maps.event.addListener(marker, 'click', function() {
-            var rating = (place.rating) ? place.rating : ''; // ternary 
-            var html = build_info_content(place.name, place.place_id, rating);  
-            infowindow.setContent(html);
-            infowindow.open(map, this);
-        });// end addListener
+            this.show_listing(this_place.place_id, false);
+        }.bind(this));// end addListener
 
-        draw_listings();
     },
     rank_farmers_market : function(this_place){
 		var place_score = 0;
@@ -215,21 +236,18 @@ var communities_map_handler = {
             var anchors = div.getElementsByTagName('a');
             anchors[0].href = 'javascript:communities_map_handler.show_listing("'+this_place.place_id+'");';
             anchors[0].innerHTML = this_place.name;
-            anchors[1].href = 'javascript:communities_map_handler.show_listing("'+this_place.place_id+'");';
-            anchors[1].innerHTML = short_address;
             //anchors[2].href = 'javascript:';
-            anchors[2].id = 'modal_button_for_place_' + this_place.place_id; 
-            anchors[2].onclick = function(){communities_map_handler.show_listing(this_place.place_id); };
+            anchors[1].id = 'modal_button_for_place_' + this_place.place_id; 
+            anchors[1].onclick = function(){communities_map_handler.show_listing(this_place.place_id); };
             var paragraphs = div.getElementsByTagName('p');
-            paragraphs[1].innerHTML = open_now;
+            paragraphs[0].innerHTML = open_now;
+            paragraphs[1].innerHTML = short_address;
 
             var list_html = div.innerHTML;
             //document.removeChild(div);
         
             return list_html;
 	},
-    
-    
     draw_full_list : function(){
         if(this.places_waiting_to_be_listed > 0){ // required as places_search_service.getDetails is async
             //console.log('here i am' + this.places_waiting_to_be_listed);
@@ -246,7 +264,7 @@ var communities_map_handler = {
         this.farmers_tab_element.removeClass("active");
         
         // Generate Header
-        if(this.search_term == "farmers markets"){
+        if(this.search_term == "farmers market"){
             var this_name = "Farmer's Markets";
             this.farmers_tab_element.addClass("active");
         } else if(this.search_term == "fitness"){
@@ -282,7 +300,6 @@ var communities_map_handler = {
 		}
         
     },
-    
     euclidean_distance : function(v1, v2){
         // V1 and V2 are to be arrays/lists, both of d dimensions
         if(v1.length !== v2.length) console.error('Euclidean distance measure requires that both vectors are of equal dimensions'); 
@@ -293,8 +310,7 @@ var communities_map_handler = {
             summed_distance_squared += squared;
         }
         return Math.pow(summed_distance_squared, 0.5);
-    },
-    
+    }, 
     sort_places_by_distance : function(){
 		this.mapped_places.sort(function(a,b){
             var position_vector = [this.current_position.lat, this.current_position.lng];
@@ -304,6 +320,7 @@ var communities_map_handler = {
             //console.log(vector_A);
             //console.log(vector_B);
             
+            /// Note : Euclidean distance is only accurate for small geographical regions, where earth's curvature does not need to be taken into account
             var distanceA = this.euclidean_distance(position_vector, vector_A);
             var distanceB = this.euclidean_distance(position_vector, vector_B);
             //console.log(distanceA);
@@ -313,29 +330,10 @@ var communities_map_handler = {
 			if (distanceA > distanceB){return 1;}
  			return 0; //default return value (no sorting)	
 		}.bind(this)); //placeList.sort(function(a,b)
-    },
-    
+    },  
 	get_the_stars : function(rating){
         return "<small>Rating : </small>" +rating + "/5 ";
-		var stars;
-		switch (true){
-			case ( rating <  0.25)					  :stars = "img/0_0_stars.png";break;
-			case ((rating >= 0.25) && (rating < 0.75)):stars = "img/0_5_stars.png";break;
-			case ((rating >= 0.75) && (rating < 1.25)):stars = "img/1_0_stars.png";break;
-			case ((rating >= 1.25) && (rating < 1.75)):stars = "img/1_5_stars.png";break;
-			case ((rating >= 1.75) && (rating < 2.25)):stars = "img/2_0_stars.png";break;
-			case ((rating >= 2.25) && (rating < 2.75)):stars = "img/2_5_stars.png";break;
-			case ((rating >= 2.75) && (rating < 3.25)):stars = "img/3_0_stars.png";break;
-			case ((rating >= 3.25) && (rating < 3.75)):stars = "img/3_5_stars.png";break;
-			case ((rating >= 3.75) && (rating < 4.25)):stars = "img/4_0_stars.png";break;
-			case ((rating >= 4.25) && (rating < 4.75)):stars = "img/4_5_stars.png";break;
-			case  (rating >= 4.75)				      :stars = "img/5_0_stars.png";break;
-			default									  :stars = "img/no_stars.png" ;break;
-		}//end switch
-        star_html =  '<small>RATING: </small><img src="'+stars+'"/>&emsp;&emsp;';
-		return star_html;
 	},
-    
 	build_the_address : function(address_parts){
 		var address = "";
 		address  = address_parts[0].short_name+ ' ';  	// street number
@@ -348,12 +346,13 @@ var communities_map_handler = {
     //////////////////////////////////////////////////////////
     // List and Modal Helpers
     //////////////////////////////////////////////////////////
-    show_listing : function(place_id){
+    show_listing : function(place_id, pan_to_place){
+            pan_to_place = false;
 			var place = this.get_place_by_id(place_id);
 			var marker_index = place.marker_index;
 			//center the map
 			var placeLoc = place.geometry.location;
-			this.map_object.panTo(placeLoc);
+            if(pan_to_place !== false) this.map_object.panTo(placeLoc);
 			//get markup for infoWindow content
 			var rating = '';
 			if ( place.rating ) {rating = place.rating;}
@@ -362,8 +361,6 @@ var communities_map_handler = {
 			this.infowindow.open(this.map_object, this.marker_list[marker_index]);
 			
     },
-    
-
 	hilite_list_item : function(this_id){
 		jq(".hilite_item").removeClass('hilite_item');
         jq("#"+this_id).addClass('hilite_item');
@@ -416,15 +413,84 @@ var communities_map_handler = {
         }
     },
     
+    
+    ////////////////////////////////////////////////////
+    // User Location Handling
+    ////////////////////////////////////////////////////
+    display_current_position : function() {
+        if(this.map_object == null) return; // Map not yet initialized.
+        // Update Map Location Marker
+        this.map_object.panTo(this.current_position);
+        if(this.locator_marker){this.locator_marker.setMap(null);} //remove an existing locator marker if it exists
+        
+        var icon = new google.maps.MarkerImage('https://cdn3.iconfinder.com/data/icons/map-and-location-outline/144/Location_Service002-128.png',
+            new google.maps.Size(17,16),
+            new google.maps.Point(0,0),
+            new google.maps.Point(8,8)
+        );
+        
+        icon = {
+            path: google.maps.SymbolPath.CIRCLE,
+            strokeColor: "#42A5F5",
+            fillColor: "black",
+            fillOpacity: 1,
+            scale: 6,
+        };
+        
+        this.locator_marker = new google.maps.Marker({
+            position:this.current_position,
+            icon: icon,
+        });
+        
+        this.locator_marker.setMap(this.map_object);
+    },
 }
 
+
+var user_location_handler = {
+    watchProcess : null,
+    map_handler: null,
+    default_location : null,
+    
+    initiate_watchlocation : function() {  
+        if (this.watchProcess == null) {  
+            this.watchProcess = window.navigator.geolocation.watchPosition(this.handle_geolocation_query.bind(this), this.handle_errors.bind(this),{'enableHighAccuracy':true,'timeout':10000,'maximumAge':20000}); 
+        }  
+     },  
+    stop_watchlocation : function() {  
+        if (this.watchProcess == null) return;  
+        window.navigator.geolocation.clearWatch(watchProcess);  
+        this.watchProcess = null;  
+    }, 
+    handle_errors : function(error) {  
+        switch(error.code)  {  
+            case error.PERMISSION_DENIED: alert("User did not share geolocation data. " + this.default_location + " will be used as default location.");  break;  
+            case error.POSITION_UNAVAILABLE: 
+                alert("Geolocation could not detect current position.");  
+                this.stop_watchlocation();
+                this.initiate_watchlocation();
+                break;  
+            case error.TIMEOUT: 
+                //alert("Geolocation Position Timeout");
+                this.stop_watchlocation();
+                this.initiate_watchlocation();
+                break; 
+            default: alert("Unknown Geolocation Error");  break;  
+        }  
+    },
+    handle_geolocation_query : function(position) {  
+        this.map_handler.current_position = {lat: position.coords.latitude, lng: position.coords.longitude};
+        this.map_handler.display_current_position();	
+    },
+    
+}
 
 
 window.addEventListener("load", function(){
     
     // Initialize communities_map_handler
     // Data
-    communities_map_handler.current_position = {lat:39.768549, lng:-86.158008};	//Starting at Monument Circle
+    communities_map_handler.current_position = {lat:39.768549, lng:-86.158008};	//Starting at Monument Circle, update user_location_handler.default_location if updating initial location
     communities_map_handler.current_zoom = 12;	
     communities_map_handler.search_term = 'fitness';	
     communities_map_handler.template_html = document.getElementById('list_element_example').innerHTML;
@@ -435,7 +501,17 @@ window.addEventListener("load", function(){
     communities_map_handler.fitness_tab_element = jq("#fit-tab");
     communities_map_handler.farmers_tab_element = jq("#fm-tab");
     
-    // Load google maps only after page has loaded. Dont slow down page load and proprly initialize communities_map_handler first.
+    
+    // Initialize user_location_handler
+    user_location_handler.map_handler = communities_map_handler;
+    user_location_handler.default_location = "Monument Circle in Indianapolis";
+    window.addEventListener('unload', function(){
+        user_location_handler.stop_watchlocation();
+    });
+    user_location_handler.initiate_watchlocation();
+    
+    
+    // Load google maps only after page has loaded. This way we do not slow down page load and properly initialize communities_map_handler first.
     var script = document.createElement('script');
     var maps_APIKEY = '${CommunitiesMapsAPIKEY}';
     script.type = 'text/javascript';
@@ -454,8 +530,17 @@ window.addEventListener("load", function(){
         modal.find('.modal-body').html(modal_markup); 
         modal.find('.modal-title').html(place.name); 
     })//end "on" function
+    
+    // Initialize tab buttons
+    document.getElementById('fitness_tab_button').href = "javascript:communities_map_handler.get_venues('fitness');";
+    document.getElementById('farmers_tab_button').href = "javascript:communities_map_handler.get_venues('farmers market');";
+    
+    // tab listener - initialize map whenever this tab is pressed the first time. 
+    jq('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = jq(e.target).attr("href") // activated tab
+        if(target == "#community") communities_map_handler.initialize_map(true);
+    });
 });
-
 </script>
 
 
@@ -479,24 +564,20 @@ window.addEventListener("load", function(){
 <!-- END Bootstrap Modal --> 
 
 <div id = 'list_element_example' style = 'display:none'>
-    <div class="list_item" id="">
-        <h5>
-            <a href="javascript:show_listing( \''+place_id+'\');">'+this_place.name+'</a>
-        </h5>
-        <p class="small-line-height">
-            <a href="javascript:show_listing( \''+place_id+'\');">'  +short_address+'</a>
-        </p>
-        <small style = 'font-weight:bold'>
-            <a href="#detail_modal" data-toggle="modal" id = ''> SEE MORE DETAILS...</a>
+    <div class="list_item" id="" style = ' margin-bottom:15px;'>
+        <a style = 'font-size:18px;' href=""> This Place's Name </a>
+        <p style = 'font-size:14px; margin-bottom:0px;'> This Open Hours </p>
+        <p style = 'font-size:14px; margin-top:0px; margin-bottom:0px;'> This Short Address </p>
+        <small style = 'font-weight:bold; margin-top:5px;'>
+            <a href="#detail_modal" data-toggle="modal" id = ''> SEE MORE DETAILS</a>
         </small>
-        <p class="small-line-height">'+open_now+'</p>
     </div>
 </div>
 
 <div class="container">
     <ul id="map-nav" class="nav nav-tabs">
-        <li id="fit-tab" role="presentation" class="active"><a href="javascript:get_venues('fitness');" aria-controls="fitness" role="tab">Fitness Centers</a></li>
-        <li id="fm-tab" role="presentation"><a href="javascript:get_venues('farmers market');" aria-controls="farmers_market" role="tab">Farmers Markets</a></li>
+        <li id="fit-tab" role="presentation" class="active"><a id = 'fitness_tab_button' href="" aria-controls="fitness" role="tab">Fitness Centers</a></li>
+        <li id="fm-tab" role="presentation"><a  id = 'farmers_tab_button'  href="" aria-controls="farmers_market" role="tab">Farmers Markets</a></li>
     </ul>
     <div class="row">
         <div class="col-md-5">
