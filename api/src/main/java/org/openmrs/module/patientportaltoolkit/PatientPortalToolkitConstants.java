@@ -43,6 +43,8 @@ public class PatientPortalToolkitConstants {
     public static final String GP_SYMPTOM_MANAGEMENT_URL = "patientportaltoolkit.symptommanagementURL";
 
     public static final String GP_CONTACT_US_EMAIL = "patientportaltoolkit.contactUsEmail";
+    
+    public static final String GP_COMMUNITIES_MAPS_APIKEY = "patientportaltoolkit.communities_map_APIKEY";
 
    // public static final String GP_CONTACT_US_FROM_EMAIL = "patientportaltoolkit.contactUsFromEmail";
 
