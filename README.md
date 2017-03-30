@@ -5,3 +5,11 @@ openmrs-module-patientportaltoolkit
 A disease-specific patient portal for cancer patients.
 
 [Demo Site](https://personalcancertoolkit.org/openmrs/)
+
+### What is this project?
+
+This is an [OpenMRS](http://openmrs.org/) module. This module requires [OpenMRS Reference Application](http://openmrs.org/download/) version 2.2 and above.
+
+### What does this module do?
+
+This is module (i.e. Patient Portal) allows you to create a patient controlled health records application. It gives the patient the full control of his/her own health records and other personal information, and enables him/her to share part or all of those information to any one in his/her social network such as a family member, a doctor, or any other caregiver he/she trusts
