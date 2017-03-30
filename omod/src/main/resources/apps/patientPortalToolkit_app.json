@@ -11,7 +11,7 @@
         "order": 20,
         "label": "Patient Portal Toolkit",
         "url": "patientportaltoolkit/journals.page",
-        "icon": "icon-user-md",
+        "icon": "icon-group",
         "requiredPrivilege": "App: patientportaltoolkit"
       }
     ]
