@@ -1,13 +1,6 @@
 ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
 <div>
     <div class="clearfix">
-    <h4>Reminder Onset Date</h4>
-    <div class="col-xs-6">
-        <div class="col-xs-6"><p><strong id="remindertriggerdatevalue">${pptutil.formatDate(firstSurgeryDate)}</strong></p></div>
-    </div>
-    </div>
-    <hr/>
-    <div class="clearfix">
 
 
         <h4>General History</h4>
