@@ -17,7 +17,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
-import org.openmrs.*;
+import org.openmrs.Patient;
+import org.openmrs.Person;
+import org.openmrs.PersonAttribute;
+import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.*;
@@ -55,39 +58,23 @@ public class AppointmentsFragmentController {
         List<Reminder> alertableReminders = new ArrayList<>();
         Person person = (Person) model.get("person");
         org.openmrs.api.PersonService personService=Context.getPersonService();
+        
+        As of 3/23/17 data all is loaded onto page by ajax, same data as used by calendar. 
+        
+        if(person.isPatient()) {
+            Patient patient = Context.getPatientService().getPatientByUuid(person.getUuid());
+            //Object reminders = ToolkitResourceUtil.generateReminders(Context.getService(ReminderService.class).getReminders(patient)); //Context.getService(ReminderService.class).generateRemindersbyGuidelineConditions(patient);
+            //model.addAttribute("reminders", reminders);
+        }
         */
         
-        /*
-            As of 3/23/17 all reminder data is loaded onto page by ajax, by the same method as is used to return calendar data. 
-        */
         log.info(PPTLogAppender.appendLog("REQUEST_APPOINTMENTS_FRAGMENT", pageRequest.getRequest()));
         //log.info( "~REQUEST_APPOINTMENTS~"+ user.getUsername() + "~REQ_FOR:" + Context.getUserService().getUsersByPerson(person,false).get(0).getUsername() );
     }
-    
-    
-/*
-        Person person = Context.getPersonService().getPersonByUuid(personUuid);
-        //Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
-        log.info(PPTLogAppender.appendLog("MARK_COMPLETED_APPOINTMENTS", servletRequest));
-       // log.info("~MARK_COMPLETED_APPOINTMENTS~"+ Context.getAuthenticatedUser().getUsername()+ "~REQ_FOR:"+ Context.getUserService().getUsersByPerson(person,false).get(0).getUsername());
-        //System.out.println("121212121212"+markCompletedDate);
-        DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-        Date date = new Date();
-        try {
-            date = format.parse(markCompletedDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        //Temporary hack - need to fix why we are getting "null"
-        if (reminderId.equals("null"))
-            reminderId=null;
-        int followupIdint = Integer.parseInt(followupId.trim());
-        Concept followUpConcept = Context.getConceptService().getConcept(followupIdint);
-        Context.getService(ReminderService.class).markCompletedReminder(reminderId, date, doctorName, comments, Context.getPatientService().getPatient(person.getId()),followUpConcept);
 
-    }
 
-   public void markScheduled(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markScheduledDate", required = true) String markScheduledDate, HttpServletRequest servletRequest) {
+ /*   public void markScheduled(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markScheduledDate", required = true) String markScheduledDate, HttpServletRequest servletRequest) {
+
         Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
         log.info(PPTLogAppender.appendLog("MARK_SCHEDULED_APPOINTMENTS", servletRequest));
         //log.info("~MARK_SCHEDULED_APPOINTMENTS~" + Context.getAuthenticatedUser().getUsername()+ "~REQ_FOR:"+ Context.getUserService().getUsersByPerson(person,false).get(0).getUsername());
@@ -100,11 +87,7 @@ public class AppointmentsFragmentController {
             e.printStackTrace();
         }
         Context.getService(ReminderService.class).markScheduledReminder(reminderId,date);
-    }
-*/
-    
-    
-    
-    
+
+    }*/
 
 }
