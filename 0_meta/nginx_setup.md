@@ -11,25 +11,45 @@
             - `sudo nano /etc/nginx/sites-available/default`
         - create sym-link for default into sites-enabled
             - `sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default`
+- ensure that `/snippets/fastcgi-php.conf` exists
+    - if it does not exist
+        - `sudo mkdir /etc/nginx/snippets`
+        - `sudo nano /etc/nginx/snippets/fastcgi-php.conf` 
+        ```
+        # regex to split $uri to $fastcgi_script_name and $fastcgi_path
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+        # Check that the PHP script exists before passing it
+        try_files $fastcgi_script_name =404;
+
+        # Bypass the fact that try_files resets $fastcgi_path_info
+        # see: http://trac.nginx.org/nginx/ticket/321
+        set $path_info $fastcgi_path_info;
+        fastcgi_param PATH_INFO $path_info;
+
+        fastcgi_index index.php;
+        include fastcgi.conf;
+        ```
+
 - setup `/etc/nginx/sites-available/personalcancertoolkit` serverblock 
   - `sudo nano /etc/nginx/sites-available/personalcancertoolkit`
-```
-server {
-       listen 80;
-       listen [::]:80;
+    ```
+    server {
+           listen 80;
+           listen [::]:80;
 
-       server_name personalcancertoolkit.org; 
+           server_name personalcancertoolkit.org; 
 
-       root /var/www/personalcancertoolkit; ## Modify path if required
-       index index.html;
-       
-       ## ADD SSL CONFIG HERE
+           root /var/www/personalcancertoolkit; ## Modify path if required
+           index index.html;
 
-       location / {
-               try_files $uri $uri/ =404;
-       }
-}
-```
+           ## ADD SSL CONFIG HERE
+
+           location / {
+                   try_files $uri $uri/ =404;
+           }
+    }
+    ```
 - Add this available site to `sites-enabled` with sym-link
     - `sudo ln -s /etc/nginx/sites-available/personalcancertoolkit /etc/nginx/sites-enabled/personalcancertoolkit`
 - `sudo service nginx restart`
