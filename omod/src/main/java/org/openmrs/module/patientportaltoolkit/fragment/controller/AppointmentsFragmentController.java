@@ -17,10 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
-import org.openmrs.Patient;
-import org.openmrs.Person;
-import org.openmrs.PersonAttribute;
-import org.openmrs.User;
+import org.openmrs.*;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.*;
@@ -77,9 +74,10 @@ public class AppointmentsFragmentController {
     }
 
 
-    public void markCompleted(FragmentModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markCompletedDate", required = true) String markCompletedDate, @RequestParam(value = "doctorName", required = true) String doctorName, @RequestParam(value = "comments", required = true) String comments, HttpServletRequest servletRequest) {
+    public void markCompleted(PageModel model, @RequestParam(value = "reminderId", required = true) String reminderId, @RequestParam(value = "markCompletedDate", required = true) String markCompletedDate, @RequestParam(value = "doctorName", required = true) String doctorName, @RequestParam(value = "comments", required = true) String comments,@RequestParam(value = "personUuid", required = true) String personUuid, @RequestParam(value = "followupId", required = true) String followupId, HttpServletRequest servletRequest) {
 
-        Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
+        Person person = Context.getPersonService().getPersonByUuid(personUuid);
+        //Person person = Context.getPersonService().getPerson( Context.getService(ReminderService.class).getRemindersById(reminderId).getPatient().getPersonId());
         log.info(PPTLogAppender.appendLog("MARK_COMPLETED_APPOINTMENTS", servletRequest));
        // log.info("~MARK_COMPLETED_APPOINTMENTS~"+ Context.getAuthenticatedUser().getUsername()+ "~REQ_FOR:"+ Context.getUserService().getUsersByPerson(person,false).get(0).getUsername());
         //System.out.println("121212121212"+markCompletedDate);
@@ -90,7 +88,12 @@ public class AppointmentsFragmentController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Context.getService(ReminderService.class).markCompletedReminder(reminderId, date, doctorName, comments);
+        //Temporary hack - need to fix why we are getting "null"
+        if (reminderId.equals("null"))
+            reminderId=null;
+        int followupIdint = Integer.parseInt(followupId.trim());
+        Concept followUpConcept = Context.getConceptService().getConcept(followupIdint);
+        Context.getService(ReminderService.class).markCompletedReminder(reminderId, date, doctorName, comments, Context.getPatientService().getPatient(person.getId()),followUpConcept);
 
     }
 

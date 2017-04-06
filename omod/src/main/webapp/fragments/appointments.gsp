@@ -190,6 +190,7 @@
             <% if (reminder.status == 2 && reminder.responseDate > date) {%>
             <% }else { %>
             <tr class="datarow">
+                <input id="reminderFollowupId${(reminder.id)}" value=" ${(reminder.followProcedure.conceptId)}" type="hidden">
                 <td>  ${(reminder.followProcedureName)}</td>
                 <td class="clearfix">
                     <span class="pull-left"> ${pptutil.formatDate((reminder.targetDate))}</span>

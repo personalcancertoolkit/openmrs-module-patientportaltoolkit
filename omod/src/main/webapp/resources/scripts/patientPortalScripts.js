@@ -575,10 +575,12 @@ jq(document).ready(function(){
         function () {
             var reminderID=this.id.split("markCompletedReminder")[1];
             $('#markCompletedIdHolder').val(reminderID);
+            $('#followupIdHolder').val($('#reminderFollowupId'+reminderID).val());
+
         });
     $('#saveMarkCompletedButton').click(
         function () {
-            jq.get("appointments/markCompleted.action", {reminderId: jq("#markCompletedIdHolder").val(), markCompletedDate: jq("#markCompletedDate").val(), doctorName:  jq("#markCompletedDoctor").val(),comments:  jq("#markCompletedComments").val()}, function(){
+            jq.get("appointments/markCompleted.action", {reminderId: jq("#markCompletedIdHolder").val(), markCompletedDate: jq("#markCompletedDate").val(), doctorName:  jq("#markCompletedDoctor").val(),comments:  jq("#markCompletedComments").val(), personUuid: jq("#personUuid").val(), followupId: jq("#followupIdHolder").val()}, function(){
             });
             location.reload();
         });

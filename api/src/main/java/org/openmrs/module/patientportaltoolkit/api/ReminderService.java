@@ -13,6 +13,7 @@
 
 package org.openmrs.module.patientportaltoolkit.api;
 
+import org.openmrs.Concept;
 import org.openmrs.Patient;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
@@ -46,7 +47,7 @@ public interface ReminderService extends OpenmrsService {
     Reminder saveReminder(Reminder Reminder);
 
     @Transactional
-    Reminder markCompletedReminder(String reminderID,Date markCompleteDate,String doctorsName, String comments);
+    Reminder markCompletedReminder(String reminderID,Date markCompleteDate,String doctorsName, String comments, Patient patient, Concept followupConcept);
 
 /*    @Transactional
     Reminder markScheduledReminder(String reminderId, Date date);*/

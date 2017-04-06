@@ -9,6 +9,7 @@
 
             <div class="modal-body">
                 <input id="markCompletedIdHolder" type="hidden" value="">
+                <input id="followupIdHolder" type="hidden" value="">
                 <form class="form-inline" role="form"> <label>Mark Completed Date</label>
                     <input class="form-control datetype" id="markCompletedDate" type="text" value=""/>
                 </form>
