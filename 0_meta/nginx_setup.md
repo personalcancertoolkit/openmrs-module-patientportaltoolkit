@@ -30,3 +30,6 @@ server {
        }
 }
 ```
+- Add this available site to `sites-enabled` with sym-link
+    - `sudo ln -s /etc/nginx/sites-available/personalcancertoolkit /etc/nginx/sites-enabled/personalcancertoolkit`
+- `sudo service nginx restart`
