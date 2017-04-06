@@ -28,7 +28,7 @@
         fastcgi_param PATH_INFO $path_info;
 
         fastcgi_index index.php;
-        include fastcgi.conf;
+        include fastcgi_params;
         ```
 
 - setup `/etc/nginx/sites-available/personalcancertoolkit` serverblock 
