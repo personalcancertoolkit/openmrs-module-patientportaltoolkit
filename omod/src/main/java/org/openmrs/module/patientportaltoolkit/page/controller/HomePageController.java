@@ -55,7 +55,7 @@ public class HomePageController {
                 model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
                 model.addAttribute("securitylevel", 0);
             }
-            if(!(ppr.getRelationType().getaIsToB().equals("Doctor")))
+            if(ppr !=null && !(ppr.getRelationType().getaIsToB().equals("Doctor")))
             model.addAttribute("isACareGiver",1);
             else
                 model.addAttribute("isACareGiver",0);

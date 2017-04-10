@@ -146,7 +146,18 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         if (list.size() >= 1) {
             return list.get(0);
         } else {
-            return null;
+            Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
+            criteria.add(Restrictions.eq("relatedPerson", person));
+            crit.add(Restrictions.eq("person", requestedPerson));
+            crit.addOrder(Order.desc("dateCreated"));
+
+            List<PatientPortalRelation> secondList = crit.list();
+
+            if (list.size() >= 1) {
+                return list.get(0);
+            } else {
+                return null;
+            }
         }
     }
 

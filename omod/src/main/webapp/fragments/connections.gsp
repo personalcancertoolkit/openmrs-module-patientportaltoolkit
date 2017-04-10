@@ -1,3 +1,13 @@
+<script>
+
+    jq(document).ready(function() {
+        var OpenMRSInstance = window.location.href;
+        jq(".connectionlink").click(
+            	        function () {
+                            document.location.href = OpenMRSInstance.split("/patientportaltoolkit")[0]+'/patientportaltoolkit/home.page?personId='+this.id.split("connectionlink")[1];
+            	        });
+    });
+</script>
 <% if (user.getPerson().isPatient()){%>
 <div class="clearfix">
     <div class="button-div pull-right">
@@ -67,7 +77,7 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a href="http://localhost:8081/openmrs2/patientportaltoolkit/home.page?personId=${ relationship.relatedPerson.uuid }"> ${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }</a>
+                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a class="connectionlink" id ="connectionlink${ relationship.relatedPerson.uuid}"> ${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }</a>
                             <% if(person.isPatient()) { %>
                             <div class="pull-right">
                                 <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
@@ -108,7 +118,7 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a href="http://localhost:8081/openmrs2/patientportaltoolkit/home.page?personId=${ relationship.relatedPerson.uuid }"> ${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }</a>
+                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a class="connectionlink" id ="connectionlink${ relationship.relatedPerson.uuid}"> ${ (relationship.relatedPerson.getGivenName()) } ${ (relationship.relatedPerson.getFamilyName()) }</a>
                             <% if(person.isPatient()) { %>
                             <div class="pull-right">
                                 <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
@@ -149,7 +159,7 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a href="http://localhost:8081/openmrs2/patientportaltoolkit/home.page?personId=${ relationship.person.uuid }"> ${ (relationship.person.getGivenName()) } ${ (relationship.person.getFamilyName()) }</a>
+                        <h4 class="media-heading" id = "${ relationship.uuid }relationPerson"><a class="connectionlink" id ="connectionlink${ relationship.person.uuid}"> ${ (relationship.person.getGivenName()) } ${ (relationship.person.getFamilyName()) }</a>
                             <% if(person.isPatient()) { %>
                             <div class="pull-right">
                                 <a id="relationedit${ relationship.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
