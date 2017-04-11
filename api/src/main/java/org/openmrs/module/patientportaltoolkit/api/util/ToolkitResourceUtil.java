@@ -600,11 +600,19 @@ public class ToolkitResourceUtil {
         reminderMap.put("endDate",reminder.getTargetDate());
         reminderMap.put("name",reminder.getFollowProcedureName());
         reminderMap.put("concept_id",reminder.getFollowProcedure().getConceptId());
+        reminderMap.put("completedDate",reminder.getCompleteDate());
+        if(reminder.getCompleteDate() != null){
+            reminderMap.put("formatedCompletedDate", pptutil.formatDate(reminder.getCompleteDate()));
+        } else {
+            reminderMap.put("formatedCompletedDate", null);
+        }
+        reminderMap.put("status",reminder.getStatus());
+        
         ////
         switch (reminder.getFollowProcedure().getConceptId()) {
             //Colonoscopy
             case 162900: reminderMap.put("color", "brown");
-                            break;
+                break;
             //H & E
             case 162901 : reminderMap.put("color", "red");
                 break;

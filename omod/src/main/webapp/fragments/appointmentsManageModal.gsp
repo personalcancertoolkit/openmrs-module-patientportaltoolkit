@@ -42,7 +42,9 @@
         hide_all_parts : function(){
             this.modal.find(".modal-part").hide();
         },
-        
+        close_modal : function(){
+            this.modal.modal('toggle');
+        },
         
         ///////////////
         // Handle Actions
@@ -108,6 +110,7 @@
                 remove : document.getElementById('manageAppointment_button_remove'),
             },
             back : the_modal.find("#back_button"),
+            cancel : the_modal.find(".modal_cancel_button"),
         }
         manageAppointmentModal_handler.input = {
             modify : {
@@ -145,6 +148,11 @@
             manageAppointmentModal_handler.open_part('menu');
         });
         
+        // initialize cancel buttons
+        manageAppointmentModal_handler.buttons.cancel.on( "click", function(){
+            manageAppointmentModal_handler.close_modal();
+        });
+        
         // Initialize datepicker inputs
         var datepicker_elements = [];
         datepicker_elements.push(manageAppointmentModal_handler.input.modify.appointment_date);
@@ -167,7 +175,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close cancelModal" aria-label="Close"><span
+                <button type="button" class="close modal_cancel_button" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"> Modal Title </h4>
             </div>
@@ -261,7 +269,7 @@
                     <button type="button" class="btn btn-default all-parts menu-exclude-part" id = 'back_button'>Back</button>
                 </div>
                 <div class="button-div pull-right ">
-                    <button type="button" class="btn btn-default cancelModal modal-part all-parts">Cancel</button>
+                    <button type="button" class="btn btn-default modal_cancel_button modal-part all-parts">Cancel</button>
                     <button type="button" class="btn btn-primary modal-part markCompleted-part" id="manageAppointment_button_markCompleted"> Mark Completed </button>
                     <button type="button" class="btn btn-primary modal-part modify-part" id="manageAppointment_button_modify"> Save Changes </button>
                     <button type="button" class="btn btn-primary modal-part remove-part" id="manageAppointment_button_remove"> Remove this Event </button>
