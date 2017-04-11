@@ -35,19 +35,25 @@
   - `sudo nano /etc/nginx/sites-available/personalcancertoolkit`
     ```
     server {
-           listen 80;
-           listen [::]:80;
-
-           server_name personalcancertoolkit.org; 
-
-           root /var/www/personalcancertoolkit; ## Modify path if required
-           index index.html;
-
-           ## ADD SSL CONFIG HERE
-
-           location / {
-                   try_files $uri $uri/ =404;
-           }
+        listen 80 default_server;
+        server_name personalcancertoolkit.org;
+        index index.html index.htm;
+        return 301 https://$host$request_uri;
+    }
+    server {
+        listen 443 ssl;
+        server_name personalcancertoolkit.org;
+        index index.html index.htm;
+        access_log /var/log/nginx/demo_access.log;
+        error_log /var/log/nginx/demo_error.log;
+        ssl_certificate /etc/letsencrypt/live/personalcancertoolkit.org/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/personalcancertoolkit.org/privkey.pem;
+        location / {
+          return 301 https://personalcancertoolkit.org/openmrs;
+        }
+        location /openmrs {
+          proxy_pass http://127.0.0.1:8080/openmrs;
+        }
     }
     ```
 - Add this available site to `sites-enabled` with sym-link
