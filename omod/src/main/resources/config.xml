@@ -68,6 +68,11 @@
 		<defaultValue>PleaseSetThisToContactUs:Email</defaultValue>
 		<description>Email to send contact us responses</description>
 	</globalProperty>
+	<globalProperty>
+		<property>${project.parent.artifactId}.communities_map_APIKEY</property>
+		<defaultValue>PleaseSetThisToValidGoogleAPIKey</defaultValue>
+		<description>APIKey for the Map to work in PatientPortal</description>
+	</globalProperty>
 
 	<!--<globalProperty>
         <property>${project.parent.artifactId}.contactUsFromEmail</property>
