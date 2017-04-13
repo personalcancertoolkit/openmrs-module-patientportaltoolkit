@@ -18,6 +18,8 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.PersonPreferences;
+import org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -44,7 +46,8 @@ public class ProfileEditFragmentController {
                                     @RequestParam(value = "givenName", required = true) String givenName,
                                     @RequestParam(value = "familyName", required = true) String familyName,
                                     @RequestParam(value = "gender", required = true) String gender,
-                                    @RequestParam(value = "birthDate", required = true) String birthDate, HttpServletRequest servletRequest)  {
+                                    @RequestParam(value = "birthDate", required = true) String birthDate,
+                                    @RequestParam(value = "myCancerBuddies", required = true) String myCancerBuddies, HttpServletRequest servletRequest)  {
 
         log.info(PPTLogAppender.appendLog("SAVE_PROFILEEDIT", servletRequest, "personId:", personId+"","givenName:",givenName, "familyName", familyName, "gender", gender, "birthDate", birthDate));
         Person person = Context.getPersonService().getPerson(personId);
@@ -82,6 +85,10 @@ public class ProfileEditFragmentController {
         if (gender != null)
             person.setGender(gender);
         Context.getPersonService().savePerson(person);
+        PersonPreferences pp= Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person);
+        boolean mycancerBuddiesValue= Boolean.parseBoolean(myCancerBuddies);
+        pp.setMyCancerBuddies(mycancerBuddiesValue);
+        Context.getService(PersonPreferencesService.class).savePersonPreferences(pp);
         //log.info("Profile Details saved for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 

@@ -1,7 +1,13 @@
 ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 <script type="text/javascript">
-    \$(document).ready(function(){
-        \$('#patientPortalUserName').addClass('active');
+    jq(document).ready(function(){
+        jq.fn.bootstrapSwitch.defaults.onColor = 'success';
+        jq.fn.bootstrapSwitch.defaults.offColor = 'danger';
+        jq('#patientPortalUserName').addClass('active');
+        jq("[name='userprofileMyCancerBuddies']").bootstrapSwitch(function(){
+
+        });
+
     });
 </script>
 <body>
@@ -31,7 +37,14 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
     </div><div class="form-group">
     <label class="control-label col-xs-2" for="userprofileDOB">Date of Birth </label>
             <div class="col-xs-10">  <input class="form-control" id="userprofileDOB" type="text" value="${pptutil.formatDate(person.birthdate)}"/></div>
-    </div><div class="form-group pull-right">
+    </div>
+        <% if (personPreferences!=null){%>
+        <div class="form-group">
+            <label class="control-label col-xs-2" for="userprofileMyCancerBuddies">My Cancer Buddies Status</label>
+            <div class="col-xs-10">  <input class="form-control" id="userprofileMyCancerBuddies" type="checkbox" name="userprofileMyCancerBuddies"  <% if (personPreferences.myCancerBuddies==true){%>checked<% }%>/></div>
+        </div>
+        <% }%>
+        <div class="form-group pull-right">
             <button type="button" class="btn btn-default cancelModal">Cancel Changes</button>
     <button type="button" class="btn btn-primary" id="saveuserprofile">Save</button>
         </div>
