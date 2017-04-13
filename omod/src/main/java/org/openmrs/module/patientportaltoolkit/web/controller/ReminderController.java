@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.*;
 import java.text.ParseException;
 
 /**
@@ -37,7 +38,9 @@ public class ReminderController {
     public Object getAllRemindersforPatient(@PathVariable( "patientId" ) String patientId)
     {
         Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        return ToolkitResourceUtil.generateReminders(Context.getService(ReminderService.class).getReminders(patient));
+        List<Reminder> reminders = Context.getService(ReminderService.class).getReminders(patient); 
+        //List<Reminder> reminders = new ArrayList<Reminder>();
+        return ToolkitResourceUtil.generateReminders(reminders);
     }
 
     @RequestMapping( value = "/patientportaltoolkit/getpreventivecareforpatient/{patientId}")

@@ -19,9 +19,9 @@
         // DOM interactions
         //////////
         open_part : function(which_part){
-            valid_parts = ["menu", "markCompleted", "modify", "remove"];
+            valid_parts = ["menu", "markCompleted", "modifyCompleted", "modify", "remove"];
             if((valid_parts.indexOf(which_part) == -1)){
-                console.error("Requested part to open is not valid");
+                console.log("Requested part to open is not valid");
                 return;
             }
             this.hide_all_parts();
@@ -29,6 +29,8 @@
             this.modal.find("."+which_part+"-part").show(); 
             this.modal.find(".all-parts").show(); 
             this.modal.find("."+which_part+"-exclude-part").hide(); 
+            
+            if(which_part == "menu") this.update_valid_menu_options();
         },
         update_visible_data : function(){
             var event = this.data_manager.data[this.appointment_id];
@@ -37,7 +39,28 @@
             this.modal.find(".modal-title").html(event.followProcedureName + " Appointment");
             
             // update modify input defaults to current data
-            this.input.modify.appointment_date.data('datepicker').setValue(event.startDate);
+            this.input.modify.appointment_date.data('datepicker').setValue(event.targetDate);
+            if(event.status == 1){
+                this.input.markCompleted.completed_date.data('datepicker').setValue(event.completedDate);
+                this.input.markCompleted.doctor_name.val(event.doctorName);
+                this.input.markCompleted.comments.html(event.comments);
+            } else {
+                this.input.markCompleted.completed_date.data('datepicker').setValue(new Date());
+                this.input.markCompleted.doctor_name.val("");
+                this.input.markCompleted.comments.html("");
+            }
+        },
+        update_valid_menu_options : function(){
+            // modify visible menu items due to event.status (e.g., if its completed then instead of markCompleted display modifyCompleted)
+            
+            var event = this.data_manager.data[this.appointment_id];
+            if(event.status == 1){
+               this.modal.find("#modal_menu_part_markCompleted").hide();
+               this.modal.find("#modal_menu_part_modify").hide();
+               this.modal.find("#modal_menu_part_remove").hide();
+            } else {
+               this.modal.find("#modal_menu_part_modifyCompleted").hide();   
+            }
         },
         hide_all_parts : function(){
             this.modal.find(".modal-part").hide();
@@ -49,9 +72,23 @@
         ///////////////
         // Handle Actions
         ///////////////
-        trigger_action : function(type){
-            if(type == "markCompleted") {
+        trigger_action : function(which_part){
+            valid_parts = ["markCompleted", "modifyCompleted", "modify", "remove"];
+            if((valid_parts.indexOf(which_part) == -1)){
+                console.log("Requested part to trigger is not valid");
+                return;
+            }
+            if(which_part == "markCompleted") {
                 this.attempt_mark_completed();
+            }
+            if(which_part == "modifyCompleted"){
+                this.attempt_modify_completed();
+            }
+            if(which_part == "modify"){
+                this.attempt_modify_appointment();
+            }
+            if(which_part == "remove"){
+                this.attempt_remove_appointment();
             }
         },
         
@@ -84,8 +121,73 @@
             xhr.onload = function(){
                 console.log(this.responseText);
                 console.log("Success!");
+                window.location.reload();
             };
             xhr.send(null);
+        },
+        attempt_modify_completed : function(){
+            var event = this.data_manager.data[this.appointment_id]
+             
+            //location.reload();
+            var reminder_id         = encodeURIComponent(this.appointment_id);
+            var completed_date      = encodeURIComponent(this.input.markCompleted.completed_date.val());
+            var doctor_name         = encodeURIComponent(this.input.markCompleted.doctor_name.val());
+            var comments            = encodeURIComponent(this.input.markCompleted.comments.val());
+            var personUuid          = encodeURIComponent(jq("#personUuid").val());
+            var parameters = 'reminderId='+reminder_id + '&markCompletedDate='+completed_date + '&doctorName='+doctor_name + '&comments='+comments + '&personUuid='+personUuid;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "appointmentsManageModal/modifyCompleted.action?" + parameters, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function(){
+                console.log(this.responseText);
+                console.log("Success!");
+                window.location.reload();
+            };
+            xhr.send(null);
+        },
+        attempt_modify_appointment : function(){
+            var event = this.data_manager.data[this.appointment_id]
+             
+            //location.reload();
+            var reminder_id         = encodeURIComponent(this.appointment_id);
+            var new_target_date      = encodeURIComponent(this.input.modify.appointment_date.val());
+            var personUuid          = encodeURIComponent(jq("#personUuid").val());
+            var formatedTargetDate  = encodeURIComponent(event.formatedTargetDate);
+            var concept_id          = encodeURIComponent(event.concept_id);
+            var parameters = 'reminderId='+reminder_id + '&newTargetDate='+new_target_date + '&personUuid='+personUuid + '&conceptId=' + concept_id + '&formatedTargetDate=' + formatedTargetDate;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "appointmentsManageModal/modifyAppointment.action?" + parameters, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function(){
+                console.log(this.responseText);
+                console.log("Success!");
+                window.location.reload();
+            };
+            xhr.send(null);
+            
+        },
+        attempt_remove_appointment : function(){
+            var event = this.data_manager.data[this.appointment_id]
+             
+            //location.reload();
+            var reminder_id         = encodeURIComponent(this.appointment_id);
+            var personUuid          = encodeURIComponent(jq("#personUuid").val());
+            var formatedTargetDate  = encodeURIComponent(event.formatedTargetDate);
+            var concept_id          = encodeURIComponent(event.concept_id);
+            var parameters = 'reminderId='+reminder_id + '&personUuid='+personUuid + '&conceptId=' + concept_id + '&formatedTargetDate=' + formatedTargetDate;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "appointmentsManageModal/removeAppointment.action?" + parameters, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function(){
+                console.log(this.responseText);
+                console.log("Success!");
+                //window.location.reload();
+            };
+            xhr.send(null);
+            
         },
     }
 
@@ -101,11 +203,13 @@
         manageAppointmentModal_handler.buttons = {
             menu : {
                 markCompleted : document.getElementById('manageAppointment_menu_markCompleted'),
+                modifyCompleted : document.getElementById('manageAppointment_menu_modifyCompleted'),
                 modify : document.getElementById('manageAppointment_menu_modify'),
                 remove : document.getElementById('manageAppointment_menu_remove'),
             },
             action : {
                 markCompleted : document.getElementById('manageAppointment_button_markCompleted'),
+                modifyCompleted : document.getElementById('manageAppointment_button_modifyCompleted'),
                 modify : document.getElementById('manageAppointment_button_modify'),
                 remove : document.getElementById('manageAppointment_button_remove'),
             },
@@ -145,7 +249,7 @@
         
         // Initialize back button
         manageAppointmentModal_handler.buttons.back.on( "click", function(){
-            manageAppointmentModal_handler.open_part('menu');
+            manageAppointmentModal_handler.open_menu_again();
         });
         
         // initialize cancel buttons
@@ -197,11 +301,15 @@
                         map.put("id_mod", "markCompleted");
                         data.add(map.clone());
                        
+                        map.put("desc", "Modify Completed Record");
+                        map.put("button_text", "Modify Completed");
+                        map.put("id_mod", "modifyCompleted");
+                        data.add(map.clone());
+                       
                         map.put("desc", "Modify this Appointment");
                         map.put("button_text", "Modify");
                         map.put("id_mod", "modify");
                         data.add(map.clone());
-                        
                         
                         map.put("desc", "Remove this Appointment");
                         map.put("button_text", "Remove");
@@ -212,7 +320,7 @@
                        // Display Templated Menu Item
                        data.each { data_element -> 
                     %>
-                        <div class="row" id = '${data_element.id_mod}_menu_holder' style = ' display:flex; margin-bottom:5px;'>
+                        <div class="row menu-part" id = "modal_menu_part_${data_element.id_mod}" style = ' display:flex; margin-bottom:5px;'>
                             <div style = "display:flex;  flex-grow:1;">
                                 <div style = ' margin:auto; margin-left:5px;'>
                                     ${data_element.desc}
@@ -228,7 +336,7 @@
                        } // end data.each
                     %>
                 </div>
-                <div class="modal-part markCompleted-part">
+                <div class="modal-part modifyCompleted-part markCompleted-part">
                     <style>
                         .markCompletedLabel {
                             min-width:175px;   
@@ -261,6 +369,14 @@
                         <input class="form-control datetype" id = 'appointment_date' >
                     </form>
                 </div>
+                <div class="modal-part remove-part">
+                    <style>
+                        .markCompletedLabel {
+                            min-width:175px;   
+                        }
+                    </style>
+                    Are you sure you wish to remove this appointment? This can not be undone. 
+                </div>
             </div>
             
             
@@ -270,7 +386,8 @@
                 </div>
                 <div class="button-div pull-right ">
                     <button type="button" class="btn btn-default modal_cancel_button modal-part all-parts">Cancel</button>
-                    <button type="button" class="btn btn-primary modal-part markCompleted-part" id="manageAppointment_button_markCompleted"> Mark Completed </button>
+                    <button type="button" class="btn btn-primary modal-part markCompleted-part" id="manageAppointment_button_markCompleted"> Mark Completed Record </button>
+                    <button type="button" class="btn btn-primary modal-part modifyCompleted-part" id="manageAppointment_button_modifyCompleted"> Modify Completed Record </button>
                     <button type="button" class="btn btn-primary modal-part modify-part" id="manageAppointment_button_modify"> Save Changes </button>
                     <button type="button" class="btn btn-primary modal-part remove-part" id="manageAppointment_button_remove"> Remove this Event </button>
                 </div>

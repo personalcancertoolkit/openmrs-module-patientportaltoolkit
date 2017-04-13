@@ -96,6 +96,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     @Override
     public Reminder markCompletedReminder(Reminder reminder, Date markCompleteDate, String doctorsName, String comments) {
         // Takes a reminder object, marks it completed, and saves it.
+        System.out.println("Marking reminder completed ");
         Date today = new Date();
         reminder.setCompleteDate(markCompleteDate);
         reminder.setDoctorName(doctorsName);
@@ -103,10 +104,41 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setResponseDate(today);
         reminder.setStatus(1);
         reminder.setResponseUser(Context.getAuthenticatedUser());
+        System.out.println("Saving reminder with target date of " + reminder.getTargetDate());
+        return dao.saveReminder(reminder);
+    }
+    
+    @Override
+    public Reminder modifyCompletedReminder(Reminder reminder, Date markCompleteDate, String doctorsName, String comments) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        reminder.setCompleteDate(markCompleteDate);
+        reminder.setDoctorName(doctorsName);
+        reminder.setResponseComments(comments);
+        reminder.setModifiedDate(today);
+        return dao.saveReminder(reminder);
+    }
+    
+    @Override
+    public Reminder modifyTargetDate(Reminder reminder, Date newTargetDate) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        reminder.setTargetDate(newTargetDate);
+        reminder.setModifiedDate(today);
+        return dao.saveReminder(reminder);
+    }
+    
+    @Override
+    public Reminder removeReminder(Reminder reminder) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        reminder.setStatus(-1);
+        reminder.setModifiedDate(today);
         return dao.saveReminder(reminder);
     }
 
-/*    @Override
+/*    
+    @Override
     public Reminder markScheduledReminder(String reminderId, Date date) {
         Date today = new Date();
         Reminder reminder=getRemindersById(reminderId);
@@ -114,8 +146,9 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setStatus(2);
         reminder.setResponseUser(Context.getAuthenticatedUser());
         return dao.saveReminder(reminder);
-    }*/
-
+    }
+*/
+    
     @Override
     public Reminder getRemindersById(String Id) {
         // If id is not a valid integer, return null - like would be returned if no reminders with a valid integer id were found.
@@ -293,11 +326,17 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
                 
                 // Create, on the fly, a new reminder with the followup procedure and target date required by guidelines.
                 Reminder reminder = generateReminderFromGuidelineData(patient, g.getFollowupProcedure(), targetDate);
-                reminders.add(reminder);
+                reminders.add(reminder); 
             }
         }
-
-        return reminders;
+        
+        // Now that guidelines are generated, remove all reminders from list which have a status of -1
+        List<Reminder> valid_reminders = new ArrayList<>();
+        for (Reminder reminder:  reminders) {
+            if(reminder.getStatus() != -1) valid_reminders.add(reminder);
+        }
+        
+        return valid_reminders;
     } // end generateRemindersbyGuidelineConditions
     
     
@@ -307,6 +346,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setPatient(patient);
         reminder.setFollowProcedure(followupConcept);
         reminder.setTargetDate(targetDate);
+        reminder.setOrigTargetDate(targetDate);
         reminder.setStatus(0);
         return reminder;
     }
@@ -317,7 +357,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         for(Reminder r:findInReminderList) {
             if(r.getTargetDate() == null)
                 continue;
-            if(r.getFollowProcedure().equals(reminderProcedure) && r.getTargetDate().equals(reminderDate)){
+            if(r.getFollowProcedure().equals(reminderProcedure) && r.getOrigTargetDate().equals(reminderDate)){
                 exactReminder=r;
             }
         }

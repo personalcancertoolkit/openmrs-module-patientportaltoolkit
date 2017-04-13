@@ -600,11 +600,12 @@ public class ToolkitResourceUtil {
         reminderMap.put("endDate",reminder.getTargetDate());
         reminderMap.put("name",reminder.getFollowProcedureName());
         reminderMap.put("concept_id",reminder.getFollowProcedure().getConceptId());
-        reminderMap.put("completedDate",reminder.getCompleteDate());
+        //System.out.println("Here i am - util file");
         if(reminder.getCompleteDate() != null){
             reminderMap.put("formatedCompletedDate", pptutil.formatDate(reminder.getCompleteDate()));
-        } else {
-            reminderMap.put("formatedCompletedDate", null);
+            reminderMap.put("completedDate", reminder.getCompleteDate());
+            reminderMap.put("doctorName", reminder.getDoctorName());
+            reminderMap.put("comments", reminder.getResponseComments());
         }
         reminderMap.put("status",reminder.getStatus());
         

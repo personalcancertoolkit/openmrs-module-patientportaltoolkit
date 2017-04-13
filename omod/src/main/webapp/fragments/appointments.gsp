@@ -181,6 +181,7 @@
         
         setDataSource : function(the_data){
             console.log(the_data);
+            the_data = the_data.sort(this.sorting_comparison_function);
             for(var i = 0; i < the_data.length; i++){
                 var this_event = the_data[i];
                 // Add event to list
@@ -192,12 +193,19 @@
         should_append_to_list : function(this_event){
             var today_timestamp = new Date().getTime();
             var time_difference_90_days = (90 * 24 * 60 * 60 * 1000)
-            //                            day  hour  min  sec  msec
             var forward_90_timestamp  = today_timestamp  + time_difference_90_days;
             var backward_90_timestamp = today_timestamp  - time_difference_90_days;
             var event_timestamp = new Date(this_event.targetDate).getTime();  
             if(event_timestamp > forward_90_timestamp || event_timestamp < backward_90_timestamp) return false;
             return true;
+        },
+        
+        sorting_comparison_function :  function(a, b){
+            // Sort list elements by target_date ASC
+            var difference = a.targetDate - b.targetDate;
+            if(difference == 0 && a.status == 1) difference = -1; //if both on same day and one is completed, put it first
+            if(difference == 0 && b.status == 1) difference = 1; //if both on same day and one is completed, put it first
+            return difference;
         },
         
         append_to_list : function(this_event){

@@ -86,8 +86,7 @@ public class AppointmentsManageModalFragmentController {
                               @RequestParam(value = "formatedTargetDate", required = true) String formatedTargetDate, 
                               HttpServletRequest servletRequest) {
         
-  
-        
+        /*
         System.out.println("Data Received by appointmentsManageModal/markCompleted.action:");
         System.out.println("reminderId : " + reminderId);
         System.out.println("markCompletedDate : " + markCompletedDate);
@@ -95,7 +94,7 @@ public class AppointmentsManageModalFragmentController {
         System.out.println("comments : " + comments);
         System.out.println("personUuid : " + personUuid);
         System.out.println("formatedTargetDate : " + formatedTargetDate);
-        
+        */
         
         // Get person this action is requested by
         User userRequestedBy = Context.getAuthenticatedUser();
@@ -108,12 +107,12 @@ public class AppointmentsManageModalFragmentController {
         ///////////////
         // Ensure requester (userRequestedBy) can modify information for requestee (userRequestedFor)
         ///////////////
+        /*
         System.out.println("RequestedUserId:" + userRequestedFor.getSystemId());
         System.out.println("RequestedUserName:"+ userRequestedFor.getUsername());
         System.out.println("RequestedByID:"+ userRequestedBy.getUsername());
         System.out.println("RequestedByUserName:"+ userRequestedBy.getUsername());
-        
-        
+        */
         
         /////////////
         // Format Date Correctly
@@ -136,19 +135,182 @@ public class AppointmentsManageModalFragmentController {
         //////////////
         // Mark this reminder completed
         //////////////
-        System.out.println("reg:");
-        System.out.println(Context.getService(ReminderService.class).getRemindersById(reminderId));
-        
-        
-        System.out.println("robust:");
         // Get reminder by reminderId, if reminderId is not associated with a dbsaved reminder then generate a reminder based on the guideline data provided
         Reminder reminder = Context.getService(ReminderService.class).getReminderByIdOrGuidelineData(reminderId, patient, conceptId, targetDate);
-        System.out.println(reminder);
-        
         Context.getService(ReminderService.class).markCompletedReminder(reminder, completedDate, doctorName, comments);
-        System.out.println("HELLO!");
 
     }
     
+    public void modifyCompleted(FragmentModel model, 
+                              @RequestParam(value = "reminderId", required = true) String reminderId, 
+                              @RequestParam(value = "markCompletedDate", required = true) String markCompletedDate, 
+                              @RequestParam(value = "doctorName", required = true) String doctorName, 
+                              @RequestParam(value = "comments", required = true) String comments, 
+                              @RequestParam(value = "personUuid", required = true) String personUuid, 
+                              HttpServletRequest servletRequest) {
+        
+        
+        
+        
+        /*
+        System.out.println("Data Received by appointmentsManageModal/modifyCompleted.action:");
+        System.out.println("reminderId : " + reminderId);
+        System.out.println("markCompletedDate : " + markCompletedDate);
+        System.out.println("doctorName : " + doctorName);
+        System.out.println("comments : " + comments);
+        System.out.println("personUuid : " + personUuid);
+        */
+        
+        
+        // Get person this action is requested by
+        User userRequestedBy = Context.getAuthenticatedUser();
+        
+        // Get patient this action is requested for
+        Person person = Context.getPersonService().getPersonByUuid(personUuid);
+        User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
+        Patient patient = Context.getPatientService().getPatient(person.getId());
+        
+        ///////////////
+        // Ensure requester (userRequestedBy) can modify information for requestee (userRequestedFor)
+        ///////////////
+        /*
+        System.out.println("RequestedUserId:" + userRequestedFor.getSystemId());
+        System.out.println("RequestedUserName:"+ userRequestedFor.getUsername());
+        System.out.println("RequestedByID:"+ userRequestedBy.getUsername());
+        System.out.println("RequestedByUserName:"+ userRequestedBy.getUsername());
+        */
+        
+        /////////////
+        // Format Date Correctly
+        /////////////
+        DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        Date completedDate = new Date();
+        try {
+            completedDate = format.parse(markCompletedDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        //////////////
+        // Modify this reminder
+        //////////////
+        Reminder reminder = Context.getService(ReminderService.class).getRemindersById(reminderId);
+        Context.getService(ReminderService.class).modifyCompletedReminder(reminder, completedDate, doctorName, comments);
+
+    }
+    
+    public void modifyAppointment(FragmentModel model, 
+                              @RequestParam(value = "reminderId", required = true) String reminderId, 
+                              @RequestParam(value = "newTargetDate", required = true) String formatedNewTargetDate, 
+                              @RequestParam(value = "personUuid", required = true) String personUuid, 
+                              @RequestParam(value = "conceptId", required = true) String conceptId, 
+                              @RequestParam(value = "formatedTargetDate", required = true) String formatedTargetDate, 
+                              HttpServletRequest servletRequest) {
+        
+        
+        /*
+        System.out.println("Data Received by appointmentsManageModal/modifyAppointment.action:");
+        System.out.println("reminderId : " + reminderId);
+        System.out.println("newTargetDate : " + formatedNewTargetDate);
+        System.out.println("personUuid : " + personUuid);
+        System.out.println("conceptId : " + conceptId);
+        System.out.println("formatedTargetDate : " + formatedTargetDate);
+        */
+        
+        // Get person this action is requested by
+        User userRequestedBy = Context.getAuthenticatedUser();
+        
+        // Get patient this action is requested for
+        Person person = Context.getPersonService().getPersonByUuid(personUuid);
+        User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
+        Patient patient = Context.getPatientService().getPatient(person.getId());
+        
+        ///////////////
+        // Ensure requester (userRequestedBy) can modify information for requestee (userRequestedFor)
+        ///////////////        
+        /*
+        System.out.println("RequestedUserId:" + userRequestedFor.getSystemId());
+        System.out.println("RequestedUserName:"+ userRequestedFor.getUsername());
+        System.out.println("RequestedByID:"+ userRequestedBy.getUsername());
+        System.out.println("RequestedByUserName:"+ userRequestedBy.getUsername());
+        */
+        
+        /////////////
+        // Format Date Correctly
+        /////////////
+        DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        Date newTargetDate = new Date();
+        try {
+            newTargetDate = format.parse(formatedNewTargetDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date oldTargetDate = new Date();
+        try {
+            oldTargetDate = format.parse(formatedTargetDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        //////////////
+        // Modify this reminder
+        //////////////
+        Reminder reminder = Context.getService(ReminderService.class).getReminderByIdOrGuidelineData(reminderId, patient, conceptId, oldTargetDate);
+        Context.getService(ReminderService.class).modifyTargetDate(reminder, newTargetDate);
+
+    }
+    
+    public void removeAppointment(FragmentModel model, 
+                              @RequestParam(value = "reminderId", required = true) String reminderId, 
+                              @RequestParam(value = "personUuid", required = true) String personUuid, 
+                              @RequestParam(value = "conceptId", required = true) String conceptId, 
+                              @RequestParam(value = "formatedTargetDate", required = true) String formatedTargetDate, 
+                              HttpServletRequest servletRequest) {
+        
+        
+        /*
+        System.out.println("Data Received by appointmentsManageModal/removeAppointment.action:");
+        System.out.println("reminderId : " + reminderId);
+        System.out.println("personUuid : " + personUuid);
+        System.out.println("conceptId : " + conceptId);
+        System.out.println("formatedTargetDate : " + formatedTargetDate);
+        */
+        
+        // Get person this action is requested by
+        User userRequestedBy = Context.getAuthenticatedUser();
+        
+        // Get patient this action is requested for
+        Person person = Context.getPersonService().getPersonByUuid(personUuid);
+        User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
+        Patient patient = Context.getPatientService().getPatient(person.getId());
+        
+        ///////////////
+        // Ensure requester (userRequestedBy) can modify information for requestee (userRequestedFor)
+        ///////////////        
+        /*
+        System.out.println("RequestedUserId:" + userRequestedFor.getSystemId());
+        System.out.println("RequestedUserName:"+ userRequestedFor.getUsername());
+        System.out.println("RequestedByID:"+ userRequestedBy.getUsername());
+        System.out.println("RequestedByUserName:"+ userRequestedBy.getUsername());
+        */
+        
+        /////////////
+        // Format Date Correctly
+        /////////////
+        DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        Date oldTargetDate = new Date();
+        try {
+            oldTargetDate = format.parse(formatedTargetDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        //////////////
+        // Modify this reminder
+        //////////////
+        Reminder reminder = Context.getService(ReminderService.class).getReminderByIdOrGuidelineData(reminderId, patient, conceptId, oldTargetDate);
+        Context.getService(ReminderService.class).removeReminder(reminder);
+
+    }
     
 }
