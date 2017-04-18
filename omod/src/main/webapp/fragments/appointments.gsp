@@ -230,6 +230,7 @@
         sorting_comparison_function :  function(a, b){
             // Sort list elements by target_date ASC
             var difference = a.targetDate - b.targetDate;
+            if(difference == 0 && a.status == 1 && b.status == 1) difference = a.completedDate - b.completedDate; //if both on same day and both completed, sort by completed date
             if(difference == 0 && a.status == 1) difference = -1; //if both on same day and one is completed, put it first
             if(difference == 0 && b.status == 1) difference = 1; //if both on same day and one is completed, put it first
             return difference;
