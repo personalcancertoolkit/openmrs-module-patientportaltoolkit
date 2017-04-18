@@ -136,6 +136,15 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setModifiedDate(today);
         return dao.saveReminder(reminder);
     }
+    
+    @Override
+    public Reminder addReminder(Reminder reminder) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        reminder.setStatus(0);
+        reminder.setModifiedDate(today);
+        return dao.saveReminder(reminder);
+    }
 
 /*    
     @Override
@@ -339,6 +348,12 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         return valid_reminders;
     } // end generateRemindersbyGuidelineConditions
     
+    
+    @Override
+    public Reminder generateReminderFromGuidelineData(Patient patient, String conceptId, Date targetDate){
+            Concept followUpConcept = Context.getConceptService().getConcept(conceptId);
+            return generateReminderFromGuidelineData(patient, followUpConcept, targetDate); 
+    }
     
     @Override
     public Reminder generateReminderFromGuidelineData(Patient patient, Concept followupConcept, Date targetDate){

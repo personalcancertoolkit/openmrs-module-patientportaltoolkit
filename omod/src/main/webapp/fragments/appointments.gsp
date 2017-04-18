@@ -129,7 +129,7 @@
         var OpenMRSInstance=window.location.href;
         
         //Load Reminder data, insert reminders into calendar and table
-        console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
+        //console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
         jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val(), function (reminderData) {
             // Set datasource for reminder table
             reminder_table_handler.setDataSource(reminderData);
@@ -138,6 +138,14 @@
             // Set datasource for data_manager
             appointment_data_manager.set_data(reminderData);
         });
+        
+        //Load all possible guidelines that user can choose to create a new reminder from
+        jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getpossiblenewremindersforpatient/'+ jq("#personUuid").val(), function (reminderData) {
+            // console.log(reminderData);
+            // record the data in appointment data manager
+            appointment_data_manager.set_valid_reminders(reminderData);
+        });
+        
     }
     
     window.addEventListener("load", function(){
@@ -164,11 +172,30 @@
     
     var appointment_data_manager = {
         data : {},   
+        valid_reminders : [],
         set_data : function(the_data){
             for(var i = 0; i < the_data.length; i++){
                 var this_event = the_data[i];
                 this.data[this_event.id] = this_event;
             }
+        },
+        set_valid_reminders : function(the_data){
+            var added_reminders = [];
+            var valid_reminders = [];
+            for(var i = 0; i < the_data.length; i++){
+                var this_data = the_data[i];
+                var this_reminder_name = the_data[i].procedure_name;
+                if((added_reminders.indexOf(this_reminder_name) != -1)) continue; // if its already in list, don't re-add it.
+                added_reminders.push(this_reminder_name);
+                valid_reminders.push(this_data);
+            }
+            this.valid_reminders = valid_reminders.sort(this.reminder_sort_function);
+            console.log(this.valid_reminders);
+        },
+        reminder_sort_function : function(a,b){
+            if(a.procedure_name < b.procedure_name) return -1;
+            if(a.procedure_name > b.procedure_name) return 1;
+            return 0;
         },
     };
     
@@ -180,7 +207,7 @@
         button_identification_class : null,
         
         setDataSource : function(the_data){
-            console.log(the_data);
+            //console.log(the_data);
             the_data = the_data.sort(this.sorting_comparison_function);
             for(var i = 0; i < the_data.length; i++){
                 var this_event = the_data[i];
@@ -255,7 +282,7 @@
             var td4 = document.createElement("td"); 
             td4.className = 'clearfix';
             var button_class = (this_event.status == 1) ? "btn-custom-completed" : "btn-primary";
-            td4.innerHTML = "<a class='btn " + button_class + " btn-sm pull-right "+ this.button_identification_class + "' data-id = '"+escape(this_event.id)+"'>Manage</a>";
+            td4.innerHTML = "<a class='btn " + button_class + " btn-sm pull-right "+ this.button_identification_class + "'  data-id = '"+escape(this_event.id)+"'>Manage</a>";
             if(this.isACareGiver != 1) row.appendChild(td4); // only append third column if user is a care giver
             
             this.table_body_element.appendChild(row);
@@ -267,6 +294,11 @@
                 var id_of_appointment = jq(e.target).data('id'); 
                 this.modification_modal_handler.open_modal_for(id_of_appointment);
             }.bind(this));  
+            
+            // Initialize Adder button
+            document.getElementById("add_new_followup_appointment_button").onclick = function(){
+                this.modification_modal_handler.open_modal_for("add_new");
+            }.bind(this);
         },
         
     };
@@ -304,14 +336,22 @@
   background-color: #ebebeb;
   border-color: rgba(0, 0, 0, 0.3);
 }
+    
+.btn-secondary-customized {
+}
+.btn-secondary-customized:hover {
+    background-color:#ECF0F1;
+    color:#1EBC9C;
+}
 </style>
 
 <div class="clearfix">
 
-
     ${ ui.includeFragment("patientportaltoolkit", "appointmentsManageModal") }
+    <div style = 'height:15px;'></div>
     <input id="personUuid" value="${ person.uuid}" type="hidden">
     <h4>Upcoming Appointments</h4>
+    <div style = 'height:10px;'></div>
     <div>
         <table class="table table-hover-custom" id="due-appointments">
             <thead>
@@ -327,6 +367,11 @@
             <tbody id = 'table_body'>
             </tbody>
         </table>
+    </div>
+    <div style = 'display:flex; margin-top:-20px; '>
+        <div style = 'margin:auto; margin-left:0px;'>
+            <a class='btn btn-secondary-customized btn-sm pull-right' style = 'font-size:16px; margin-left:-8px;' id = 'add_new_followup_appointment_button'> Add New Appointment</a> <!-- id used in appointmentsManageModal.gsp -->
+        </div>
     </div>
     <!--<div id="chart" width="100%">
     </div>-->

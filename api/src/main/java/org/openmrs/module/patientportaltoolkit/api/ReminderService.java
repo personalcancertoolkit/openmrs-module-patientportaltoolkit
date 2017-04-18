@@ -61,6 +61,9 @@ public interface ReminderService extends OpenmrsService {
     @Transactional
     Reminder removeReminder(Reminder reminder);
     
+    @Transactional
+    Reminder addReminder(Reminder reminder);
+    
 /*    
     @Transactional
     Reminder markScheduledReminder(String reminderId, Date date);
@@ -73,6 +76,9 @@ public interface ReminderService extends OpenmrsService {
     List<Reminder> generateRemindersbyGuidelineConditions(Patient patient);
     
     @Transactional
-    Reminder generateReminderFromGuidelineData(Patient patient, Concept conceptID, Date targetDate);
+    Reminder generateReminderFromGuidelineData(Patient patient, String conceptId, Date targetDate);
+    
+    @Transactional
+    Reminder generateReminderFromGuidelineData(Patient patient, Concept followupConcept, Date targetDate);
 
 }
