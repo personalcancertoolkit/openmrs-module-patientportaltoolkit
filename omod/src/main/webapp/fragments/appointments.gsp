@@ -1,6 +1,10 @@
 <script>
     var calendar_handler = {
         calendar_object : null,
+        persistent_popover_parent_event : null,
+        bound_popover_remover_function : null,
+        modification_modal_handler: null,
+        
         customDataSourceRenderer : function(element, date, events){ 
             var uncompleted_events = events.filter(function(an_event){ return an_event.status != 1; }); 
             var completed_events = events.filter(function(an_event){ return an_event.status == 1; }); 
@@ -27,50 +31,95 @@
         
         
         mouseOnDay : function(e) {
-            if(e.events.length > 0) {
-                var content = '';
-                for(var i in e.events) {
-                    /*
-                    content += '<div class="event-tooltip-content">'
-                        + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
-                        + '<div class="event-location">' + e.events[i].location + '</div>'
-                        + '</div>';
-                    */
-                    var this_event = e.events[i];
-                    
-                    // create DOM elements
-                    var wrapper = document.createElement("div");
+            if(!(e.events.length > 0)) return; 
+            if(this.persistent_popover_parent_event !== null && this.persistent_popover_parent_event.date.getTime() == e.date.getTime()) return; // if is persistant its already open
+            
+            // create content
+            var content = '';
+            for(var i in e.events) {
+                /*
+                content += '<div class="event-tooltip-content">'
+                    + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
+                    + '<div class="event-location">' + e.events[i].location + '</div>'
+                    + '</div>';
+                */
+                var this_event = e.events[i];
+
+                // generate DOM elements
+                var wrapper = document.createElement("div");
+
+                var parent = document.createElement("div");
+                parent.className = "event-tooltip-content";
+                if(i != 0) parent.style.marginTop = "5px";
                 
-                    var parent = document.createElement("div");
-                    parent.className = "event-tooltip-content";
-                    
-                    var name = document.createElement("div");
-                    name.class = 'event-name';
-                    name.style.setProperty("color", this_event.color);
-                    name.innerHTML = this_event.name;
-                    if(this_event.status == 1){
-                        name.style.setProperty("text-decoration", "line-through"); 
-                        name.style.setProperty("opacity", "0.4");
-                    }
-                    
-                    //append them to their parents
-                    parent.appendChild(name);
-                    wrapper.appendChild(parent);
-                    
-                    content += wrapper.innerHTML;
+                var name = document.createElement("a");
+                name.class = 'event-name';
+                name.style.setProperty("color", this_event.color);
+                if(this_event.status == 1){
+                    name.style.setProperty("text-decoration", "line-through"); 
+                    name.style.setProperty("opacity", "0.4");
+                } else {
+                    name.style.setProperty("cursor", "pointer");
+                    //name.onclick = function(){ calendar_handler.modification_modal_handler.open_modal_for(id_of_appointment) };
+                    name.href = "javascript:calendar_handler.open_modification_modal_for(" + this_event.id + ");";
                 }
-                jq(e.element).popover({
-                    trigger: 'manual',
-                    container: 'body',
-                    html:true,
-                    content: content
-                });
-                jq(e.element).popover('show');
-            }
-        },
         
+                var sp1 = document.createElement("span");
+                sp1.innerHTML = this_event.name;
+                
+                var sp2 = document.createElement("span");
+                if(this_event.status != 1){
+                    sp2.className = "glyphicon glyphicon-pencil";
+                    sp2.style.fontSize = "12px";
+                    sp2.style.marginLeft = "5px";
+                }
+                
+                //append them to their parents
+                name.appendChild(sp1);
+                name.appendChild(sp2);
+                parent.appendChild(name);
+                wrapper.appendChild(parent);
+
+                content += wrapper.innerHTML;
+            }
+            jq(e.element).popover({
+                trigger: 'focus',
+                container: 'body',
+                html:true,
+                content: content,
+            });
+            var this_date = e.date; 
+            jq(e.element).data('bs.popover').tip().find(".popover-content")[0].addEventListener("click", function(event){ // ensure popover does not close when clicked on
+                event.stopPropagation();
+            }.bind(this), true); 
+            jq(e.element).popover('show');
+        },
         mouseOutDay : function(e) {
+            if(!(e.events.length > 0)) return; 
+            if(this.persistent_popover_parent_event !== null && this.persistent_popover_parent_event.date.getTime() == e.date.getTime()) return; // is persistant after mouse hover leaves
             jq(e.element).popover('hide');
+        },
+        clickDay : function(e){
+            if(!(e.events.length > 0)) return; 
+            if(this.persistent_popover_parent_event !== null && this.persistent_popover_parent_event.date.getTime() == e.date.getTime()) return;  // already done
+            if(this.persistent_popover_parent_event !== null) this.popover_remove_persistance_and_hide();
+            this.persistent_popover_parent_event = e; 
+            this.bound_popover_remover_function = this.popover_remove_persistance_and_hide.bind(this);
+            document.addEventListener("click", this.bound_popover_remover_function, false);
+        },
+        popover_remove_persistance_and_hide : function(){
+            // get event
+            var e = this.persistent_popover_parent_event;
+            // remove persistence
+            this.persistent_popover_parent_event = null;  
+            // hide event
+            jq(e.element).popover('hide');
+            // remove listener
+            document.removeEventListener("click", this.bound_popover_remover_function, false);
+        },
+        open_modification_modal_for : function(appointment_id){
+            this.popover_remove_persistance_and_hide();
+            this.modification_modal_handler.open_modal_for(appointment_id);  
         },
         initialize_calendar : function(circleDateTime){
             var calendar = jq('#calendar').calendar({
@@ -85,6 +134,7 @@
                 enableContextMenu: true,
                 mouseOnDay: this.mouseOnDay.bind(this),
                 mouseOutDay: this.mouseOutDay.bind(this),
+                clickDay: this.clickDay.bind(this),
             });
             this.calendar_object = calendar;
         },
@@ -157,6 +207,7 @@
         var currentDay = new Date().getDate();
         var circleDateTime = new Date(currentYear, currentMonth, currentDay).getTime();
         calendar_handler.initialize_calendar(circleDateTime);
+        calendar_handler.modification_modal_handler = manageAppointmentModal_handler;
         
         ///////////////////
         // Initialize Reminder Table Handler
