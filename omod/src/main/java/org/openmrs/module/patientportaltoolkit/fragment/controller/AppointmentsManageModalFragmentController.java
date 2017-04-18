@@ -16,25 +16,14 @@ package org.openmrs.module.patientportaltoolkit.fragment.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import org.openmrs.Patient;
 import org.openmrs.Person;
-import org.openmrs.PersonAttribute;
-import org.openmrs.User;
-import org.openmrs.api.UserService;
+//import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.*;
-import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
-import org.openmrs.module.patientportaltoolkit.api.PatientPortalPersonAttributesService;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
-import org.openmrs.module.patientportaltoolkit.api.util.GenerateTreatmentClassesUtil;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
-import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
-import org.openmrs.notification.MessageException;
-import org.openmrs.notification.MessageService;
 import org.openmrs.ui.framework.fragment.FragmentModel;
-import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -42,9 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 
@@ -97,11 +84,11 @@ public class AppointmentsManageModalFragmentController {
         */
         
         // Get person this action is requested by
-        User userRequestedBy = Context.getAuthenticatedUser();
+        //User userRequestedBy = Context.getAuthenticatedUser();
         
         // Get patient this action is requested for
         Person person = Context.getPersonService().getPersonByUuid(personUuid);
-        User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
+        //User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
         Patient patient = Context.getPatientService().getPatient(person.getId());
         
         ///////////////
@@ -149,9 +136,6 @@ public class AppointmentsManageModalFragmentController {
                               @RequestParam(value = "personUuid", required = true) String personUuid, 
                               HttpServletRequest servletRequest) {
         
-        
-        
-        
         /*
         System.out.println("Data Received by appointmentsManageModal/modifyCompleted.action:");
         System.out.println("reminderId : " + reminderId);
@@ -161,14 +145,12 @@ public class AppointmentsManageModalFragmentController {
         System.out.println("personUuid : " + personUuid);
         */
         
-        
         // Get person this action is requested by
-        User userRequestedBy = Context.getAuthenticatedUser();
+        //User userRequestedBy = Context.getAuthenticatedUser();
         
         // Get patient this action is requested for
-        Person person = Context.getPersonService().getPersonByUuid(personUuid);
-        User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
-        Patient patient = Context.getPatientService().getPatient(person.getId());
+        //Person person = Context.getPersonService().getPersonByUuid(personUuid);
+        //User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
         
         ///////////////
         // Ensure requester (userRequestedBy) can modify information for requestee (userRequestedFor)
@@ -218,11 +200,11 @@ public class AppointmentsManageModalFragmentController {
         */
         
         // Get person this action is requested by
-        User userRequestedBy = Context.getAuthenticatedUser();
+        //User userRequestedBy = Context.getAuthenticatedUser();
         
         // Get patient this action is requested for
         Person person = Context.getPersonService().getPersonByUuid(personUuid);
-        User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
+        //User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
         Patient patient = Context.getPatientService().getPatient(person.getId());
         
         ///////////////
@@ -277,11 +259,11 @@ public class AppointmentsManageModalFragmentController {
         */
         
         // Get person this action is requested by
-        User userRequestedBy = Context.getAuthenticatedUser();
+        //User userRequestedBy = Context.getAuthenticatedUser();
         
         // Get patient this action is requested for
         Person person = Context.getPersonService().getPersonByUuid(personUuid);
-        User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
+        //User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
         Patient patient = Context.getPatientService().getPatient(person.getId());
         
         ///////////////
@@ -325,11 +307,11 @@ public class AppointmentsManageModalFragmentController {
         System.out.println("formatedTargetDate : " + formatedTargetDate);
         
         // Get person this action is requested by
-        User userRequestedBy = Context.getAuthenticatedUser();
+        //User userRequestedBy = Context.getAuthenticatedUser();
         
         // Get patient this action is requested for
         Person person = Context.getPersonService().getPersonByUuid(personUuid);
-        User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
+        //User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
         Patient patient = Context.getPatientService().getPatient(person.getId());
         
         ///////////////

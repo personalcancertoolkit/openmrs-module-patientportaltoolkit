@@ -68,13 +68,11 @@ public class ReminderController {
         GuidelineConditionSet guidelineConditionSet = Context.getService(ReminderService.class).generateGuidelineConditionSet(patient);
         for (Guideline g:  guidelineConditionSet.getGuidelines()) {
             // and for each guideline's set of intervals (e.g., check up in 6mo, 12mo, and 24mo)
-            for (GuidelineInterval gi: g.getGuidelineIntervalSet()) {
-                String procedureName = g.getFollowupProcedure().getName().getName();
-                Integer conceptID = g.getFollowupProcedure().getConceptId();
-                map.put("procedure_name", procedureName);
-                map.put("concept_id", Integer.toString(conceptID));
-                data.add(new HashMap<String,String>(map));
-            }
+            String procedureName = g.getFollowupProcedure().getName().getName();
+            Integer conceptID = g.getFollowupProcedure().getConceptId();
+            map.put("procedure_name", procedureName);
+            map.put("concept_id", Integer.toString(conceptID));
+            data.add(new HashMap<String,String>(map));
         }
         
         return data;

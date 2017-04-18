@@ -23,27 +23,14 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.*;
 import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalPersonAttributesService;
-import org.openmrs.module.patientportaltoolkit.api.ReminderService;
 import org.openmrs.module.patientportaltoolkit.api.util.GenerateTreatmentClassesUtil;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
-import org.openmrs.module.patientportaltoolkit.Guideline;
-import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
-import org.openmrs.module.patientportaltoolkit.GuidelineInterval;
 import org.openmrs.notification.MessageException;
 import org.openmrs.notification.MessageService;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by maurya on 10/29/15.
