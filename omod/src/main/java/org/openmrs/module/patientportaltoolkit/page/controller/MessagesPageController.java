@@ -45,5 +45,6 @@ public class MessagesPageController {
             model.addAttribute("messages", Context.getService(MessageService.class).getMessageForPerson(patient,true));
         else
             model.addAttribute("messages",null);
+        model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
     }
 }
