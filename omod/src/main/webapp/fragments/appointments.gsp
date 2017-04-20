@@ -1,211 +1,378 @@
 <script>
-    jq(document).ready(function(){
-        var OpenMRSInstance=window.location.href;
-        var currentYear = new Date().getFullYear();
-        var currentMonth = new Date().getMonth();
-        var currentDay = new Date().getDate();
-        var circleDateTime = new Date(currentYear, currentMonth, currentDay).getTime();
-        function editEvent(event) {
-            jq('#event-modal input[name="event-index"]').val(event ? event.id : '');
-            jq('#event-modal input[name="event-name"]').val(event ? event.name : '');
-            jq('#event-modal input[name="event-location"]').val(event ? event.location : '');
-            jq('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
-            jq('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
-            jq('#event-modal').modal();
-        }
-
-        function deleteEvent(event) {
-            var dataSource = jq('#calendar').data('calendar').getDataSource();
-
-            for(var i in dataSource) {
-                if(dataSource[i].id == event.id) {
-                    dataSource.splice(i, 1);
-                    break;
-                }
-            }
-
-            jq('#calendar').data('calendar').setDataSource(dataSource);
-        }
-
-        function saveEvent() {
-            var event = {
-                id: jq('#event-modal input[name="event-index"]').val(),
-                name: jq('#event-modal input[name="event-name"]').val(),
-                location: jq('#event-modal input[name="event-location"]').val(),
-                startDate: jq('#event-modal input[name="event-start-date"]').datepicker('getDate'),
-                endDate: jq('#event-modal input[name="event-end-date"]').datepicker('getDate')
-            }
-
-            var dataSource = jq('#calendar').data('calendar').getDataSource();
-
-            if(event.id) {
-                for(var i in dataSource) {
-                    if(dataSource[i].id == event.id) {
-                        dataSource[i].name = event.name;
-                        dataSource[i].location = event.location;
-                        dataSource[i].startDate = event.startDate;
-                        dataSource[i].endDate = event.endDate;
-                    }
-                }
-            }
-            else
-            {
-                var newId = 0;
-                for(var i in dataSource) {
-                    if(dataSource[i].id > newId) {
-                        newId = dataSource[i].id;
-                    }
-                }
-
-                newId++;
-                event.id = newId;
-
-                dataSource.push(event);
-            }
-
-            jq('#calendar').data('calendar').setDataSource(dataSource);
-            jq('#event-modal').modal('hide');
-        }
-
-        function foo () {
-            console.log(jq("#personUuid").val());
-            //hardcoded data to be modified
-            jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val(), function (reminderData) {
-                //alert(dataa);
-                jq('#calendar').data('calendar').setDataSource(reminderData);
-            });
-        }
-        function colourNameToHex(colour) {
-                var colours = {"black":"#000000", "blue":"#0000ff", "blueviolet":"#8a2be2", "brown":"#a52a2a", "crimson":"#dc143c", "cyan":"#00ffff", "darkred":"#8b0000", "gold":"#ffd700", "gray":"#808080", "grey"
-    :"#808080", "green":"#008000", "ivory":"#fffff0", "lavender":"#e6e6fa", "magenta":"#ff00ff", "maroon":"#800000", "navy":"#000080", "orange":"#ffa500", "orangered":"#ff4500", "plum":"#dda0dd", "powderblue":"#b0e0e6", "purple":"#800080", "red":"#ff0000", "royalblue":"#4169e1", "salmon":"#fa8072", "sandybrown":"#f4a460", "seagreen":"#2e8b57", "tan":"#d2b48c", "teal":"#008080", "turquoise":"#40e0d0", "violet":"#ee82ee", "white":"#ffffff", "yellow":"#ffff00"};
-
-                if (typeof colours[colour.toLowerCase()] != 'undefined')
-                    return colours[colour.toLowerCase()];
-                console.log(colour + "was not found" )
-                return  colours["gray"];
-        }
-        var calendar= jq('#calendar').calendar({
-            style : 'custom', // required for customDataSourceRenderer to be triggered
-            customDayRenderer: function(element, date) {
-                if(date.getTime() == circleDateTime) {
-                    jq(element).css('border', '1px dashed red');
-                    //jq(element).css('border-color', 'red');
-                    //jq(element).css('color', 'white');
-                    jq(element).css('border-radius', '15px');
-                } 
-            },
-            customDataSourceRenderer: function(element, date, events){ 
-                var colors = events.map(function(a) {return a.color;});
-                //console.log(colors);  
-
-                the_colors = colors;
+    var calendar_handler = {
+        calendar_object : null,
+        customDataSourceRenderer : function(element, date, events){ 
+            var uncompleted_events = events.filter(function(an_event){ return an_event.status != 1; }); 
+            var completed_events = events.filter(function(an_event){ return an_event.status == 1; }); 
+            if(uncompleted_events.length == 0){
+                // If all events are completed, show an underline for this date
+                var colors = completed_events.map(function(a) {return a.color;});
+                var the_colors = colors;
+                var c = this.blend_these_colors(the_colors);
+                jq(element).css('background-color', "white");
+                jq(element).css('color', 'black');
+                jq(element).css('border-bottom', '1px solid ' + c);
+            } else {
+                // Show a bubble for this date for all uncompleted events
+                var colors = uncompleted_events.map(function(a) {return a.color;});
+                var the_colors = colors;
                 //the_colors = ["red", "blue"];
-                var c = "#";
-                for(var i = 0; i<3; i++) {
-                     var total_value = 0;
-                     for(var j = 0; j < the_colors.length; j++){
-                         this_color = colourNameToHex(the_colors[j]);
-                         var this_sub = this_color.substring(1+2*i, 3+2*i);
-                         var this_value = parseInt(this_sub, 16);
-                         total_value += this_value;
-                     }
-                     var v = Math.floor(total_value / the_colors.length);
-                     var sub = v.toString(16).toUpperCase();
-                     var padsub = ('0'+sub).slice(-2);
-                     c += padsub;
-                }
+                var c = this.blend_these_colors(the_colors);
                 //console.log(c);
                 jq(element).css('background-color', c);
                 jq(element).css('color', 'white');
                 jq(element).css('border-radius', '15px');
-            },
-            enableContextMenu: true,
-            contextMenuItems:[
-                {
-                    text: 'Update',
-                    click: editEvent
-                },
-                {
-                    text: 'Delete',
-                    click: deleteEvent
-                }
-            ],
-            selectRange: function(e) {
-                editEvent({ startDate: e.startDate, endDate: e.endDate });
-            },
-            mouseOnDay: function(e) {
-                if(e.events.length > 0) {
-                    var content = '';
-
-                    for(var i in e.events) {
-                        content += '<div class="event-tooltip-content">'
-                            + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
-                            + '<div class="event-location">' + e.events[i].location + '</div>'
-                            + '</div>';
-                    }
-
-                    jq(e.element).popover({
-                        trigger: 'manual',
-                        container: 'body',
-                        html:true,
-                        content: content
-                    });
-
-                    jq(e.element).popover('show');
-                }
-            },
-            mouseOutDay: function(e) {
-                if(e.events.length > 0) {
-                    jq(e.element).popover('hide');
-                }
             }
+        },
+        
+        
+        mouseOnDay : function(e) {
+            if(e.events.length > 0) {
+                var content = '';
+                for(var i in e.events) {
+                    /*
+                    content += '<div class="event-tooltip-content">'
+                        + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
+                        + '<div class="event-location">' + e.events[i].location + '</div>'
+                        + '</div>';
+                    */
+                    var this_event = e.events[i];
+                    
+                    // create DOM elements
+                    var wrapper = document.createElement("div");
+                
+                    var parent = document.createElement("div");
+                    parent.className = "event-tooltip-content";
+                    
+                    var name = document.createElement("div");
+                    name.class = 'event-name';
+                    name.style.setProperty("color", this_event.color);
+                    name.innerHTML = this_event.name;
+                    if(this_event.status == 1){
+                        name.style.setProperty("text-decoration", "line-through"); 
+                        name.style.setProperty("opacity", "0.4");
+                    }
+                    
+                    //append them to their parents
+                    parent.appendChild(name);
+                    wrapper.appendChild(parent);
+                    
+                    content += wrapper.innerHTML;
+                }
+                jq(e.element).popover({
+                    trigger: 'manual',
+                    container: 'body',
+                    html:true,
+                    content: content
+                });
+                jq(e.element).popover('show');
+            }
+        },
+        
+        mouseOutDay : function(e) {
+            jq(e.element).popover('hide');
+        },
+        initialize_calendar : function(circleDateTime){
+            var calendar = jq('#calendar').calendar({
+                customDayRenderer: function(element, date) {
+                    if(date.getTime() == circleDateTime) {
+                        jq(element).css('border', '1px dashed red');
+                        jq(element).css('border-radius', '15px');
+                    } 
+                },
+                style : 'custom', // required for customDataSourceRenderer to be triggered
+                customDataSourceRenderer: this.customDataSourceRenderer.bind(this),
+                enableContextMenu: true,
+                mouseOnDay: this.mouseOnDay.bind(this),
+                mouseOutDay: this.mouseOutDay.bind(this),
+            });
+            this.calendar_object = calendar;
+        },
+        
+        color_name_to_hex : function(colour) {
+            var colours = {"black":"#000000", "blue":"#0000ff", "blueviolet":"#8a2be2", "brown":"#a52a2a", "crimson":"#dc143c", "cyan":"#00ffff", "darkred":"#8b0000", "gold":"#ffd700", "gray":"#808080", "grey"
+:"#808080", "green":"#008000", "ivory":"#fffff0", "lavender":"#e6e6fa", "magenta":"#ff00ff", "maroon":"#800000", "navy":"#000080", "orange":"#ffa500", "orangered":"#ff4500", "plum":"#dda0dd", "powderblue":"#b0e0e6", "purple":"#800080", "red":"#ff0000", "royalblue":"#4169e1", "salmon":"#fa8072", "sandybrown":"#f4a460", "seagreen":"#2e8b57", "tan":"#d2b48c", "teal":"#008080", "turquoise":"#40e0d0", "violet":"#ee82ee", "white":"#ffffff", "yellow":"#ffff00"};
 
+            if (typeof colours[colour.toLowerCase()] != 'undefined')
+                return colours[colour.toLowerCase()];
+            console.log(colour + "was not found" )
+            return  colours["gray"];
+        },
+        
+        blend_these_colors : function(the_colors){
+            var c = "#";
+            for(var i = 0; i<3; i++) {
+                 var total_value = 0;
+                 for(var j = 0; j < the_colors.length; j++){
+                     this_color = this.color_name_to_hex(the_colors[j]);
+                     var this_sub = this_color.substring(1+2*i, 3+2*i);
+                     var this_value = parseInt(this_sub, 16);
+                     total_value += this_value;
+                 }
+                 var v = Math.floor(total_value / the_colors.length);
+                 var sub = v.toString(16).toUpperCase();
+                 var padsub = ('0'+sub).slice(-2);
+                 c += padsub;
+            }   
+            return c;
+        },
+        
+        
+        
+    }; // end calendar_handler
+    
+    
+    
+    
+    function load_reminder_data() {
+        //console.log(jq("#personUuid").val());
+        var OpenMRSInstance=window.location.href;
+        
+        //Load Reminder data, insert reminders into calendar and table
+        //console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
+        jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val(), function (reminderData) {
+            // Set datasource for reminder table
+            reminder_table_handler.setDataSource(reminderData);
+            // Set datasource for calendar
+            calendar_handler.calendar_object.setDataSource(reminderData);
+            // Set datasource for data_manager
+            appointment_data_manager.set_data(reminderData);
         });
-        setTimeout(foo, 1000);
+        
+        //Load all possible guidelines that user can choose to create a new reminder from
+        jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getpossiblenewremindersforpatient/'+ jq("#personUuid").val(), function (reminderData) {
+            // console.log(reminderData);
+            // record the data in appointment data manager
+            appointment_data_manager.set_valid_reminders(reminderData);
+        });
+        
+    }
+    
+    window.addEventListener("load", function(){
+        ///////////////////
+        // Initialize Reminder Calendar & Calendar Handler
+        ///////////////////
+        var currentYear = new Date().getFullYear();
+        var currentMonth = new Date().getMonth();
+        var currentDay = new Date().getDate();
+        var circleDateTime = new Date(currentYear, currentMonth, currentDay).getTime();
+        calendar_handler.initialize_calendar(circleDateTime);
+        
+        ///////////////////
+        // Initialize Reminder Table Handler
+        ///////////////////
+        reminder_table_handler.table_body_element = document.getElementById("table_body");
+        reminder_table_handler.isACareGiver = ${isACareGiver};
+        reminder_table_handler.modification_modal_handler = manageAppointmentModal_handler;
+        reminder_table_handler.button_identification_class = "manageAppointment_sourceButton";
+        
+        setTimeout(load_reminder_data, 1000);
     });
 
+    
+    var appointment_data_manager = {
+        data : {},   
+        valid_reminders : [],
+        set_data : function(the_data){
+            for(var i = 0; i < the_data.length; i++){
+                var this_event = the_data[i];
+                this.data[this_event.id] = this_event;
+            }
+        },
+        set_valid_reminders : function(the_data){
+            var added_reminders = [];
+            var valid_reminders = [];
+            for(var i = 0; i < the_data.length; i++){
+                var this_data = the_data[i];
+                var this_reminder_name = the_data[i].procedure_name;
+                if((added_reminders.indexOf(this_reminder_name) != -1)) continue; // if its already in list, don't re-add it.
+                added_reminders.push(this_reminder_name);
+                valid_reminders.push(this_data);
+            }
+            this.valid_reminders = valid_reminders.sort(this.reminder_sort_function);
+            console.log(this.valid_reminders);
+        },
+        reminder_sort_function : function(a,b){
+            if(a.procedure_name < b.procedure_name) return -1;
+            if(a.procedure_name > b.procedure_name) return 1;
+            return 0;
+        },
+    };
+    
+    
+    var reminder_table_handler = {
+        table_body_element : null,
+        isACareGiver : null,
+        modification_modal_handler : null,
+        button_identification_class : null,
+        
+        setDataSource : function(the_data){
+            //console.log(the_data);
+            the_data = the_data.sort(this.sorting_comparison_function);
+            for(var i = 0; i < the_data.length; i++){
+                var this_event = the_data[i];
+                // Add event to list
+                if(this.should_append_to_list(this_event)) this.append_to_list(this_event);
+            }
+            this.initialize_buttons();
+        },
+        
+        should_append_to_list : function(this_event){
+            var today_timestamp = new Date().getTime();
+            var time_difference_90_days = (90 * 24 * 60 * 60 * 1000)
+            var forward_90_timestamp  = today_timestamp  + time_difference_90_days;
+            var backward_90_timestamp = today_timestamp  - time_difference_90_days;
+            var event_timestamp = new Date(this_event.targetDate).getTime();  
+            if(event_timestamp > forward_90_timestamp || event_timestamp < backward_90_timestamp) return false;
+            return true;
+        },
+        
+        sorting_comparison_function :  function(a, b){
+            // Sort list elements by target_date ASC
+            var difference = a.targetDate - b.targetDate;
+            if(difference == 0 && a.status == 1 && b.status == 1) difference = a.completedDate - b.completedDate; //if both on same day and both completed, sort by completed date
+            if(difference == 0 && a.status == 1) difference = -1; //if both on same day and one is completed, put it first
+            if(difference == 0 && b.status == 1) difference = 1; //if both on same day and one is completed, put it first
+            return difference;
+        },
+        
+        append_to_list : function(this_event){
+            /*
+            <tr class = 'datarow'>
+                <td>{(reminder.followProcedureName)}</td>
+                <td class="clearfix">
+                    
+                </td>
+                <% if(isACareGiver != 1) { %>
+                    <td class="clearfix">
+                        <a id="manageAppointment{(reminder.id)}" class="btn btn-primary btn-sm manageAppointment_sourceButton" data-toggle="modal" data-id = "{(reminder.id)}" data-target="#manageAppointment-modal">Manage</a>
+                    </td>
+                <% } %>
+            </tr>
+            */
+            // Create row element
+            var row = document.createElement("tr");
+            if(this_event.status == 1)  row.style = 'color:rgba(0, 0, 0, 0.4);';
+            
+            // Create row selector element
+            var row_selector = document.createElement("div");
+            row_selector.style = 'position:absolute; margin-left:-20px; margin-top:-16px;  width:10px; height:10px; '; 
+            row_selector.className = "row_selector";
+            
+            // Create first col
+            var td1 = document.createElement("td");
+            td1.innerHTML= this_event.followProcedureName;
+            td1.appendChild(row_selector);
+            row.appendChild(td1);
+            
+            // Create second col
+            var td2 = document.createElement("td"); 
+            td2.className = 'clearfix';
+            td2.innerHTML = "<span class='pull-left'>" + this_event.formatedTargetDate + "</span>";
+            row.appendChild(td2);
+            
+            // Create third col
+            var td3 = document.createElement("td"); 
+            td3.className = 'clearfix';
+            if(this_event.status == 1){
+                td3.innerHTML = "<span class='pull-left'>" + this_event.formatedCompletedDate + "</span>";
+            } 
+            row.appendChild(td3);
+            
+            // Create third col
+            var td4 = document.createElement("td"); 
+            td4.className = 'clearfix';
+            var button_class = (this_event.status == 1) ? "btn-custom-completed" : "btn-primary";
+            td4.innerHTML = "<a class='btn " + button_class + " btn-sm pull-right "+ this.button_identification_class + "'  data-id = '"+escape(this_event.id)+"'>Manage</a>";
+            if(this.isACareGiver != 1) row.appendChild(td4); // only append third column if user is a care giver
+            
+            this.table_body_element.appendChild(row);
+        },
+        
+        
+        initialize_buttons : function(){
+            jq('.'+this.button_identification_class).on('click', function(e){
+                var id_of_appointment = jq(e.target).data('id'); 
+                this.modification_modal_handler.open_modal_for(id_of_appointment);
+            }.bind(this));  
+            
+            // Initialize Adder button
+            document.getElementById("add_new_followup_appointment_button").onclick = function(){
+                this.modification_modal_handler.open_modal_for("add_new");
+            }.bind(this);
+        },
+        
+    };
+
+    
+    
+    
+    
+    
+    
 </script>
+<style>
+    
+.table-hover-custom > tbody > tr > td > .row_selector {
+    background-color:white;
+    border-radius:25px;
+}
+.table-hover-custom > tbody > tr:hover > td > .row_selector {
+    background-color:#34BCA5;
+}
+    
+.btn-custom-completed {
+  color: rgba(0, 0, 0, 0.4);
+  background-color: #fff;
+  border-color: rgba(0, 0, 0, 0.3);
+  border-width:1px;
+  margin-right:1px; margin-left:1px; /* since regular btn's border is 2px, compensate to make them same total width */
+}
+.btn-custom-completed:hover,
+.btn-custom-completed:focus,
+.btn-custom-completed.focus,
+.btn-custom-completed:active,
+.btn-custom-completed.active {
+  color: rgba(0, 0, 0, 0.4);
+  background-color: #ebebeb;
+  border-color: rgba(0, 0, 0, 0.3);
+}
+    
+.btn-secondary-customized {
+}
+.btn-secondary-customized:hover {
+    background-color:#ECF0F1;
+    color:#1EBC9C;
+}
+</style>
+
 <div class="clearfix">
 
-
-    ${ ui.includeFragment("patientportaltoolkit", "markCompletedModal") }
+    ${ ui.includeFragment("patientportaltoolkit", "appointmentsManageModal") }
+    <div style = 'height:15px;'></div>
     <input id="personUuid" value="${ person.uuid}" type="hidden">
     <h4>Upcoming Appointments</h4>
+    <div style = 'height:10px;'></div>
     <div>
-        <table class="table table-hover" id="due-appointments">
+        <table class="table table-hover-custom" id="due-appointments">
             <thead>
             <tr>
                 <th>Appointment Type</th>
                 <th>Recommended Date</th>
+                <th>Completed Date</th>
                 <% if(isACareGiver != 1) { %>
-                <th>Actions</th>
+                    <th style = 'text-align:right;'>Actions</th>
                 <% } %>
             </tr>
             </thead>
-            <tbody>
-            <% alertablereminders.each { reminder -> %>
-            <% def date = new Date() %>
-            <% if (reminder.targetDate < date-90 || reminder.targetDate > date+90) {%>
-            <% }else { %>
-            <% if (reminder.status == 2 && reminder.responseDate > date) {%>
-            <% }else { %>
-            <tr class="datarow">
-                <input id="reminderFollowupId${(reminder.id)}" value=" ${(reminder.followProcedure.conceptId)}" type="hidden">
-                <td>  ${(reminder.followProcedureName)}</td>
-                <td class="clearfix">
-                    <span class="pull-left"> ${pptutil.formatDate((reminder.targetDate))}</span>
-                </td>
-                <% if(isACareGiver != 1) { %>
-                <td class="clearfix">
-                    <a id="markCompletedReminder${(reminder.id)}" class="btn btn-primary btn-sm markCompletedReminder" data-toggle="modal" data-target="#markCompleted-modal">Mark Completed</a>
-                </td>
-                <% } %>
-            </tr>
-            <% } %>
-            <% } %>
-            <% } %>
+            <tbody id = 'table_body'>
             </tbody>
-            </table>
+        </table>
+    </div>
+    <div style = 'display:flex; margin-top:-20px; '>
+        <div style = 'margin:auto; margin-left:0px;'>
+            <a class='btn btn-secondary-customized btn-sm pull-right' style = 'font-size:16px; margin-left:-8px;' id = 'add_new_followup_appointment_button'> Add New Appointment</a> <!-- id used in appointmentsManageModal.gsp -->
+        </div>
     </div>
     <!--<div id="chart" width="100%">
     </div>-->

@@ -82,6 +82,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     public List<Reminder> getReminders(Patient pat) {
         return generateRemindersbyGuidelineConditions(pat);
     }
+    
 
     @Override
     public Reminder markCompletedReminder(Reminder reminder) {
@@ -91,26 +92,62 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         return dao.saveReminder(reminder);
     }
 
-
+    
     @Override
-    public Reminder markCompletedReminder(String reminderID,Date markCompleteDate,String doctorsName, String comments, Patient patient, Concept followupConcept) {
+    public Reminder markCompletedReminder(Reminder reminder, Date markCompleteDate, String doctorsName, String comments) {
+        // Takes a reminder object, marks it completed, and saves it.
+        System.out.println("Marking reminder completed ");
         Date today = new Date();
-        Reminder reminder = new Reminder();
-        if (reminderID!=null) {
-            reminder = getRemindersById(reminderID);
-        }
-        reminder.setPatient(patient);
         reminder.setCompleteDate(markCompleteDate);
         reminder.setDoctorName(doctorsName);
         reminder.setResponseComments(comments);
         reminder.setResponseDate(today);
         reminder.setStatus(1);
-        reminder.setFollowProcedure(followupConcept);
         reminder.setResponseUser(Context.getAuthenticatedUser());
+        System.out.println("Saving reminder with target date of " + reminder.getTargetDate());
+        return dao.saveReminder(reminder);
+    }
+    
+    @Override
+    public Reminder modifyCompletedReminder(Reminder reminder, Date markCompleteDate, String doctorsName, String comments) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        reminder.setCompleteDate(markCompleteDate);
+        reminder.setDoctorName(doctorsName);
+        reminder.setResponseComments(comments);
+        reminder.setModifiedDate(today);
+        return dao.saveReminder(reminder);
+    }
+    
+    @Override
+    public Reminder modifyTargetDate(Reminder reminder, Date newTargetDate) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        reminder.setTargetDate(newTargetDate);
+        reminder.setModifiedDate(today);
+        return dao.saveReminder(reminder);
+    }
+    
+    @Override
+    public Reminder removeReminder(Reminder reminder) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        reminder.setStatus(-1);
+        reminder.setModifiedDate(today);
+        return dao.saveReminder(reminder);
+    }
+    
+    @Override
+    public Reminder addReminder(Reminder reminder) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        reminder.setStatus(0);
+        reminder.setModifiedDate(today);
         return dao.saveReminder(reminder);
     }
 
-/*    @Override
+/*    
+    @Override
     public Reminder markScheduledReminder(String reminderId, Date date) {
         Date today = new Date();
         Reminder reminder=getRemindersById(reminderId);
@@ -118,258 +155,57 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setStatus(2);
         reminder.setResponseUser(Context.getAuthenticatedUser());
         return dao.saveReminder(reminder);
-    }*/
-
+    }
+*/
+    
     @Override
     public Reminder getRemindersById(String Id) {
-       return dao.getReminder(Integer.parseInt(Id));
+        // If id is not a valid integer, return null - like would be returned if no reminders with a valid integer id were found.
+        try {
+            return dao.getReminder(Integer.parseInt(Id));
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
+    
+    @Override
+    public Reminder getReminderByIdOrGuidelineData(String reminderId, Patient patient, String conceptId, Date targetDate) {
+        Reminder reminder = null;
+        // attempt to get reminder by id
+        reminder = getRemindersById(reminderId);
+        if(reminder == null){
+            //System.out.println("Reminder with that id is not found in database. Time to generate it by guideline data!"); 
+            //reminder = getReminderByConceptId(conceptId);   
+            Concept followUpConcept = Context.getConceptService().getConcept(conceptId);
+            reminder = generateReminderFromGuidelineData(patient, followUpConcept, targetDate); 
+        }
+        return reminder;
+    }
+    
+    
     @Override
     public List<Reminder> getAllRemindersByPatient(Patient patient) {
         return dao.getAllRemindersByPatient(patient);
     }
 
 
-
-    /**
-     * Find flagged reminders for a given patient for Calendar display
-     * (flagged as Completed, Snoozed, Scheduled, Not Performed, or Skipped)
-     *
-     * Calendar display logic:
-     *
-     * find reminders by guideline -> find and add reminders by providers -> sort reminders by date ->
-     * find and mark alerted reminders -> find and mark scheduled/snoozed reminders ->
-     * find and mark not performed reminders -> find, match and mark completed reminders (overriding) ->
-     * mark skipped reminders (remaining)
-     *
-     * @param pat
-     */
+    /*
     private List<Reminder>  findReminders(Patient pat) {
-        //find all reminders recommended by guideline and patient's providers
-        List<Reminder> reminders = findAllReminders(pat);
-
-        if(reminders==null || reminders.isEmpty()) {
-            return null;
-        }
-
-        //find completed reminders
-        List<Reminder> remindersCompleted = getRemindersCompleted(pat);
-
-        Date today = new Date();
-
-        //mark snoozed or scheduled reminders
-        for(int ii = 0; ii< reminders.size(); ii++) {
-            Reminder reminder = reminders.get(ii);
-            Date scheduleDate = this.findScheduleDate(pat, reminder.getFollowProcedure(), reminder.getTargetDate());
-            if(scheduleDate!=null) {
-                reminder.setStatus(2);
-                reminder.setResponseDate(scheduleDate);
-            }
-        }
-
-        //mark completed reminders (will take prevalence over other marks)
-        if(remindersCompleted != null) {
-            //loop through all reminders and find if that reminder is completed or not
-            for(int ii = 0; ii< reminders.size(); ii++) {
-                Reminder reminder = reminders.get(ii);
-                Reminder nextReminder = null;
-                Reminder previousReminder = null;
-
-                //find next reminder of the same type
-                for(int jj=ii+1; jj<reminders.size(); jj++) {
-                    nextReminder = reminders.get(jj);
-                    if(nextReminder.getFollowProcedure().equals(reminder.getFollowProcedure())) {
-                        break;
-                    }
-                }
-
-                //find previous reminder of the same type
-                for(int jj=ii-1; jj>=0; jj--) {
-                    previousReminder = reminders.get(jj);
-                    if(previousReminder.getFollowProcedure().equals(reminder.getFollowProcedure())) {
-                        break;
-                    }
-                }
-
-                //find if this reminder can be marked as completed or not
-                for(Reminder reminderCompl : remindersCompleted) {
-                    if(reminderCompl.getFollowProcedure().equals(reminder.getFollowProcedure())) {
-                        if(reminderCompl.getCompleteDate().equals(reminder.getTargetDate())) {
-                            reminder.setStatus(1);
-                            reminder.setResponseDate(reminderCompl.getCompleteDate());
-                            break;
-                        } else if(previousReminder==null && reminderCompl.getCompleteDate().before(reminder.getTargetDate())) {
-                            reminder.setStatus(1);
-                            reminder.setResponseDate(reminderCompl.getCompleteDate());
-                            break;
-                        } else if(nextReminder==null && reminderCompl.getCompleteDate().after(reminder.getTargetDate())) {
-                            reminder.setStatus(1);
-                            reminder.setResponseDate(reminderCompl.getCompleteDate());
-                            break;
-                        } else if(previousReminder!=null && reminderCompl.getCompleteDate().before(reminder.getTargetDate()) && reminderCompl.getCompleteDate().after(findMidDate(previousReminder.getTargetDate(), reminder.getTargetDate()))) {
-                            reminder.setStatus(1);
-                            reminder.setResponseDate(reminderCompl.getCompleteDate());
-                            break;
-                        } else if(nextReminder!=null && reminderCompl.getCompleteDate().after(reminder.getTargetDate())&& reminderCompl.getCompleteDate().before(findMidDate(reminder.getTargetDate(), nextReminder.getTargetDate()))) {
-                            reminder.setStatus(1);
-                            reminder.setResponseDate(reminderCompl.getCompleteDate());
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        //mark skipped reminders
-        for(int ii = 0; ii< reminders.size(); ii++) {
-            Reminder reminder = reminders.get(ii);
-            if(reminder.getTargetDate().before(today) && String.valueOf(reminder.getStatus()) == "null" ) {
-                reminder.setStatus(-1);
-            }
-        }
-
-        boolean saveFlag;
-        List<Reminder> savedReminders;
-        savedReminders= getAllRemindersByPatient(pat);
-        for(Reminder rem: reminders){
-            saveFlag=true;
-            for(Reminder rem2: savedReminders){
-                if (rem.getFollowProcedure().equals(rem2.getFollowProcedure()) && rem.getTargetDate().equals(rem2.getTargetDate())){
-                    saveFlag=false;
-                    break;
-                }
-            }
-            if(saveFlag){
-                //update cancer_patient_reminder table
-                saveReminder(rem);
-            }
-        }
-
-        return getAllRemindersByPatient(pat);
-    }
+    */
 
 
-
-    /**
-     *
-     * Find all reminders including those by guideline and those by patient doctors
-     *
-     * find reminders by guideline -> find and add reminders by providers -> sort reminders by date
-     *
-     * @param pat given patient
-     * @return all reminders sorted by target date
-     */
+    /*
     private List<Reminder>  findAllReminders(Patient pat) {
-        //find genetic_abnormality flag and answer
-        //block any follow-up tests from appearing:
-        //	1)       IF the patient answers YES to genetic abnormality, and
-        //	2)       THEN answers FAP/HNPCC/or INFLAMMATORY BOWEL DISORDER
-        //find genetic abnormality flag
-        Concept cancerAbnormalityToldConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_TOLD);
-        Concept cancerAbnormalityToldYesConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_TOLD_YES);
-        Concept cancerAbnormalityConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY);
-        Concept cancerAbnormalityFapConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_FAP);
-        Concept cancerAbnormalityHnpccConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_HNPCC);
-        Concept cancerAbnormalityInflbdConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_INFLBD);
-
-        Obs cancerAbnormalityToldObs = findLatest(Context.getObsService().getObservationsByPersonAndConcept(pat, cancerAbnormalityToldConcept));
-        Concept cancerAbnormalityToldAns = (cancerAbnormalityToldObs==null? null : cancerAbnormalityToldObs.getValueCoded());
-        if(cancerAbnormalityToldAns != null && cancerAbnormalityToldAns.equals(cancerAbnormalityToldYesConcept)) {
-            Obs cancerAbnormalityObs = findLatest(Context.getObsService().getObservationsByPersonAndConcept(pat, cancerAbnormalityConcept));
-            Concept cancerAbnormalityAns = (cancerAbnormalityObs==null? null : cancerAbnormalityObs.getValueCoded());
-            if(cancerAbnormalityAns != null &&
-                    (cancerAbnormalityAns.equals(cancerAbnormalityFapConcept) ||
-                            cancerAbnormalityAns.equals(cancerAbnormalityHnpccConcept) ||
-                            cancerAbnormalityAns.equals(cancerAbnormalityInflbdConcept))) {
-                return null;
-            }
-        }
-
-        //find surgery date
-        Concept surgeryDateConcept = Context.getConceptService().getConcept(SURGERY_DATE);
-        Obs surgeryDate = findLatest(Context.getObsService().getObservationsByPersonAndConcept(pat, surgeryDateConcept));
-        Date surgDate = surgeryDate==null? null : surgeryDate.getValueDatetime();
-        if(surgDate == null) {
-            log.warn("No surgery is found for this patient: " + pat);
-            return null;
-        }
-
-        //find rediation type - not used for this time
-        Concept radiationTypeConcept = Context.getConceptService().getConcept(RADIATION_TYPE);
-        Obs radiationType = findLatest(Context.getObsService().getObservationsByPersonAndConcept(pat, radiationTypeConcept));
-        Concept radType = radiationType==null? null : radiationType.getValueCoded();
-
-        //find cancer type
-        Concept cancerTypeConcept = Context.getConceptService().getConcept(CANCER_TYPE);
-        Obs cancerType = findLatest(Context.getObsService().getObservationsByPersonAndConcept(pat, cancerTypeConcept));
-        Concept type = cancerType==null? null : cancerType.getValueCoded();
-        //find cancer stage
-        Concept cancerStageConcept = Context.getConceptService().getConcept(CANCER_STAGE);
-        Obs cancerStage = findLatest(Context.getObsService().getObservationsByPersonAndConcept(pat, cancerStageConcept));
-        Concept stage = cancerStage==null? null : cancerStage.getValueCoded();
-
-        Set<Concept> conditionConcepts = new HashSet<>();
-        conditionConcepts.add(type);
-        conditionConcepts.add(stage);
-
-        //find follow-up years
-        List<Guideline> guidelines = Context.getService(GuidelineService.class).getGuidlinesByConditions(conditionConcepts);
-
-        log.debug("Get guidelins: type=" + type + ", stage=" + stage + ", guidelines=" + guidelines);
-        //create reminder entries
-        List<Reminder> reminders = new ArrayList<>();
-        if(guidelines != null) {
-            for(Guideline guideline : guidelines) {
-                Date[] dates = findTargetDates(surgDate, radType, guideline.getFollowupTimline());
-                if(dates == null) {
-                    continue;
-                }
-                for(Date dt: dates) {
-                    Reminder reminder = new Reminder();
-                    reminder.setPatient(pat);
-                    reminder.setFollowProcedure(guideline.getFollowupProcedure());
-                    reminder.setTargetDate(dt);
-                    reminders.add(reminder);
-                }
-            }
-        } else {
-            log.error("Guideline is not found for cancer type:" + type + " and cancer stage: " + stage);
-        }
-
-        //add follow-up care recommended by patient's personal provider
-        List<Reminder> remindersByProvider = getRemindersByProvider(pat);
-        if(remindersByProvider!=null && !remindersByProvider.isEmpty()) {
-            reminders.addAll(remindersByProvider);
-        }
-
-        //sort guidelines by target date
-        Collections.sort(reminders, Reminder.getDateComparator());
-        return reminders;
-    }
+    */
 
     private List<Reminder> getRemindersByProvider(Patient pat) {
         return dao.getRemindersByProvider(pat);
     }
 
-
-    /**
-         * Auto generated method comment
-         *
-         * @param refDate1
-         * @param refDate2
-         * @return
-         */
+    /*
     private Date findMidDate(Date refDate1, Date refDate2) {
-        // TODO Auto-generated method stub
-        long diffDays = (refDate2.getTime() - refDate1.getTime())/(1000*60*60*24);
-
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(refDate1);
-        cal.add(Calendar.DATE, (int) diffDays/2);
-
-        return cal.getTime();
-    }
+    */
 
     @Override
     public List<Reminder> getRemindersCompleted(Patient pat) {
@@ -377,57 +213,18 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         return reminderList;
     }
 
+    /*
     private Date[] findTargetDates(Date surgDate, Concept radiationType, String followYears) {
-        String[] split1  = followYears.split(":");
-        String[] split2 = split1[0].split(",");
+    */  
 
-        if(surgDate == null) {
-            log.debug("No reminder will be generated because no surgery is found for this patient.");
-            return null;
-        }
-
-        if(split1.length>=2 && "NO RADIATION".equals(split1[1])) {
-            if(radiationType != null) {
-                return null;
-            }
-        }
-
-        Date startDate = surgDate;
-        Date[] targetDates = new Date[split2.length];
-        for(int ii=0; ii<split2.length; ii++) {
-            targetDates[ii] = findDate(startDate, split2[ii]);
-        }
-        // TODO Auto-generated method stub
-        return targetDates;
-    }
-
-    /**
-     * Auto generated method comment
-
-     * @param startDate
-     * @param
-     * @return
-     */
+    /*
     private Date findDate(Date startDate, String yearsAfter) {
-        float yrs = Float.parseFloat(yearsAfter);
-        int months = (int)(yrs * 12.0);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(startDate);
-        cal.add(Calendar.MONTH, months);
-
-        // TODO Auto-generated method stub
-        return cal.getTime();
     }
+    */  
 
+    /*
     private Date findScheduleDate(Patient patient, Concept careType, Date targetDate) {
-        Reminder reminder = this.dao.getReminder(patient, careType, targetDate);
-        Date returnDate = null;
-        if(reminder != null && String.valueOf(reminder.getStatus()) != "null" ) {
-            if(reminder.getStatus() == 2)
-            returnDate=reminder.getResponseDate();
-        }
-        return returnDate;
-    }
+    */  
 
     /**
      *
@@ -471,9 +268,10 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         return guidelineConditionSet;
     }
     public  List<Reminder> generateRemindersbyGuidelineConditions(Patient patient) {
-
-        //Pre - Conditions for reminders
-
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // Ensure that this user satisfies conditions for having reminders
+        //      return null if they do not
+        ///////////////////////////////////////////////////////////////////////////////////////////
         //find genetic_abnormality flag and answer
         //block any follow-up tests from appearing:
         //	1)       IF the patient answers YES to genetic abnormality, and
@@ -506,43 +304,75 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
             log.warn("No surgery is found for this patient: " + patient);
             return null;
         }
-        //Pre - Conditions Done
 
 
-
-        GuidelineConditionSet guidelineConditionSet = generateGuidelineConditionSet(patient);
-        Date firstSurgeryDate= ToolkitResourceUtil.getFirstSurgeryDate(patient);
-        //Generating Reminders
-        LocalDate modifiableDate=null;
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // Build reminders list
+        ///////////////////////////////////////////////////////////////////////////////////////////
         List<Reminder> reminders = new ArrayList<>();
-
+        
+        // Get all reminders from database
         List<Reminder> databaseReminders = new ArrayList<>();
         databaseReminders = getAllRemindersByPatient(patient);
         reminders.addAll(databaseReminders);
+        
+        // Get all guideline reminders
+        GuidelineConditionSet guidelineConditionSet = generateGuidelineConditionSet(patient);
+        Date firstSurgeryDate= ToolkitResourceUtil.getFirstSurgeryDate(patient);
+        LocalDate modifiableDate=null;
+        Date targetDate=null;
+        // For each guideline
         for (Guideline g:  guidelineConditionSet.getGuidelines()) {
+            // and for each guideline's set of intervals (e.g., check up in 6mo, 12mo, and 24mo)
             for (GuidelineInterval gi: g.getGuidelineIntervalSet()) {
                 modifiableDate = new LocalDate(firstSurgeryDate);
-                if(findReminderByFollowupCareAndDate(databaseReminders,g.getFollowupProcedure(),modifiableDate.plusMonths(gi.getIntervalLength()).toDate())!=null){
+                targetDate = modifiableDate.plusMonths(gi.getIntervalLength()).toDate();
+                
+                // If this reminder, with same target date, was already found in database recorded reminders : don't duplicate it. Just continue. 
+                if(findReminderByFollowupCareAndDate(databaseReminders,g.getFollowupProcedure(),targetDate) != null)
                     continue;
-                }
-                else {
-                    Reminder reminder= new Reminder();
-                    reminder.setTargetDate(modifiableDate.plusMonths(gi.getIntervalLength()).toDate());
-                    reminder.setFollowProcedure(g.getFollowupProcedure());
-                    reminder.setStatus(0);
-                    reminders.add(reminder);
-                }
+                
+                // Create, on the fly, a new reminder with the followup procedure and target date required by guidelines.
+                Reminder reminder = generateReminderFromGuidelineData(patient, g.getFollowupProcedure(), targetDate);
+                reminders.add(reminder); 
             }
         }
-
-        return reminders;
+        
+        // Now that guidelines are generated, remove all reminders from list which have a status of -1
+        List<Reminder> valid_reminders = new ArrayList<>();
+        for (Reminder reminder:  reminders) {
+            if(reminder.getStatus() != -1) valid_reminders.add(reminder);
+        }
+        
+        return valid_reminders;
+    } // end generateRemindersbyGuidelineConditions
+    
+    
+    @Override
+    public Reminder generateReminderFromGuidelineData(Patient patient, String conceptId, Date targetDate){
+            Concept followUpConcept = Context.getConceptService().getConcept(conceptId);
+            return generateReminderFromGuidelineData(patient, followUpConcept, targetDate); 
     }
+    
+    @Override
+    public Reminder generateReminderFromGuidelineData(Patient patient, Concept followupConcept, Date targetDate){
+        Reminder reminder = new Reminder();
+        reminder.setPatient(patient);
+        reminder.setFollowProcedure(followupConcept);
+        reminder.setTargetDate(targetDate);
+        reminder.setOrigTargetDate(targetDate);
+        reminder.setStatus(0);
+        return reminder;
+    }
+    
+    
     Reminder findReminderByFollowupCareAndDate (List<Reminder> findInReminderList,Concept reminderProcedure,Date reminderDate){
         Reminder exactReminder = null;
         for(Reminder r:findInReminderList) {
             if(r.getTargetDate() == null)
                 continue;
-            if(r.getFollowProcedure().equals(reminderProcedure) && r.getTargetDate().equals(reminderDate)){
+            if(r.getFollowProcedure().equals(reminderProcedure) && r.getOrigTargetDate().equals(reminderDate)){
                 exactReminder=r;
             }
         }
