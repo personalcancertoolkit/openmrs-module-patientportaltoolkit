@@ -598,7 +598,6 @@ public class ToolkitResourceUtil {
         }
         reminderMap.put("startDate",reminder.getTargetDate());
         reminderMap.put("endDate",reminder.getTargetDate());
-        reminderMap.put("name",reminder.getFollowProcedureName());
         reminderMap.put("concept_id",reminder.getFollowProcedure().getConceptId());
         //System.out.println("Here i am - util file");
         if(reminder.getCompleteDate() != null){
@@ -637,16 +636,15 @@ public class ToolkitResourceUtil {
     public static Object generatePreventiveCareEvents(List<PreventativeCareEvent> pcgEvents) throws ParseException {
 
         List<Object> pcgEventsMap = new ArrayList<Object>();
+        Integer fake_id = -1;
         for (PreventativeCareEvent pcgEvent : pcgEvents) {
-            i=i+1;
-            pcgEventsMap.add(generatePreventiveCareEvent(pcgEvent));
+            fake_id=fake_id+1; // only used if event does not have a real id
+            pcgEventsMap.add(generatePreventiveCareEvent(pcgEvent, fake_id));
         }
         return pcgEventsMap;
     }
 
-    public static Object generatePreventiveCareEvent(PreventativeCareEvent pcgevent) throws ParseException {
-
-
+    public static Object generatePreventiveCareEvent(PreventativeCareEvent pcgevent, Integer fake_id) throws ParseException {
         Map<String, Object> preventiveCareMap = new HashMap<String, Object>();
 
         List<Object> influenzaVaccines = new ArrayList<>();
@@ -666,8 +664,6 @@ public class ToolkitResourceUtil {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        preventiveCareMap.put("followProcedure",generateConcept(pcgevent.getFollowProcedure()));
-        preventiveCareMap.put("followProcedureName",pcgevent.getFollowProcedureName());
         
         
         // Enforce that, if event is influenza, the date falls between oct and march
@@ -696,17 +692,19 @@ public class ToolkitResourceUtil {
         Calendar completedDateCal = Calendar.getInstance();
 
 
-
-      //  if(cal.after(minDate) && cal.before(maxDate))
-      //      System.out.println("\nFullDate");
+        
+        preventiveCareMap.put("followProcedure",generateConcept(pcgevent.getFollowProcedure()));
+        preventiveCareMap.put("followProcedureName",pcgevent.getFollowProcedureName());
+        preventiveCareMap.put("concept_id",pcgevent.getFollowProcedure().getConceptId());
         preventiveCareMap.put("targetDate", targetDate);
-        if(pcgevent.getId()==null)
-            preventiveCareMap.put("id", i);
-        else
+        preventiveCareMap.put("formatedTargetDate", pptutil.formatDate(targetDate));
+        if(pcgevent.getId()==null){ 
+            preventiveCareMap.put("id", "X" + Integer.toString(fake_id)); // X ensures that we never have a 'fake' ID with the same value as a real ID
+        } else {
             preventiveCareMap.put("id", pcgevent.getId());
+        }
         preventiveCareMap.put("startDate",targetDate);
         preventiveCareMap.put("endDate",targetDate);
-        preventiveCareMap.put("name",pcgevent.getFollowProcedureName());
 
         switch (pcgevent.getFollowProcedure().getConceptId()) {
             //Influenza Vaccine

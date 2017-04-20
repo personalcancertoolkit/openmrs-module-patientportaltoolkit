@@ -16,6 +16,7 @@ package org.openmrs.module.patientportaltoolkit.web.controller;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.Reminder;
+import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
 import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
@@ -37,7 +38,7 @@ import java.text.ParseException;
  * Created by Maurya on 08/06/2015.
  */
 @Controller
-public class ReminderController {
+public class EventDataController {
 
     @RequestMapping( value = "/patientportaltoolkit/getremindersforpatient/{patientId}")
     @ResponseBody
@@ -82,10 +83,13 @@ public class ReminderController {
     @RequestMapping( value = "/patientportaltoolkit/getpreventivecareforpatient/{patientId}")
     @ResponseBody
     public Object getAllPreventiveCareforPatient(@PathVariable( "patientId" ) String patientId) throws ParseException {
-        Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        return ToolkitResourceUtil.generatePreventiveCareEvents(Context.getService(PreventativeCareService.class).getAllPreventativeCareEventByPatient(patient));
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
+        List<PreventativeCareEvent> events = Context.getService(PreventativeCareService.class).getAllPreventativeCareEventByPatient(patient);
+        return ToolkitResourceUtil.generatePreventiveCareEvents(events);
     }
 
+    
+    
     @RequestMapping( value = "/patientportaltoolkit/getsampledates")
     @ResponseBody
     public Object getSampleDates()

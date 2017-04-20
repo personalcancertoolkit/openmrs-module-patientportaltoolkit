@@ -20,7 +20,7 @@ import java.util.Date;
 /**
  * Created by maurya on 2/27/17.
  */
-public class PreventiveCareModalFragmentController {
+public class PreventiveCareManageModalFragmentController {
     public void controller(PageModel model, PageRequest pageRequest) {
         PatientPortalFormService patientPortalFormService= Context.getService(PatientPortalFormService.class);
         model.addAttribute("influenzaConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.INFLUENZA_VACCINE));

@@ -550,27 +550,6 @@ jq(document).ready(function(){
 
     //JS for the Button Events
 
-  /*  $('.markCompletedReminder').click(
-        function () {
-            var reminderID=this.id.split("markCompletedReminder")[1];
-           // alert(this.id);
-            jq.get("appointments/markCompleted.action", {
-                reminderId: reminderID,
-            }, function () {
-            });
-            setTimeout(
-                function () {
-                    location.reload();
-                }, 2000);
-        });*/
-
-    $('.markCompletedReminder').click(
-        function () {
-            var reminderID=this.id.split("markCompletedReminder")[1];
-            $('#markCompletedIdHolder').val(reminderID);
-            $('#followupIdHolder').val($('#reminderFollowupId'+reminderID).val());
-
-        });
     
     $('.markScheduledReminder').click(
         function () {
