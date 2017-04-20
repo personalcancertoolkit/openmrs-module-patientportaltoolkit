@@ -18,7 +18,6 @@ import org.codehaus.jackson.type.TypeReference;
 import org.openmrs.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.*;
-import org.openmrs.module.patientportaltoolkit.api.util.PatientPortalUtil;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,7 +32,7 @@ public class ToolkitResourceUtil {
     public static final String PHONE_NUMBER_ATTRIBUTE = "Telephone Number";
     public static final String EMAIL_ATTRIBUTE = "Email";
     public static Integer i=0;
-    public static PatientPortalUtil pptutil = new PatientPortalUtil();
+
 
     public static Date clearDate(Date dateTime) {
         if(dateTime == null) {
@@ -574,46 +573,34 @@ public class ToolkitResourceUtil {
     public static Object generateReminders(List<Reminder> reminders) {
 
         List<Object> remindersMap = new ArrayList<Object>();
-        Integer fake_id = -1;
         for (Reminder reminder : reminders) {
-            fake_id=fake_id+1; // only used if reminder does not have a real id
-            remindersMap.add(generateReminder(reminder, fake_id));
+            remindersMap.add(generateReminder(reminder));
         }
         return remindersMap;
     }
 
-    public static Object generateReminder(Reminder reminder, Integer fake_id) {
+    public static Object generateReminder(Reminder reminder) {
+
+
         Map<String, Object> reminderMap = new HashMap<String, Object>();
 
         //reminderMap.put("patient",generatePerson(reminder.getPatient()));
         reminderMap.put("followProcedure",generateConcept(reminder.getFollowProcedure()));
         reminderMap.put("followProcedureName",reminder.getFollowProcedureName());
         reminderMap.put("targetDate",reminder.getTargetDate());
-        reminderMap.put("formatedTargetDate", pptutil.formatDate(reminder.getTargetDate()));
         //details for calendar
-        if(reminder.getId()==null){ 
-            reminderMap.put("id", "X" + Integer.toString(fake_id)); // X ensures that we never have a 'fake' ID with the same value as a real ID
-        } else {
+        if(reminder.getId()==null)
+            reminderMap.put("id", i);
+        else
             reminderMap.put("id", reminder.getId());
-        }
         reminderMap.put("startDate",reminder.getTargetDate());
         reminderMap.put("endDate",reminder.getTargetDate());
         reminderMap.put("name",reminder.getFollowProcedureName());
-        reminderMap.put("concept_id",reminder.getFollowProcedure().getConceptId());
-        //System.out.println("Here i am - util file");
-        if(reminder.getCompleteDate() != null){
-            reminderMap.put("formatedCompletedDate", pptutil.formatDate(reminder.getCompleteDate()));
-            reminderMap.put("completedDate", reminder.getCompleteDate());
-            reminderMap.put("doctorName", reminder.getDoctorName());
-            reminderMap.put("comments", reminder.getResponseComments());
-        }
-        reminderMap.put("status",reminder.getStatus());
-        
         ////
         switch (reminder.getFollowProcedure().getConceptId()) {
             //Colonoscopy
             case 162900: reminderMap.put("color", "brown");
-                break;
+                            break;
             //H & E
             case 162901 : reminderMap.put("color", "red");
                 break;
@@ -677,12 +664,12 @@ public class ToolkitResourceUtil {
         int month = cal.get(Calendar.MONTH);
         if (pcgevent.getFollowProcedure().getConceptId() == 162938){ // If this event is Influenza Vaccine
             if(!(month >= (10-1) || month <= (3-1))){ // Ensure that date is between oct and march. Note, minus 1 due to jan = 0
-                //System.out.println("chaning date!");
+                System.out.println("changing date!");
                 cal.set(Calendar.MONTH, Calendar.OCTOBER);
                 cal.set(Calendar.DAY_OF_MONTH, 1);
-                //System.out.println("Changing date to...");
+                System.out.println("Changing date to...");
                 targetDate = cal.getTime();
-                //System.out.println(targetDate);
+                System.out.println(targetDate);
             }
         }
         //Calendar currentDate = Calendar.getInstance();

@@ -19,18 +19,11 @@ import org.openmrs.module.patientportaltoolkit.Reminder;
 import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
-import org.openmrs.module.patientportaltoolkit.Guideline;
-import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
-import org.openmrs.module.patientportaltoolkit.GuidelineInterval;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.*;
 import java.text.ParseException;
 
 /**
@@ -44,40 +37,8 @@ public class ReminderController {
     public Object getAllRemindersforPatient(@PathVariable( "patientId" ) String patientId)
     {
         Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        List<Reminder> reminders = Context.getService(ReminderService.class).getReminders(patient); 
-        //List<Reminder> reminders = new ArrayList<Reminder>();
-        return ToolkitResourceUtil.generateReminders(reminders);
+        return ToolkitResourceUtil.generateReminders(Context.getService(ReminderService.class).getReminders(patient));
     }
-    
-    @RequestMapping( value = "/patientportaltoolkit/getpossiblenewremindersforpatient/{patientId}")
-    @ResponseBody
-    public Object getPossibleNewRemindersForPatient(@PathVariable( "patientId" ) String patientId)
-    {
-        
-        // Define Possible Reminders for Patient
-        List<Map<String, String>> data = new ArrayList<>();
-        Map<String, String> map = new HashMap<String, String>();
-
-        /*
-        map.put("procedure_name", procedureName);
-        map.put("concept_id", Integer.toString(conceptID));
-        data.add(map.clone());
-        */
-
-        Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        GuidelineConditionSet guidelineConditionSet = Context.getService(ReminderService.class).generateGuidelineConditionSet(patient);
-        for (Guideline g:  guidelineConditionSet.getGuidelines()) {
-            // and for each guideline's set of intervals (e.g., check up in 6mo, 12mo, and 24mo)
-            String procedureName = g.getFollowupProcedure().getName().getName();
-            Integer conceptID = g.getFollowupProcedure().getConceptId();
-            map.put("procedure_name", procedureName);
-            map.put("concept_id", Integer.toString(conceptID));
-            data.add(new HashMap<String,String>(map));
-        }
-        
-        return data;
-    }
-    
 
     @RequestMapping( value = "/patientportaltoolkit/getpreventivecareforpatient/{patientId}")
     @ResponseBody
