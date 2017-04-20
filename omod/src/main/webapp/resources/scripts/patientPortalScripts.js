@@ -15,14 +15,7 @@ jq(document).ready(function(){
     jq(".imagePlaceHolders").attr("src",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/images/openmrs_logo_white.gif");
     var nowTemp = new Date();
     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
-    var markCompletedDatePicker= jq( "#markCompletedDate" ).datepicker({
-        onRender: function(date) {
-            return date.valueOf() > now.valueOf() ? 'disabled' : '';
-        },
-        format: 'mm/dd/yyyy'
-    }).on('changeDate', function() {
-        markCompletedDatePicker.hide();
-    }).data('datepicker');
+    
     var markScheduledDatePicker= jq( "#markScheduledDate" ).datepicker({
         onRender: function(date) {
             return date.valueOf() < now.valueOf() ? 'disabled' : '';
@@ -517,10 +510,10 @@ jq(document).ready(function(){
                 //display the key
                 var relationitem = {id:data[k]["relatedPerson"]["id"], value:data[k]["relatedPerson"]["GivenName"]+data[k]["relatedPerson"]["FamilyName"]};
                 listOfRelationsData.push(relationitem);
-                console.log(relationitem);
+                //console.log(relationitem);
             });
         }) ).then(function() {
-        console.log(listOfRelationsData);
+        //console.log(listOfRelationsData);
         $( "#sendingto" ).autocomplete({
             source: listOfRelationsData,
             minLength: 3,
@@ -579,13 +572,7 @@ jq(document).ready(function(){
             $('#followupIdHolder').val($('#reminderFollowupId'+reminderID).val());
 
         });
-    $('#saveMarkCompletedButton').click(
-        function () {
-            jq.get("appointments/markCompleted.action", {reminderId: jq("#markCompletedIdHolder").val(), markCompletedDate: jq("#markCompletedDate").val(), doctorName:  jq("#markCompletedDoctor").val(),comments:  jq("#markCompletedComments").val(), personUuid: jq("#personUuid").val(), followupId: jq("#followupIdHolder").val()}, function(){
-            });
-            location.reload();
-        });
-
+    
     $('.markScheduledReminder').click(
         function () {
             var reminderID=this.id.split("markScheduledReminder")[1];
@@ -608,11 +595,12 @@ jq(document).ready(function(){
             if(jq("#feedbacktextdata").val() != null || jq("#feedbacktextdata").val() != '') {
                 jq.get("feedback/sendFeedback.action", {
                     feedbackMessage: jq("#feedbacktextdata").val()
-                }, function () {
+                }, function (text) { 
+                    //console.log(text); //console.log('here i am');
                 });
                 setTimeout(
                     function () {
-                        location.reload();
+                        //location.reload();
                     }, 2000);
             }
         });

@@ -35,9 +35,11 @@ public class Reminder {
     private String responseComments;
     private User responseUser;
     private Date targetDate;
+    private Date origTargetDate;
     private Date completeDate;
+    private Date modifiedDate;
     private String doctorName;
-    private Integer status; //0-not completed, 1-completed, -1-skipped, 2-scheduled
+    private Integer status; //0-not completed, 1-completed, -1-skipped/removed, 2-scheduled
     private String responseType;
     private String responseAttributes;
 
@@ -141,24 +143,44 @@ public class Reminder {
     }
 
 
+    // Target Date
     public Date getTargetDate() {
         return ToolkitResourceUtil.clearDate(targetDate);
     }
-
-
     public void setTargetDate(Date targetDate) {
         this.targetDate = ToolkitResourceUtil.clearDate(targetDate);
     }
+    
 
+    // Orig Target Date
+    public Date getOrigTargetDate() {
+        return ToolkitResourceUtil.clearDate(origTargetDate);
+    }
+    public void setOrigTargetDate(Date origTargetDate) {
+        this.origTargetDate = ToolkitResourceUtil.clearDate(origTargetDate);
+    }
+    
 
+    // Completed Date
     public Date getCompleteDate() {
         return ToolkitResourceUtil.clearDate(completeDate);
     }
-
     public void setCompleteDate(Date completeDate) {
        this.completeDate = ToolkitResourceUtil.clearDate(completeDate);
     }
+    
+    
+    
+    // Modified Date
+    public Date getModifiedDate() {
+        return ToolkitResourceUtil.clearDate(modifiedDate);
+    }
+    public void setModifiedDate(Date modifiedDate) {
+       this.modifiedDate = ToolkitResourceUtil.clearDate(modifiedDate);
+    }
 
+    
+    
     public String getDoctorName() {
         return doctorName;
     }
