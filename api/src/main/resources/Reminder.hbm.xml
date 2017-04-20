@@ -15,13 +15,9 @@
         <many-to-one name="followProcedure" class="org.openmrs.Concept" column="followup_procedure" not-null="true"/>
         <property name="targetDate" type="java.util.Date" column="target_date" not-null="false"
                   length="19" />
-        <property name="origTargetDate" type="java.util.Date" column="orig_target_date" not-null="false"
-                  length="19" />
         <property name="responseDate" type="java.util.Date" column="response_date" not-null="false"
                   length="19" />
         <property name="completeDate" type="java.util.Date" column="complete_date" not-null="false"
-                  length="19" />
-        <property name="modifiedDate" type="java.util.Date" column="last_modified_date" not-null="false"
                   length="19" />
         <property name="status" type="int" column="status"/>
 
