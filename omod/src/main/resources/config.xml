@@ -50,7 +50,7 @@
 	<!-- Global Properties -->
 	<globalProperty>
 		<property>${project.parent.artifactId}.symptommanagementURL</property>
-		<defaultValue>https://portal.nursing.iupui.edu/o_portal/index.php?seq=_003_001</defaultValue>
+		<defaultValue>https://personalcancertoolkit.org/symptom-management?seq=_003_001</defaultValue>
 		<description>URL for accessing the Symptom Management Portal</description>
 	</globalProperty>
 	<globalProperty>
