@@ -35,6 +35,7 @@ public class MyCancerBuddiesPageController {
             model.addAttribute("personPreferences",Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person));
         }
         model.addAttribute("pptutil",new PatientPortalUtil());
+        model.addAttribute("contextUser", Context.getAuthenticatedUser());
 
     }
 

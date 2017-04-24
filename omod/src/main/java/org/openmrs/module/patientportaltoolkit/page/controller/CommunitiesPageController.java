@@ -31,6 +31,7 @@ public class CommunitiesPageController {
         log.info(PPTLogAppender.appendLog("REQUEST_COMMUNITIES_PAGE", pageRequest.getRequest()));
         //log.info("Feedback/Contact Page Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
         model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
+        model.addAttribute("contextUser", Context.getAuthenticatedUser());
         model.addAttribute("pptutil",new PatientPortalUtil());
 
     }

@@ -46,5 +46,6 @@ public class MessagesPageController {
         else
             model.addAttribute("messages",null);
         model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
+        model.addAttribute("contextUser", Context.getAuthenticatedUser());
     }
 }

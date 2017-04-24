@@ -1,12 +1,15 @@
 
 ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
 <script type="text/javascript">
-    \$(document).ready(function(){
-        \$('#patientPortalNavHome').addClass('active');
+    jq(document).ready(function(){
+        if (jq('#isCurrentPatient').val()=="true") {
+            jq('#patientPortalNavHome').addClass('active');
+        }
     });
 </script>
 <body>
 <div class="container bgcontent col-sm-8 col-sm-offset-2">
+    <input id="isCurrentPatient" value="<% if(contextUser.person !=person) { %>false<% } else{%>true<%} %>" hidden>
     ${ ui.includeFragment("patientportaltoolkit", "profileHeader") }
     <% if(person.isPatient() && securitylevel != 1) { %>
     <ul class="nav nav-pills">

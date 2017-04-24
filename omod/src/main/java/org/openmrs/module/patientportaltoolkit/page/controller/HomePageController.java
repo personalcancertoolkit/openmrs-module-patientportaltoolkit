@@ -67,6 +67,7 @@ public class HomePageController {
             model.addAttribute("isACareGiver",0);
         }
         model.addAttribute("pptutil", new PatientPortalUtil());
+        model.addAttribute("contextUser", Context.getAuthenticatedUser());
 
 
     }

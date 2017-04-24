@@ -38,6 +38,7 @@ public class JournalsPageController {
 
         model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
         model.addAttribute("pptutil",new PatientPortalUtil());
+        model.addAttribute("contextUser", Context.getAuthenticatedUser());
 
     }
 }

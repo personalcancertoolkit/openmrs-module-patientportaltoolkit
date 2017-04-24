@@ -30,6 +30,7 @@ public class EditprofilePageController {
         Person person=Context.getAuthenticatedUser().getPerson();
         model.addAttribute("person", person);
         model.addAttribute("pptutil",new PatientPortalUtil());
+        model.addAttribute("contextUser", Context.getAuthenticatedUser());
         if (person.getIsPatient())
             model.addAttribute("personPreferences",Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person));
         else

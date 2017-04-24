@@ -35,6 +35,7 @@ public class PatientconnectionsPageController {
         Person person = Context.getAuthenticatedUser().getPerson();
         model.addAttribute("person", person);
         model.addAttribute("pptutil",new PatientPortalUtil());
+        model.addAttribute("contextUser", Context.getAuthenticatedUser());
 
         if ( Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person) == null) {
             model.addAttribute("personPreferences", null);

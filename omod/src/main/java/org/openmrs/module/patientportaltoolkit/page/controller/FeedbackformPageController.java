@@ -31,6 +31,7 @@ public class FeedbackformPageController {
         //log.info("Feedback/Contact Page Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
         model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
         model.addAttribute("pptutil",new PatientPortalUtil());
+        model.addAttribute("contextUser", Context.getAuthenticatedUser());
 
     }
 }
