@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by maurya on 2/1/17.
  */
-public class PreventativeCareFragmentController {
+public class PreventiveCareFragmentController {
     public void controller(PageModel model, PageRequest pageRequest) {
         User user = Context.getAuthenticatedUser();
         Person person = (Person) model.get("person");

@@ -18,6 +18,8 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
     <li><a data-toggle="tab" href="#preventativeCare">Preventive Care</a></li>
     </ul>
 
+    <!-- eventDataUtilities used in appointments (follow up care) and preventiveCare -->
+    <script type="text/javascript" src="${ ui.resourceLink("patientportaltoolkit", "/scripts/eventDataUtilities.js")}"></script>
 
     <div class="tab-content">
         <div id="treatments" class="tab-pane fade in active">
@@ -36,7 +38,7 @@ ${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
             ${ ui.includeFragment("patientportaltoolkit", "symptomManagement") }
         </div>
         <div id="preventativeCare" class="tab-pane fade">
-            ${ ui.includeFragment("patientportaltoolkit", "preventativeCare") }
+            ${ ui.includeFragment("patientportaltoolkit", "preventiveCare") }
         </div>
     </div>
     <% } %>
