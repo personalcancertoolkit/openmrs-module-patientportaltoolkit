@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by srikumma on 4/20/17.
  */
 @Controller
-@RequestMapping(value = "/patientportaltoolkit/**")
+@RequestMapping(value = "/")
 public class BaseCancerPortalController {
 
     private final int DEFAULT_ERROR_CODE = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
