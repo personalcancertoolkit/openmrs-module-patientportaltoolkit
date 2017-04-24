@@ -24,7 +24,16 @@ public class MyCancerBuddiesProfileCardFragmentController {
 
     public void controller(FragmentModel model, PageRequest pageRequest,@FragmentParam(value="person") Person person ) {
         log.info(PPTLogAppender.appendLog("REQUEST_MYCANCERBUDDIESPROFILECARD_FRAGMENT", pageRequest.getRequest()));
-        if ( Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person) == null) {
+        if (person.getIsPatient() && Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person) == null){
+           PersonPreferences pp= new PersonPreferences();
+           pp.setMyCancerBuddies(false);
+           pp.setMyCancerBuddiesName(person.getGivenName()+person.getFamilyName());
+           pp.setMyCancerBuddiesDescription("Hello, I would like to be a part of My Cancer Buddies");
+           pp.setPerson(person);
+            Context.getService(PersonPreferencesService.class).savePersonPreferences(pp);
+            model.addAttribute("personPreferences",pp);
+        }
+        else if ( Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person) == null) {
             model.addAttribute("personPreferences", null);
         }
         else{
