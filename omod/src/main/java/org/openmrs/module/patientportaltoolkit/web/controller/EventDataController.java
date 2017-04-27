@@ -20,6 +20,9 @@ import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
 import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
+import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
+import org.openmrs.Concept;
 import org.openmrs.module.patientportaltoolkit.Guideline;
 import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
 import org.openmrs.module.patientportaltoolkit.GuidelineInterval;
@@ -88,6 +91,49 @@ public class EventDataController {
         return ToolkitResourceUtil.generatePreventiveCareEvents(events);
     }
 
+    
+    
+    @RequestMapping( value = "/patientportaltoolkit/getRelevantPreventiveCareConcepts/{patientId}")
+    @ResponseBody
+    public Object getRelevantPreventiveCareConcepts(@PathVariable( "patientId" ) String patientId) throws ParseException {
+        
+        
+        
+        // Build map of concept name and concepts 
+        PatientPortalFormService patientPortalFormService= Context.getService(PatientPortalFormService.class);
+        Map<String, Set<Concept>> relevantConceptsSource = new HashMap<String, Set<Concept>>();
+        relevantConceptsSource.put("162938", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.INFLUENZA_VACCINE).getConcepts());
+        relevantConceptsSource.put("162939", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.PNEUMOCOCCAL_VACCINE).getConcepts());
+        relevantConceptsSource.put("162940", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHOLESTEROL_SCREENING).getConcepts());
+        relevantConceptsSource.put("162941", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.BP_SCREENING).getConcepts());
+        relevantConceptsSource.put("162942", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.HIV_SCREENING).getConcepts());
+        relevantConceptsSource.put("162943", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.MAMMOGRAPHY_SCREENING).getConcepts());
+        relevantConceptsSource.put("162944", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CERVICAL_CANCER_SCREENING).getConcepts());
+        
+        // Get data from concepts for each concept name and build an object to send to client
+        List<Object> data = new ArrayList<Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, String> a_question = new HashMap<String, String>();
+        for (Map.Entry<String, Set<Concept>> entry : relevantConceptsSource.entrySet()) {
+            String key = entry.getKey();
+            Set<Concept> concepts = entry.getValue();
+            
+            map.put("concept_id", key);
+            List<Object> questions = new ArrayList<Object>();
+            //map.put("concept_id", Integer.toString(conceptID));
+            for( Concept question : concepts ){
+                a_question.put("uuid", question.getUuid());
+                a_question.put("name", question.getName().getName());
+                a_question.put("dataType", question.getDatatype().getHl7Abbreviation());
+                questions.add(new HashMap<String,Object>(a_question));
+            }
+            map.put("questions", questions);
+            data.add(new HashMap<String,Object>(map));
+        }
+        return data;
+    }
+
+    
     
     
     @RequestMapping( value = "/patientportaltoolkit/getsampledates")

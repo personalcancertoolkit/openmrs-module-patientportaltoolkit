@@ -6,7 +6,6 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
-import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -22,14 +21,7 @@ import java.util.Date;
  */
 public class PreventiveCareManageModalFragmentController {
     public void controller(PageModel model, PageRequest pageRequest) {
-        PatientPortalFormService patientPortalFormService= Context.getService(PatientPortalFormService.class);
-        model.addAttribute("influenzaConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.INFLUENZA_VACCINE));
-        model.addAttribute("pneumococcalConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.PNEUMOCOCCAL_VACCINE));
-        model.addAttribute("cholesterolConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHOLESTEROL_SCREENING));
-        model.addAttribute("bpConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.BP_SCREENING));
-        model.addAttribute("hivConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.HIV_SCREENING));
-        model.addAttribute("mammographyConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.MAMMOGRAPHY_SCREENING));
-        model.addAttribute("cervicalConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CERVICAL_CANCER_SCREENING));
+        
     }
     public void saveInfluenzaForm(FragmentModel model, @RequestParam(value = "influenzaDate") String influenzaDate, HttpServletRequest servletRequestest) throws ParseException {
 

@@ -681,8 +681,9 @@ public class ToolkitResourceUtil {
                 //System.out.println(targetDate);
             }
         }
-        //Calendar currentDate = Calendar.getInstance();
-        Date currentDate = new Date();
+        
+        //Set min and max date such that this event must have been completed within 90 days of the target date
+        //      used when looking through completed events, if none were completed within this range we assume this event was never completed
         Calendar minDate = Calendar.getInstance();
         minDate.setTime(targetDate);
         minDate.add(Calendar.DATE, -90);
@@ -692,7 +693,7 @@ public class ToolkitResourceUtil {
         Calendar completedDateCal = Calendar.getInstance();
 
 
-        
+        // Append Data
         preventiveCareMap.put("followProcedure",generateConcept(pcgevent.getFollowProcedure()));
         preventiveCareMap.put("followProcedureName",pcgevent.getFollowProcedureName());
         preventiveCareMap.put("concept_id",pcgevent.getFollowProcedure().getConceptId());
@@ -706,130 +707,56 @@ public class ToolkitResourceUtil {
         preventiveCareMap.put("startDate",targetDate);
         preventiveCareMap.put("endDate",targetDate);
 
+        List<Object> thisCompletedSetOfEvents = new ArrayList<Object>();;
         switch (pcgevent.getFollowProcedure().getConceptId()) {
             //Influenza Vaccine
             case 162938:
                 preventiveCareMap.put("color", "brown");
-                if (!influenzaVaccines.isEmpty()) {
-                    for (Object influenzaVac : influenzaVaccines) {
-                        HashMap<String, String> map = (HashMap<String, String>) influenzaVac;
-                        Date completedDate = formatter.parse(map.get("completedDate"));
-                        completedDateCal.setTime(completedDate);
-                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
-                            preventiveCareMap.put("startDate", completedDate);
-                            preventiveCareMap.put("endDate", completedDate);
-                            preventiveCareMap.put("location", "Completed");
-                        }
-                    }
-                } else
-                    preventiveCareMap.put("location", "Due Next");
-
+                thisCompletedSetOfEvents = influenzaVaccines;
                 break;
             //Pneumococcal Vaccine
             case 162939:
                 preventiveCareMap.put("color", "red");
-                if (!pneumococcalVaccines.isEmpty()) {
-                    for (Object pneumococcalVaccine : pneumococcalVaccines) {
-                        HashMap<String, String> map = (HashMap<String, String>) pneumococcalVaccine;
-                        Date completedDate = formatter.parse(map.get("completedDate"));
-                        completedDateCal.setTime(completedDate);
-                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
-                            preventiveCareMap.put("startDate", completedDate);
-                            preventiveCareMap.put("endDate", completedDate);
-                            preventiveCareMap.put("location", "Completed");
-                        }
-                    }
-        }
-                else
-                    preventiveCareMap.put("location", "Due Next");
-
+                thisCompletedSetOfEvents = pneumococcalVaccines;
                 break;
             //Blood Pressure Screening
-            case 162941 : preventiveCareMap.put("color", "blue");
-                if(!bPScreenings.isEmpty()) {
-                    for (Object bPScreening : bPScreenings) {
-                        HashMap<String, String> map = (HashMap<String, String>) bPScreening;
-                        Date completedDate = formatter.parse(map.get("completedDate"));
-                        completedDateCal.setTime(completedDate);
-                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
-                            preventiveCareMap.put("startDate", completedDate);
-                            preventiveCareMap.put("endDate", completedDate);
-                            preventiveCareMap.put("location", "Completed");
-                        }
-                    }
-                }
-                else
-                    preventiveCareMap.put("location", "Due Next");
+            case 162941 :
+                preventiveCareMap.put("color", "blue");
+                thisCompletedSetOfEvents = bPScreenings;
                 break;
             //HIV Screening
-            case 162942 : preventiveCareMap.put("color", "green");
-                if(!hivScreenings.isEmpty()) {
-                    for (Object hivScreening : hivScreenings) {
-                        HashMap<String, String> map = (HashMap<String, String>) hivScreening;
-                        Date completedDate = formatter.parse(map.get("completedDate"));
-                        completedDateCal.setTime(completedDate);
-                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
-                            preventiveCareMap.put("startDate", completedDate);
-                            preventiveCareMap.put("endDate", completedDate);
-                            preventiveCareMap.put("location", "Completed");
-                        }
-                    }
-                }
-                else
-                    preventiveCareMap.put("location", "Due Next");
+            case 162942 : 
+                preventiveCareMap.put("color", "green");
+                thisCompletedSetOfEvents = hivScreenings;
                 break;
             //Screening Mammography
-            case 162943 : preventiveCareMap.put("color", "purple");
-                if(!mammographyScreenings.isEmpty()) {
-                    for (Object mammographyScreening : mammographyScreenings) {
-                        HashMap<String, String> map = (HashMap<String, String>) mammographyScreening;
-                        Date completedDate = formatter.parse(map.get("completedDate"));
-                        completedDateCal.setTime(completedDate);
-                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
-                            preventiveCareMap.put("startDate", completedDate);
-                            preventiveCareMap.put("endDate", completedDate);
-                            preventiveCareMap.put("location", "Completed");
-                        }
-                    }
-                }
-                else
-                    preventiveCareMap.put("location", "Due Next");
+            case 162943 : 
+                preventiveCareMap.put("color", "purple");
+                thisCompletedSetOfEvents = mammographyScreenings;
                 break;
             //Cervical Cancer Screening
-            case 162944 : preventiveCareMap.put("color", "orange");
-                if(!cervicalCancerScreenings.isEmpty()) {
-                    for (Object cervicalCancerScreening : cervicalCancerScreenings) {
-                        HashMap<String, String> map = (HashMap<String, String>) cervicalCancerScreening;
-                        Date completedDate = formatter.parse(map.get("completedDate"));
-                        completedDateCal.setTime(completedDate);
-                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
-                            preventiveCareMap.put("startDate", completedDate);
-                            preventiveCareMap.put("endDate", completedDate);
-                            preventiveCareMap.put("location", "Completed");
-                        }
-                    }
-                }
-                else
-                    preventiveCareMap.put("location", "Due Next");
+            case 162944 : 
+                preventiveCareMap.put("color", "orange");
+                thisCompletedSetOfEvents = cervicalCancerScreenings;
                 break;
             //Cholesterol Screening
-            case 162940 : preventiveCareMap.put("color", "black");
-                if(!cholesterolScreenings.isEmpty()) {
-                    for (Object cholesterolScreening : cholesterolScreenings) {
-                        HashMap<String, String> map = (HashMap<String, String>) cholesterolScreening;
-                        Date completedDate = formatter.parse(map.get("completedDate"));
-                        completedDateCal.setTime(completedDate);
-                        if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
-                            preventiveCareMap.put("startDate", completedDate);
-                            preventiveCareMap.put("endDate", completedDate);
-                            preventiveCareMap.put("location", "Completed");
-                        }
-                    }
-                }
-                else
-                    preventiveCareMap.put("location", "Due Next");
+            case 162940 : 
+                preventiveCareMap.put("color", "black");
+                thisCompletedSetOfEvents = cholesterolScreenings;
                 break;
         }
+        
+        if (!thisCompletedSetOfEvents.isEmpty()) {
+            for (Object thisCompletedEvent : thisCompletedSetOfEvents) {
+                HashMap<String, String> map = (HashMap<String, String>) thisCompletedEvent;
+                Date completedDate = formatter.parse(map.get("completedDate"));
+                completedDateCal.setTime(completedDate);
+                if (completedDateCal.after(minDate) && completedDateCal.before(maxDate)) {
+                    preventiveCareMap.put("completedDate", completedDate);
+                }
+            }
+        }
+        
         return preventiveCareMap;
     }
 
