@@ -100,11 +100,15 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
         if(Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(user.getPerson())!=null) {
             pprlist.addAll(Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(user.getPerson()));
             for (PatientPortalRelation ppr : pprlist) {
-                if (ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
-                    if (ppr.getPerson().equals(user.getPerson()))
+                if (ppr.getPerson().equals(user.getPerson())) {
+                    if (ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
                         totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getRelatedPerson(), false).get(0), orderByDateDesc));
-                    if (ppr.getRelatedPerson().equals(user.getPerson()))
-                        totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getPerson(), false).get(0), orderByDateDesc));
+                    }
+                }
+                    if (ppr.getRelatedPerson().equals(user.getPerson())){
+                        if (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
+                            totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getPerson(), false).get(0), orderByDateDesc));
+                        }
                 }
             }
         }
