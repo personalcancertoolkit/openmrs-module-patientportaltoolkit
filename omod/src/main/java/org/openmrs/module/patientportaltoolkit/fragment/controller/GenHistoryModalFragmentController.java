@@ -47,7 +47,7 @@ public class GenHistoryModalFragmentController {
                                    @RequestParam(value = "cancerStage", required = true) String cancerStage,
                                    @RequestParam(value = "cancerDate", required = true) String cancerDate,
                                    @RequestParam(value = "cancerAbnormalityBool", required = true) String cancerAbnormalityBool,
-                                   @RequestParam(value = "cancerAbnormalityType", required = true) String cancerAbnormalityType,
+                                   @RequestParam(value = "cancerAbnormalityType", required = false) String cancerAbnormalityType,
                                    @RequestParam(value = "genHistoryCancerPcpName", required = true) String genHistoryCancerPcpName,
                                    @RequestParam(value = "genHistoryCancerPcpEmail", required = true) String genHistoryCancerPcpEmail,
                                    @RequestParam(value = "genHistoryCancerPcpPhone", required = true) String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
@@ -112,7 +112,7 @@ public class GenHistoryModalFragmentController {
                                 Obs o = observationConceptUUIDToObsMap.get("654e32f0-8b57-4d1f-845e-500922e800f6").get(0);
                                 if (cancerDate != null && cancerDate != "") {
                                     SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-                                    Date parsedDate = formatter.parse(cancerDate);
+                                    Date parsedDate =formatter.parse(cancerDate);
                                     if (o.getValueDate() != parsedDate)
                                         o.setValueDate(parsedDate);
                                 }
@@ -143,10 +143,12 @@ public class GenHistoryModalFragmentController {
                                 Obs o = observationConceptUUIDToObsMap.get("8719adbe-0975-477f-a95f-2fae4d6cbdae").get(0);
                                 o.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityType));
                             } else {
-                                Obs o = new Obs();
-                                o.setConcept(conceptService.getConceptByUuid("8719adbe-0975-477f-a95f-2fae4d6cbdae"));
-                                o.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityType));
-                                generalEncounter.addObs(o);
+                                if(!cancerAbnormalityType.isEmpty()) {
+                                    Obs o = new Obs();
+                                    o.setConcept(conceptService.getConceptByUuid("8719adbe-0975-477f-a95f-2fae4d6cbdae"));
+                                    o.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityType));
+                                    generalEncounter.addObs(o);
+                                }
                             }
                             break;
                         case "genHistoryCancerPcpName":
