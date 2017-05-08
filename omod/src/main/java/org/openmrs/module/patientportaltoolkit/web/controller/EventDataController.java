@@ -97,8 +97,6 @@ public class EventDataController {
     @ResponseBody
     public Object getRelevantPreventiveCareConcepts(@PathVariable( "patientId" ) String patientId) throws ParseException {
         
-        
-        
         // Build map of concept name and concepts 
         PatientPortalFormService patientPortalFormService= Context.getService(PatientPortalFormService.class);
         Map<String, Set<Concept>> relevantConceptsSource = new HashMap<String, Set<Concept>>();
@@ -124,7 +122,7 @@ public class EventDataController {
             for( Concept question : concepts ){
                 a_question.put("uuid", question.getUuid());
                 a_question.put("name", question.getName().getName());
-                a_question.put("dataType", question.getDatatype().getHl7Abbreviation());
+                a_question.put("datatype", question.getDatatype().getHl7Abbreviation());
                 questions.add(new HashMap<String,Object>(a_question));
             }
             map.put("questions", questions);

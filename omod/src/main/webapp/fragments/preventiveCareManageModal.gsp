@@ -5,6 +5,7 @@
     var managePreventiveCareModal_handler = {
         modal : null,
         appointment_id : null,
+        concepts : null,
         data_manager: null,
         dropdown_handler : null,
         dropdown_initialized : false,
@@ -73,42 +74,69 @@
         },
         
         attempt_mark_completed : function(){
-            
-            /*
-             
-            //location.reload();
-            var reminder_id         = encodeURIComponent(this.appointment_id);
-            var concept_id          = encodeURIComponent(event.concept_id);
-            var completed_date      = encodeURIComponent(this.input.markCompleted.completed_date.val());
-            var doctor_name         = encodeURIComponent(this.input.markCompleted.doctor_name.val());
-            var comments            = encodeURIComponent(this.input.markCompleted.comments.val());
-            var personUuid          = encodeURIComponent(jq("#personUuid").val());
-            var formatedTargetDate  = encodeURIComponent(event.formatedTargetDate);
-            var parameters = 'reminderId='+reminder_id + '&conceptId='+concept_id + '&markCompletedDate='+completed_date + '&doctorName='+doctor_name + '&comments='+comments + '&personUuid='+personUuid + '&formatedTargetDate='+formatedTargetDate;
-            
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "appointmentsManageModal/markCompleted.action?" + parameters, true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onload = function(){
-                //console.log(this.responseText);
-                console.log("Success!");
-                window.location.reload();
-            };
-            xhr.send(null);
-            */
-            
+            console.log(this.data_manager.data);
             var event = this.data_manager.data[this.appointment_id];
+            var concept_id = event.concept_id;
+            
+
+            //////////////
+            // Get question responses 
+            /////////////
+            var questions = this.concepts[concept_id].questions;
+            var question_holder_parent = this.modal.find("."+concept_id+"-part");
+            var request_data = []; 
+            for (var i = 0; i < questions.length; i++){
+                var this_question = questions[i];
+                var this_uuid = this_question.uuid;
+                var this_datatype = this_question.datatype;
+                var this_holder = question_holder_parent.find("#question_"+this_question.uuid);
+                var this_response = this.grab_response_from(this_holder, this_datatype);
+                
+                request_data.push({
+                    uuid : this_uuid,
+                    datatype : this_datatype, 
+                    response : this_response, 
+                });
+            }
             
             ////////////
-            // Below is the old mark completed - unfinished - submission method.
+            // Submit request
             ////////////
-            jq.get("preventiveCareManageModal/saveInfluenzaForm.action", {
-                influenzaDate: jq("#influenzaDate").val()
+            jq.get("preventiveCareManageModal/markPreventiveCareCompleted.action", {
+                concept_id : concept_id,
+                json_data : JSON.stringify(request_data),
             }, function () {
+                console.log("Request Responded");
                 //location.reload();
             });
+            /*
+            var the_value = this.modal.find("#question_f1cba252-751f-470b-871b-2399565af396").find(".preventive_care_input")[0].value;
+            console.log(the_value);
+            jq.get("preventiveCareManageModal/saveInfluenzaForm.action", {
+                influenzaDate : the_value,
+            }, function () {
+                console.log("Request Responded");
+                //location.reload();
+            });
+            */
         },
         
+        grab_response_from : function(question_holder, question_datatype){
+            // Grab input element(s)
+            var response_holder = question_holder.find(".preventive_care_input");
+            
+            // parse input elements
+            var response = null;
+            if(question_datatype == "NM") response = response_holder[0].value;
+            if(question_datatype == "DT") response = response_holder[0].value;
+            if(question_datatype == "BIT") {
+                if(response_holder[0].checked) response = "true";
+                if(response_holder[1].checked) response = "false";
+            }
+            console.log("response: " + response);
+            
+            return response;
+        },
         
         /////////////////////////////////////
         // Initialize concept data and generate input templates
@@ -125,13 +153,19 @@
             }.bind(this));
         },
         setDataSource : function(relevant_concepts){
-            this.concepts = relevant_concepts;
-            this.build_input_from_concepts();
+            // Store concepts by concept id
+            this.concepts = [];
+            for(var i = 0; i < relevant_concepts.length; i++){
+                var this_concept = relevant_concepts[i];
+                this.concepts[this_concept.concept_id] = this_concept;
+            }
+            
+            // Build dom input elements for concept questions
+            this.build_input_from_concepts(relevant_concepts);
         },
         
-        build_input_from_concepts : function(){
+        build_input_from_concepts : function(concepts){
             var holder = this.DOM.markCompleted_concept_holder;
-            var concepts = this.concepts;
             
             //////////
             // Insert each concept into holder
@@ -141,23 +175,23 @@
                 
                 //var wrapper = document.createElement("div");
                 var parent = document.createElement("div");
-                parent.className = this_concept.concept_id + "-part modal-part";
+                parent.className = this_concept.concept_id + "-part modal-part"; // Note: Parent holder can be found by .find("."+contept_id+"-part");
                 for(var j = 0; j < this_concept.questions.length; j++){
                     var this_question = this_concept.questions[j];
                     
                     var question = document.createElement("form");
-                    question.id = "question_" + this_question.uuid;
+                    question.id = "question_" + this_question.uuid; // Note: Each question can be found by .find("#question_"+question.uuid);, recommended parent.find(...)
                     question.className = "form-inline";
                     
                     var label = document.createElement("label");
                     label.className = "uniform_width_manage_preventive_care_modal_question_label reformatText";
                     label.innerHTML = this_question.name;
                     
-                    if(this_question.dataType == "BIT"){
+                    var input_element_class_name = "preventive_care_input form-control openmrs_concept_datatype_" + this_question.datatype; // datatype part used to instantiate datetime elements 
+                    if(this_question.datatype == "BIT"){
                         // Boolean data
                         var input = document.createElement("div");
                         input.className = "radio";
-                        
                         boolean_constants = [["true", "Yes"], ["false", "No"]]; // creates two radio buttons, "name" = [0], title = [1]
                         for(var k = 0; k < boolean_constants.length; k++){
                             var these_constants = boolean_constants[k];
@@ -165,18 +199,18 @@
                             boolean.className = "radio-inline";
                             var boolean_input = document.createElement("input");
                             boolean_input.type = "radio";
-                            boolean_input.name = these_constants[0];
-                            boolean_input.class = "openmrs_concept_datatype_"+this_question.dataType + " form-control";
+                            boolean_input.name = "preventive_care_radio";
+                            boolean_input.value = these_constants[0];
+                            boolean_input.className = input_element_class_name; 
                             boolean.appendChild(boolean_input);
                             boolean.innerHTML += these_constants[1];
                             input.appendChild(boolean);
                         }
-                        
                     } else {
                         var input = document.createElement("input");
-                        input.type = (this_question.dataType == "NM") ? "number" : "text"; 
-                        input.className = "openmrs_concept_datatype_"+this_question.dataType + " form-control"; //used to target and instantiate all datetime inputs
-                        if(this_question.dataType == "DM") input.className += " datepicker"
+                        input.type = (this_question.datatype == "NM") ? "number" : "text"; 
+                        input.className = input_element_class_name; 
+                        if(this_question.datatype == "DM") input.className += " datepicker"
                     }
                     question.appendChild(label);
                     question.appendChild(input);
