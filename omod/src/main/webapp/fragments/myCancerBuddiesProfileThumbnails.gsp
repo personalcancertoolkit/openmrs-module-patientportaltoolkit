@@ -153,7 +153,7 @@
                         the_button_to_display = '<button  class="btn btn-info btn-xs disabled" role="button" data-toggle="modal">Pending</button>';
                     }
                     if (pptrelation==null || pptrelation.getShareStatus()==2) { 
-                       the_button_to_display = '<button id="addFellowPatient${mycancerbuddiesperson.person.uuid}" class="btn btn-info btn-xs addFellowPatient" role="button" data-toggle="modal" data-target="#add-mycancerbuddies-relationship-modal">Add Connection</button>';
+                       the_button_to_display = '<button id="addFellowPatient'+mycancerbuddiesperson.person.uuid+'" class="btn btn-info btn-xs addFellowPatient" role="button" data-toggle="modal" data-target="#add-mycancerbuddies-relationship-modal">Add Connection</button>';
                     }
                 } 
             %>
