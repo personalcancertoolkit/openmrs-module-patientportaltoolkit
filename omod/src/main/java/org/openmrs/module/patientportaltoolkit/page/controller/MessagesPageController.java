@@ -16,6 +16,7 @@ package org.openmrs.module.patientportaltoolkit.page.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
+import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.api.MessageService;
@@ -38,13 +39,10 @@ public class MessagesPageController {
     public void controller(PageModel model,PageRequest pageRequest) {
         log.info(PPTLogAppender.appendLog("REQUEST_MESSAGES_PAGE", pageRequest.getRequest()));
         //log.info("Messages Page Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
-        Patient patient = null;
+        Person person = null;
         model.addAttribute("pptutil",new PatientPortalUtil());
-        patient= Context.getPatientService().getPatientByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
-        if (patient !=null)
-            model.addAttribute("messages", Context.getService(MessageService.class).getMessageForPerson(patient,true));
-        else
-            model.addAttribute("messages",null);
+        person= Context.getPersonService().getPersonByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
+        model.addAttribute("messages", Context.getService(MessageService.class).getMessageForPerson(person,true));
         model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
         model.addAttribute("contextUser", Context.getAuthenticatedUser());
     }

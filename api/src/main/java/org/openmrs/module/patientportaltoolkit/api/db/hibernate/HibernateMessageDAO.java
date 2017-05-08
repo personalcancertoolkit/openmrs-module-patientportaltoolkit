@@ -17,6 +17,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Person;
@@ -72,7 +74,10 @@ public class HibernateMessageDAO implements MessageDAO {
                 c.addOrder(Order.asc("dateCreated"));
             }
         }
-        c.add(Restrictions.eq("sender",p));
+        Criterion sender = Restrictions.eq("sender", p);
+        Criterion receiver = Restrictions.eq("receiver", p);
+        LogicalExpression orExp = Restrictions.or(sender, receiver);
+        c.add(orExp);
         c.add(Restrictions.eq("deleted", false));
         return c.list();
     }
