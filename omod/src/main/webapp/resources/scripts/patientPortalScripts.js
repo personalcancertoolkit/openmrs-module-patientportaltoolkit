@@ -152,12 +152,19 @@ jq(document).ready(function(){
     $('#saveSurgeryButton').click(
         function () {
             var surgeryTypeList = '';
+            var isCheckedExists=0;
             $('.surgeryTypesInModal').each(function () {
                 if ($(this).is(':checked')) {
                      surgeryTypeList = surgeryTypeList + ($(this).val().split('split')[0]) + "split";
+                     isCheckedExists=1;
                 }
             });
-            if (jq("#surgeryEncounterHolder").val() == null || jq("#surgeryEncounterHolder").val() == '') {
+            if(isCheckedExists==0){
+                jq('#surgeryErrorDetails').text("Please select at least one surgery");
+                jq('#surgeryErrorDetails').show();
+            }
+
+            else if (jq("#surgeryEncounterHolder").val() == null || jq("#surgeryEncounterHolder").val() == '') {
             jq.get("surgeriesModal/saveNewSurgeryForm.action", {
                 surgeryTypes: surgeryTypeList,
                 surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
@@ -243,12 +250,18 @@ jq(document).ready(function(){
     $('#saveChemotherapyButton').click(
         function () {
             var chemotherapyMedTypesList='';
+            var isCheckedExists=0;
             $('.chemotherapyMedTypesInModal').each(function() {
                 if ( $(this).is(':checked')) {
                     chemotherapyMedTypesList=chemotherapyMedTypesList+($( this ).val().split('split')[0])+"split";
+                    isCheckedExists=1;
                 }
             });
-            if(jq("#chemotherapyEncounterHolder").val() == null || jq("#chemotherapyEncounterHolder").val() == '') {
+            if(isCheckedExists==0){
+                jq('#chemotherapyErrorDetails').text("Please select at least one chemotherapy medication");
+                jq('#chemotherapyErrorDetails').show();
+            }
+            else if(jq("#chemotherapyEncounterHolder").val() == null || jq("#chemotherapyEncounterHolder").val() == '') {
                 jq.get("chemotherapyModal/saveNewChemotherapyForm.action", {
                     chemotherapyMeds: chemotherapyMedTypesList,
                     centralLine: jq("#centralLineBoolSelect").val(),
@@ -328,12 +341,18 @@ jq(document).ready(function(){
     $('#saveRadiationButton').click(
         function () {
             var radiationTypesList = '';
+            var isCheckedExists=0;
             $('.radiationTypesInModal').each(function () {
                 if ($(this).is(':checked')) {
                     radiationTypesList = radiationTypesList + ($(this).val().split('split')[0]) + "split";
+                    isCheckedExists=1;
                 }
             });
-           if (jq("#radiationEncounterHolder").val() == null || jq("#radiationEncounterHolder").val() == '') {
+            if(isCheckedExists==0){
+                jq('#radiationErrorDetails').text("Please select at least one radiation type");
+                jq('#radiationErrorDetails').show();
+            }
+            else if (jq("#radiationEncounterHolder").val() == null || jq("#radiationEncounterHolder").val() == '') {
             jq.get("radiationModal/saveNewRadiationForm.action", {
                 radiationTypes: radiationTypesList,
                 radiationStartDate: jq("#radiationStartDate").val(),

@@ -98,6 +98,7 @@
             </div>
             <div class="modal-footer">
                 <div class="button-div pull-right">
+                    <div id="chemotherapyErrorDetails" style="color: red" hidden></div>
                     <button type="button" class="btn btn-default cancelModal">Cancel Changes</button>
                     <button type="button" class="btn btn-primary" id="saveChemotherapyButton">Save Changes</button>
 

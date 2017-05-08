@@ -95,6 +95,7 @@
                 <% } %>
             </div>
             <div class="modal-footer">
+                <div id="surgeryErrorDetails" style="color: red" hidden></div>
                 <div class="button-div pull-right">
                     <button type="button" class="btn btn-default cancelModal">Cancel Changes</button>
                     <button type="button" class="btn btn-primary" id="saveSurgeryButton">Save Changes</button>
