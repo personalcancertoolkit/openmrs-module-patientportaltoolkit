@@ -48,6 +48,7 @@
         reminder_table_handler.isACareGiver = ${isACareGiver};
         reminder_table_handler.modification_modal_handler = manageAppointmentModal_handler;
         reminder_table_handler.button_identification_class = "manageAppointment_sourceButton";
+        reminder_table_handler.add_new_appointment_button = "add_new_followup_appointment_button";
         
         setTimeout(load_reminder_data, 1000);
     });

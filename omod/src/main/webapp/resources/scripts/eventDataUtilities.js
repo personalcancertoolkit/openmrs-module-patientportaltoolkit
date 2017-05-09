@@ -201,6 +201,7 @@ function Event_Table_Handler(){
     this.modification_modal_handler = null;
     this.button_identification_class = null;
     this.enable_modify = true; //enables modify button on default for completed items
+    this.add_new_appointment_button = null;
 }
 Event_Table_Handler.prototype = {
     setDataSource : function(the_data){
@@ -295,9 +296,11 @@ Event_Table_Handler.prototype = {
             this.modification_modal_handler.open_modal_for(id_of_appointment);
         }.bind(this));  
 
-        // Initialize Adder button
-        document.getElementById("add_new_followup_appointment_button").onclick = function(){
-            this.modification_modal_handler.open_modal_for("add_new");
-        }.bind(this);
+        if(this.add_new_appointment_button != null){
+            // Initialize Adder button
+            document.getElementById(this.add_new_appointment_button).onclick = function(){
+                this.modification_modal_handler.open_modal_for("add_new");
+            }.bind(this);
+        }
     },
 };
