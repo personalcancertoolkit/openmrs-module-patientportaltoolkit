@@ -139,7 +139,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     
     @Override
     public Reminder addReminder(Reminder reminder) {
-        // Takes a reminder object, marks it completed, and saves it.
+        // Takes a reminder object and saves it into database
         Date today = new Date();
         reminder.setStatus(0);
         reminder.setModifiedDate(today);
@@ -319,7 +319,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         
         // Get all guideline reminders
         GuidelineConditionSet guidelineConditionSet = generateGuidelineConditionSet(patient);
-        Date firstSurgeryDate= ToolkitResourceUtil.getFirstSurgeryDate(patient);
+        Date firstSurgeryDate = ToolkitResourceUtil.getFirstSurgeryDate(patient);
         LocalDate modifiableDate=null;
         Date targetDate=null;
         // For each guideline

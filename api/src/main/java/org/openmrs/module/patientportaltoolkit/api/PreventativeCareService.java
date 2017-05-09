@@ -4,6 +4,8 @@ import org.openmrs.Patient;
 import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
 import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
 import org.springframework.transaction.annotation.Transactional;
+import org.openmrs.Concept;
+import org.openmrs.Encounter;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
  */
 public interface PreventativeCareService {
     @Transactional(readOnly = true)
-    PreventativeCareEvent getPreventativeCareEventById(String Id);
+    PreventativeCareEvent getEventById(String Id);
 
     @Transactional(readOnly = true)
     List<PreventativeCareEvent> getAllPreventativeCareEventByPatient(Patient patient);
@@ -21,19 +23,28 @@ public interface PreventativeCareService {
     @Transactional(readOnly = true)
     List<PreventativeCareEvent> getPreventativeCareEventsCompleted(Patient patient);
 
-
-    @Transactional
-    PreventativeCareEvent markCompletedPreventativeCareEvent(PreventativeCareEvent preventativeCareEvent);
-
     @Transactional
     PreventativeCareEvent savePreventativeCareEvent(PreventativeCareEvent preventativeCareEvent);
 
     @Transactional
-    PreventativeCareEvent markCompletedPreventativeCareEvent(String preventativeCareEventId, Date markCompleteDate, String doctorsName, String comments);
+    PreventativeCareEvent markCompletedEvent(PreventativeCareEvent preventativeCareEvent, Date markCompleteDate, Encounter relevantEncounter);
 
     @Transactional
     PreventativeCareEvent markScheduledPreventativeCareEvent(String PreventativeCareEventId, Date date);
 
     @Transactional
     List<PreventiveCareGuideline> getPreventativeCareGuideline(Patient patient);
+    
+    
+    
+    @Transactional
+    PreventativeCareEvent getEventByIdOrGuidelineData(String databaseId, Patient patient, String conceptId, Date targetDate) ;
+        
+    @Transactional
+    PreventativeCareEvent generateEventFromGuidelineData(Patient patient, String conceptId, Date targetDate);
+        
+    @Transactional
+    PreventativeCareEvent generateEventFromGuidelineData(Patient patient, Concept followupConcept, Date targetDate);
+    
+    
 }

@@ -46,6 +46,7 @@
         preventive_table_handler.isACareGiver = ${isACareGiver};
         preventive_table_handler.modification_modal_handler = managePreventiveCareModal_handler;
         preventive_table_handler.button_identification_class = "managePreventiveCare_sourceButton";
+        preventive_table_handler.enable_modify = false;
         
         setTimeout(load_preventive_data, 1000);
     });
@@ -63,7 +64,7 @@
             <tr>
                 <th>Appointment Type</th>
                 <th>Recommended Date</th>
-                <th> </th>
+                <th>Completed Date </th>
                 <% if(isACareGiver != 1) { %>
                     <th style = 'text-align:right;'>Actions</th>
                 <% } %>

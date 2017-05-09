@@ -99,12 +99,24 @@
                 });
             }
             
+            //////////////////////
+            // Grab all relevant data
+            //////////////////////
+            var event_id             = this.appointment_id;
+            var person_uuid          = jq("#personUuid").val();
+            var formated_target_date = event.formatedTargetDate;
+            var concept_id           = concept_id;
+            var json_data            = JSON.stringify(request_data);
+            
             ////////////
             // Submit request
             ////////////
             jq.get("preventiveCareManageModal/markPreventiveCareCompleted.action", {
-                concept_id : concept_id,
-                json_data : JSON.stringify(request_data),
+                eventId : event_id,
+                personUuid : person_uuid,
+                formatedTargetDate : formated_target_date,
+                conceptId : concept_id,
+                jsonData : json_data,
             }, function () {
                 console.log("Request Responded");
                 //location.reload();
