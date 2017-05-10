@@ -119,18 +119,8 @@
                 jsonData : json_data,
             }, function () {
                 console.log("Request Responded");
-                //location.reload();
+                location.reload();
             });
-            /*
-            var the_value = this.modal.find("#question_f1cba252-751f-470b-871b-2399565af396").find(".preventive_care_input")[0].value;
-            console.log(the_value);
-            jq.get("preventiveCareManageModal/saveInfluenzaForm.action", {
-                influenzaDate : the_value,
-            }, function () {
-                console.log("Request Responded");
-                //location.reload();
-            });
-            */
         },
         
         grab_response_from : function(question_holder, question_datatype){
