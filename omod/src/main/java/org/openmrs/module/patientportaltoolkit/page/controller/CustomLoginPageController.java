@@ -52,8 +52,6 @@ public class CustomLoginPageController {
     
     
     public void controller(PageModel model, PageRequest pageRequest) {
-        System.out.println("Here i am!");
-        
         //Log Processing events
         //HttpServletRequest request=pageRequest.getRequest();
 
@@ -91,9 +89,9 @@ public class CustomLoginPageController {
                                PageRequest pageRequest ) {
         
         
-        System.out.println("Here i am");
-        System.out.println(username);
-        System.out.println(password);
+        //System.out.println("Here i am");
+        //System.out.println(username);
+        //System.out.println(password);
         
         
         ////////////////////////////////////////////
@@ -135,17 +133,8 @@ public class CustomLoginPageController {
         String final_redirect = "";
         if(!login_success) final_redirect = "redirect:" + ui.pageLink(MODULE_ID, "login");
         if(login_success) final_redirect = "redirect:" + ui.pageLink(MODULE_ID, "home");
-        System.out.println(final_redirect);
+        //System.out.println(final_redirect);
         
-        return final_redirect;
+        return final_redirect; // Note: this does not do anything currently - but was found in the referenceapplication module
     }
-	/**
-	 * @should redirect the user to the home page if they are already authenticated
-	 * @should show the user the login page if they are not authenticated
-	 * @should set redirectUrl in the page model if any was specified in the request
-	 * @should set the referer as the redirectUrl in the page model if no redirect param exists
-	 * @should set redirectUrl in the page model if any was specified in the session
-	 * @should not set the referer as the redirectUrl in the page model if referer URL is outside context path
-	 * @should set the referer as the redirectUrl in the page model if referer URL is within context path
-	 */
 }
