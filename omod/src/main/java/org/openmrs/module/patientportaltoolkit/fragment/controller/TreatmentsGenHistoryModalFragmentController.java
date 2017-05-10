@@ -34,7 +34,7 @@ import java.util.*;
 /**
  * Created by Maurya on 16/07/2015.
  */
-public class GenHistoryModalFragmentController {
+public class TreatmentsGenHistoryModalFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 

@@ -1,4 +1,11 @@
-${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
+<style>
+.treatment_form_uniform_label_width label{
+    width:300px;   
+}
+
+</style>
+
+${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
 <div>
     <div class="clearfix">
 
@@ -42,7 +49,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
     </div>
 
     <hr/>
-    ${ ui.includeFragment("patientportaltoolkit", "surgeriesModal") }
+    ${ ui.includeFragment("patientportaltoolkit", "treatmentsSurgeriesModal") }
     <div class="clearfix">
         <h4>Surgeries&emsp;
             <a class="btn btn-primary btn-sm"   data-toggle="modal" data-target="#edit-surgeries-modal">Add</a>
@@ -91,7 +98,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
 
     <hr/>
 
-    ${ ui.includeFragment("patientportaltoolkit", "chemotherapyModal") }
+    ${ ui.includeFragment("patientportaltoolkit", "treatmentsChemotherapyModal") }
     <div>
         <div class="clearfix">
             <h4>Chemotherapies&emsp;
@@ -141,7 +148,7 @@ ${ ui.includeFragment("patientportaltoolkit", "genHistoryModal") }
     </div>
     <hr/>
 
-    ${ ui.includeFragment("patientportaltoolkit", "radiationModal") }
+    ${ ui.includeFragment("patientportaltoolkit", "treatmentsRadiationModal") }
     <div>
         <div class="clearfix">
             <h4>Radiation Surgery&emsp;

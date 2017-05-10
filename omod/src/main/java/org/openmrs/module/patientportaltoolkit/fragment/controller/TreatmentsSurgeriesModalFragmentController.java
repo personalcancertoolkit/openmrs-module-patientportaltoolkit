@@ -37,7 +37,7 @@ import java.util.List;
 /**
  * Created by Maurya on 29/07/2015.
  */
-public class SurgeriesModalFragmentController {
+public class TreatmentsSurgeriesModalFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
