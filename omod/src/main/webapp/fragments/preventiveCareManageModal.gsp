@@ -5,6 +5,7 @@
     var managePreventiveCareModal_handler = {
         modal : null,
         appointment_id : null,
+        concepts : null,
         data_manager: null,
         dropdown_handler : null,
         dropdown_initialized : false,
@@ -37,30 +38,8 @@
         open_sub_part : function(){
             var event = this.data_manager.data[this.appointment_id];
             var concept_id = event.concept_id + "";
+            this.modal.find("."+concept_id+"-part").show();
             console.log(concept_id);
-            switch (concept_id){
-                case "162938":
-                    jq("#influenza-modal").show();
-                    break;
-                case "162939":
-                    jq("#pneumococcal-modal").show();
-                    break;
-                case "162940":
-                    jq("#cholesterol-modal").show();
-                    break;
-                case "162941":
-                    jq("#bp-modal").show();
-                    break;
-                case "162942":
-                    jq("#hiv-modal").show();
-                    break;
-                case "162943":
-                    jq("#mammography-modal").show();
-                    break;
-                case "162944":
-                    jq("#cervical-modal").show();
-                    break;
-            }  
         },
         update_visible_data_for_event : function(){
             var event = this.data_manager.data[this.appointment_id];
@@ -95,41 +74,165 @@
         },
         
         attempt_mark_completed : function(){
+            console.log(this.data_manager.data);
+            var event = this.data_manager.data[this.appointment_id];
+            var concept_id = event.concept_id;
             
-            /*
-            var event = this.data_manager.data[this.appointment_id]
-             
-            //location.reload();
-            var reminder_id         = encodeURIComponent(this.appointment_id);
-            var concept_id          = encodeURIComponent(event.concept_id);
-            var completed_date      = encodeURIComponent(this.input.markCompleted.completed_date.val());
-            var doctor_name         = encodeURIComponent(this.input.markCompleted.doctor_name.val());
-            var comments            = encodeURIComponent(this.input.markCompleted.comments.val());
-            var personUuid          = encodeURIComponent(jq("#personUuid").val());
-            var formatedTargetDate  = encodeURIComponent(event.formatedTargetDate);
-            var parameters = 'reminderId='+reminder_id + '&conceptId='+concept_id + '&markCompletedDate='+completed_date + '&doctorName='+doctor_name + '&comments='+comments + '&personUuid='+personUuid + '&formatedTargetDate='+formatedTargetDate;
+
+            //////////////
+            // Get question responses 
+            /////////////
+            var questions = this.concepts[concept_id].questions;
+            var question_holder_parent = this.modal.find("."+concept_id+"-part");
+            var request_data = []; 
+            for (var i = 0; i < questions.length; i++){
+                var this_question = questions[i];
+                var this_uuid = this_question.uuid;
+                var this_datatype = this_question.datatype;
+                var this_holder = question_holder_parent.find("#question_"+this_question.uuid);
+                var this_response = this.grab_response_from(this_holder, this_datatype);
+                
+                request_data.push({
+                    uuid : this_uuid,
+                    datatype : this_datatype, 
+                    response : this_response, 
+                });
+            }
             
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "appointmentsManageModal/markCompleted.action?" + parameters, true);
-            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xhr.onload = function(){
-                //console.log(this.responseText);
-                console.log("Success!");
-                window.location.reload();
-            };
-            xhr.send(null);
-            */
-            
+            //////////////////////
+            // Grab all relevant data
+            //////////////////////
+            var event_id             = this.appointment_id;
+            var person_uuid          = jq("#personUuid").val();
+            var formated_target_date = event.formatedTargetDate;
+            var concept_id           = concept_id;
+            var json_data            = JSON.stringify(request_data);
             
             ////////////
-            // Below is the old mark completed - unfinished - submission method.
+            // Submit request
             ////////////
-            jq.get("preventiveCareManageModal/saveInfluenzaForm.action", {
-                influenzaDate: jq("#influenzaDate").val()
+            jq.get("preventiveCareManageModal/markPreventiveCareCompleted.action", {
+                eventId : event_id,
+                personUuid : person_uuid,
+                formatedTargetDate : formated_target_date,
+                conceptId : concept_id,
+                jsonData : json_data,
             }, function () {
-                //location.reload();
+                console.log("Request Responded");
+                location.reload();
             });
+        },
+        
+        grab_response_from : function(question_holder, question_datatype){
+            // Grab input element(s)
+            var response_holder = question_holder.find(".preventive_care_input");
             
+            // parse input elements
+            var response = null;
+            if(question_datatype == "NM") response = response_holder[0].value;
+            if(question_datatype == "DT") response = response_holder[0].value;
+            if(question_datatype == "BIT") {
+                if(response_holder[0].checked) response = "true";
+                if(response_holder[1].checked) response = "false";
+            }
+            console.log("response: " + response);
+            
+            return response;
+        },
+        
+        /////////////////////////////////////
+        // Initialize concept data and generate input templates
+        /////////////////////////////////////
+        initialize_concepts : function(){
+            //console.log(jq("#personUuid").val());
+            var OpenMRSInstance=window.location.href;
+            //Load Reminder data, insert reminders into calendar and table
+            //console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
+            jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getRelevantPreventiveCareConcepts/'+ jq("#personUuid").val(), function (relevantConcepts) {
+                console.log(relevantConcepts);
+                // Set datasource for reminder table
+                this.setDataSource(relevantConcepts);
+            }.bind(this));
+        },
+        setDataSource : function(relevant_concepts){
+            // Store concepts by concept id
+            this.concepts = [];
+            for(var i = 0; i < relevant_concepts.length; i++){
+                var this_concept = relevant_concepts[i];
+                this.concepts[this_concept.concept_id] = this_concept;
+            }
+            
+            // Build dom input elements for concept questions
+            this.build_input_from_concepts(relevant_concepts);
+        },
+        
+        build_input_from_concepts : function(concepts){
+            var holder = this.DOM.markCompleted_concept_holder;
+            
+            //////////
+            // Insert each concept into holder
+            //////////
+            for(var i = 0; i < concepts.length; i++){
+                var this_concept = concepts[i];
+                
+                //var wrapper = document.createElement("div");
+                var parent = document.createElement("div");
+                parent.className = this_concept.concept_id + "-part modal-part"; // Note: Parent holder can be found by .find("."+contept_id+"-part");
+                for(var j = 0; j < this_concept.questions.length; j++){
+                    var this_question = this_concept.questions[j];
+                    
+                    var question = document.createElement("form");
+                    question.id = "question_" + this_question.uuid; // Note: Each question can be found by .find("#question_"+question.uuid);, recommended parent.find(...)
+                    question.className = "form-inline";
+                    
+                    var label = document.createElement("label");
+                    label.className = "uniform_width_manage_preventive_care_modal_question_label reformatText";
+                    label.innerHTML = this_question.name;
+                    
+                    var input_element_class_name = "preventive_care_input form-control openmrs_concept_datatype_" + this_question.datatype; // datatype part used to instantiate datetime elements 
+                    if(this_question.datatype == "BIT"){
+                        // Boolean data
+                        var input = document.createElement("div");
+                        input.className = "radio";
+                        boolean_constants = [["true", "Yes"], ["false", "No"]]; // creates two radio buttons, "name" = [0], title = [1]
+                        for(var k = 0; k < boolean_constants.length; k++){
+                            var these_constants = boolean_constants[k];
+                            var boolean = document.createElement("label");
+                            boolean.className = "radio-inline";
+                            var boolean_input = document.createElement("input");
+                            boolean_input.type = "radio";
+                            boolean_input.name = "preventive_care_radio";
+                            boolean_input.value = these_constants[0];
+                            boolean_input.className = input_element_class_name; 
+                            boolean.appendChild(boolean_input);
+                            boolean.innerHTML += these_constants[1];
+                            input.appendChild(boolean);
+                        }
+                    } else {
+                        var input = document.createElement("input");
+                        input.type = (this_question.datatype == "NM") ? "number" : "text"; 
+                        input.className = input_element_class_name; 
+                        if(this_question.datatype == "DM") input.className += " datepicker"
+                    }
+                    question.appendChild(label);
+                    question.appendChild(input);
+                    parent.appendChild(question);
+                }
+                
+                // append to content holder
+                holder.append(parent);
+                
+            }
+            
+            //////////
+            // initialize all date time inputs
+            //////////
+            var datepicker_elements = this.modal.find(".openmrs_concept_datatype_DT");
+            console.log(datepicker_elements);
+            for(var i = 0; i < datepicker_elements.length; i++){
+                var element = this.modal.find(datepicker_elements[i]);
+                element.datepicker({ format: 'mm/dd/yyyy' }).on('changeDate', function(){ this.data('datepicker').hide() }.bind(element));
+            }
         },
     }
     
@@ -194,6 +297,13 @@
             managePreventiveCareModal_handler.close_modal();
         });
         
+        
+        // Load concepts from database w/ async request, build the input forms dynamically.
+        managePreventiveCareModal_handler.initialize_concepts(); 
+        managePreventiveCareModal_handler.DOM = {
+            markCompleted_concept_holder : the_modal.find("#markCompleted_concept_holder"),
+        }
+        /*
         // Initialize datepicker inputs
         var datepicker_ids = ["#influenzaDate", "#pneumococcalDate", "#cholesterolDate", "#bpDate", "#hivDate", "#mammographyDate", "#cervicalDate" ];
         //var datepicker_elements = [];
@@ -202,12 +312,18 @@
             var element = jq(datepicker_ids[i]);
             element.datepicker({ format: 'mm/dd/yyyy' }).on('changeDate', function(){ this.data('datepicker').hide() }.bind(element));
         }
+        */
     });
   
     
     
     
 </script>
+<style>
+.uniform_width_manage_preventive_care_modal_question_label {
+    width:300px;   
+}
+</style>
 <div class="modal fade modal-wide"  id="managePreventiveCare-modal" role="dialog" aria-labelledby="preventiveCareLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -217,174 +333,8 @@
                 <h4 class="modal-title"> Modal Title </h4>
             </div>
             <div class="modal-body">
-                <div class = 'markCompleted-part modal-part'>
-                    <% if (influenzaConcepts) { %>
-                        <div id="influenza-modal" class="modal-part">
-                            <label>Mark Influenza Vaccine Completed</label>
-                            <br/>
-                            <br/>
-                            <% influenzaConcepts.concepts.each { question -> %>
-                                <% /* influenza date*/ %>
-                                <% if (question.uuid=="f1cba252-751f-470b-871b-2399565af396") { %>
-                                    <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                        <input class="form-control" id="influenzaDate" type="text"/>
-                                    </form>
-                                <% } %>
-                            <% } %>
-                        </div>
-                    <% } %>
-                    <% if (pneumococcalConcepts) { %>
-                        <div id="pneumococcal-modal" class="modal-part">
-                            <label>Mark Pneumococcal Vaccine Completed</label>
-                            <br/>
-                            <br/>
-                            <% pneumococcalConcepts.concepts.each { question -> %>
-                                <% /* pneumococcal date*/ %>
-                                    <% if (question.uuid=="c93df44f-d5b7-49a6-8539-e8265c03dbb3") { %>
-                                    <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                        <input class="form-control" id="pneumococcalDate" type="text"/>
-                                    </form>
-                                <% } %>
-                            <% } %>
-                        </div>
-                    <% } %>
-                    <% if (cholesterolConcepts) { %>
-                        <div id="cholesterol-modal" class="modal-part">
-                            <label>Mark Cholesterol Screening Completed</label>
-                            <br/>
-                            <br/>
-                            <% cholesterolConcepts.concepts.each { question -> %>
-                                <% /* cholesterol LDL*/ %>
-                                    <% if (question.uuid=="b0a44f7a-4188-44b3-b86f-955a32d8f4cd") { %>
-                                        <form class="form-inline" role="form"> <label>${(question.getName())} </label>
-                                            <input class="form-control" id="cholesterolLDLNumber" type="number"/>
-                                        </form>
-                                    <% } %>
-                                    <% if (question.uuid=="4788cb2c-6324-412f-b617-31ef341e7455") { %>
-                                        <form class="form-inline" role="form"> <label>${(question.getName())} </label>
-                                            <input class="form-control" id="cholesterolTotalNumber" type="number"/>
-                                        </form>
-                                    <% } %>
-                                    <% if (question.uuid=="01f5d7c7-f0c5-4329-8b2d-2053155a962f") { %>
-                                        <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                            <input class="form-control" id="cholesterolDate" type="text"/>
-                                        </form>
-                                    <% } %>
-                            <% } %>
-                        </div>
-                    <% } %>
-                    <% if (bpConcepts) { %>
-                        <div id="bp-modal" class="modal-part">
-                            <label>Mark Blood Pressure Screening Completed</label>
-                            <br/>
-                            <br/>
-                            <% bpConcepts.concepts.each { question -> %>
-                                <% /* BP Top number*/ %>
-                                <% if (question.uuid=="63ee5099-567e-4b55-936c-c4c8d71d1144") { %>
-                                    <form class="form-inline" role="form"> <label>${(question.getName())} </label>
-                                        <input class="form-control" id="bpTopNumber" type="number"/>
-                                    </form>
-                                <% } %>
-                                <% /* BP bottom number*/ %>
-                                <% if (question.uuid=="02310664-f7bb-477c-a703-0325af4c3f46") { %>
-                                    <form class="form-inline" role="form"> <label>${(question.getName())} </label>
-                                        <input class="form-control" id="bpBottomNumber" type="number"/>
-                                    </form>
-                                <% } %>
-                                <% if (question.uuid=="bec04eab-2be5-4f9e-a017-873e3a0b32ab") { %>
-                                    <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                        <input class="form-control" id="bpDate" type="text"/>
-                                    </form>
-                                <% } %>
-                                <br/>
-                            <% } %>
-                        </div>
-                    <% } %>
-                    <% if (hivConcepts) { %>
-                    <div id="hiv-modal" class="modal-part">
-                        <label>Mark HIV Screening Completed</label>
-                        <br/>
-                        <br/>
-                        <% hivConcepts.concepts.each { question -> %>
-                            <% if (question.uuid=="785fd684-c6ca-48d7-9f71-07ae9b5e93d2") { %>
-                                <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                <br>
-                                <div class="radio">
-                                    <label><input type="radio" name="hivradio" value="true"> <span class="reformatText">Positive</span></label>
-                                    <br/>
-                                    <label><input type="radio"  name="hivradio" value="false"> <span class="reformatText">Negative</span></label>
-                                </div>
-                                </form>
-                            <% } %>
-                            <% if (question.uuid=="695ccb4a-a01f-4039-9e00-8f2679b63065") { %>
-                                <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                    <input class="form-control" id="hivDate" type="text"/>
-                                </form>
-                            <% } %>
-                        <% } %>
-                        <br/>
-                    </div>
-                    <% } %>
-                    <% if (mammographyConcepts) { %>
-                        <div id="mammography-modal" class="modal-part">
-                        <label>Mark Mammography Screening Completed</label>
-                        <br/>
-                        <br/>
-                        <% mammographyConcepts.concepts.each { question -> %>
-                            <% if (question.uuid=="39ca0f60-ffe3-49cc-9dcf-7cce8f69c0f5") { %>
-                                <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                    <br>
-                                    <div class="radio">
-                                        <label><input type="radio" name="mammographyradio" value="true"> <span class="reformatText">Positive</span></label>
-                                        <br/>
-                                        <label><input type="radio"  name="mammographyradio" value="false"> <span class="reformatText">Negative</span></label>
-                                    </div>
-                                </form>
-                            <% } %>
-                            <% if (question.uuid=="d32ef213-d270-4682-bf3a-b81d40b1d661") { %>
-                                <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                    <input class="form-control" id="mammographyDate" type="text"/>
-                                </form>
-                            <% } %>
-                            <% if (question.uuid=="c2cb2220-c07d-47c6-a4df-e5918aac3fc2") { %>
-                                <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                    <input class="form-control" id="mammographyDoctorName" type="text"/>
-                                </form>
-                            <% } %>
-                            <br/>
-                        <% } %>
-                        </div>
-                    <% } %>
-                    <% if (cervicalConcepts) { %>
-                        <div id="cervical-modal" class="modal-part">
-                            <label>Mark Cervical Cancer Screening Completed</label>
-                            <br/>
-                            <br/>
-                            <% cervicalConcepts.concepts.each { question -> %>
-                                <% if (question.uuid=="838800a3-9991-4fd8-9df1-d6c4f9c2ffae") { %>
-                                    <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                        <br>
-                                        <div class="radio">
-                                            <label><input type="radio" name="cervicalradio" value="true"> <span class="reformatText">Positive</span></label>
-                                            <br/>
-                                            <label><input type="radio"  name="cervicalradio" value="false"> <span class="reformatText">Negative</span></label>
-                                        </div>
-                                    </form>
-                                <% } %>
-                                <% if (question.uuid=="baf0de5b-17e7-47c5-a8f5-87d3df4966b4") { %>
-                                    <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                        <input class="form-control" id="cervicalDate" type="text"/>
-                                    </form>
-                                <% } %>
-                                <% if (question.uuid=="c2cb2220-c07d-47c6-a4df-e5918aac3fc2") { %>
-                                    <form class="form-inline" role="form"> <label class="reformatText">${(question.getName())} </label>
-                                        <input class="form-control" id="cervicalDoctorName" type="text"/>
-                                    </form>
-                                    <br/>
-                                <% } %>
-                            <% } %>
-                        </div>
-                    <% } %>
+                <div id = "markCompleted_concept_holder" class = 'markCompleted-part modal-part'>
+                   
                 </div>
             </div>
             

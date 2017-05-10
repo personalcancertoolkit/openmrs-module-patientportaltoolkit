@@ -200,6 +200,8 @@ function Event_Table_Handler(){
     this.isACareGiver = null;
     this.modification_modal_handler = null;
     this.button_identification_class = null;
+    this.enable_modify = true; //enables modify button on default for completed items
+    this.add_new_appointment_button = null;
 }
 Event_Table_Handler.prototype = {
     setDataSource : function(the_data){
@@ -270,7 +272,7 @@ Event_Table_Handler.prototype = {
         // Create third col
         var td3 = document.createElement("td"); 
         td3.className = 'clearfix';
-        if(this_event.status == 1){
+        if(this_event.status == 1){ // if completed
             td3.innerHTML = "<span class='pull-left'>" + this_event.formatedCompletedDate + "</span>";
         } 
         row.appendChild(td3);
@@ -280,6 +282,9 @@ Event_Table_Handler.prototype = {
         td4.className = 'clearfix';
         var button_class = (this_event.status == 1) ? "btn-custom-completed" : "btn-primary";
         td4.innerHTML = "<a class='btn " + button_class + " btn-sm pull-right "+ this.button_identification_class + "'  data-id = '"+escape(this_event.id)+"'>Manage</a>";
+        if(this_event.status == 1 && this.enable_modify == false){ // if completed but modify button is not enabled
+            td4.style.visibility = "hidden";
+        }
         if(this.isACareGiver != 1) row.appendChild(td4); // only append third column if user is a care giver
 
         this.table_body_element.appendChild(row);
@@ -291,9 +296,11 @@ Event_Table_Handler.prototype = {
             this.modification_modal_handler.open_modal_for(id_of_appointment);
         }.bind(this));  
 
-        // Initialize Adder button
-        document.getElementById("add_new_followup_appointment_button").onclick = function(){
-            this.modification_modal_handler.open_modal_for("add_new");
-        }.bind(this);
+        if(this.add_new_appointment_button != null){
+            // Initialize Adder button
+            document.getElementById(this.add_new_appointment_button).onclick = function(){
+                this.modification_modal_handler.open_modal_for("add_new");
+            }.bind(this);
+        }
     },
 };
