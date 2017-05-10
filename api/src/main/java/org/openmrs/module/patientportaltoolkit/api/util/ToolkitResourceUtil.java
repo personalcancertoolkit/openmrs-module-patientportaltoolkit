@@ -590,14 +590,11 @@ public class ToolkitResourceUtil {
         reminderMap.put("followProcedureName",reminder.getFollowProcedureName());
         reminderMap.put("targetDate",reminder.getTargetDate());
         reminderMap.put("formatedTargetDate", pptutil.formatDate(reminder.getTargetDate()));
-        //details for calendar
         if(reminder.getId()==null){ 
             reminderMap.put("id", "X" + Integer.toString(fake_id)); // X ensures that we never have a 'fake' ID with the same value as a real ID
         } else {
             reminderMap.put("id", reminder.getId());
         }
-        reminderMap.put("startDate",reminder.getTargetDate());
-        reminderMap.put("endDate",reminder.getTargetDate());
         reminderMap.put("concept_id",reminder.getFollowProcedure().getConceptId());
         //System.out.println("Here i am - util file");
         if(reminder.getCompleteDate() != null){
@@ -607,6 +604,16 @@ public class ToolkitResourceUtil {
             reminderMap.put("comments", reminder.getResponseComments());
         }
         reminderMap.put("status",reminder.getStatus());
+        
+        //display date on calendar
+        Date calendarDisplayDate = null;
+        if(reminder.getCompleteDate() != null){
+            calendarDisplayDate = reminder.getCompleteDate();
+        } else {
+            calendarDisplayDate = reminder.getTargetDate();
+        }
+        reminderMap.put("startDate",calendarDisplayDate);
+        reminderMap.put("endDate",calendarDisplayDate);
         
         ////
         switch (reminder.getFollowProcedure().getConceptId()) {
@@ -681,8 +688,6 @@ public class ToolkitResourceUtil {
         } else {
             eventDataMap.put("id", event.getId());
         }
-        eventDataMap.put("startDate",targetDate);
-        eventDataMap.put("endDate",targetDate);
         if(event.getCompleteDate() != null){
             eventDataMap.put("formatedCompletedDate", pptutil.formatDate(event.getCompleteDate()));
             eventDataMap.put("completedDate", event.getCompleteDate());
@@ -690,7 +695,18 @@ public class ToolkitResourceUtil {
             eventDataMap.put("comments", event.getResponseComments());
         }
         eventDataMap.put("status",event.getStatus());
-
+        
+        //display date on calendar
+        Date calendarDisplayDate = null;
+        if(event.getCompleteDate() != null){
+            calendarDisplayDate = event.getCompleteDate();
+        } else {
+            calendarDisplayDate = event.getTargetDate();
+        }
+        eventDataMap.put("startDate",calendarDisplayDate);
+        eventDataMap.put("endDate",calendarDisplayDate);
+        
+        
         switch (event.getFollowProcedure().getConceptId()) {
             //Influenza Vaccine
             case 162938:
