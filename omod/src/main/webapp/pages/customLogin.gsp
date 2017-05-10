@@ -1,3 +1,12 @@
+<script>
+    var user_is_logged_in = ${loggedInBoolean};
+    //console.log(user_is_logged_in);
+    if(user_is_logged_in) window.location.replace("/openmrs/patientportaltoolkit/home.page"); 
+</script>
+
+
+
+
 
 ${ ui.includeFragment("patientportaltoolkit", "headerForExternal") }
 
@@ -20,34 +29,8 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForExternal") }
 </div>
 <div style = 'position:absolute; width:100%; top:100px; left:0; right:0; display:flex;' >
     <div style = 'margin:auto;'>
-        <div class="modal-dialog" style = 'margin:auto;  '>
-            <div class="loginmodal-container" style = 'min-width:400px;'>
-                <h1>Welcome</h1><br>
-                <div style = 'text-align:center;'>
-                    To the Personal Cancer Toolkit Platform.
-                </div>
-            </div>
-        </div>
-
-        <div style = 'height:50px;'></div>
-
-        <div class="modal-dialog" style = 'margin:auto;  '>
-            <div class="loginmodal-container" style = 'min-width:400px;'>
-                <h1>Login</h1><br>
-
-
-                <input type="text" name="user" placeholder="Username">
-                <input type="password" name="pass" placeholder="Password">
-                <input type="submit" name="login" class="login loginmodal-submit" value="Login">
-
-                <div style = "font-size: 12px;">
-                <!-- 
-                <a href="#">Register</a> 
-                  - 
-                -->
-                <a href="javascript:alert('Coming Soon!');">Forgot Password</a>
-                </div>
-            </div>
-        </div>
+        ${ui.includeFragment("patientportaltoolkit","customLoginService")}
     </div>
 </div>
+
+

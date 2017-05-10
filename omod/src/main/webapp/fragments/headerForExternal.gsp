@@ -3,9 +3,13 @@
     <title>OpenMRS Patient Portal</title>
     <link rel="shortcut icon" type="image/ico" href="/openmrs/images/openmrs-favicon.ico">
     <link rel="icon" type="image/png\" href="/openmrs/images/openmrs-favicon.png">
+    
     <script type="text/javascript" src="${ ui.resourceLink("patientportaltoolkit", "/scripts/jquery-1.11.1.min.js") }"></script>
     <script type="text/javascript" src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap.min.js") }"></script>
-    <link rel="stylesheet" href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap.min.css") }" type="text/css">
+    <script> jq = jQuery; </script>
+
+
+
 </head>
 <!--
 <div class="navbar navbar-default container">
