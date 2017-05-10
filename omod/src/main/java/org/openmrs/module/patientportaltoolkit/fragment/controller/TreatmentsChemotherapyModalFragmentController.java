@@ -34,7 +34,7 @@ import java.util.*;
 /**
  * Created by Maurya on 10/08/2015.
  */
-public class ChemotherapyModalFragmentController {
+public class TreatmentsChemotherapyModalFragmentController {
     protected final Log log = LogFactory.getLog(getClass());
 
     public void controller(FragmentModel model, PageRequest pageRequest) {

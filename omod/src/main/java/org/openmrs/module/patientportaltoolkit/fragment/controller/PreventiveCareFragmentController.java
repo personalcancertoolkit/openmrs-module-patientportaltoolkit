@@ -17,18 +17,6 @@ import java.util.List;
  */
 public class PreventiveCareFragmentController {
     public void controller(PageModel model, PageRequest pageRequest) {
-        User user = Context.getAuthenticatedUser();
-        Person person = (Person) model.get("person");
-        org.openmrs.api.PersonService personService=Context.getPersonService();
-        model.addAttribute("preventiveCareGuidelines",null);
-        List<PreventativeCareEvent> alertablePreventativeCareEvents = new ArrayList<>();
-        if(person.isPatient()) {
-            Patient patient = Context.getPatientService().getPatientByUuid(person.getUuid());
-            model.addAttribute("preventiveCareGuidelines",Context.getService(PreventativeCareService.class).getPreventativeCareGuideline(patient));
-            List<PreventativeCareEvent> pcgeList =  new ArrayList<>();
-            pcgeList= Context.getService(PreventativeCareService.class).getAllPreventativeCareEventByPatient(patient);
-            alertablePreventativeCareEvents.addAll(pcgeList);
-        }
-        model.addAttribute("alertableevents",alertablePreventativeCareEvents);
+        // All data is passed asynchronous as of pull request #198; May 10, 2017 
     }
 }

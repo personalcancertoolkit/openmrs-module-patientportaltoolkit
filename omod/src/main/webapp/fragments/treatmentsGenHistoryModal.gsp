@@ -1,4 +1,4 @@
-<div class="modal fade modal-wide"  id="edit-genHistory-modal" role="dialog" aria-labelledby="editGenHistoryLabel" aria-hidden="true">
+<div class="modal fade modal-wide treatment_form_uniform_label_width"  id="edit-genHistory-modal" role="dialog" aria-labelledby="editGenHistoryLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

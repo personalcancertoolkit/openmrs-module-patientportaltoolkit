@@ -34,7 +34,7 @@ import java.util.*;
 /**
  * Created by Maurya on 18/08/2015.
  */
-public class RadiationModalFragmentController {
+public class TreatmentsRadiationModalFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
