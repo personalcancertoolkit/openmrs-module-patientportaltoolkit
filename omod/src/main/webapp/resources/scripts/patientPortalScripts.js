@@ -104,7 +104,7 @@ jq(document).ready(function(){
         });
     jq('#saveGeneralHistorybutton').click(
         function () {
-            jq.get("genHistoryModal/saveGenHistoryForm.action", {encounterId: jq("#genHistEncounterHolder").val(), cancerType:  jq("#genHistoryCancerTypeSelect").val(),cancerStage:  jq("#genHistoryCancerStageSelect").val(),cancerDate:jq("#genHistoryDate").val(),cancerAbnormalityBool:jq("#genHistoryCancerabnormalitySelect").val(),cancerAbnormalityType:jq("#genHistoryCancerabnormalityTypeSelect").val(),genHistoryCancerPcpName:jq("#genHistoryCancerPcpName").val(),genHistoryCancerPcpEmail:jq("#genHistoryCancerPcpEmail").val(),genHistoryCancerPcpPhone:jq("#genHistoryCancerPcpPhone").val()}, function(){
+            jq.get("treatmentsGenHistoryModal/saveGenHistoryForm.action", {encounterId: jq("#genHistEncounterHolder").val(), cancerType:  jq("#genHistoryCancerTypeSelect").val(),cancerStage:  jq("#genHistoryCancerStageSelect").val(),cancerDate:jq("#genHistoryDate").val(),cancerAbnormalityBool:jq("#genHistoryCancerabnormalitySelect").val(),cancerAbnormalityType:jq("#genHistoryCancerabnormalityTypeSelect").val(),genHistoryCancerPcpName:jq("#genHistoryCancerPcpName").val(),genHistoryCancerPcpEmail:jq("#genHistoryCancerPcpEmail").val(),genHistoryCancerPcpPhone:jq("#genHistoryCancerPcpPhone").val()}, function(){
             });
             //alert("refreshing");
             setTimeout(function(){
@@ -165,7 +165,7 @@ jq(document).ready(function(){
             }
 
             else if (jq("#surgeryEncounterHolder").val() == null || jq("#surgeryEncounterHolder").val() == '') {
-            jq.get("surgeriesModal/saveNewSurgeryForm.action", {
+            jq.get("treatmentsSurgeriesModal/saveNewSurgeryForm.action", {
                 surgeryTypes: surgeryTypeList,
                 surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
                 majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
@@ -184,7 +184,7 @@ jq(document).ready(function(){
                 }, 2000);
         }
              else {
-        jq.get("surgeriesModal/saveSurgeryForm.action", {
+        jq.get("treatmentsSurgeriesModal/saveSurgeryForm.action", {
             encounterId: jq("#surgeryEncounterHolder").val(),
             surgeryTypes: surgeryTypeList,
             surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
@@ -262,7 +262,7 @@ jq(document).ready(function(){
                 jq('#chemotherapyErrorDetails').show();
             }
             else if(jq("#chemotherapyEncounterHolder").val() == null || jq("#chemotherapyEncounterHolder").val() == '') {
-                jq.get("chemotherapyModal/saveNewChemotherapyForm.action", {
+                jq.get("treatmentsChemotherapyModal/saveNewChemotherapyForm.action", {
                     chemotherapyMeds: chemotherapyMedTypesList,
                     centralLine: jq("#centralLineBoolSelect").val(),
                     chemoStartDate: jq("#chemoStartDate").val(),
@@ -281,7 +281,7 @@ jq(document).ready(function(){
                     }, 2000);
             }
              else {
-                jq.get("chemotherapyModal/saveChemotherapyForm.action", {
+                jq.get("treatmentsChemotherapyModal/saveChemotherapyForm.action", {
                     encounterId: jq("#chemotherapyEncounterHolder").val(),
                     chemotherapyMeds: chemotherapyMedTypesList,
                     centralLine: jq("#centralLineBoolSelect").val(),
@@ -353,7 +353,7 @@ jq(document).ready(function(){
                 jq('#radiationErrorDetails').show();
             }
             else if (jq("#radiationEncounterHolder").val() == null || jq("#radiationEncounterHolder").val() == '') {
-            jq.get("radiationModal/saveNewRadiationForm.action", {
+            jq.get("treatmentsRadiationModal/saveNewRadiationForm.action", {
                 radiationTypes: radiationTypesList,
                 radiationStartDate: jq("#radiationStartDate").val(),
                 radiationEndDate: jq("#radiationEndDate").val(),
@@ -372,7 +372,7 @@ jq(document).ready(function(){
         }
         else
     {
-        jq.get("radiationModal/saveRadiationForm.action", {
+        jq.get("treatmentsRadiationModal/saveRadiationForm.action", {
             encounterId: jq("#radiationEncounterHolder").val(),
             radiationTypes: radiationTypesList,
             radiationStartDate: jq("#radiationStartDate").val(),
