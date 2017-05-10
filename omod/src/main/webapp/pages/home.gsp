@@ -1,5 +1,5 @@
 
-${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
+${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 <script type="text/javascript">
     jq(document).ready(function(){
         if (jq('#isCurrentPatient').val()=="true") {

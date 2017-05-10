@@ -1,4 +1,4 @@
-${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
+${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 <body>
 <div>
     <div class="container pull-left col-md-4">
