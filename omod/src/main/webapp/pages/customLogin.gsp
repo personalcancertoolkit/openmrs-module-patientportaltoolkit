@@ -25,7 +25,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForExternal") }
     doctor_with_stethoscope
     food_wood_stethoscope -- good
     -->
-    <img src = "${ ui.resourceLink("patientportaltoolkit", "/images/PC_and_stethoscope.jpg") }" style = 'max-width:100%'></img>
+    <img src = "${ ui.resourceLink("patientportaltoolkit", "/images/cancer-patient-picture.jpg") }" style = 'max-width:110%'></img>
 </div>
 <div style = 'position:absolute; width:100%; top:100px; left:0; right:0; display:flex;' >
     <div style = 'margin:auto;'>

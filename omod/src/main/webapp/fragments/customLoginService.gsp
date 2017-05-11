@@ -1,9 +1,9 @@
 
 <div class="modal-dialog" style = 'margin:auto;  '>
     <div class="loginmodal-container" style = 'min-width:400px;'>
-        <h1>Welcome</h1><br>
+        <h1>Welcome to</h1><br>
         <div style = 'text-align:center;'>
-            To the Personal Cancer Toolkit Platform.
+            <img src = "${ ui.resourceLink("patientportaltoolkit", "/images/Personal-Cancer-Toolkit-Logo.jpg") }" style = 'max-width:100%'></img>
         </div>
     </div>
 </div>

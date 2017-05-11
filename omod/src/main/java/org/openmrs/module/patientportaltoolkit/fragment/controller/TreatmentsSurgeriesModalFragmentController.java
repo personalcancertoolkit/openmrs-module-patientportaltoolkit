@@ -92,6 +92,7 @@ public class TreatmentsSurgeriesModalFragmentController {
         allTheEnteredValues.add("surgeryInstitutionName");
         allTheEnteredValues.add("surgeryInstitutionCity");
         allTheEnteredValues.add("surgeryInstitutionState");
+        System.out.println("\n\n\n"+surgeryDate+"\n\n\n");
         for (String entry : allTheEnteredValues)
         {
             if(entry !=null) {
