@@ -92,7 +92,6 @@ public class TreatmentsSurgeriesModalFragmentController {
         allTheEnteredValues.add("surgeryInstitutionName");
         allTheEnteredValues.add("surgeryInstitutionCity");
         allTheEnteredValues.add("surgeryInstitutionState");
-        System.out.println("\n\n\n"+surgeryDate+"\n\n\n");
         for (String entry : allTheEnteredValues)
         {
             if(entry !=null) {
@@ -204,7 +203,7 @@ public class TreatmentsSurgeriesModalFragmentController {
                             o.setValueText(majorComplicationsTypeAnswer);
                         break;
                     case "87a69397-65ef-4576-a709-ae0a526afd85":
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
                         Date parsedDate = formatter.parse(surgeryDate);
                         if(o.getValueDate()!=parsedDate)
                             o.setValueDate(parsedDate);
