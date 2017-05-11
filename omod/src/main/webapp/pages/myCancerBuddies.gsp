@@ -1,4 +1,4 @@
-${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
+${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 <script type="text/javascript">
     \$(document).ready(function(){
         \$('#patientPortalMyCancerBuddies').addClass('active');

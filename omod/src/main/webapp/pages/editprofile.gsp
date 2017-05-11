@@ -1,4 +1,4 @@
-${ ui.includeFragment("patientportaltoolkit", "patientPortalNav") }
+${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 <script type="text/javascript">
     jq(document).ready(function(){
         jq.fn.bootstrapSwitch.defaults.onColor = 'success';

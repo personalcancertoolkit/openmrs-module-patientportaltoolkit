@@ -10,7 +10,7 @@ import org.openmrs.ui.framework.page.PageRequest;
 /**
  * Created by maurya on 7/13/16.
  */
-public class PatientPortalNavFragmentController {
+public class HeaderForAppFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
