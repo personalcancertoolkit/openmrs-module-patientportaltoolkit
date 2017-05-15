@@ -13,9 +13,7 @@
 
 package org.openmrs.module.patientportaltoolkit;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.openmrs.BaseOpenmrsMetadata;
-import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.RelationshipType;
 

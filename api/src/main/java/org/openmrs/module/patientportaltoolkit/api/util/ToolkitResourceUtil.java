@@ -18,8 +18,6 @@ import org.codehaus.jackson.type.TypeReference;
 import org.openmrs.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.*;
-import org.openmrs.module.patientportaltoolkit.api.util.PatientPortalUtil;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

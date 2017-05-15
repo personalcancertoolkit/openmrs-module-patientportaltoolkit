@@ -19,14 +19,10 @@ import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
 import org.openmrs.module.patientportaltoolkit.api.JournalEntryService;
-import org.openmrs.module.patientportaltoolkit.api.PatientService;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Maurya on 25/05/2015.

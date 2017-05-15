@@ -25,7 +25,6 @@ import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.Concept;
 import org.openmrs.module.patientportaltoolkit.Guideline;
 import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
-import org.openmrs.module.patientportaltoolkit.GuidelineInterval;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

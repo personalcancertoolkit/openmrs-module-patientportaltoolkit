@@ -20,7 +20,6 @@ package org.openmrs.module.patientportaltoolkit.web.filter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.MDC;
 import org.openmrs.api.context.Context;
 
 import javax.servlet.*;

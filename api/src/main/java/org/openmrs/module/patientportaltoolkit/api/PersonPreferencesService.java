@@ -1,7 +1,6 @@
 package org.openmrs.module.patientportaltoolkit.api;
 
 import org.openmrs.Person;
-import org.openmrs.User;
 import org.openmrs.module.patientportaltoolkit.PersonPreferences;
 import org.springframework.transaction.annotation.Transactional;
 

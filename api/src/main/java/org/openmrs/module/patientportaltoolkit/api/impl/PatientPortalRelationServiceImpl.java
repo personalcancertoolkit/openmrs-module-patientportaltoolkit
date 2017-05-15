@@ -13,7 +13,6 @@
 
 package org.openmrs.module.patientportaltoolkit.api.impl;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.User;
@@ -21,8 +20,6 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalRelationDAO;
-import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

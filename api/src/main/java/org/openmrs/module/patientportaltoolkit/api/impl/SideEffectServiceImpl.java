@@ -24,7 +24,6 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.SideEffect;
 import org.openmrs.module.patientportaltoolkit.api.SideEffectService;
 import org.openmrs.module.patientportaltoolkit.api.db.SideEffectDAO;
-
 import java.util.*;
 
 /**

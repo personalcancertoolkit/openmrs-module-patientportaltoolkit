@@ -28,10 +28,7 @@ import org.openmrs.module.patientportaltoolkit.Reminder;
 import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
 import org.openmrs.module.patientportaltoolkit.api.db.ReminderDAO;
-import org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernateReminderDAO;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
-
-import java.text.ParseException;
 import java.util.*;
 
 /**

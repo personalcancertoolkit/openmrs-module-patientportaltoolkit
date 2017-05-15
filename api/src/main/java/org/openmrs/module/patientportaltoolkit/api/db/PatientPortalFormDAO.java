@@ -13,8 +13,6 @@
 
 package org.openmrs.module.patientportaltoolkit.api.db;
 
-import org.openmrs.Person;
-import org.openmrs.module.patientportaltoolkit.JournalEntry;
 import org.openmrs.module.patientportaltoolkit.PatientPortalForm;
 
 import java.util.List;
