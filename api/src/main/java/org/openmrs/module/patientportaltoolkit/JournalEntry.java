@@ -15,7 +15,6 @@ package org.openmrs.module.patientportaltoolkit;
 
 import org.openmrs.*;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;

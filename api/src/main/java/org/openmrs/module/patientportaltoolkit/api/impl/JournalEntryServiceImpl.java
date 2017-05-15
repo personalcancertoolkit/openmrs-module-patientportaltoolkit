@@ -25,12 +25,7 @@ import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.JournalEntryService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
-import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.db.JournalEntryDAO;
-import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

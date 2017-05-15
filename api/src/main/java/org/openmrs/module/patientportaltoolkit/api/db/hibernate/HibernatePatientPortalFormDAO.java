@@ -18,7 +18,6 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.openmrs.module.patientportaltoolkit.JournalEntry;
 import org.openmrs.module.patientportaltoolkit.PatientPortalForm;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalFormDAO;
 

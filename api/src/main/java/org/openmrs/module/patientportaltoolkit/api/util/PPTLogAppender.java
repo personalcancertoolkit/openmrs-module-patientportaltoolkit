@@ -16,8 +16,6 @@ package org.openmrs.module.patientportaltoolkit.api.util;
 import org.openmrs.api.context.Context;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Created by maurya on 6/9/16.
