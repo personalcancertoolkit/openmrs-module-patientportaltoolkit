@@ -24,7 +24,6 @@ import java.util.Date;
  */
 public class PatientPortalRelation extends BaseOpenmrsMetadata implements Comparable<PatientPortalRelation> {
 
-    private PatientPortalRelation(){}
     /** Unique identifying id */
     private Integer id;
 
@@ -55,6 +54,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     private static final String STATUS_EXPIRED="Expired";
     private static final String STATUS_NOT_ACCEPTED_YET="Not yet";
 
+    private PatientPortalRelation(){}
 
     public PatientPortalRelation(Person person, Person relatedPerson) {
         super();
