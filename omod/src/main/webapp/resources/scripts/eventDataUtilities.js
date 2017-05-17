@@ -249,6 +249,8 @@ Event_Table_Handler.prototype = {
         </tr>
         */
         // Create row element
+        if(this_event.status == 1)console.log(this_event);
+        
         var row = document.createElement("tr");
         if(this_event.status == 1)  row.style = 'color:rgba(0, 0, 0, 0.4);';
 
