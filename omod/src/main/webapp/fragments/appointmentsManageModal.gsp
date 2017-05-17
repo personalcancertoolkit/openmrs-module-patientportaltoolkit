@@ -305,7 +305,7 @@
         
         // Initialize back button
         manageAppointmentModal_handler.buttons.back.on( "click", function(){
-            manageAppointmentModal_handler.open_menu_again();
+            manageAppointmentModal_handler.open_part("menu");
         });
         
         // initialize cancel buttons
