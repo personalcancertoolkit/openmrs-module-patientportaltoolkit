@@ -13,7 +13,12 @@
         open_modal_for : function(appointment_id){
             this.modal.modal('show');
             this.appointment_id = appointment_id;
-            this.open_part('markCompleted'); // hardcoded as markCompleted as no other options are enabled
+            var event = this.data_manager.data[this.appointment_id];
+            if(event.status == 0) {
+                this.open_part('markCompleted'); // hardcoded as markCompleted as no other options are enabled
+            } else {
+                this.open_part('menu');
+            }
             this.open_sub_part(); // ensure special requirements for each procedure are accounted for
             this.update_visible_data_for_event();
         },
@@ -33,6 +38,11 @@
             this.modal.find(".all-parts").show(); 
             this.modal.find("."+which_part+"-exclude-part").hide(); 
             
+            // show all completed_event parts if this event is completed
+            var event = this.data_manager.data[this.appointment_id];
+            if(event.status == 1) this.modal.find(".completed_event-part").show()
+            
+            // handle additional, part specific, requirements
             //if(which_part == "menu") this.update_valid_menu_options();
         },
         open_sub_part : function(){
@@ -49,6 +59,22 @@
             
             // update modify input defaults to current data
             //this.input.modify.appointment_date.data('datepicker').setValue(event.targetDate);
+            
+            // update records if event has been completed
+            if(event.status == 1){
+                var concept_id = event.concept_id + "";
+                var questions_answered = event.questionsAnswered;
+                var concepts_holder = this.DOM.record_concept_holder;
+                var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
+                for(var i = 0; i < questions_answered.length; i++){
+                    question_answer = questions_answered[i];
+                    var this_uuid = question_answer.uuid;
+                    var this_answer = question_answer.answer;
+                    var this_holder = question_holder_parent.find("#question_answer_"+this_uuid);
+                    this_holder.find(".preventive_care_modal_record_question_answer").html(this_answer);
+                }
+                
+            }
             
         },
         //update_valid_menu_options : function(){},
@@ -83,7 +109,8 @@
             // Get question responses 
             /////////////
             var questions = this.concepts[concept_id].questions;
-            var question_holder_parent = this.modal.find("."+concept_id+"-part");
+            var concepts_holder = this.DOM.markCompleted_concept_holder;
+            var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
             var request_data = []; 
             for (var i = 0; i < questions.length; i++){
                 var this_question = questions[i];
@@ -163,15 +190,56 @@
             }
             
             // Build dom input elements for concept questions
-            this.build_input_from_concepts(relevant_concepts);
+            this.build_UI_from_concepts(relevant_concepts);
         },
         
-        build_input_from_concepts : function(concepts){
-            var holder = this.DOM.markCompleted_concept_holder;
+        build_UI_from_concepts : function(concepts){
+            this.build_record_holders_from_concepts(concepts);
+            this.build_inputs_from_concepts(concepts);
+        },
+        
+        build_record_holders_from_concepts : function(concepts){
+        
+            //////////
+            // Insert questionAnswers holder for each concept into Records holder
+            //////////
+            var holder = this.DOM.record_concept_holder;
+            for(var i = 0; i < concepts.length; i++){
+                var this_concept = concepts[i];
+                
+                //var wrapper = document.createElement("div");
+                var parent = document.createElement("div");
+                parent.className = this_concept.concept_id + "-part modal-part"; // Note: Parent holder can be found by .find("."+contept_id+"-part");
+                for(var j = 0; j < this_concept.questions.length; j++){
+                    var this_question = this_concept.questions[j];
+                    
+                    var question = document.createElement("form");
+                    question.id = "question_answer_" + this_question.uuid; // Note: Each question can be found by .find("#question_answer_"+question.uuid);, recommended parent.find(...)
+                    question.className = "form-inline";
+                    
+                    var label = document.createElement("label");
+                    label.className = "uniform_width_manage_preventive_care_modal_question_label reformatText";
+                    label.innerHTML = this_question.name;
+                    
+                    var answer = document.createElement("span");
+                    answer.className = "preventive_care_modal_record_question_answer"; // used to locate dynamic 'answer' element
+                    
+                    question.appendChild(label);
+                    question.appendChild(answer);
+                    parent.appendChild(question);
+                }
+                
+                // append to content holder
+                holder.append(parent);
+            }
+        },
+        
+        build_inputs_from_concepts : function(concepts){
             
             //////////
-            // Insert each concept into holder
+            // Insert questions for each concept into markcompleted holder
             //////////
+            var holder = this.DOM.markCompleted_concept_holder;
             for(var i = 0; i < concepts.length; i++){
                 var this_concept = concepts[i];
                 
@@ -221,8 +289,10 @@
                 
                 // append to content holder
                 holder.append(parent);
-                
             }
+            
+            
+            
             
             //////////
             // initialize all date time inputs
@@ -302,6 +372,7 @@
         managePreventiveCareModal_handler.initialize_concepts(); 
         managePreventiveCareModal_handler.DOM = {
             markCompleted_concept_holder : the_modal.find("#markCompleted_concept_holder"),
+            record_concept_holder : the_modal.find("#record_concept_holder"),
         }
         /*
         // Initialize datepicker inputs
@@ -333,6 +404,14 @@
                 <h4 class="modal-title"> Modal Title </h4>
             </div>
             <div class="modal-body">
+                
+                <div class = 'menu-part modal-part'>
+                    <div id = "record_concept_holder" class = 'completed_event-part modal-part'>
+
+                    </div>
+                    
+                </div>
+                
                 <div id = "markCompleted_concept_holder" class = 'markCompleted-part modal-part'>
                    
                 </div>
