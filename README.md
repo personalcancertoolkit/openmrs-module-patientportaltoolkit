@@ -15,6 +15,6 @@ This is module (i.e. Patient Portal) allows you to create a patient controlled h
 
 ### How to contribute to?
 
- - [Documentation](https://github.com/personalcancertoolkit/openmrs-module-patientportaltoolkit/wiki) 
- - [Issues](https://github.com/maurya/openmrs-module-patientportaltoolkit/issues) or choose an issue from [projects] (https://github.com/maurya/openmrs-module-patientportaltoolkit/projects)
-  - User Testing/Find Bugs - Please use the [Demo Site](https://personalcancertoolkit.org/openmrs/) and create an issue for any bugs you might find
+ - Improve module's [documentation](https://github.com/personalcancertoolkit/openmrs-module-patientportaltoolkit/wiki) 
+ - Go to [issues](https://github.com/personalcancertoolkit/openmrs-module-patientportaltoolkit/issues) or choose an issue from [projects](https://github.com/personalcancertoolkit/openmrs-module-patientportaltoolkit/projects) and can start developing.
+  - User Testing/Find Bugs - Go through the documentation, use the [demo site](https://personalcancertoolkit.org/openmrs/) and create an issue for any bugs you might find
