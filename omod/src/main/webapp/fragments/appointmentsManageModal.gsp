@@ -37,6 +37,11 @@
             this.modal.find(".all-parts").show(); 
             this.modal.find("."+which_part+"-exclude-part").hide(); 
             
+            // show all completed_event parts if this event is completed
+            var event = this.data_manager.data[this.appointment_id];
+            if(event.status == 1) this.modal.find(".completed_event-part").show()
+            
+            // handle additional, part specific, requirements
             if(which_part == "menu") this.update_valid_menu_options();
         },
         update_visible_data_for_event : function(){
@@ -51,6 +56,10 @@
                 this.input.markCompleted.completed_date.data('datepicker').setValue(event.completedDate);
                 this.input.markCompleted.doctor_name.val(event.doctorName);
                 this.input.markCompleted.comments.html(event.comments);
+                
+                this.DOM.completedRecord.completed_date.html(event.formatedCompletedDate)
+                this.DOM.completedRecord.doctor_name.html(event.doctorName);
+                this.DOM.completedRecord.comments.html(event.comments);
             } else {
                 this.input.markCompleted.completed_date.data('datepicker').setValue(new Date());
                 this.input.markCompleted.doctor_name.val("");
@@ -71,7 +80,6 @@
         },
         update_valid_menu_options : function(){
             // modify visible menu items due to event.status (e.g., if its completed then instead of markCompleted display modifyCompleted)
-            
             var event = this.data_manager.data[this.appointment_id];
             if(event.status == 1){
                this.modal.find("#modal_menu_part_markCompleted").hide();
@@ -267,6 +275,13 @@
             back : the_modal.find("#back_button"),
             cancel : the_modal.find(".modal_cancel_button"),
         }
+        manageAppointmentModal_handler.DOM = {
+            completedRecord : {
+                completed_date : the_modal.find('#completed_date_recorded'),  
+                doctor_name : the_modal.find('#doctor_name_recorded'),
+                comments : the_modal.find('#comments_recorded'),
+            },
+        }
         manageAppointmentModal_handler.input = {
             add_new : {
                 target_date : the_modal.find('#new_appointment_target_date'),
@@ -305,7 +320,7 @@
         
         // Initialize back button
         manageAppointmentModal_handler.buttons.back.on( "click", function(){
-            manageAppointmentModal_handler.open_menu_again();
+            manageAppointmentModal_handler.open_part("menu");
         });
         
         // initialize cancel buttons
@@ -377,15 +392,40 @@
 
             <style>
                 .manageAppointmentModalLabel {
-                    min-width:175px;   
+                    min-width:175px; font-weight:100;
                 }
             </style>
             <div class="modal-body" style = 'overflow-y:visible;'>
+                
+                
                 <div class="menu-part modal-part" style = 'padding: 0px 15px; '>
+                    
+
+                    <div class="completed_event-part modal-part" style = ' '>
+                        <div style = 'font-size:25px; margin-left:-10px;'>
+                            Record 
+                        </div>
+                        <Br>
+
+                        <form class="form-inline" role="form">
+                            <label class = 'manageAppointmentModalLabel'>Completion Date</label>
+                            <span id = 'completed_date_recorded'></span>
+                        </form>
+                        <form class="form-inline" role="form"> 
+                            <label class = 'manageAppointmentModalLabel'>Doctor</label>
+                            <span id = 'doctor_name_recorded'></span>
+                        </form>
+                        <form class="form-inline" role="form"> 
+                            <label class = 'manageAppointmentModalLabel'>Comments</label>
+                            <span id = 'comments_recorded'></span>
+                        </form>
+                        <br>
+                    </div>
+                    
+                    
                     <div style = 'font-size:25px; margin-left:-10px;'>
                         What would you like to do?
                     </div>
-                    <Br>
                     <!-- Menu items are displayed using a Java based template -->
                     <% 
                         // Define Menu Items
@@ -418,7 +458,8 @@
                     %>
                         <div class="row menu-part" id = "modal_menu_part_${data_element.id_mod}" style = ' display:flex; margin-bottom:5px;'>
                             <div style = "display:flex;  flex-grow:1;">
-                                <div style = ' margin:auto; margin-left:5px;'>
+                                
+                                <div style = ' margin:auto; margin-left:15px; '>
                                     ${data_element.desc}
                                 </div>
                             </div>
@@ -435,7 +476,7 @@
                 <div class="modal-part modifyCompleted-part markCompleted-part">
                     <input id="markCompletedIdHolder" type="hidden" value="">
                     <form class="form-inline" role="form">
-                        <label class = 'manageAppointmentModalLabel'>Mark Completed Date</label>
+                        <label class = 'manageAppointmentModalLabel'>Completion Date</label>
                         <input class="form-control datetype" id="completed_date" type="text" value=""/>
                     </form>
                     <form class="form-inline" role="form"> 

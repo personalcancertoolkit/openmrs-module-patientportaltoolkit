@@ -685,8 +685,24 @@ public class ToolkitResourceUtil {
         if(event.getCompleteDate() != null){
             eventDataMap.put("formatedCompletedDate", pptutil.formatDate(event.getCompleteDate()));
             eventDataMap.put("completedDate", event.getCompleteDate());
-            eventDataMap.put("doctorName", event.getDoctorName());
-            eventDataMap.put("comments", event.getResponseComments());
+            
+            // Create map of answered questions from the encounter associated with cthis preventivecareevent
+            String encounterUuid = event.getEncounterUuid();
+            Encounter encounter = Context.getEncounterService().getEncounterByUuid(encounterUuid);
+            List<Object> questionsAnswered = new ArrayList<Object>();
+            Set<Obs> obsList = encounter.getObs();
+            for(Obs o: obsList){
+                Map<String, String> aQuestionAnswered = new HashMap<String, String>();
+                aQuestionAnswered.put("uuid", o.getConcept().getUuid());
+                String datatype = o.getConcept().getDatatype().getHl7Abbreviation();
+                String value = null;
+                if(datatype.equals("DT")) value = pptutil.formatDate(o.getValueDate());
+                if(datatype.equals("NM")) value = o.getValueNumeric().toString();
+                if(datatype.equals("BIT")) value = o.getValueBoolean().toString();
+                aQuestionAnswered.put("answer", value);
+                questionsAnswered.add(aQuestionAnswered);
+            }
+            eventDataMap.put("questionsAnswered", questionsAnswered);
         }
         eventDataMap.put("status",event.getStatus());
         
