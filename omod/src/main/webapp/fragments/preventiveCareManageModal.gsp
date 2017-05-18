@@ -9,6 +9,12 @@
         data_manager: null,
         dropdown_handler : null,
         dropdown_initialized : false,
+        defined_relative_orders : [ // note - for best results, only define one relative ordering (as many questions as desired) per concept
+            [
+                "63ee5099-567e-4b55-936c-c4c8d71d1144",  // systolic
+                "02310664-f7bb-477c-a703-0325af4c3f46",  // diastolic
+            ],
+         ],
 
         open_modal_for : function(appointment_id){
             this.modal.modal('show');
@@ -194,6 +200,9 @@
         },
         
         build_UI_from_concepts : function(concepts){
+            // Sort concept questions by predefined orders (this.defined_relative_orders)
+            concepts = this.sort_concept_questions(concepts); 
+            
             this.build_record_holders_from_concepts(concepts);
             this.build_inputs_from_concepts(concepts);
         },
@@ -298,12 +307,94 @@
             // initialize all date time inputs
             //////////
             var datepicker_elements = this.modal.find(".openmrs_concept_datatype_DT");
-            console.log(datepicker_elements);
+            //console.log(datepicker_elements);
             for(var i = 0; i < datepicker_elements.length; i++){
                 var element = this.modal.find(datepicker_elements[i]);
                 element.datepicker({ format: 'mm/dd/yyyy' }).on('changeDate', function(){ this.data('datepicker').hide() }.bind(element));
             }
         },
+        
+        sort_concept_questions : function(concepts){
+            ////////////
+            // For each concept, check the question list, and ensure that the order of the questions matches the defined relative orders
+            //      implementation - determine if a question can be added to the list based on the relative orders defined and the elements currently in front of it in the list. 
+            //                      Keep a queue for those who cant be yet added and recheck the queued elements each time an element is added
+            ////////////
+            for(var i = 0; i < concepts.length; i++){
+                var these_questions = concepts[i].questions;
+                var final_questions = [];
+                var questions_queue = [];
+                for(var j = 0; j < these_questions.length; j++){
+                    var this_question = these_questions[j];
+                    var this_uuid = this_question.uuid;
+                    
+                    // determine whether this element can be added to list
+                        // if the element is defined in relative orderings, ensure that all elements before it in the orderings exist in the list before adding
+                        // if the elements required to be before it dont exist in the list yet, then put this element in a queue to be rechecked after another element is added
+                    var can_add_to_list = this.can_this_question_uuid_be_added_to_list(this_uuid, final_questions);
+                    if(can_add_to_list){
+                        final_questions.push(this_question);
+                    } else{
+                        questions_queue.push(this_question);
+                    }
+                    //console.log("Now system is at (for i = " + i + ") ....");
+                    //console.log(JSON.parse(JSON.stringify(final_questions)));
+                    //console.log(JSON.parse(JSON.stringify(questions_queue)));
+                    
+                    
+                    // if something was added to the list, recheck all the queued elements (keep checking if a queued element was added, too)
+                    if(can_add_to_list){
+                        var one_was_just_added = true;
+                        while(one_was_just_added){
+                            one_was_just_added = false;
+                            var first_addable_queued_question = this.find_first_addable_queued_question(questions_queue, final_questions);
+                            if(first_addable_queued_question == false) continue; // if none can be found, exit the loop
+                            one_was_just_added = true;
+                            final_questions.push(first_addable_queued_question); // add item to questions list
+                            questions_queue = questions_queue.filter(function(element) { return element !== first_addable_queued_question}); // remove item from queue
+                        }
+                    }
+                }
+                concepts[i].questions = final_questions;
+            }
+            return concepts;
+        },
+        can_this_question_uuid_be_added_to_list : function(this_uuid, current_list){
+            var defined_relative_orders = this.defined_relative_orders;
+            var relevant_question_uuid_list = [].concat.apply([], defined_relative_orders); // flatten list of lists
+            var uuid_in_current_list = current_list.map(function(a) {return a.uuid;});
+            var can_add_to_list = true;
+            if(relevant_question_uuid_list.includes(this_uuid)){
+                // for each relative order, ensure that either it is not included in the ordering or that all uuid defined to come before this uuid have been included in final_questions list
+                for(var i = 0; i < defined_relative_orders.length; i++){
+                    if(!can_add_to_list) break; // if it has been found that it can not be added, dont continue to assess
+                    var this_relative_ordering = defined_relative_orders[i];
+                    if(!this_relative_ordering.includes(this_uuid)) continue; // uuid is not included in this ordering
+                    // for each element before this uuid in the ordering,
+                    for(var j = 0; j < this_relative_ordering.indexOf(this_uuid); j++){
+                        // ensure it is in the list, if it is not, break - you can not add this element to the list
+                        var uuid_to_be_added_before_this_uuid = this_relative_ordering[j]; 
+                        if(!uuid_in_current_list.includes(uuid_to_be_added_before_this_uuid)){
+                            can_add_to_list = false;
+                            break;
+                        }  
+                    } 
+                }
+            }
+            return can_add_to_list;
+        },
+        find_first_addable_queued_question : function(queued_list, current_list){
+            for(var i = 0; i < queued_list.length; i++){
+                var queued_question = queued_list[i];
+                var queued_uuid = queued_question.uuid;
+                var can_add_this_queued_question_to_list = this.can_this_question_uuid_be_added_to_list(queued_uuid, current_list);
+                if(can_add_this_queued_question_to_list){
+                    return queued_question;
+                }
+            }
+            return false;
+        },
+        
     }
     
     
