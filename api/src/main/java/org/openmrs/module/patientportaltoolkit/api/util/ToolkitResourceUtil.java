@@ -664,19 +664,25 @@ public class ToolkitResourceUtil {
                 //System.out.println(targetDate);
             }
         }
+        eventDataMap.put("targetDate", targetDate);
+        eventDataMap.put("formatedTargetDate", pptutil.formatDate(targetDate));
+        //display date on calendar
+        Date calendarDisplayDate = null;
+        if(event.getCompleteDate() != null){
+            calendarDisplayDate = event.getCompleteDate();
+        } else {
+            calendarDisplayDate = targetDate;
+        }
+        eventDataMap.put("startDate",calendarDisplayDate);
+        eventDataMap.put("endDate",calendarDisplayDate);
         
         
-        ////////////
-        // Dev option, set target date to today
-        ////////////
-        if(false) targetDate = new Date();
-
+        
+    
         // Append Data
         eventDataMap.put("followProcedure",generateConcept(event.getFollowProcedure()));
         eventDataMap.put("followProcedureName",event.getFollowProcedureName());
         eventDataMap.put("concept_id",event.getFollowProcedure().getConceptId());
-        eventDataMap.put("targetDate", targetDate);
-        eventDataMap.put("formatedTargetDate", pptutil.formatDate(targetDate));
         if(event.getId()==null){ 
             eventDataMap.put("id", "X" + Integer.toString(fake_id)); // X ensures that we never have a 'fake' ID with the same value as a real ID
         } else {
@@ -706,15 +712,6 @@ public class ToolkitResourceUtil {
         }
         eventDataMap.put("status",event.getStatus());
         
-        //display date on calendar
-        Date calendarDisplayDate = null;
-        if(event.getCompleteDate() != null){
-            calendarDisplayDate = event.getCompleteDate();
-        } else {
-            calendarDisplayDate = event.getTargetDate();
-        }
-        eventDataMap.put("startDate",calendarDisplayDate);
-        eventDataMap.put("endDate",calendarDisplayDate);
         
         
         switch (event.getFollowProcedure().getConceptId()) {
