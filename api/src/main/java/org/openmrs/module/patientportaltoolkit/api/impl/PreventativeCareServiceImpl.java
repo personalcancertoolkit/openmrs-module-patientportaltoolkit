@@ -26,6 +26,7 @@ import org.openmrs.Encounter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Calendar;
 
 /**
  * Created by maurya on 11/30/16.
@@ -94,6 +95,7 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
             for (PreventiveCareGuidelineInterval gi: g.getPcgguidelineIntervalSet()){ // and for each guideline's set of intervals (e.g., check up in 6mo, 12mo, and 24mo)
                 modifiableDate = new LocalDate(dateOfJoin);
                 targetDate = modifiableDate.plusMonths(gi.getIntervalLength()).toDate();
+                targetDate = enforceConceptSpecificTargetDateRequirements(targetDate, g.getFollowupProcedure()); // enforces, for example, that influenza target dates fall between oct and march
                 
                 // If this reminder, with same target date, was already found in database recorded reminders : don't duplicate it. Just continue. 
                 if(findEventByConceptAndDate(databasePreventiveEvents,g.getFollowupProcedure(),targetDate) != null)
@@ -105,6 +107,29 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
             }
         }
        return preventiveEvents;
+    }
+    
+    /*
+    * Used to enforce date requirements on preventive care events
+    */
+    Date enforceConceptSpecificTargetDateRequirements(Date targetDate, Concept targetConcept){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(targetDate);
+        int month = cal.get(Calendar.MONTH);
+        
+        // Enforce that, if event is influenza vacination, the date falls between oct and march
+        if (targetConcept.getConceptId() == 162938){ 
+            if(!(month >= (10-1) || month <= (3-1))){ // Ensure that date is between oct and march. Note, minus 1 due to jan = 0
+                //System.out.println("chaning date!");
+                cal.set(Calendar.MONTH, Calendar.OCTOBER);
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+                //System.out.println("Changing date to...");
+                targetDate = cal.getTime();
+                //System.out.println(targetDate);
+            }
+        }
+        
+        return targetDate;
     }
     
     /*

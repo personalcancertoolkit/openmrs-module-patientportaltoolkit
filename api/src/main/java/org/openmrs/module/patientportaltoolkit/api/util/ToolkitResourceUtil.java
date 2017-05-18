@@ -649,37 +649,11 @@ public class ToolkitResourceUtil {
         Map<String, Object> eventDataMap = new HashMap<String, Object>();
 
         
-        // Enforce that, if event is influenza, the date falls between oct and march
-        Date targetDate = event.getTargetDate();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(targetDate);
-        int month = cal.get(Calendar.MONTH);
-        if (event.getFollowProcedure().getConceptId() == 162938){ // If this event is Influenza Vaccine
-            if(!(month >= (10-1) || month <= (3-1))){ // Ensure that date is between oct and march. Note, minus 1 due to jan = 0
-                //System.out.println("chaning date!");
-                cal.set(Calendar.MONTH, Calendar.OCTOBER);
-                cal.set(Calendar.DAY_OF_MONTH, 1);
-                //System.out.println("Changing date to...");
-                targetDate = cal.getTime();
-                //System.out.println(targetDate);
-            }
-        }
-        eventDataMap.put("targetDate", targetDate);
-        eventDataMap.put("formatedTargetDate", pptutil.formatDate(targetDate));
-        //display date on calendar
-        Date calendarDisplayDate = null;
-        if(event.getCompleteDate() != null){
-            calendarDisplayDate = event.getCompleteDate();
-        } else {
-            calendarDisplayDate = targetDate;
-        }
-        eventDataMap.put("startDate",calendarDisplayDate);
-        eventDataMap.put("endDate",calendarDisplayDate);
         
         
         
     
-        // Append Data
+        // General Data
         eventDataMap.put("followProcedure",generateConcept(event.getFollowProcedure()));
         eventDataMap.put("followProcedureName",event.getFollowProcedureName());
         eventDataMap.put("concept_id",event.getFollowProcedure().getConceptId());
@@ -688,6 +662,8 @@ public class ToolkitResourceUtil {
         } else {
             eventDataMap.put("id", event.getId());
         }
+        
+        // Completed event data
         if(event.getCompleteDate() != null){
             eventDataMap.put("formatedCompletedDate", pptutil.formatDate(event.getCompleteDate()));
             eventDataMap.put("completedDate", event.getCompleteDate());
@@ -712,8 +688,21 @@ public class ToolkitResourceUtil {
         }
         eventDataMap.put("status",event.getStatus());
         
+        // Dates
+        eventDataMap.put("targetDate", event.getTargetDate());
+        eventDataMap.put("formatedTargetDate", pptutil.formatDate(event.getTargetDate()));
+        //display date on calendar
+        Date calendarDisplayDate = null;
+        if(event.getCompleteDate() != null){
+            calendarDisplayDate = event.getCompleteDate();
+        } else {
+            calendarDisplayDate = event.getTargetDate();
+        }
+        eventDataMap.put("startDate",calendarDisplayDate);
+        eventDataMap.put("endDate",calendarDisplayDate);
         
         
+        // Calendar colors
         switch (event.getFollowProcedure().getConceptId()) {
             //Influenza Vaccine
             case 162938:
