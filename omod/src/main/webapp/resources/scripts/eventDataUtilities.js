@@ -57,13 +57,13 @@ Calendar_Handler.prototype = { // Static Properties and Methods
             var name = document.createElement("a");
             name.class = 'event-name';
             name.style.setProperty("color", this_event.color);
+            name.style.setProperty("cursor", "pointer");
+            name.href = this.return_action_for(this_event);
             if(this_event.status == 1){
                 name.style.setProperty("text-decoration", "line-through"); 
                 name.style.setProperty("opacity", "0.4");
             } else {
-                name.style.setProperty("cursor", "pointer");
                 //name.onclick = function(){ preventive_calendar_handler.modification_modal_handler.open_modal_for(id_of_appointment) };
-                name.href = this.return_action_for(this_event);
             }
 
             var sp1 = document.createElement("span");
