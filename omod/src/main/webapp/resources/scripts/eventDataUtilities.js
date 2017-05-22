@@ -206,6 +206,7 @@ function Event_Table_Handler(){
 Event_Table_Handler.prototype = {
     setDataSource : function(the_data){
         //console.log(the_data);
+        console.log("Appending to table....");
         the_data = the_data.sort(this.sorting_comparison_function);
         for(var i = 0; i < the_data.length; i++){
             var this_event = the_data[i];
@@ -216,6 +217,9 @@ Event_Table_Handler.prototype = {
     },
 
     should_append_to_list : function(this_event){
+        console.log(this_event);
+        
+        
         var today_timestamp = new Date().getTime();
         var time_difference_90_days = (90 * 24 * 60 * 60 * 1000)
         var forward_90_timestamp  = today_timestamp  + time_difference_90_days;
@@ -249,7 +253,7 @@ Event_Table_Handler.prototype = {
         </tr>
         */
         // Create row element
-        if(this_event.status == 1)console.log(this_event);
+        //if(this_event.status == 1)console.log(this_event);
         
         var row = document.createElement("tr");
         if(this_event.status == 1)  row.style = 'color:rgba(0, 0, 0, 0.4);';
