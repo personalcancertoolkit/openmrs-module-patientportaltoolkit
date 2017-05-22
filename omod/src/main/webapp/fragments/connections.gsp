@@ -21,12 +21,19 @@
     ${ ui.includeFragment("patientportaltoolkit", "editRelationshipModal") }
     <% if (relationships) { %>
     <div>
+    <% relationships.each { relationship -> %>
+    <ul class="media-list">
+        <% if (user.getPerson().isPatient() && relationship.getRelatedPerson()==user.getPerson() && relationship.getPerson().isPatient() && relationship.getShareStatus()==0){%>
+        ${ ui.includeFragment("patientportaltoolkit", "connectionsTwoDirection", [twoDirectionFragmentPerson: relationship.getPerson(), twoDirectionFragmentRelation: relationship, twoDirectionFragmentSide:"bIsToA",twoDirectionFragmentAccepted:false]) }
+        <% } %>
+        <% if (!user.getPerson().isPatient() && relationship.getShareStatus()==0){%>
+        ${ ui.includeFragment("patientportaltoolkit", "connectionsOneDirection", [oneDirectionFragmentPerson: relationship.getPerson(), oneDirectionFragmentRelation: relationship, oneDirectionFragmentSide:"other",oneDirectionFragmentAccepted:false]) }
+        <% } %>
+    </ul>
+    <% } %>
 
     <% relationships.each { relationship -> %>
     <ul class="media-list">
-    <% if (user.getPerson().isPatient() && relationship.getRelatedPerson()==user.getPerson() && relationship.getPerson().isPatient() && relationship.getShareStatus()==0){%>
-    ${ ui.includeFragment("patientportaltoolkit", "connectionsTwoDirection", [twoDirectionFragmentPerson: relationship.getPerson(), twoDirectionFragmentRelation: relationship, twoDirectionFragmentSide:"bIsToA",twoDirectionFragmentAccepted:false]) }
-    <% } %>
     <% if (user.getPerson().isPatient() && relationship.getRelatedPerson()==user.getPerson() && relationship.getPerson().isPatient() && relationship.getShareStatus()==1){%>
     ${ ui.includeFragment("patientportaltoolkit", "connectionsTwoDirection", [twoDirectionFragmentPerson: relationship.getPerson(), twoDirectionFragmentRelation: relationship, twoDirectionFragmentSide:"bIsToA",twoDirectionFragmentAccepted:true]) }
     <% } %>
@@ -36,14 +43,12 @@
     <% if (user.getPerson().isPatient() && relationship.getPerson()==user.getPerson() && !relationship.getRelatedPerson().isPatient() && relationship.getShareStatus()==1){%>
     ${ ui.includeFragment("patientportaltoolkit", "connectionsOneDirection", [oneDirectionFragmentPerson: relationship.getRelatedPerson(), oneDirectionFragmentRelation: relationship, oneDirectionFragmentSide:"patient",oneDirectionFragmentAccepted:true]) }
     <% } %>
-    <% if (!user.getPerson().isPatient() && relationship.getShareStatus()==0){%>
-    ${ ui.includeFragment("patientportaltoolkit", "connectionsOneDirection", [oneDirectionFragmentPerson: relationship.getPerson(), oneDirectionFragmentRelation: relationship, oneDirectionFragmentSide:"other",oneDirectionFragmentAccepted:false]) }
-    <% } %>
     <% if (!user.getPerson().isPatient() && relationship.getShareStatus()==1){%>
     ${ ui.includeFragment("patientportaltoolkit", "connectionsOneDirection", [oneDirectionFragmentPerson: relationship.getPerson(), oneDirectionFragmentRelation: relationship, oneDirectionFragmentSide:"other",oneDirectionFragmentAccepted:true]) }
     <% } %>
-    <% } %>
 </ul>
+    <% } %>
+
     </div>
     <% } else { %>
     There are no connections for you yet!
