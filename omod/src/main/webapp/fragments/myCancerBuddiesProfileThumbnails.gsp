@@ -150,10 +150,13 @@
                     }
 
                     if (pptrelation  && pptrelation.retired == false && pptrelation.shareStatus==0) { 
-                        the_button_to_display = '<button  class="btn btn-info btn-xs disabled" role="button" data-toggle="modal">Pending</button>';
+                        the_button_to_display = '<hr/><span class="glyphicon glyphicon-hourglass text-warning"></span> <label class="text-warning"> Request Pending</label>';
+                    }
+                    if (pptrelation  && pptrelation.retired == false && pptrelation.shareStatus==1) {
+                        the_button_to_display = '<hr/><span class="glyphicon glyphicon-ok text-success"></span> <label class="text-success">Connected</label>';
                     }
                     if (pptrelation==null || pptrelation.getShareStatus()==2) { 
-                       the_button_to_display = '<button id="addFellowPatient'+mycancerbuddiesperson.person.uuid+'" class="btn btn-info btn-xs addFellowPatient" role="button" data-toggle="modal" data-target="#add-mycancerbuddies-relationship-modal">Add Connection</button>';
+                       the_button_to_display = '<hr/><button id="addFellowPatient'+mycancerbuddiesperson.person.uuid+'" class="btn btn-info btn-xs addFellowPatient" role="button" data-toggle="modal" data-target="#add-mycancerbuddies-relationship-modal">Add Connection</button>';
                     }
                 } 
             %>
