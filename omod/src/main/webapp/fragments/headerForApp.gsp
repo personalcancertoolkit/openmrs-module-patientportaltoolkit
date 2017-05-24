@@ -41,6 +41,9 @@
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-editable.css") }"
           type="text/css">
     <link rel="stylesheet"
+          href="${ ui.resourceLink("patientportaltoolkit", "styles/font-awesome.min.css") }"
+          type="text/css">
+    <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-year-calendar.min.css") }"
           type="text/css">
     <script type="text/javascript"
@@ -70,17 +73,17 @@
     </button>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-            <li id="patientPortalJournals"><a href="journals.page">Posts</a></li>
-            <% if(contextUser.person.isPatient()) { %><li id="patientPortalNavHome"><a href="home.page">My Medical Profile</a></li> <% } %>
-            <li id="patientPortalConnections"><a href="patientconnections.page">My Connections</a></li>
-            <% if(contextUser.person.isPatient()) { %> <li id="patientPortalMyCancerBuddies"><a href="myCancerBuddies.page">My CancerBuddies</a></li><% } %>
+            <li id="patientPortalJournals"> <a href="journals.page"><span class="fa fa-comments-o  fa-lg"></span> Posts</a></li>
+            <% if(contextUser.person.isPatient()) { %><li id="patientPortalNavHome"><a href="home.page"> <span class="fa fa-medkit fa-lg"></span>  My Medical Profile</a></li> <% } %>
+            <li id="patientPortalConnections"><a href="patientconnections.page"><span class="fa fa-address-book-o  fa-lg"></span>  My Connections</a></li>
+            <% if(contextUser.person.isPatient()) { %> <li id="patientPortalMyCancerBuddies"><a href="myCancerBuddies.page"> <span class="fa fa-users fa-lg" ></span> My CancerBuddies</a></li><% } %>
             </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li id="patientPortalUserName"><a href="editprofile.page"><span class="glyphicon glyphicon-user"></span> ${ (username) }</a></li>
-            <li><a href="messages.page"><span class="glyphicon glyphicon-envelope"></span></a></li>
-            <li><a  href="feedbackform.page"><span class="glyphicon glyphicon-edit"></span></a></li>
+            <li id="patientPortalUserName"><a href="editprofile.page"><span class="fa fa-user-circle fa-lg"></span> ${ (username) }</a></li>
+            <li><a href="messages.page"><span class="fa fa-envelope fa-lg"></span> Messages</a></li>
+            <li><a  href="feedbackform.page"><span class="fa fa-life-ring fa-lg"></span>  Contact Us</a></li>
             <li><a id="navigationLogout">Logout <span
-                    class="glyphicon glyphicon-log-out"></span></a></li>
+                    class="fa fa-sign-out fa-lg"></span></a></li>
 
         </ul>
     </div>

@@ -247,6 +247,12 @@ h6 {
 	padding:0;
 }
 
-.font-lato{
-	font-family: Lato,Helvetica Neue,Helvetica,Arial,sans-serif;
+a.no-underline-edit {
+	color: black;
+}
+
+a.no-underline-edit:hover {
+	text-decoration-line: none;
+	color: #18bc9c;
+	cursor:pointer;
 }

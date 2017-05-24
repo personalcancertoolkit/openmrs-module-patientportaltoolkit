@@ -13,10 +13,10 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" id = "${ oneDirectionFragmentRelation.uuid }relationPerson"><a class="connectionlink" id ="connectionlink${ oneDirectionFragmentPerson.uuid}"> ${ (oneDirectionFragmentPerson.getGivenName()) } ${ (oneDirectionFragmentPerson.getFamilyName()) }</a>
+                    <h4 class="media-heading" id = "${ oneDirectionFragmentRelation.uuid }relationPerson"><a class="no-underline-edit connectionlink" id ="connectionlink${ oneDirectionFragmentPerson.uuid}"> ${ (oneDirectionFragmentPerson.getGivenName()) } ${ (oneDirectionFragmentPerson.getFamilyName()) }</a>
                         <% if(person.isPatient()) { %>
                         <div class="pull-right">
-                            <a id="relationedit${ oneDirectionFragmentRelation.uuid }" class="glyphicon glyphicon-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
+                            <a id="relationedit${ oneDirectionFragmentRelation.uuid }" class="no-underline-edit fa fa-pencil  editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
                         </div>
                         <% } %>
                     </h4>
