@@ -64,8 +64,13 @@
         jq('.profileBadge').profileBadge();
     </script>
 
+    <style>
+        .headerForApp a{
+            cursor:pointer;
+        }
+    </style>
 </head>
-<div class="navbar navbar-default container">
+<div class="navbar navbar-default container headerForApp">
     <button type="button" class="navbar-toggle" data-toggle="collapse"
             data-target=".navbar-responsive-collapse">
         <span class="icon-bar"></span> <span class="icon-bar"></span> <span
@@ -73,17 +78,16 @@
     </button>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-            <li id="patientPortalJournals"> <a href="journals.page"><span class="fa fa-comments-o  fa-lg"></span> Posts</a></li>
-            <% if(contextUser.person.isPatient()) { %><li id="patientPortalNavHome"><a href="home.page"> <span class="fa fa-medkit fa-lg"></span>  My Medical Profile</a></li> <% } %>
-            <li id="patientPortalConnections"><a href="patientconnections.page"><span class="fa fa-address-book-o  fa-lg"></span>  My Connections</a></li>
-            <% if(contextUser.person.isPatient()) { %> <li id="patientPortalMyCancerBuddies"><a href="myCancerBuddies.page"> <span class="fa fa-users fa-lg" ></span> My CancerBuddies</a></li><% } %>
+            <li id="patientPortalJournals"> <a href="journals.page"><span class="fa fa-comments-o  fa-lg"></span> &nbsp; Posts</a></li>
+            <% if(contextUser.person.isPatient()) { %><li id="patientPortalNavHome"><a href="home.page"> <span class="fa fa-medkit fa-lg"></span>  &nbsp; My Medical Profile</a></li> <% } %>
+            <li id="patientPortalConnections"><a href="patientconnections.page"><span class="fa fa-address-book-o  fa-lg"></span>  &nbsp; My Connections</a></li>
+            <% if(contextUser.person.isPatient()) { %> <li id="patientPortalMyCancerBuddies"><a href="myCancerBuddies.page"> <span class="fa fa-users fa-lg" ></span>  &nbsp; My CancerBuddies</a></li><% } %>
             </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li id="patientPortalUserName"><a href="editprofile.page"><span class="fa fa-user-circle fa-lg"></span> ${ (username) }</a></li>
-            <li><a href="messages.page"><span class="fa fa-envelope fa-lg"></span> Messages</a></li>
-            <li><a  href="feedbackform.page"><span class="fa fa-life-ring fa-lg"></span>  Contact Us</a></li>
-            <li><a id="navigationLogout">Logout <span
-                    class="fa fa-sign-out fa-lg"></span></a></li>
+            <li id="patientPortalUserName"><a href="editprofile.page"><span class="fa fa-user-circle fa-lg"></span> &nbsp; ${ (username) }</a></li>
+            <li><a href="messages.page"><span class="fa fa-envelope fa-lg"></span> &nbsp; Messages</a></li>
+            <li><a  href="feedbackform.page"><span class="fa fa-life-ring fa-lg"></span>  &nbsp; Contact Us</a></li>
+            <li><a id="navigationLogout">Logout &nbsp; <span class="fa fa-sign-out fa-lg"></span>  </a></li>
 
         </ul>
     </div>
