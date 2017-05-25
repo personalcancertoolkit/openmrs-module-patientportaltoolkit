@@ -201,6 +201,24 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
         return dao.savePreventativeCareEvent(event);
     }
     
+    @Override
+    public PreventativeCareEvent updateAssociatedEncounter(PreventativeCareEvent event, Encounter newEncounter) {
+        // associate new encounter 
+        event.setEncounterUuid(newEncounter.getUuid());
+        //event.setModifiedDate(today);
+        return dao.savePreventativeCareEvent(event);
+    }
+    
+    
+    
+    @Override
+    public PreventativeCareEvent updateCompletedDate(PreventativeCareEvent event, Date completedDate) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        event.setCompleteDate(completedDate);
+        //event.setModifiedDate(today);
+        return dao.savePreventativeCareEvent(event);
+    }
     
     @Override
     public PreventativeCareEvent modifyTargetDate(PreventativeCareEvent event, Date newTargetDate) {

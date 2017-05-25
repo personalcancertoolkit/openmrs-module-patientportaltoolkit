@@ -33,7 +33,7 @@
         // DOM interactions
         //////////
         open_part : function(which_part){
-            valid_parts = ["menu", "markCompleted", "modify", "remove", "add_new"];
+            valid_parts = ["menu", "markCompleted", "modifyCompleted", "modify", "remove", "add_new"];
             if((valid_parts.indexOf(which_part) == -1)){
                 console.log("Requested part to open is not valid");
                 return;
@@ -59,10 +59,11 @@
             if(event == null) return;
             var concept_id = event.concept_id + "";
             this.modal.find("."+concept_id+"-part").show();
-            console.log(concept_id);
+            //console.log(concept_id);
         },
         update_visible_data_for_event : function(){
             var event = this.data_manager.data[this.appointment_id];
+            var concept_id = event.concept_id + "";
             
             // update title
             this.modal.find(".modal-title").html(event.followProcedureName + " Appointment");
@@ -70,39 +71,40 @@
             // update modify input defaults to current data
             this.input.modify.appointment_date.data('datepicker').setValue(event.targetDate);
             
-            // update records if event has been completed && 
+            
+            
+            // update completion inputs to defaults 
+            var questions = this.concepts[concept_id].questions;
+            var concepts_holder = this.DOM.markCompleted_concept_holder;
+            var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
+            var request_data = []; 
+            for (var i = 0; i < questions.length; i++){
+                var this_question = questions[i];
+                var this_uuid = this_question.uuid;
+                var this_datatype = this_question.datatype;
+                var this_holder = question_holder_parent.find("#question_"+this_question.uuid);
+                this.set_response_to(this_holder, this_datatype, false);
+            }
+            
+            // update records && completion data if event has been completed 
             if(event.status == 1){
-                var concept_id = event.concept_id + "";
                 var questions_answered = event.questionsAnswered;
-                var concepts_holder = this.DOM.record_concept_holder;
-                var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
+                var record_concepts_holder = this.DOM.record_concept_holder;
+                var modify_concepts_holder = this.DOM.modifyCompleted_concept_holder;
+                var record_question_holder_parent = record_concepts_holder.find("."+concept_id+"-part");
+                var modify_question_holder_parent = modify_concepts_holder.find("."+concept_id+"-part");
                 for(var i = 0; i < questions_answered.length; i++){
                     question_answer = questions_answered[i];
                     var this_uuid = question_answer.uuid;
                     var this_answer = question_answer.answer;
-                    var this_holder = question_holder_parent.find("#question_answer_"+this_uuid);
-                    this_holder.find(".preventive_care_modal_record_question_answer").html(this_answer);
+                    var this_datatype = question_answer.datatype;
+                    var this_record_holder = record_question_holder_parent.find("#question_answer_"+this_uuid);
+                    var this_modify_holder = modify_question_holder_parent.find("#question_"+this_uuid);
+                    this_record_holder.find(".preventive_care_modal_record_question_answer").html(this_answer);
+                    this.set_response_to(this_modify_holder, this_datatype, this_answer);
                 }
             }
             
-            /*
-            // update inputs to defaults if not completed, or to values if completed
-            if(event.status == 1){
-                var concept_id = event.concept_id + "";
-                var questions_answered = event.questionsAnswered;
-                var concepts_holder = this.DOM.record_concept_holder;
-                var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
-                for(var i = 0; i < questions_answered.length; i++){
-                    question_answer = questions_answered[i];
-                    var this_uuid = question_answer.uuid;
-                    var this_answer = question_answer.answer;
-                    var this_holder = question_holder_parent.find("#question_answer_"+this_uuid);
-                    this_holder.find(".preventive_care_modal_record_question_answer").html(this_answer);
-                }
-            } else {
-                
-            }
-            */
         },
         update_visible_data_for_add : function(){
             this.modal.find(".modal-title").html("Add New Appointment");
@@ -137,7 +139,7 @@
         // Handle Actions
         ///////////////
         trigger_action : function(which_part){
-            valid_parts = ["markCompleted", "add_new", "modify", "remove"];
+            valid_parts = ["markCompleted", "modifyCompleted", "add_new", "modify", "remove"];
             if((valid_parts.indexOf(which_part) == -1)){
                 console.log("Requested part to trigger is not valid ( " + which_part + " )");
                 return;
@@ -160,7 +162,7 @@
         },
         
         attempt_mark_completed : function(){
-            console.log(this.data_manager.data);
+            //console.log(this.data_manager.data);
             var event = this.data_manager.data[this.appointment_id];
             var concept_id = event.concept_id;
             
@@ -168,23 +170,8 @@
             //////////////
             // Get question responses 
             /////////////
-            var questions = this.concepts[concept_id].questions;
-            var concepts_holder = this.DOM.markCompleted_concept_holder;
-            var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
-            var request_data = []; 
-            for (var i = 0; i < questions.length; i++){
-                var this_question = questions[i];
-                var this_uuid = this_question.uuid;
-                var this_datatype = this_question.datatype;
-                var this_holder = question_holder_parent.find("#question_"+this_question.uuid);
-                var this_response = this.grab_response_from(this_holder, this_datatype);
-                
-                request_data.push({
-                    uuid : this_uuid,
-                    datatype : this_datatype, 
-                    response : this_response, 
-                });
-            }
+            var request_data = this.grab_full_response();
+            
             
             //////////////////////
             // Grab all relevant data
@@ -209,21 +196,41 @@
                 location.reload();
             });
         },
-        grab_response_from : function(question_holder, question_datatype){
-            // Grab input element(s)
-            var response_holder = question_holder.find(".preventive_care_input");
+        
+        
+        attempt_modify_completed : function(){
+            //console.log(this.data_manager.data);
+            var event = this.data_manager.data[this.appointment_id];
+            var concept_id = event.concept_id;
+
+            //////////////
+            // Get question responses 
+            /////////////
+            var request_data = this.grab_full_response();
             
-            // parse input elements
-            var response = null;
-            if(question_datatype == "NM") response = response_holder[0].value;
-            if(question_datatype == "DT") response = response_holder[0].value;
-            if(question_datatype == "BIT") {
-                if(response_holder[0].checked) response = "true";
-                if(response_holder[1].checked) response = "false";
-            }
-            console.log("response: " + response);
+            //////////////////////
+            // Grab all relevant data
+            //////////////////////
+            var event_id             = this.appointment_id;
+            var person_uuid          = jq("#personUuid").val();
+            var formated_target_date = event.formatedTargetDate;
+            var concept_id           = concept_id;
+            var json_data            = JSON.stringify(request_data);
+            console.log(json_data);
             
-            return response;
+            ////////////
+            // Submit request
+            ////////////
+            jq.get("preventiveCareManageModal/modifyCompleted.action", {
+                eventId : event_id,
+                personUuid : person_uuid,
+                formatedTargetDate : formated_target_date,
+                conceptId : concept_id,
+                jsonData : json_data,
+            }, function () {
+                console.log("Request Responded");
+                location.reload();
+            });
         },
         
         attempt_modify_appointment : function(){
@@ -231,10 +238,10 @@
              
             //location.reload();
             var appointment_id         = encodeURIComponent(this.appointment_id);
-            var new_target_date      = encodeURIComponent(this.input.modify.appointment_date.val());
-            var personUuid          = encodeURIComponent(jq("#personUuid").val());
-            var formatedTargetDate  = encodeURIComponent(event.formatedTargetDate);
-            var concept_id          = encodeURIComponent(event.concept_id);
+            var new_target_date        = encodeURIComponent(this.input.modify.appointment_date.val());
+            var personUuid             = encodeURIComponent(jq("#personUuid").val());
+            var formatedTargetDate     = encodeURIComponent(event.formatedTargetDate);
+            var concept_id             = encodeURIComponent(event.concept_id);
             var parameters = 'eventId='+appointment_id + '&newTargetDate='+new_target_date + '&personUuid='+personUuid + '&conceptId=' + concept_id + '&formatedTargetDate=' + formatedTargetDate;
             
             var xhr = new XMLHttpRequest();
@@ -242,7 +249,7 @@
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onload = function(){
                 //console.log(this.responseText);
-                console.log("Success!");
+                //console.log("Success!");
                 window.location.reload();
             };
             xhr.send(null);
@@ -296,6 +303,76 @@
         },
         
         /////////////////////////////////////
+        // Concept Question Value Interfaces
+        //////////////////////////////////////
+        grab_full_response : function(){
+            var event = this.data_manager.data[this.appointment_id];
+            var concept_id = event.concept_id;
+            
+            var questions = this.concepts[concept_id].questions;
+            var concepts_holder = this.DOM.markCompleted_concept_holder;
+            var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
+            var request_data = []; 
+            for (var i = 0; i < questions.length; i++){
+                var this_question = questions[i];
+                var this_uuid = this_question.uuid;
+                var this_datatype = this_question.datatype;
+                var this_holder = question_holder_parent.find("#question_"+this_question.uuid);
+                var this_response = this.grab_response_from(this_holder, this_datatype);
+                
+                request_data.push({
+                    uuid : this_uuid,
+                    datatype : this_datatype, 
+                    response : this_response, 
+                });
+            }
+            
+            return request_data;
+        },
+        grab_response_from : function(question_holder, question_datatype){
+            // Grab input element(s)
+            var response_holder = question_holder.find(".preventive_care_input");
+            
+            // parse input elements
+            var response = null;
+            if(question_datatype == "NM") response = response_holder[0].value;
+            if(question_datatype == "DT") response = response_holder[0].value;
+            if(question_datatype == "BIT") {
+                if(response_holder[0].checked) response = "true";
+                if(response_holder[1].checked) response = "false";
+            }
+            //console.log("response: " + response);
+            
+            return response;
+        },
+        set_response_to : function(question_holder, question_datatype, new_value){
+            // Grab input element(s)
+            var response_holder = question_holder.find(".preventive_care_input");
+            //console.log(response_holder);
+            //console.log(response_holder[0]);
+            
+            if(new_value == false){
+                // default response
+                if(question_datatype == "NM") response_holder[0].value = "";
+                if(question_datatype == "DT") response_holder.data('datepicker').setValue(new Date());
+                if(question_datatype == "BIT") {
+                    response_holder[0].checked = false;
+                    response_holder[1].checked = false;
+                }
+            } else {
+                //console.log("Setting" + question_datatype + " to " + new_value);
+                if(question_datatype == "NM") response_holder[0].value = new_value;
+                if(question_datatype == "DT") response_holder.data('datepicker').setValue(new_value);
+                if(question_datatype == "BIT") {
+                    response_holder[0].checked = true;
+                    response_holder[1].checked = false;
+                    if(question_datatype == "true") response_holder[0].checked = true;
+                    if(question_datatype == "false") response_holder[1].checked = true;
+                }
+            }
+        },
+        
+        /////////////////////////////////////
         // Initialize concept data and generate input templates
         /////////////////////////////////////
         initialize_concepts : function(){
@@ -304,7 +381,7 @@
             //Load Reminder data, insert reminders into calendar and table
             //console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
             jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getRelevantPreventiveCareConcepts/'+ jq("#personUuid").val(), function (relevantConcepts) {
-                console.log(relevantConcepts);
+                //console.log(relevantConcepts);
                 // Set datasource for reminder table
                 this.setDataSource(relevantConcepts);
             }.bind(this));
@@ -540,6 +617,7 @@
             },
             action : {
                 markCompleted : document.getElementById('managePreventive_button_markCompleted'),
+                modifyCompleted : document.getElementById('managePreventive_button_modifyCompleted'),
                 modify : document.getElementById('managePreventive_button_modify'),
                 remove : document.getElementById('managePreventive_button_remove'),
                 add_new : document.getElementById('managePreventive_button_add_new'),
@@ -592,7 +670,8 @@
         // Load concepts from database w/ async request, build the input forms dynamically.
         managePreventiveCareModal_handler.initialize_concepts(); 
         managePreventiveCareModal_handler.DOM = {
-            markCompleted_concept_holder : the_modal.find("#markCompleted_concept_holder"),
+            markCompleted_concept_holder : the_modal.find("#completionData_concept_holder"),
+            modifyCompleted_concept_holder : the_modal.find("#completionData_concept_holder"),
             record_concept_holder : the_modal.find("#record_concept_holder"),
         }
         // Initialize datepicker inputs
@@ -682,7 +761,7 @@
                 </div>
                 
                 <!-- markCompleted part-->
-                <div id = "markCompleted_concept_holder" class = 'markCompleted-part modifyCompleted-part modal-part'>
+                <div id = "completionData_concept_holder" class = 'markCompleted-part modifyCompleted-part modal-part'>
                    
                 </div>
                 
@@ -744,6 +823,7 @@
                 <div class="button-div pull-right ">
                     <button type="button" class="btn btn-default modal_cancel_button modal-part all-parts">Cancel</button>
                     <button type="button" class="btn btn-primary modal-part markCompleted-part" id="managePreventive_button_markCompleted"> Mark Completed </button>
+                    <button type="button" class="btn btn-primary modal-part modifyCompleted-part" id="managePreventive_button_modifyCompleted"> Modify Completed Record </button>
                     <button type="button" class="btn btn-primary modal-part modify-part" id="managePreventive_button_modify"> Save Changes </button>
                     <button type="button" class="btn btn-primary modal-part remove-part" id="managePreventive_button_remove"> Remove this Event </button>
                     <button type="button" class="btn btn-primary modal-part add_new-part" id="managePreventive_button_add_new"> Add New Appointment </button>

@@ -7,7 +7,7 @@
         //Load Reminder data, insert reminders into calendar and table
         //console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
         jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getpreventivecareforpatient/'+ jq("#personUuid").val(), function (preventiveData) {
-            console.log(preventiveData);
+            //console.log(preventiveData);
             // Set datasource for reminder table
             preventive_table_handler.setDataSource(preventiveData);
             // Set datasource for calendar

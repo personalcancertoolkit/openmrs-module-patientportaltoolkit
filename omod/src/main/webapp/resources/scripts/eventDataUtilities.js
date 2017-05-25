@@ -175,7 +175,7 @@ Event_Data_Manager.prototype = {
         }
     },
     set_valid_reminders : function(the_data){
-        console.log(the_data);
+        //console.log(the_data);
         var added_reminders = [];
         var valid_reminders = [];
         for(var i = 0; i < the_data.length; i++){
@@ -186,7 +186,7 @@ Event_Data_Manager.prototype = {
             valid_reminders.push(this_data);
         }
         this.valid_reminders = valid_reminders.sort(this.reminder_sort_function);
-        console.log(this.valid_reminders);
+        //console.log(this.valid_reminders);
     },
     reminder_sort_function : function(a,b){
         if(a.procedure_name < b.procedure_name) return -1;
