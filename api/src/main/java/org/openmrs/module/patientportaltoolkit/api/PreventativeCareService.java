@@ -39,6 +39,12 @@ public interface PreventativeCareService {
     PreventativeCareEvent markCompletedEvent(PreventativeCareEvent preventativeCareEvent, Date markCompleteDate, Encounter relevantEncounter);
 
     @Transactional
+    PreventativeCareEvent modifyTargetDate(PreventativeCareEvent event, Date newTargetDate);
+    
+    @Transactional
+    PreventativeCareEvent removeEvent(PreventativeCareEvent event);
+    
+    @Transactional
     PreventativeCareEvent addEvent(PreventativeCareEvent preventativeCareEvent);
     
     @Transactional
