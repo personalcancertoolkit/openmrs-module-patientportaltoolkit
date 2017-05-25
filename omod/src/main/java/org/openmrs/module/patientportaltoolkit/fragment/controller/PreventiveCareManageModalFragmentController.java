@@ -41,6 +41,10 @@ public class PreventiveCareManageModalFragmentController {
     public void controller(PageModel model, PageRequest pageRequest) {
         
     }
+    
+    /////////////////////////////
+    // Mark Completed
+    /////////////////////////////
     public void markPreventiveCareCompleted(FragmentModel model, 
                                             @RequestParam(value = "eventId") String eventId, 
                                             @RequestParam(value = "personUuid", required = true) String personUuid, 
@@ -48,10 +52,8 @@ public class PreventiveCareManageModalFragmentController {
                                             @RequestParam(value = "conceptId") String conceptId, 
                                             @RequestParam(value = "jsonData") String jsonData, 
                                             HttpServletRequest servletRequestest) throws ParseException {
-
         System.out.println(conceptId);
         System.out.println(jsonData);
-        
         ///////////////////////////////////
         // Define Patient
         ///////////////////////////////////
@@ -111,10 +113,6 @@ public class PreventiveCareManageModalFragmentController {
         Context.getService(PreventativeCareService.class).markCompletedEvent(event, completedDate, savedEncounter);
         System.out.println("All was completed");
     }
-
-    
-    
-    
     protected Encounter saveEncounterForPreventiveCareEvent(String conceptId, String jsonData, Patient patient) throws ParseException {
         //////////////////////////////////////////////////////////////////
         // Save this Encounter
@@ -194,6 +192,59 @@ public class PreventiveCareManageModalFragmentController {
         }
         Encounter savedEncounter = encounterService.saveEncounter(newEncounter);
         return savedEncounter;
+    }
+    
+    
+    //////////////////////////////
+    // Add new preventive care appointment
+    //////////////////////////////
+    public void addAppointment(FragmentModel model, 
+                              @RequestParam(value = "personUuid", required = true) String personUuid, 
+                              @RequestParam(value = "conceptId", required = true) String conceptId, 
+                              @RequestParam(value = "formatedTargetDate", required = true) String formatedTargetDate, 
+                              HttpServletRequest servletRequest) {
+        
+        
+        System.out.println("Data Received by appointmentsManageModal/removeAppointment.action:");
+        System.out.println("personUuid : " + personUuid);
+        System.out.println("conceptId : " + conceptId);
+        System.out.println("formatedTargetDate : " + formatedTargetDate);
+        
+        // Get person this action is requested by
+        //User userRequestedBy = Context.getAuthenticatedUser();
+        
+        // Get patient this action is requested for
+        Person person = Context.getPersonService().getPersonByUuid(personUuid);
+        //User userRequestedFor = Context.getUserService().getUsersByPerson(person,false).get(0);
+        Patient patient = Context.getPatientService().getPatient(person.getId());
+        
+        ///////////////
+        // Ensure requester (userRequestedBy) can modify information for requestee (userRequestedFor)
+        ///////////////        
+        /*
+        System.out.println("RequestedUserId:" + userRequestedFor.getSystemId());
+        System.out.println("RequestedUserName:"+ userRequestedFor.getUsername());
+        System.out.println("RequestedByID:"+ userRequestedBy.getUsername());
+        System.out.println("RequestedByUserName:"+ userRequestedBy.getUsername());
+        */
+        
+        /////////////
+        // Format Date Correctly
+        /////////////
+        DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        Date targetDate = new Date();
+        try {
+            targetDate = format.parse(formatedTargetDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        //////////////
+        // Record this new event
+        //////////////
+        PreventativeCareEvent event = Context.getService(PreventativeCareService.class).generateEventFromGuidelineData(patient, conceptId, targetDate);
+        Context.getService(PreventativeCareService.class).addEvent(event);
+
     }
     
 }

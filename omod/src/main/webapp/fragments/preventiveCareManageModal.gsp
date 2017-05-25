@@ -15,25 +15,26 @@
                 "02310664-f7bb-477c-a703-0325af4c3f46",  // diastolic
             ],
          ],
-
+        
+        
         open_modal_for : function(appointment_id){
             this.modal.modal('show');
-            this.appointment_id = appointment_id;
-            var event = this.data_manager.data[this.appointment_id];
-            if(event.status == 0) {
-                this.open_part('markCompleted'); // hardcoded as markCompleted as no other options are enabled
-            } else {
+            if(appointment_id == "add_new"){
+                this.open_part("add_new");
+                this.update_visible_data_for_add();
+            } else { // return so that the rest of the code is not run.
+                this.appointment_id = appointment_id;
                 this.open_part('menu');
+                this.open_sub_part(); // ensure special requirements for each procedure are accounted for
+                this.update_visible_data_for_event();
             }
-            this.open_sub_part(); // ensure special requirements for each procedure are accounted for
-            this.update_visible_data_for_event();
         },
-        
+
         //////////
         // DOM interactions
         //////////
         open_part : function(which_part){
-            valid_parts = ["menu", "markCompleted"];
+            valid_parts = ["menu", "markCompleted", "add_new"];
             if((valid_parts.indexOf(which_part) == -1)){
                 console.log("Requested part to open is not valid");
                 return;
@@ -46,7 +47,7 @@
             
             // show all completed_event parts if this event is completed
             var event = this.data_manager.data[this.appointment_id];
-            if(event.status == 1) this.modal.find(".completed_event-part").show()
+            if(event != null && event.status == 1) this.modal.find(".completed_event-part").show()
             
             // handle additional, part specific, requirements
             //if(which_part == "menu") this.update_valid_menu_options();
@@ -81,7 +82,17 @@
                 }
                 
             }
-            
+        },
+        update_visible_data_for_add : function(){
+            this.modal.find(".modal-title").html("Add New Appointment");
+            this.input.add_new.target_date.data('datepicker').setValue(new Date());
+            if(this.dropdown_initialized == false){
+                this.dropdown_handler.main_display_element = this.input.add_new.new_appointment_type;
+                this.dropdown_handler.main_display_element_dropdown_contents = this.input.add_new.new_appointment_type_dropdown_contents;
+                this.dropdown_handler.dropdown_contents = this.input.add_new.new_appointment_type_dropdown_contents;
+                this.dropdown_handler.initialize_with_data(this.data_manager.valid_reminders);
+            }
+            this.dropdown_handler.handle_dropdown_change(0);
         },
         //update_valid_menu_options : function(){},
         hide_all_parts : function(){
@@ -95,13 +106,25 @@
         // Handle Actions
         ///////////////
         trigger_action : function(which_part){
-            valid_parts = ["markCompleted"];
+            valid_parts = ["markCompleted", "add_new"];
             if((valid_parts.indexOf(which_part) == -1)){
                 console.log("Requested part to trigger is not valid ( " + which_part + " )");
                 return;
             }
             if(which_part == "markCompleted") {
                 this.attempt_mark_completed();
+            }
+            if(which_part == "modifyCompleted"){
+                this.attempt_modify_completed();
+            }
+            if(which_part == "modify"){
+                this.attempt_modify_appointment();
+            }
+            if(which_part == "remove"){
+                this.attempt_remove_appointment();
+            }
+            if(which_part == "add_new"){
+                this.attempt_add_new();   
             }
         },
         
@@ -155,7 +178,6 @@
                 location.reload();
             });
         },
-        
         grab_response_from : function(question_holder, question_datatype){
             // Grab input element(s)
             var response_holder = question_holder.find(".preventive_care_input");
@@ -171,6 +193,34 @@
             console.log("response: " + response);
             
             return response;
+        },
+        
+        
+        attempt_add_new : function(){
+            var event = this.dropdown_handler.current_selection;
+            
+            // check that user is sure they set the target date correctly
+            var raw_formatedTargetDate = this.input.add_new.target_date.val(); 
+            if((new Date(raw_formatedTargetDate)).toDateString() === (new Date()).toDateString()){
+                response = confirm("Are you sure you want the target date for this new appointment to be today?"); 
+                if(!response) return;
+            }
+            
+            // generate parameters
+            var concept_id          = encodeURIComponent(event.concept_id);
+            var formatedTargetDate  = encodeURIComponent(raw_formatedTargetDate);
+            var personUuid          = encodeURIComponent(jq("#personUuid").val());
+            var parameters = 'conceptId='+concept_id + '&formatedTargetDate='+formatedTargetDate + '&personUuid='+personUuid;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "preventiveCareManageModal/addAppointment.action?" + parameters, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function(){
+                //console.log(this.responseText);
+                console.log("Success!");
+                window.location.reload();
+            };
+            xhr.send(null);
         },
         
         /////////////////////////////////////
@@ -408,25 +458,30 @@
         // Define modal_handler values
         managePreventiveCareModal_handler.modal = the_modal;
         managePreventiveCareModal_handler.data_manager = preventive_data_manager;
+        managePreventiveCareModal_handler.dropdown_handler = new Event_New_Appointment_Dropdown_Handler();
         managePreventiveCareModal_handler.buttons = {
             menu : {
                //markCompleted : document.getElementById('managePreventive_menu_markCompleted'),
             },
             action : {
                 markCompleted : document.getElementById('managePreventive_button_markCompleted'),
+                add_new : document.getElementById('managePreventive_button_add_new'),
             },
             back : the_modal.find("#back_button"),
             cancel : the_modal.find(".modal_cancel_button"),
         }
-        /*
         managePreventiveCareModal_handler.input = {
-            markCompleted : {
-                completed_date : the_modal.find('#completed_date'),  
-                doctor_name : the_modal.find('#doctor_name'),
-                comments : the_modal.find('#comments'),
+            add_new : {
+                target_date : the_modal.find('#preventiveCare_new_appointment_target_date'),
+                new_appointment_type : the_modal.find('#preventiveCare_new_appointment_type'),
+                new_appointment_type_dropdown_contents : the_modal.find('#preventiveCare_new_appointment_type_dropdown_contents'),
             },
+            /*
+            modify : {
+                appointment_date : the_modal.find('#appointment_date'),
+            },
+            */
         }
-        */
  
         // Initialize menu buttons
         var button_keys = Object.keys(managePreventiveCareModal_handler.buttons.menu);
@@ -465,16 +520,14 @@
             markCompleted_concept_holder : the_modal.find("#markCompleted_concept_holder"),
             record_concept_holder : the_modal.find("#record_concept_holder"),
         }
-        /*
         // Initialize datepicker inputs
-        var datepicker_ids = ["#influenzaDate", "#pneumococcalDate", "#cholesterolDate", "#bpDate", "#hivDate", "#mammographyDate", "#cervicalDate" ];
-        //var datepicker_elements = [];
-        //datepicker_elements.push(managePreventiveCareModal_handler.input.markCompleted.completed_date);
-        for(var i = 0; i < datepicker_ids.length; i++){
-            var element = jq(datepicker_ids[i]);
+        var datepicker_elements = [];
+        datepicker_elements.push(managePreventiveCareModal_handler.input.add_new.target_date);
+        //datepicker_elements.push(managePreventiveCareModal_handler.input.modify.appointment_date);
+        for(var i = 0; i < datepicker_elements.length; i++){
+            var element = datepicker_elements[i];
             element.datepicker({ format: 'mm/dd/yyyy' }).on('changeDate', function(){ this.data('datepicker').hide() }.bind(element));
         }
-        */
     });
   
     
@@ -494,18 +547,58 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"> Modal Title </h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style = 'overflow-y:visible;'>
                 
+                
+                <!-- menu part-->
                 <div class = 'menu-part modal-part'>
                     <div id = "record_concept_holder" class = 'completed_event-part modal-part'>
 
                     </div>
-                    
                 </div>
                 
+                <!-- markCompleted part-->
                 <div id = "markCompleted_concept_holder" class = 'markCompleted-part modal-part'>
                    
                 </div>
+                
+                <!-- add appointment part-->
+                <div class="modal-part add_new-part">
+                    <style>
+                    .btn-like-input{
+                        background-color:white;
+                        border:2px solid #DCE4EC;
+                        border-radius:3px;
+                    }
+
+                    .btn-like-input:focus{
+                        border-color:black;
+                    }
+                    </style>
+                    <div style = 'display:flex;'>
+                        <div style = 'margin: auto 0px;'>
+                            <label class = 'manageAppointmentModalLabel'>Appointment Type</label>
+                        </div>
+                        <div class="dropdown " style = 'position:relative; z-index: 5000;'>
+                            <button class="btn-like-input " type="button" id="preventiveCare_new_appointment_type_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style = ' padding:0px 13px; height:43px; margin-left:3px; min-width:230px; display:flex;'>
+                                <div id = 'preventiveCare_new_appointment_type' style = 'margin:auto; margin-left:0px;'> PlaceHolder </div> 
+                                <div class="caret" style = 'margin:auto; margin-right:0px;'></div>
+                            </button>
+                            <ul class="dropdown-menu " id = 'preventiveCare_new_appointment_type_dropdown_contents' aria-labelledby="preventiveCare_new_appointment_type_dropdown" style = 'font-size:14px; '>
+                                <!--
+                                <li><a href="#" onclick = 'new_appointment_dropdown_handler.handle_dropdown_change(0)'>Age - Closest to You</a></li>
+                                -->
+                            </ul>
+                        </div>
+                    </div>
+                        
+                    <div style = 'height:15px;'></div>
+                    <form class="form-inline" role="form">
+                        <label class = 'manageAppointmentModalLabel'>Target Date</label>
+                        <input class="form-control datetype" id="preventiveCare_new_appointment_target_date"  style = 'min-width:230px;' type="text" value=""/>
+                    </form>
+                </div>
+                
             </div>
             
             <div class="modal-footer" style = 'z-index:10;'>
@@ -517,6 +610,7 @@
                 <div class="button-div pull-right ">
                     <button type="button" class="btn btn-default modal_cancel_button modal-part all-parts">Cancel</button>
                     <button type="button" class="btn btn-primary modal-part markCompleted-part" id="managePreventive_button_markCompleted"> Mark Completed </button>
+                    <button type="button" class="btn btn-primary modal-part add_new-part" id="managePreventive_button_add_new"> Add New Appointment </button>
                 </div>
             </div>
         </div>

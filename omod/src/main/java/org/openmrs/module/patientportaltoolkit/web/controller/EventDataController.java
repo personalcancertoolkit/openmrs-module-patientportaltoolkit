@@ -21,6 +21,7 @@ import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.Concept;
 import org.openmrs.module.patientportaltoolkit.Guideline;
 import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
+import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,6 +87,26 @@ public class EventDataController {
         return ToolkitResourceUtil.generatePreventiveCareEvents(events);
     }
 
+    @RequestMapping( value = "/patientportaltoolkit/getpossiblenewpreventivecareeventsforpatient/{patientId}")
+    @ResponseBody
+    public Object getPossibleNewPreventiveCareEventsForPatient(@PathVariable( "patientId" ) String patientId)
+    {
+        // Define Possible Preventive Care Events for Patient
+        List<Map<String, String>> data = new ArrayList<>();
+        Map<String, String> map = new HashMap<String, String>();
+
+        Patient patient= Context.getPatientService().getPatientByUuid(patientId);
+        List<PreventiveCareGuideline> guidelineList = Context.getService(PreventativeCareService.class).getPreventativeCareGuideline(patient);
+        for (PreventiveCareGuideline g:  guidelineList) {
+            // and for each guideline's set of intervals (e.g., check up in 6mo, 12mo, and 24mo)
+            String procedureName = g.getFollowupProcedure().getName().getName();
+            Integer conceptID = g.getFollowupProcedure().getConceptId();
+            map.put("procedure_name", procedureName);
+            map.put("concept_id", Integer.toString(conceptID));
+            data.add(new HashMap<String,String>(map));
+        }
+        return data;
+    }
     
     
     @RequestMapping( value = "/patientportaltoolkit/getRelevantPreventiveCareConcepts/{patientId}")

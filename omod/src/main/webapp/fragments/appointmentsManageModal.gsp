@@ -39,7 +39,7 @@
             
             // show all completed_event parts if this event is completed
             var event = this.data_manager.data[this.appointment_id];
-            if(event.status == 1) this.modal.find(".completed_event-part").show()
+            if(event != null && event.status == 1) this.modal.find(".completed_event-part").show()
             
             // handle additional, part specific, requirements
             if(which_part == "menu") this.update_valid_menu_options();
@@ -257,7 +257,7 @@
         // Define modal_handler values
         manageAppointmentModal_handler.modal = the_modal;
         manageAppointmentModal_handler.data_manager = appointment_data_manager;
-        manageAppointmentModal_handler.dropdown_handler = new_appointment_dropdown_handler;
+        manageAppointmentModal_handler.dropdown_handler = new Event_New_Appointment_Dropdown_Handler();
         manageAppointmentModal_handler.buttons = {
             menu : {
                 markCompleted : document.getElementById('manageAppointment_menu_markCompleted'),
@@ -284,9 +284,9 @@
         }
         manageAppointmentModal_handler.input = {
             add_new : {
-                target_date : the_modal.find('#new_appointment_target_date'),
-                new_appointment_type : the_modal.find('#new_appointment_type'),
-                new_appointment_type_dropdown_contents : the_modal.find('#new_appointment_type_dropdown_contents'),
+                target_date : the_modal.find('#followUpCare_new_appointment_target_date'),
+                new_appointment_type : the_modal.find('#followUpCare_new_appointment_type'),
+                new_appointment_type_dropdown_contents : the_modal.find('#followUpCare_new_appointment_type_dropdown_contents'),
             },
             modify : {
                 appointment_date : the_modal.find('#appointment_date'),
@@ -338,45 +338,6 @@
             element.datepicker({ format: 'mm/dd/yyyy' }).on('changeDate', function(){ this.data('datepicker').hide() }.bind(element));
         }
     });
-
-    var new_appointment_dropdown_handler = {
-        main_display_element : null,
-        main_display_element_dropdown_contents : null,
-        current_selection : null,
-        data : null,
-        handle_dropdown_change : function(data_index){
-            var this_data = this.data[data_index];
-            this.current_selection = this_data;
-            this.main_display_element.html(this_data.procedure_name);
-        },
-        initialize_with_data : function(data){
-            this.data = data;
-            //console.log("Initializing with data!");
-            for(var i = 0; i < data.length; i++){
-                this_event = data[i];
-                this_event.list_id = i;
-                this.append_to_dropdown(this_event);
-            }
-        },
-        
-        append_to_dropdown : function(the_event){
-            //<li><a href="#" onclick = 'new_appointment_dropdown_handler.handle_dropdown_change(0)'>Age - Closest to You</a></li>  
-
-            // create DOM elements
-            var parent = document.createElement("li");
-
-            var anchor = document.createElement("a");
-            anchor.href = '#';
-            anchor.onclick = function(){this.handle_dropdown_change(the_event.list_id)}.bind(this);
-            anchor.innerHTML = this_event.procedure_name;
-
-            //append them to their parents
-            parent.appendChild(anchor);
-
-            //append content to the dropdown
-            this.main_display_element_dropdown_contents.append(parent);
-        },
-    }
 
 </script>
 
@@ -516,11 +477,11 @@
                             <label class = 'manageAppointmentModalLabel'>Appointment Type</label>
                         </div>
                         <div class="dropdown " style = 'position:relative; z-index: 5000;'>
-                            <button class="btn-like-input " type="button" id="new_appointment_type_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style = ' padding:0px 13px; height:43px; margin-left:3px; min-width:230px; display:flex;'>
-                                <div id = 'new_appointment_type' style = 'margin:auto; margin-left:0px;'> PlaceHolder </div> 
+                            <button class="btn-like-input " type="button" id="followUpCare_new_appointment_type_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style = ' padding:0px 13px; height:43px; margin-left:3px; min-width:230px; display:flex;'>
+                                <div id = 'followUpCare_new_appointment_type' style = 'margin:auto; margin-left:0px;'> PlaceHolder </div> 
                                 <div class="caret" style = 'margin:auto; margin-right:0px;'></div>
                             </button>
-                            <ul class="dropdown-menu " id = 'new_appointment_type_dropdown_contents' aria-labelledby="new_appointment_type_dropdown" style = 'font-size:14px; '>
+                            <ul class="dropdown-menu " id = 'followUpCare_new_appointment_type_dropdown_contents' aria-labelledby="followUpCare_new_appointment_type_dropdown" style = 'font-size:14px; '>
                                 <!--
                                 <li><a href="#" onclick = 'new_appointment_dropdown_handler.handle_dropdown_change(0)'>Age - Closest to You</a></li>
                                 -->
@@ -532,13 +493,13 @@
                     
                     <form class="form-inline" role="form">
                         <label class = 'manageAppointmentModalLabel'>Target Date</label>
-                        <input class="form-control datetype" id="new_appointment_target_date"  style = 'min-width:230px;' type="text" value=""/>
+                        <input class="form-control datetype" id="followUpCare_new_appointment_target_date"  style = 'min-width:230px;' type="text" value=""/>
                     </form>
                 </div>
             </div>
             
             
-            <div class="modal-footer" style = 'z-index:10;'>
+            <div class="modal-footer" style = ''>
                 <div class="button-div pull-left  ">
                     <button type="button" class="btn btn-default all-parts menu-exclude-part add_new-exclude-part" id = 'back_button'>Back</button>
                 </div>

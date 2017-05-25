@@ -15,6 +15,12 @@
             // Set datasource for data_manager
             preventive_data_manager.set_data(preventiveData);
         });
+        //Load all possible guidelines that user can choose to create a new reminder from
+        jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getpossiblenewpreventivecareeventsforpatient/'+ jq("#personUuid").val(), function (reminderData) {
+            // console.log(reminderData);
+            // record the data in appointment data manager
+            preventive_data_manager.set_valid_reminders(reminderData);
+        });
     }
     
     window.addEventListener("load", function(){
@@ -46,6 +52,7 @@
         preventive_table_handler.isACareGiver = ${isACareGiver};
         preventive_table_handler.modification_modal_handler = managePreventiveCareModal_handler;
         preventive_table_handler.button_identification_class = "managePreventiveCare_sourceButton";
+        preventive_table_handler.add_new_appointment_button = "add_new_preventive_appointment_button";
         
         setTimeout(load_preventive_data, 1000);
     });
@@ -72,6 +79,11 @@
             <tbody id = 'preventive_table_body'>
             </tbody>
         </table>
+    </div>
+    <div style = 'display:flex; margin-top:-20px; '>
+        <div style = 'margin:auto; margin-left:0px;'>
+            <a class='btn btn-secondary-customized btn-sm pull-right' style = 'font-size:16px; margin-left:-8px;' id = 'add_new_preventive_appointment_button'> Add New Appointment</a> <!-- id used in appointmentsManageModal.gsp -->
+        </div>
     </div>
     <br/>
     <div id='preventiveCareCalendar' class="calendar" width="100%"></div>
