@@ -14,6 +14,7 @@ import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.api.ObsService;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
@@ -28,9 +29,10 @@ import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+//import java.util.Date;
 import java.text.DateFormat;
-import java.util.Locale;
+//import java.util.Locale;
+import java.util.*;
 
 import org.json.*;
 
@@ -119,8 +121,8 @@ public class PreventiveCareManageModalFragmentController {
             Logic: creates a new encounter and updates the encounter id correlated to the event. Deletes previous encounter in the process.
         */
          
-        System.out.println(conceptId);
-        System.out.println(jsonData);
+        //System.out.println(conceptId);
+        //System.out.println(jsonData);
         ///////////////////////////////////
         // Define Patient
         ///////////////////////////////////
@@ -130,13 +132,13 @@ public class PreventiveCareManageModalFragmentController {
         Patient patient = Context.getPatientService().getPatient(person.getId());
         
         //////////////////////////////////////////////////////////////////////////////
-        // Save this event details as an encounter
+        // Update the encounter details for this event
         //////////////////////////////////////////////////////////////////////////////
-        Encounter newEncounter = saveEncounterForPreventiveCareEvent(conceptId, jsonData, patient);
-        
-        
+        PreventativeCareEvent event = Context.getService(PreventativeCareService.class).getEventById(eventId);
+        updateEncounterForPreventiveCareEvent(event, jsonData);
+
         //////////////////////////////////////////////////////////////////////////////
-        // Record this submission in preventiveCareEvents database
+        // Update the new completed date in the database
         //////////////////////////////////////////////////////////////////////////////
         ///////////////
         // Find Completed Date from Questions
@@ -165,10 +167,7 @@ public class PreventiveCareManageModalFragmentController {
         //////////////
         // Replace previous encounter with new encounter
         //////////////
-        PreventativeCareEvent event = Context.getService(PreventativeCareService.class).getEventById(eventId);
-        //String oldEncounterUuid = event.getEncounterUuid();
-        //Context.getService(EncounterService.class).purgeEncounter(Context.getService(EncounterService.class).getEncounterByUuid(oldEncounterUuid), true); 
-        Context.getService(PreventativeCareService.class).updateAssociatedEncounter(event, newEncounter);
+        //PreventativeCareEvent event = Context.getService(PreventativeCareService.class).getEventById(eventId);
         Context.getService(PreventativeCareService.class).updateCompletedDate(event, completedDate);
     }
     
@@ -412,13 +411,61 @@ public class PreventiveCareManageModalFragmentController {
             }
             
             //
-            // Note : BIT datatype (boolean) not implemented 
+            // Note/TODO : BIT datatype (boolean) not implemented 
             //
             
             if(valid_data) newEncounter.addObs(o);
         }
         Encounter savedEncounter = encounterService.saveEncounter(newEncounter);
         return savedEncounter;
+    }
+    
+    protected void updateEncounterForPreventiveCareEvent(PreventativeCareEvent event, String jsonData) throws ParseException {
+        //////////////////////////////////////////////////////////////////
+        // Update this encounter -> update these observations
+        //////////////////////////////////////////////////////////////////
+        String enncounterUuid = event.getEncounterUuid();
+        Encounter encounter = Context.getService(EncounterService.class).getEncounterByUuid(enncounterUuid);
+        Set<Obs> observations = encounter.getObs();
+        
+        /////////////////////////////
+        // Map observations with key of conceptID, this way observations can be looked up by the data found in json 
+        /////////////////////////////
+        Map<String, Obs> observationsMappedByConceptId = new HashMap<String, Obs>();
+        for(Obs obs : observations){
+            observationsMappedByConceptId.put(obs.getConcept().getUuid(), obs);
+        }
+        
+        ///////////////////////////////
+        // Update observations, with data based on jsonData 
+        ///////////////////////////////
+        JSONArray questions = new JSONArray(jsonData);
+        for (int i = 0; i < questions.length(); i++) {
+            Boolean valid_data = false;
+            String uuid = questions.getJSONObject(i).getString("uuid");
+            String datatype = questions.getJSONObject(i).getString("datatype");
+            String response = questions.getJSONObject(i).getString("response");
+            //System.out.println(uuid);
+            
+            Obs o = observationsMappedByConceptId.get(uuid);
+            
+            if(datatype.equals("DT")){
+                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                Date parsedDate = formatter.parse(response);
+                o.setValueDate(parsedDate);
+                valid_data = true;
+            }
+            if(datatype.equals("NM")){
+                o.setValueNumeric(Double.valueOf(response));
+                valid_data = true;
+            }
+            
+            //
+            // Note/TODO : BIT datatype (boolean) not implemented 
+            //
+            
+            if(valid_data) Context.getService(ObsService.class).saveObs(o, "Modifying a completed preventiveCareEvent");
+        }
     }
     
 }
