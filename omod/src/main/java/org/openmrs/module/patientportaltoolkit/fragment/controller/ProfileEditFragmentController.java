@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
+import org.openmrs.PersonAddress;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PersonPreferences;
 import org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService;
@@ -42,20 +43,38 @@ public class ProfileEditFragmentController {
                                     @RequestParam(value = "familyName", required = true) String familyName,
                                     @RequestParam(value = "gender", required = true) String gender,
                                     @RequestParam(value = "birthDate", required = true) String birthDate,
+                                    @RequestParam(value = "postalCode", required = true) String postalCode,
                                     @RequestParam(value = "myCancerBuddies", required = true) String myCancerBuddies, HttpServletRequest servletRequest)  {
 
         log.info(PPTLogAppender.appendLog("SAVE_PROFILEEDIT", servletRequest, "personId:", personId+"","givenName:",givenName, "familyName", familyName, "gender", gender, "birthDate", birthDate));
+        
+        
+        ///////////////////////
+        // get person id
+        ///////////////////////
         Person person = Context.getPersonService().getPerson(personId);
+        
+        
+        //////////////////////////////////////////////////////////////////////////////////
+        // Update person object settings
+        //////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////
+        // set person name
+        ///////////////////////
+        //  - create new name
         PersonName personName = new PersonName();
         personName.setGivenName(givenName);
         personName.setFamilyName(familyName);
+        //  - encorporate this name with other names for person
         Set<PersonName> personNames = person.getNames();
-
-        boolean personNameExists = false;
+        //  - removed prefered status from all existing names
         for (PersonName pn : personNames) {
             if (pn.getPreferred())
                 pn.setPreferred(false);
         }
+        //  - set this name as the prefered name
+        //  - add this name to person's names if not already added
+        boolean personNameExists = false;
         for (PersonName pn : personNames) {
             if (pn.equalsContent(personName)) {
                 personNameExists = true;
@@ -66,20 +85,43 @@ public class ProfileEditFragmentController {
             personName.setPreferred(true);
             personNames.add(personName);
         }
-
-
+        //  - save updated names for person
         person.setNames(personNames);
 
-            DateFormat df = new SimpleDateFormat("mm/dd/yyyy");
-            try {
-                person.setBirthdate(df.parse(birthDate));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        
+        ///////////////////////
+        // set birth date
+        ///////////////////////
+        DateFormat df = new SimpleDateFormat("mm/dd/yyyy");
+        try {
+            person.setBirthdate(df.parse(birthDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        if (gender != null)
-            person.setGender(gender);
+        
+        ///////////////////////
+        // set gender
+        ///////////////////////
+        if (gender != null) person.setGender(gender);
+        
+        
+        ///////////////////////
+        // save person with new updated settings
+        ///////////////////////
         Context.getPersonService().savePerson(person);
+        
+        
+        //////////////////////////////////////////////////////////////////////////////////
+        // Update person address
+        //////////////////////////////////////////////////////////////////////////////////
+        PersonAddress personAddress = person.getPersonAddress();
+        personAddress.setPostalCode(postalCode);
+        Context.getPersonService().savePersonAddress(personAddress);
+        
+        //////////////////////////////////////////////////////////////////////////////////
+        // Update person preferences
+        //////////////////////////////////////////////////////////////////////////////////
         PersonPreferences pp= Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person);
         boolean mycancerBuddiesValue= Boolean.parseBoolean(myCancerBuddies);
         pp.setMyCancerBuddies(mycancerBuddiesValue);
