@@ -63,23 +63,6 @@
     background-color:#34BCA5;
 }
     
-.btn-custom-completed {
-  color: rgba(0, 0, 0, 0.4);
-  background-color: #fff;
-  border-color: rgba(0, 0, 0, 0.3);
-  border-width:1px;
-  margin-right:1px; margin-left:1px; /* since regular btn's border is 2px, compensate to make them same total width */
-}
-.btn-custom-completed:hover,
-.btn-custom-completed:focus,
-.btn-custom-completed.focus,
-.btn-custom-completed:active,
-.btn-custom-completed.active {
-  color: rgba(0, 0, 0, 0.4);
-  background-color: #ebebeb;
-  border-color: rgba(0, 0, 0, 0.3);
-}
-    
 .btn-secondary-customized {
 }
 .btn-secondary-customized:hover {
