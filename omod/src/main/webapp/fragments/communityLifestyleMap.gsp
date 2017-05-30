@@ -1,4 +1,12 @@
 <script>
+/*
+Logic:
+    search_options_handler handles defining the current position at which to search at and updating this position based on user input
+    communities_map_handler handles displaying results of searches. 
+    communities_map_handler is called by search_options_handler.
+*/
+    
+    
 var communities_map_handler = {
     ///////////////
     // Public Properties 
@@ -22,23 +30,28 @@ var communities_map_handler = {
     places_waiting_to_be_listed : 0,    // Used to track when list can be drawn, as map_this_place() is async
     draw_full_list_timeout : null,      // Used to track when list can be drawn, in conjunction with above variable
     locator_marker : null,              //reference to the locator marker
-    initialized_visible_already : false,
-    google_initialized : false,
+    bounds_were_set : false,
     
     ///////////////////////////////////////////////////////////
     // Service and Map initialization
     ///////////////////////////////////////////////////////////
     initialize_map : function(visible) {
+        /*
         //console.log("Initializing! " + visible);
         if(visible == undefined) this.google_initialized = true;
         if(visible && this.google_initialized == false) return // This means that the tab was initially loaded on. Dont let it continue because google object has not loaded yet.
         if(visible && this.initialized_visible_already) return; // Used to trigger initialization on tab selection the first time. Google does not line display:hidden initialization
+        */
+        
         // Define and initialize the map object
         this.map_object = new google.maps.Map(this.map_element, {
             center: this.current_position,
             zoom: this.current_zoom,
         });
-        this.map_object.panTo(this.current_position);
+        /*
+        // Display user position
+        this.display_current_position();
+        */
         
         // Define and initialize infowindow object
 		this.infowindow = new google.maps.InfoWindow();
@@ -46,14 +59,11 @@ var communities_map_handler = {
         // Define and initialize service
 		this.places_search_service = new google.maps.places.PlacesService(this.map_object);
 		
-        // Run initial search
-        // setTimeout(this.run_a_search.bind(this), 300); // set timeout, otherwise this.map_object.getBounds() will not be defined when needed.
-				  
         // Set listener to re-search any time map boundaries are changed. Note: this will fire when map loads.
-		this.map_object.addListener('bounds_changed',  this.run_a_search.bind(this));
-        
-        // Display user position
-        this.display_current_position();
+		this.map_object.addListener('bounds_changed',  function(){
+            this.bounds_were_set = true; 
+            this.run_a_search();
+        }.bind(this));
     },
     
     ///////////////////////////////////////////////////////////
@@ -66,6 +76,10 @@ var communities_map_handler = {
         this.run_a_search();
     },
     run_a_search : function(){
+        if(this.bounds_were_set === false){ 
+            //console.log("Bounds have not been set yet on map, can not build request. A future call will set them."); 
+            return; 
+        }
 		var request = this.build_search_request_for_term(this.search_term);	
 		this.places_search_service.nearbySearch(request, this.search_callback_function.bind(this));
     },
@@ -446,11 +460,11 @@ var communities_map_handler = {
     },
 }
 
-
 var user_location_handler = {
     watchProcess : null,
-    map_handler: null,
+    search_options_handler: null,
     default_location : null,
+    last_position : null,
     
     initiate_watchlocation : function() {  
         if (this.watchProcess == null) {  
@@ -468,7 +482,7 @@ var user_location_handler = {
             case error.POSITION_UNAVAILABLE: 
                 alert("Geolocation could not detect current position.");  
                 this.stop_watchlocation();
-                this.initiate_watchlocation();
+                //this.initiate_watchlocation();
                 break;  
             case error.TIMEOUT: 
                 //alert("Geolocation Position Timeout");
@@ -479,11 +493,82 @@ var user_location_handler = {
         }  
     },
     handle_geolocation_query : function(position) {  
-        this.map_handler.current_position = {lat: position.coords.latitude, lng: position.coords.longitude};
-        this.map_handler.display_current_position();	
+        this.last_position = {lat: position.coords.latitude, lng: position.coords.longitude};
+        this.search_options_handler.search_at_position(this.last_position, "near_you");
+    },   
+}
+
+
+var search_options_handler = {
+    // static properties
+    geocoder_service : null,
+    map_handler : null,
+    user_location_handler : null,
+    current_active_request_type : null, // note - this property is set on page load to be "near_you".
+
+    // dynamic internal use properties
+    current_active_request_type : null,
+    
+    
+    initialize_map : function(){
+        //console.log("Initialize map was triggered");
+        this.map_handler.initialize_map();
+        this.geocoder_service = new google.maps.Geocoder();
     },
     
+    // method of updating what the user is searching by
+    search_near : function(request_type){
+        // general
+        this.map_handler.clear_previous_places();
+        this.current_active_request_type = request_type;
+        
+        // request specific
+        if(request_type == "near_you") this.get_position_from_userlocation_and_search(); 
+        if(request_type == "near_zipcode") this.get_position_from_zipcode_and_search();
+    },
+    
+    // general method of searching at position and handling both search options 
+    search_at_position : function(position, request_type){
+        if(this.current_active_request_type !== request_type) return; // that is, if currently using zipcode then ignore user location updates
+        this.map_handler.current_position = position;
+        this.map_handler.display_current_position();	
+        this.map_handler.run_a_search();
+    },
+    
+    // method of searching on user's position
+    get_position_from_userlocation_and_search : function(){
+        var last_found_user_position = this.user_location_handler.last_position;
+        //console.log(last_found_user_position);
+        if(last_found_user_position == null){
+            alert("Geolocation has not detected current position yet. Map will be updated when data becomes available.");
+            // note, we dont need to set a try again timeout because in this case either the request will soon respond and update the map on its own 
+            //                                                                        or there is a failure with the geolocation system and it will never come.
+            return;
+        }
+        this.search_at_position(last_found_user_position, "near_you");
+    },
+    
+    // method of grabing position from user inputted zipcode and searching on it
+    get_position_from_zipcode_and_search : function(){
+        var zipcode = this.input.search_option_zipcode.value;
+        if(zipcode.length !== 5) {
+            alert("Zipcode must be atleast 5 characters in length.");
+            return;
+        }
+        
+        this.geocoder_service.geocode({'address': zipcode}, function(results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                lat = results[0].geometry.location.lat();
+                lng = results[0].geometry.location.lng();
+                this.search_at_position({lat:lat, lng:lng}, "near_zipcode")
+            } else {
+                alert("Geocode was not successful for the following reason: " + status);
+            }
+        }.bind(this));
+    },
 }
+
+
 
 
 window.addEventListener("load", function(){
@@ -502,13 +587,26 @@ window.addEventListener("load", function(){
     communities_map_handler.farmers_tab_element = jq("#fm-tab");
     
     
+    
+    // Initialize search_options_handler
+    search_options_handler.map_handler = communities_map_handler;
+    search_options_handler.user_location_handler = user_location_handler;
+    search_options_handler.current_active_request_type = "near_you"; 
+    
+    // initialize search option DOM elements
+    document.getElementById("community_lifestyle_map_search_option_button-you").addEventListener("click", function(){search_options_handler.search_near("near_you");});
+    document.getElementById("community_lifestyle_map_search_option_button-zipcode").addEventListener("click", function(){search_options_handler.search_near("near_zipcode");});
+    search_options_handler.input = { search_option_zipcode : document.getElementById("community_lifestyle_map_search_option_zipcode")};
+    
+    
     // Initialize user_location_handler
-    user_location_handler.map_handler = communities_map_handler;
+    user_location_handler.search_options_handler = search_options_handler;
     user_location_handler.default_location = "Monument Circle in Indianapolis";
     window.addEventListener('unload', function(){
         user_location_handler.stop_watchlocation();
     });
     user_location_handler.initiate_watchlocation();
+
     
     
     // Load google maps only after page has loaded. This way we do not slow down page load and properly initialize communities_map_handler first.
@@ -516,7 +614,7 @@ window.addEventListener("load", function(){
     var maps_APIKEY = '${CommunitiesMapsAPIKEY}';
     script.type = 'text/javascript';
     // NOTE:  The call to googleapis must include "&libraries=places"
-    script.src = 'https://maps.googleapis.com/maps/api/js?callback=communities_map_handler.initialize_map&libraries=places&key=' + maps_APIKEY;
+    script.src = 'https://maps.googleapis.com/maps/api/js?callback=search_options_handler.initialize_map&libraries=places&key=' + maps_APIKEY;
     document.body.appendChild(script);
     
     
@@ -538,8 +636,9 @@ window.addEventListener("load", function(){
     // tab listener - initialize map whenever this tab is pressed the first time. 
     jq('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         var target = jq(e.target).attr("href") // activated tab
-        if(target == "#community") communities_map_handler.initialize_map(true);
+        if(target == "#community") search_options_handler.initialize_map(true);
     });
+    
 });
 </script>
 
@@ -589,6 +688,40 @@ window.addEventListener("load", function(){
             <div id="venue_list" style = "max-height:400px; overflow:auto;" > </div> 
         </div>  
     </div> 
+    <div style = ''>
+        
+        <h3>Search for Locations...</h3>
+        <div style = 'display:flex; margin-left:15px;'>
+            <div style = 'display:flex;'>
+                <div style = 'margin:auto; '>
+                    <button id = 'community_lifestyle_map_search_option_button-you' type="button" class="btn btn-primary btn-custom-outline btn-sm" onclick = 'this.blur();'>
+                        <span class="glyphicon glyphicon-map-marker"></span>  &nbsp;  Near You  
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div style = 'height:5px;'></div>
+        <div style = 'display:flex; margin-left:15px;'>
+            <div style = 'display:flex;'>
+                <div style = 'margin:auto;'>
+                    <button id = 'community_lifestyle_map_search_option_button-zipcode' type="button" class="btn btn-primary btn-custom-outline btn-sm" onclick = 'this.blur();'>
+                        <span class="glyphicon glyphicon-search"></span>  &nbsp;  Near Zipcode
+                    </button>
+                </div>
+            </div>
+            <div style = 'width:10px;'></div>
+            <div style = 'display:flex;'>
+                <div style = 'margin:auto;'>
+                    <input id = 'community_lifestyle_map_search_option_zipcode' style = 'width:150px; padding:5px 10px; border-radius:3px; border:1px solid black; font-size:14px;'>
+                </div>
+            </div>
+        </div>
+        <div style = 'display:flex;'>
+            <div style = 'margin:auto;'>
+            </div>
+        </div>
+    </div>
+    
 </div> 
                 
 
