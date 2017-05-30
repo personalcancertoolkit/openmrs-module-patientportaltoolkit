@@ -175,6 +175,7 @@ Event_Data_Manager.prototype = {
         }
     },
     set_valid_reminders : function(the_data){
+        //console.log(the_data);
         var added_reminders = [];
         var valid_reminders = [];
         for(var i = 0; i < the_data.length; i++){
@@ -185,7 +186,7 @@ Event_Data_Manager.prototype = {
             valid_reminders.push(this_data);
         }
         this.valid_reminders = valid_reminders.sort(this.reminder_sort_function);
-        console.log(this.valid_reminders);
+        //console.log(this.valid_reminders);
     },
     reminder_sort_function : function(a,b){
         if(a.procedure_name < b.procedure_name) return -1;
@@ -193,6 +194,49 @@ Event_Data_Manager.prototype = {
         return 0;
     },
 }
+
+
+function Event_New_Appointment_Dropdown_Handler(){
+    var main_display_element = null;
+    var main_display_element_dropdown_contents = null;
+    var current_selection = null;
+    var data = null;
+}
+
+Event_New_Appointment_Dropdown_Handler.prototype = {
+    handle_dropdown_change : function(data_index){
+        var this_data = this.data[data_index];
+        this.current_selection = this_data;
+        this.main_display_element.html(this_data.procedure_name);
+    },
+    initialize_with_data : function(data){
+        this.data = data;
+        //console.log("Initializing with data!");
+        for(var i = 0; i < data.length; i++){
+            this_event = data[i];
+            this_event.list_id = i;
+            this.append_to_dropdown(this_event);
+        }
+    },
+    append_to_dropdown : function(the_event){
+        //<li><a href="#" onclick = 'new_appointment_dropdown_handler.handle_dropdown_change(0)'>Age - Closest to You</a></li>  
+
+        // create DOM elements
+        var parent = document.createElement("li");
+
+        var anchor = document.createElement("a");
+        anchor.href = '#';
+        anchor.onclick = function(){this.handle_dropdown_change(the_event.list_id)}.bind(this);
+        anchor.innerHTML = this_event.procedure_name;
+
+        //append them to their parents
+        parent.appendChild(anchor);
+
+        //append content to the dropdown
+        this.main_display_element_dropdown_contents.append(parent);
+    },
+}
+
        
 
 function Event_Table_Handler(){
@@ -206,7 +250,7 @@ function Event_Table_Handler(){
 Event_Table_Handler.prototype = {
     setDataSource : function(the_data){
         //console.log(the_data);
-        console.log("Appending to table....");
+        //console.log("Appending to table....");
         the_data = the_data.sort(this.sorting_comparison_function);
         for(var i = 0; i < the_data.length; i++){
             var this_event = the_data[i];
@@ -217,9 +261,6 @@ Event_Table_Handler.prototype = {
     },
 
     should_append_to_list : function(this_event){
-        console.log(this_event);
-        
-        
         var today_timestamp = new Date().getTime();
         var time_difference_90_days = (90 * 24 * 60 * 60 * 1000)
         var forward_90_timestamp  = today_timestamp  + time_difference_90_days;

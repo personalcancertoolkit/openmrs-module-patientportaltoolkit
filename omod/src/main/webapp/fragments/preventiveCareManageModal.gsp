@@ -15,25 +15,25 @@
                 "02310664-f7bb-477c-a703-0325af4c3f46",  // diastolic
             ],
          ],
-
+        
+        
         open_modal_for : function(appointment_id){
             this.modal.modal('show');
-            this.appointment_id = appointment_id;
-            var event = this.data_manager.data[this.appointment_id];
-            if(event.status == 0) {
-                this.open_part('markCompleted'); // hardcoded as markCompleted as no other options are enabled
-            } else {
+            if(appointment_id == "add_new"){
+                this.open_part("add_new");
+                this.update_visible_data_for_add();
+            } else { // return so that the rest of the code is not run.
+                this.appointment_id = appointment_id;
                 this.open_part('menu');
+                this.update_visible_data_for_event();
             }
-            this.open_sub_part(); // ensure special requirements for each procedure are accounted for
-            this.update_visible_data_for_event();
         },
-        
+
         //////////
         // DOM interactions
         //////////
         open_part : function(which_part){
-            valid_parts = ["menu", "markCompleted"];
+            valid_parts = ["menu", "markCompleted", "modifyCompleted", "modify", "remove", "add_new"];
             if((valid_parts.indexOf(which_part) == -1)){
                 console.log("Requested part to open is not valid");
                 return;
@@ -46,44 +46,88 @@
             
             // show all completed_event parts if this event is completed
             var event = this.data_manager.data[this.appointment_id];
-            if(event.status == 1) this.modal.find(".completed_event-part").show()
+            if(event != null && event.status == 1) this.modal.find(".completed_event-part").show()
             
             // handle additional, part specific, requirements
-            //if(which_part == "menu") this.update_valid_menu_options();
+            if(which_part == "menu") this.update_valid_menu_options();
+            
+            // open all concept specific parts
+            this.open_sub_part(); // ensure special requirements for each procedure are accounted for
         },
         open_sub_part : function(){
             var event = this.data_manager.data[this.appointment_id];
+            if(event == null) return;
             var concept_id = event.concept_id + "";
             this.modal.find("."+concept_id+"-part").show();
-            console.log(concept_id);
+            //console.log(concept_id);
         },
         update_visible_data_for_event : function(){
             var event = this.data_manager.data[this.appointment_id];
+            var concept_id = event.concept_id + "";
             
             // update title
             this.modal.find(".modal-title").html(event.followProcedureName + " Appointment");
             
             // update modify input defaults to current data
-            //this.input.modify.appointment_date.data('datepicker').setValue(event.targetDate);
+            this.input.modify.appointment_date.data('datepicker').setValue(event.targetDate);
             
-            // update records if event has been completed
+            
+            
+            // update completion inputs to defaults 
+            var questions = this.concepts[concept_id].questions;
+            var concepts_holder = this.DOM.markCompleted_concept_holder;
+            var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
+            var request_data = []; 
+            for (var i = 0; i < questions.length; i++){
+                var this_question = questions[i];
+                var this_uuid = this_question.uuid;
+                var this_datatype = this_question.datatype;
+                var this_holder = question_holder_parent.find("#question_"+this_question.uuid);
+                this.set_response_to(this_holder, this_datatype, false);
+            }
+            
+            // update records && completion data if event has been completed 
             if(event.status == 1){
-                var concept_id = event.concept_id + "";
                 var questions_answered = event.questionsAnswered;
-                var concepts_holder = this.DOM.record_concept_holder;
-                var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
+                var record_concepts_holder = this.DOM.record_concept_holder;
+                var modify_concepts_holder = this.DOM.modifyCompleted_concept_holder;
+                var record_question_holder_parent = record_concepts_holder.find("."+concept_id+"-part");
+                var modify_question_holder_parent = modify_concepts_holder.find("."+concept_id+"-part");
                 for(var i = 0; i < questions_answered.length; i++){
                     question_answer = questions_answered[i];
                     var this_uuid = question_answer.uuid;
                     var this_answer = question_answer.answer;
-                    var this_holder = question_holder_parent.find("#question_answer_"+this_uuid);
-                    this_holder.find(".preventive_care_modal_record_question_answer").html(this_answer);
+                    var this_datatype = question_answer.datatype;
+                    var this_record_holder = record_question_holder_parent.find("#question_answer_"+this_uuid);
+                    var this_modify_holder = modify_question_holder_parent.find("#question_"+this_uuid);
+                    this_record_holder.find(".preventive_care_modal_record_question_answer").html(this_answer);
+                    this.set_response_to(this_modify_holder, this_datatype, this_answer);
                 }
-                
             }
             
         },
-        //update_valid_menu_options : function(){},
+        update_visible_data_for_add : function(){
+            this.modal.find(".modal-title").html("Add New Appointment");
+            this.input.add_new.target_date.data('datepicker').setValue(new Date());
+            if(this.dropdown_initialized == false){
+                this.dropdown_handler.main_display_element = this.input.add_new.new_appointment_type;
+                this.dropdown_handler.main_display_element_dropdown_contents = this.input.add_new.new_appointment_type_dropdown_contents;
+                this.dropdown_handler.dropdown_contents = this.input.add_new.new_appointment_type_dropdown_contents;
+                this.dropdown_handler.initialize_with_data(this.data_manager.valid_reminders);
+            }
+            this.dropdown_handler.handle_dropdown_change(0);
+        },
+        update_valid_menu_options : function(){
+            // modify visible menu items due to event.status (e.g., if its completed then instead of markCompleted display modifyCompleted)
+            var event = this.data_manager.data[this.appointment_id];
+            if(event.status == 1){
+               this.modal.find("#modal_menu_part_markCompleted").hide();
+               this.modal.find("#modal_menu_part_modify").hide();
+               this.modal.find("#modal_menu_part_remove").hide();
+            } else {
+               this.modal.find("#modal_menu_part_modifyCompleted").hide();   
+            }
+        },
         hide_all_parts : function(){
             this.modal.find(".modal-part").hide();
         },
@@ -95,7 +139,7 @@
         // Handle Actions
         ///////////////
         trigger_action : function(which_part){
-            valid_parts = ["markCompleted"];
+            valid_parts = ["markCompleted", "modifyCompleted", "add_new", "modify", "remove"];
             if((valid_parts.indexOf(which_part) == -1)){
                 console.log("Requested part to trigger is not valid ( " + which_part + " )");
                 return;
@@ -103,10 +147,22 @@
             if(which_part == "markCompleted") {
                 this.attempt_mark_completed();
             }
+            if(which_part == "modifyCompleted"){
+                this.attempt_modify_completed();
+            }
+            if(which_part == "modify"){
+                this.attempt_modify_appointment();
+            }
+            if(which_part == "remove"){
+                this.attempt_remove_appointment();
+            }
+            if(which_part == "add_new"){
+                this.attempt_add_new();   
+            }
         },
         
         attempt_mark_completed : function(){
-            console.log(this.data_manager.data);
+            //console.log(this.data_manager.data);
             var event = this.data_manager.data[this.appointment_id];
             var concept_id = event.concept_id;
             
@@ -114,23 +170,8 @@
             //////////////
             // Get question responses 
             /////////////
-            var questions = this.concepts[concept_id].questions;
-            var concepts_holder = this.DOM.markCompleted_concept_holder;
-            var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
-            var request_data = []; 
-            for (var i = 0; i < questions.length; i++){
-                var this_question = questions[i];
-                var this_uuid = this_question.uuid;
-                var this_datatype = this_question.datatype;
-                var this_holder = question_holder_parent.find("#question_"+this_question.uuid);
-                var this_response = this.grab_response_from(this_holder, this_datatype);
-                
-                request_data.push({
-                    uuid : this_uuid,
-                    datatype : this_datatype, 
-                    response : this_response, 
-                });
-            }
+            var request_data = this.grab_full_response();
+            
             
             //////////////////////
             // Grab all relevant data
@@ -156,6 +197,138 @@
             });
         },
         
+        
+        attempt_modify_completed : function(){
+            //console.log(this.data_manager.data);
+            var event = this.data_manager.data[this.appointment_id];
+            var concept_id = event.concept_id;
+
+            //////////////
+            // Get question responses 
+            /////////////
+            var request_data = this.grab_full_response();
+            
+            //////////////////////
+            // Grab all relevant data
+            //////////////////////
+            var event_id             = this.appointment_id;
+            var person_uuid          = jq("#personUuid").val();
+            var formated_target_date = event.formatedTargetDate;
+            var concept_id           = concept_id;
+            var json_data            = JSON.stringify(request_data);
+            console.log(json_data);
+            
+            ////////////
+            // Submit request
+            ////////////
+            jq.get("preventiveCareManageModal/modifyCompleted.action", {
+                eventId : event_id,
+                personUuid : person_uuid,
+                formatedTargetDate : formated_target_date,
+                conceptId : concept_id,
+                jsonData : json_data,
+            }, function () {
+                console.log("Request Responded");
+                location.reload();
+            });
+        },
+        
+        attempt_modify_appointment : function(){
+            var event = this.data_manager.data[this.appointment_id]
+             
+            //location.reload();
+            var appointment_id         = encodeURIComponent(this.appointment_id);
+            var new_target_date        = encodeURIComponent(this.input.modify.appointment_date.val());
+            var personUuid             = encodeURIComponent(jq("#personUuid").val());
+            var formatedTargetDate     = encodeURIComponent(event.formatedTargetDate);
+            var concept_id             = encodeURIComponent(event.concept_id);
+            var parameters = 'eventId='+appointment_id + '&newTargetDate='+new_target_date + '&personUuid='+personUuid + '&conceptId=' + concept_id + '&formatedTargetDate=' + formatedTargetDate;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "preventiveCareManageModal/modifyAppointment.action?" + parameters, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function(){
+                //console.log(this.responseText);
+                //console.log("Success!");
+                window.location.reload();
+            };
+            xhr.send(null);
+            
+        },
+        attempt_remove_appointment : function(){
+            var event = this.data_manager.data[this.appointment_id]
+             
+            //location.reload();
+            var appointment_id         = encodeURIComponent(this.appointment_id);
+            var personUuid          = encodeURIComponent(jq("#personUuid").val());
+            var formatedTargetDate  = encodeURIComponent(event.formatedTargetDate);
+            var concept_id          = encodeURIComponent(event.concept_id);
+            var parameters = 'eventId='+appointment_id + '&personUuid='+personUuid + '&conceptId=' + concept_id + '&formatedTargetDate=' + formatedTargetDate;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "preventiveCareManageModal/removeAppointment.action?" + parameters, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function(){
+                //console.log(this.responseText);
+                console.log("Success!");
+                window.location.reload();
+            };
+            xhr.send(null);
+        },
+        attempt_add_new : function(){
+            var event = this.dropdown_handler.current_selection;
+            
+            // check that user is sure they set the target date correctly
+            var raw_formatedTargetDate = this.input.add_new.target_date.val(); 
+            if((new Date(raw_formatedTargetDate)).toDateString() === (new Date()).toDateString()){
+                response = confirm("Are you sure you want the target date for this new appointment to be today?"); 
+                if(!response) return;
+            }
+            
+            // generate parameters
+            var concept_id          = encodeURIComponent(event.concept_id);
+            var formatedTargetDate  = encodeURIComponent(raw_formatedTargetDate);
+            var personUuid          = encodeURIComponent(jq("#personUuid").val());
+            var parameters = 'conceptId='+concept_id + '&formatedTargetDate='+formatedTargetDate + '&personUuid='+personUuid;
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "preventiveCareManageModal/addAppointment.action?" + parameters, true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function(){
+                //console.log(this.responseText);
+                console.log("Success!");
+                window.location.reload();
+            };
+            xhr.send(null);
+        },
+        
+        /////////////////////////////////////
+        // Concept Question Value Interfaces
+        //////////////////////////////////////
+        grab_full_response : function(){
+            var event = this.data_manager.data[this.appointment_id];
+            var concept_id = event.concept_id;
+            
+            var questions = this.concepts[concept_id].questions;
+            var concepts_holder = this.DOM.markCompleted_concept_holder;
+            var question_holder_parent = concepts_holder.find("."+concept_id+"-part");
+            var request_data = []; 
+            for (var i = 0; i < questions.length; i++){
+                var this_question = questions[i];
+                var this_uuid = this_question.uuid;
+                var this_datatype = this_question.datatype;
+                var this_holder = question_holder_parent.find("#question_"+this_question.uuid);
+                var this_response = this.grab_response_from(this_holder, this_datatype);
+                
+                request_data.push({
+                    uuid : this_uuid,
+                    datatype : this_datatype, 
+                    response : this_response, 
+                });
+            }
+            
+            return request_data;
+        },
         grab_response_from : function(question_holder, question_datatype){
             // Grab input element(s)
             var response_holder = question_holder.find(".preventive_care_input");
@@ -168,9 +341,35 @@
                 if(response_holder[0].checked) response = "true";
                 if(response_holder[1].checked) response = "false";
             }
-            console.log("response: " + response);
+            //console.log("response: " + response);
             
             return response;
+        },
+        set_response_to : function(question_holder, question_datatype, new_value){
+            // Grab input element(s)
+            var response_holder = question_holder.find(".preventive_care_input");
+            //console.log(response_holder);
+            //console.log(response_holder[0]);
+            
+            if(new_value == false){
+                // default response
+                if(question_datatype == "NM") response_holder[0].value = "";
+                if(question_datatype == "DT") response_holder.data('datepicker').setValue(new Date());
+                if(question_datatype == "BIT") {
+                    response_holder[0].checked = false;
+                    response_holder[1].checked = false;
+                }
+            } else {
+                //console.log("Setting" + question_datatype + " to " + new_value);
+                if(question_datatype == "NM") response_holder[0].value = new_value;
+                if(question_datatype == "DT") response_holder.data('datepicker').setValue(new_value);
+                if(question_datatype == "BIT") {
+                    response_holder[0].checked = true;
+                    response_holder[1].checked = false;
+                    if(question_datatype == "true") response_holder[0].checked = true;
+                    if(question_datatype == "false") response_holder[1].checked = true;
+                }
+            }
         },
         
         /////////////////////////////////////
@@ -182,7 +381,7 @@
             //Load Reminder data, insert reminders into calendar and table
             //console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
             jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getRelevantPreventiveCareConcepts/'+ jq("#personUuid").val(), function (relevantConcepts) {
-                console.log(relevantConcepts);
+                //console.log(relevantConcepts);
                 // Set datasource for reminder table
                 this.setDataSource(relevantConcepts);
             }.bind(this));
@@ -408,25 +607,34 @@
         // Define modal_handler values
         managePreventiveCareModal_handler.modal = the_modal;
         managePreventiveCareModal_handler.data_manager = preventive_data_manager;
+        managePreventiveCareModal_handler.dropdown_handler = new Event_New_Appointment_Dropdown_Handler();
         managePreventiveCareModal_handler.buttons = {
             menu : {
-               //markCompleted : document.getElementById('managePreventive_menu_markCompleted'),
+               markCompleted : document.getElementById('managePreventiveAppointment_menu_markCompleted'),
+               modifyCompleted : document.getElementById('managePreventiveAppointment_menu_modifyCompleted'),
+               modify : document.getElementById('managePreventiveAppointment_menu_modify'),
+               remove : document.getElementById('managePreventiveAppointment_menu_remove'),
             },
             action : {
                 markCompleted : document.getElementById('managePreventive_button_markCompleted'),
+                modifyCompleted : document.getElementById('managePreventive_button_modifyCompleted'),
+                modify : document.getElementById('managePreventive_button_modify'),
+                remove : document.getElementById('managePreventive_button_remove'),
+                add_new : document.getElementById('managePreventive_button_add_new'),
             },
-            back : the_modal.find("#back_button"),
+            back : the_modal.find("#managePreventive_back_button"),
             cancel : the_modal.find(".modal_cancel_button"),
         }
-        /*
         managePreventiveCareModal_handler.input = {
-            markCompleted : {
-                completed_date : the_modal.find('#completed_date'),  
-                doctor_name : the_modal.find('#doctor_name'),
-                comments : the_modal.find('#comments'),
+            add_new : {
+                target_date : the_modal.find('#preventiveCare_new_appointment_target_date'),
+                new_appointment_type : the_modal.find('#preventiveCare_new_appointment_type'),
+                new_appointment_type_dropdown_contents : the_modal.find('#preventiveCare_new_appointment_type_dropdown_contents'),
+            },
+            modify : {
+                appointment_date : the_modal.find('#preventive_appointment_date'),
             },
         }
-        */
  
         // Initialize menu buttons
         var button_keys = Object.keys(managePreventiveCareModal_handler.buttons.menu);
@@ -450,7 +658,7 @@
         
         // Initialize back button
         managePreventiveCareModal_handler.buttons.back.on( "click", function(){
-            managePreventiveCareModal_handler.open_menu_again();
+            managePreventiveCareModal_handler.open_part("menu");
         });
         
         // initialize cancel buttons
@@ -462,19 +670,18 @@
         // Load concepts from database w/ async request, build the input forms dynamically.
         managePreventiveCareModal_handler.initialize_concepts(); 
         managePreventiveCareModal_handler.DOM = {
-            markCompleted_concept_holder : the_modal.find("#markCompleted_concept_holder"),
+            markCompleted_concept_holder : the_modal.find("#completionData_concept_holder"),
+            modifyCompleted_concept_holder : the_modal.find("#completionData_concept_holder"),
             record_concept_holder : the_modal.find("#record_concept_holder"),
         }
-        /*
         // Initialize datepicker inputs
-        var datepicker_ids = ["#influenzaDate", "#pneumococcalDate", "#cholesterolDate", "#bpDate", "#hivDate", "#mammographyDate", "#cervicalDate" ];
-        //var datepicker_elements = [];
-        //datepicker_elements.push(managePreventiveCareModal_handler.input.markCompleted.completed_date);
-        for(var i = 0; i < datepicker_ids.length; i++){
-            var element = jq(datepicker_ids[i]);
+        var datepicker_elements = [];
+        datepicker_elements.push(managePreventiveCareModal_handler.input.add_new.target_date);
+        datepicker_elements.push(managePreventiveCareModal_handler.input.modify.appointment_date);
+        for(var i = 0; i < datepicker_elements.length; i++){
+            var element = datepicker_elements[i];
             element.datepicker({ format: 'mm/dd/yyyy' }).on('changeDate', function(){ this.data('datepicker').hide() }.bind(element));
         }
-        */
     });
   
     
@@ -494,29 +701,132 @@
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title"> Modal Title </h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style = 'overflow-y:visible;'>
                 
-                <div class = 'menu-part modal-part'>
+                
+                <!-- menu part-->
+                <div class = 'menu-part modal-part' style = 'padding: 0px 15px; '>
                     <div id = "record_concept_holder" class = 'completed_event-part modal-part'>
-
                     </div>
                     
+                    <div style = 'font-size:25px; margin-left:-10px;'>
+                        What would you like to do?
+                    </div>
+                    <!-- Menu items are displayed using a Java based template -->
+                    <% 
+                        // Define Menu Items
+                        List<Map<String, String>> data = new ArrayList<>();
+                        Map<String, String> map = new HashMap<String, String>();
+                        
+                        map.put("desc", "Mark this Appointment as Completed");
+                        map.put("button_text", "Mark Completed");
+                        map.put("id_mod", "markCompleted");
+                        data.add(map.clone());
+                       
+                        map.put("desc", "Modify Completed Record");
+                        map.put("button_text", "Modify Completed");
+                        map.put("id_mod", "modifyCompleted");
+                        data.add(map.clone());
+                       
+                        map.put("desc", "Modify this Appointment");
+                        map.put("button_text", "Modify");
+                        map.put("id_mod", "modify");
+                        data.add(map.clone());
+                        
+                        map.put("desc", "Remove this Appointment");
+                        map.put("button_text", "Remove");
+                        map.put("id_mod", "remove");
+                        data.add(map.clone());
+                    %>
+                    <% 
+                       // Display Templated Menu Item
+                       data.each { data_element -> 
+                    %>
+                        <div class="row menu-part" id = "modal_menu_part_${data_element.id_mod}" style = ' display:flex; margin-bottom:5px;'>
+                            <div style = "display:flex;  flex-grow:1;">
+                                
+                                <div style = ' margin:auto; margin-left:15px; '>
+                                    ${data_element.desc}
+                                </div>
+                            </div>
+                            <div style = 'display:flex'>
+                                <div style = 'margin:auto; margin-right:5px;'>
+                                    <button type="button" class="btn btn-primary  pull-right" id = 'managePreventiveAppointment_menu_${data_element.id_mod}' style = 'width:175px;'> ${data_element.button_text}</button>
+                                </div>
+                            </div>
+                        </div>
+                    <% 
+                       } // end data.each
+                    %>
                 </div>
                 
-                <div id = "markCompleted_concept_holder" class = 'markCompleted-part modal-part'>
+                <!-- markCompleted part-->
+                <div id = "completionData_concept_holder" class = 'markCompleted-part modifyCompleted-part modal-part'>
                    
                 </div>
+                
+                <div class="modal-part modify-part">
+                    <input id="markCompletedIdHolder" type="hidden" value="">
+                    
+                    <form class="form-inline" role="form"> 
+                        <label class = 'manageAppointmentModalLabel'>Appointment Date</label>
+                        <input class="form-control datetype" id = 'preventive_appointment_date' >
+                    </form>
+                </div>
+                <div class="modal-part remove-part">
+                    Are you sure you wish to remove this appointment? This can not be undone. 
+                </div>
+                        
+                <!-- add appointment part-->
+                <div class="modal-part add_new-part">
+                    <style>
+                    .btn-like-input{
+                        background-color:white;
+                        border:2px solid #DCE4EC;
+                        border-radius:3px;
+                    }
+
+                    .btn-like-input:focus{
+                        border-color:black;
+                    }
+                    </style>
+                    <div style = 'display:flex;'>
+                        <div style = 'margin: auto 0px;'>
+                            <label class = 'manageAppointmentModalLabel'>Appointment Type</label>
+                        </div>
+                        <div class="dropdown " style = 'position:relative; z-index: 5000;'>
+                            <button class="btn-like-input " type="button" id="preventiveCare_new_appointment_type_dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style = ' padding:0px 13px; height:43px; margin-left:3px; min-width:230px; display:flex;'>
+                                <div id = 'preventiveCare_new_appointment_type' style = 'margin:auto; margin-left:0px;'> PlaceHolder </div> 
+                                <div class="caret" style = 'margin:auto; margin-right:0px;'></div>
+                            </button>
+                            <ul class="dropdown-menu " id = 'preventiveCare_new_appointment_type_dropdown_contents' aria-labelledby="preventiveCare_new_appointment_type_dropdown" style = 'font-size:14px; '>
+                                <!--
+                                <li><a href="#" onclick = 'new_appointment_dropdown_handler.handle_dropdown_change(0)'>Age - Closest to You</a></li>
+                                -->
+                            </ul>
+                        </div>
+                    </div>
+                        
+                    <div style = 'height:15px;'></div>
+                    <form class="form-inline" role="form">
+                        <label class = 'manageAppointmentModalLabel'>Target Date</label>
+                        <input class="form-control datetype" id="preventiveCare_new_appointment_target_date"  style = 'min-width:230px;' type="text" value=""/>
+                    </form>
+                </div>
+                
             </div>
             
             <div class="modal-footer" style = 'z-index:10;'>
                 <div class="button-div pull-left  ">
-                    <!-- commented out because there is no menu yet 
-                    <button type="button" class="btn btn-default all-parts menu-exclude-part add_new-exclude-part" id = 'back_button'>Back</button>
-                    -->
+                    <button type="button" class="btn btn-default all-parts menu-exclude-part add_new-exclude-part" id = 'managePreventive_back_button'>Back</button>
                 </div>
                 <div class="button-div pull-right ">
                     <button type="button" class="btn btn-default modal_cancel_button modal-part all-parts">Cancel</button>
                     <button type="button" class="btn btn-primary modal-part markCompleted-part" id="managePreventive_button_markCompleted"> Mark Completed </button>
+                    <button type="button" class="btn btn-primary modal-part modifyCompleted-part" id="managePreventive_button_modifyCompleted"> Modify Completed Record </button>
+                    <button type="button" class="btn btn-primary modal-part modify-part" id="managePreventive_button_modify"> Save Changes </button>
+                    <button type="button" class="btn btn-primary modal-part remove-part" id="managePreventive_button_remove"> Remove this Event </button>
+                    <button type="button" class="btn btn-primary modal-part add_new-part" id="managePreventive_button_add_new"> Add New Appointment </button>
                 </div>
             </div>
         </div>

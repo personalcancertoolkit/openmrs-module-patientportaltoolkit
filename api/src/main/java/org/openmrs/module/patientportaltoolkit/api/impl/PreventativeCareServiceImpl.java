@@ -106,7 +106,16 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
                 preventiveEvents.add(event); 
             }
         }
-       return preventiveEvents;
+        
+        
+        // Now that guidelines are generated, remove all events from list which have a status of -1
+        List<PreventativeCareEvent> valid_events = new ArrayList<>();
+        for (PreventativeCareEvent event:  preventiveEvents) {
+            if(event.getStatus() != -1) valid_events.add(event);
+        }
+        
+        
+       return valid_events;
     }
     
     /*
@@ -191,6 +200,55 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
         event.setEncounterUuid(relevantEncounter.getUuid());
         return dao.savePreventativeCareEvent(event);
     }
+    
+    @Override
+    public PreventativeCareEvent updateAssociatedEncounter(PreventativeCareEvent event, Encounter newEncounter) {
+        // associate new encounter 
+        event.setEncounterUuid(newEncounter.getUuid());
+        //event.setModifiedDate(today);
+        return dao.savePreventativeCareEvent(event);
+    }
+    
+    
+    
+    @Override
+    public PreventativeCareEvent updateCompletedDate(PreventativeCareEvent event, Date completedDate) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        event.setCompleteDate(completedDate);
+        //event.setModifiedDate(today);
+        return dao.savePreventativeCareEvent(event);
+    }
+    
+    @Override
+    public PreventativeCareEvent modifyTargetDate(PreventativeCareEvent event, Date newTargetDate) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        event.setTargetDate(newTargetDate);
+        //event.setModifiedDate(today);
+        return dao.savePreventativeCareEvent(event);
+    }
+    
+    
+    @Override
+    public PreventativeCareEvent removeEvent(PreventativeCareEvent event) {
+        // Takes a reminder object, marks it completed, and saves it.
+        Date today = new Date();
+        event.setStatus(-1);
+        //event.setModifiedDate(today);
+        return dao.savePreventativeCareEvent(event);
+    }
+    
+    
+    @Override
+    public PreventativeCareEvent addEvent(PreventativeCareEvent event) {
+        // Takes an event object and saves it into database
+        Date today = new Date();
+        event.setStatus(0);
+        //event.setModifiedDate(today);
+        return dao.savePreventativeCareEvent(event);
+    }
+
 
     @Override
     public PreventativeCareEvent markScheduledPreventativeCareEvent(String PreventativeCareEventId, Date date) {

@@ -296,10 +296,10 @@ public class AppointmentsManageModalFragmentController {
                               HttpServletRequest servletRequest) {
         
         
-        System.out.println("Data Received by appointmentsManageModal/removeAppointment.action:");
-        System.out.println("personUuid : " + personUuid);
-        System.out.println("conceptId : " + conceptId);
-        System.out.println("formatedTargetDate : " + formatedTargetDate);
+        //System.out.println("Data Received by appointmentsManageModal/removeAppointment.action:");
+        //System.out.println("personUuid : " + personUuid);
+        //System.out.println("conceptId : " + conceptId);
+        //System.out.println("formatedTargetDate : " + formatedTargetDate);
         
         // Get person this action is requested by
         //User userRequestedBy = Context.getAuthenticatedUser();

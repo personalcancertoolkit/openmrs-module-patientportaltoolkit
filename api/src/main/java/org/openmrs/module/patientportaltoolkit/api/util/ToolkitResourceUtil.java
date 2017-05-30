@@ -675,13 +675,14 @@ public class ToolkitResourceUtil {
             Set<Obs> obsList = encounter.getObs();
             for(Obs o: obsList){
                 Map<String, String> aQuestionAnswered = new HashMap<String, String>();
-                aQuestionAnswered.put("uuid", o.getConcept().getUuid());
                 String datatype = o.getConcept().getDatatype().getHl7Abbreviation();
                 String value = null;
                 if(datatype.equals("DT")) value = pptutil.formatDate(o.getValueDate());
                 if(datatype.equals("NM")) value = o.getValueNumeric().toString();
                 if(datatype.equals("BIT")) value = o.getValueBoolean().toString();
+                aQuestionAnswered.put("uuid", o.getConcept().getUuid());
                 aQuestionAnswered.put("answer", value);
+                aQuestionAnswered.put("datatype", datatype);
                 questionsAnswered.add(aQuestionAnswered);
             }
             eventDataMap.put("questionsAnswered", questionsAnswered);
