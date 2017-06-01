@@ -256,3 +256,39 @@ a.no-underline-edit:hover {
 	color: #18bc9c;
 	cursor:pointer;
 }
+
+
+
+
+/* bootstrap like button / input styles */
+.btn-custom-outline {
+    background-color: transparent;
+    color: inherit;
+    border-color: inherit;
+    border-width:1px;
+    margin-right:1px; margin-left:1px; /* since regular btn's border is 2px, compensate to make them same total width */
+}
+
+.input-custom-sm{
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.btn-custom-subtle {
+  color: rgba(0, 0, 0, 0.4);
+  background-color: #fff;
+  border-color: rgba(0, 0, 0, 0.3);
+  border-width:1px;
+  margin-right:1px; margin-left:1px; /* since regular btn's border is 2px, compensate to make them same total width */
+}
+.btn-custom-subtle:hover,
+.btn-custom-subtle:focus,
+.btn-custom-subtle.focus,
+.btn-custom-subtle:active,
+.btn-custom-subtle.active {
+  color: rgba(0, 0, 0, 0.4);
+  background-color: #ebebeb;
+  border-color: rgba(0, 0, 0, 0.3);
+}
