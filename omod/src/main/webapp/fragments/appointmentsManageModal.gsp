@@ -71,6 +71,7 @@
             this.modal.find(".modal-title").html("Add New Appointment");
             this.input.add_new.target_date.data('datepicker').setValue(new Date());
             if(this.dropdown_initialized == false){
+                this.dropdown_initialized = true;
                 this.dropdown_handler.main_display_element = this.input.add_new.new_appointment_type;
                 this.dropdown_handler.main_display_element_dropdown_contents = this.input.add_new.new_appointment_type_dropdown_contents;
                 this.dropdown_handler.dropdown_contents = this.input.add_new.new_appointment_type_dropdown_contents;
