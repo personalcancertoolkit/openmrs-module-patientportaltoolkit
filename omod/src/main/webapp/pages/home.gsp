@@ -19,6 +19,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
     <li><a data-toggle="tab" href="#community">Communities</a></li>
     <li><a data-toggle="tab" href="#symptomManagement">Symptom Management</a></li>
     <li><a data-toggle="tab" href="#preventiveCare">Preventive Care</a></li>
+    <li><a data-toggle="tab" href="#healthyBehaviors">Healthy Behaviors</a></li>
     </ul>
 
     <!-- eventDataUtilities used in appointments (follow up care) and preventiveCare -->
@@ -42,6 +43,9 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         </div>
         <div id="preventiveCare" class="tab-pane fade">
             ${ ui.includeFragment("patientportaltoolkit", "preventiveCare") }
+        </div>
+        <div id="healthyBehaviors" class="tab-pane fade">
+            ${ ui.includeFragment("patientportaltoolkit", "healthyBehaviors") }
         </div>
     </div>
     <% } %>
