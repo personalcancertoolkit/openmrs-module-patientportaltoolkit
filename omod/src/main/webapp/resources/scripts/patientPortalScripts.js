@@ -4,11 +4,6 @@
 jq = jQuery;
 
 //////////////
-// Utility Functions
-//////////////
-function resize_iframe_height(obj) { obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px'; }
-
-//////////////
 // Initialize DOM elements and their respective handlers
 //////////////
 jq(document).ready(function(){
