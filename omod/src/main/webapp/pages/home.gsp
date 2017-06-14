@@ -22,6 +22,9 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
     <li><a data-toggle="tab" href="#healthyBehaviors">Healthy Behaviors</a></li>
     </ul>
 
+    <script>
+        console.log("test : ${person}"  )
+    </script>
     <!-- eventDataUtilities used in appointments (follow up care) and preventiveCare -->
     <script type="text/javascript" src="${ ui.resourceLink("patientportaltoolkit", "/scripts/eventDataUtilities.js")}"></script>
 
