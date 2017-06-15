@@ -3,6 +3,9 @@
  */
 jq = jQuery;
 
+//////////////
+// Initialize DOM elements and their respective handlers
+//////////////
 jq(document).ready(function(){
 
     // setting defaults for the editable
