@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +35,6 @@ public class PatientPortalToolkitController {
     public void getSendForgotPasswordEmail(@PathVariable( "emailId" ) String emailId, HttpServletRequest httpRequest)
             throws Exception
     {
-        //log.info(PPTLogAppender.appendLog("REQUEST_FORGOT_PASSWORD_EMAIL_SENT", servletRequest, "emailid:", emailId));
         org.openmrs.api.PersonService ps = Context.getPersonService();
         Person forgotPasswordPerson=null;
         List<Person> people = ps.getPeople(emailId,false);
@@ -42,7 +42,6 @@ public class PatientPortalToolkitController {
             if (p.getAttribute("Email").getValue().equals(emailId))
                 forgotPasswordPerson=p;
         }
-        //ps.getPerson();
         PasswordChangeRequest passwordChangeRequest =new PasswordChangeRequest(new Date(), UUID.randomUUID().toString(),Context.getUserService().getUsersByPerson(forgotPasswordPerson,false).get(0));
         PatientPortalMiscService ppms = Context.getService(PatientPortalMiscService.class);
         PasswordChangeRequest savedPasswordChangeRequest=ppms.savePasswordChangeRequest(passwordChangeRequest);
@@ -55,7 +54,7 @@ public class PatientPortalToolkitController {
 
     @RequestMapping( value = "/patientportaltoolkit/confirmForgotPasswordEmail/{uuid}/{emailId:.+}")
     @ResponseBody
-    public void getConfirmForgotPasswordEmail( @PathVariable( "uuid" ) String uuid, @PathVariable( "emailId" ) String emailId)
+    public void getConfirmForgotPasswordEmail(@PathVariable( "uuid" ) String uuid, @PathVariable( "emailId" ) String emailId, HttpServletRequest httpRequest, HttpServletResponse httpServletResponse)
             throws Exception
     {
         PatientPortalMiscService ppms = Context.getService(PatientPortalMiscService.class);
@@ -84,6 +83,10 @@ public class PatientPortalToolkitController {
            }
             ppms.savePasswordChangeRequest(pcr);
         }
+        String sendingReuqestURL=httpRequest.getRequestURL().toString();
+        sendingReuqestURL=sendingReuqestURL.split("ws")[0]+"login.htm?passwordChangeRequest=Success";
+        httpServletResponse.sendRedirect(sendingReuqestURL);
+
     }
 
 

@@ -7,6 +7,10 @@
             Error: Enter a valid email address
         </div>
 
+        <div id="forgotPasswordEmailSent" class="alert alert-success" role="alert" style="display: none">
+            <span class="fa fa-exclamation-circle fa-lg"></span>
+            An email has been sent with further instructions
+        </div>
         <div id="emailIdgroup" class="form-group">
             <label class="control-label" for="forgotPasswordEmail">Email ID</label>
                 <input id = 'forgotPasswordEmail' type="email" class="form-control"/>
@@ -31,7 +35,7 @@
         }
         //alert(document.getElementById("forgotPasswordEmail").value);
         jq.get(OpenMRSInstance.split("/openmrs")[0]+"/openmrs/ws/patientportaltoolkit/sendForgotPasswordEmail/"+document.getElementById("forgotPasswordEmail").value, function(){
-            //alert(document.getElementById("forgotPasswordEmail").value);
+            jq("#forgotPasswordEmailSent").show();
         });
     }
 </script>

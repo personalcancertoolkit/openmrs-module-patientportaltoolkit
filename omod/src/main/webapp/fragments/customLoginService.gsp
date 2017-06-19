@@ -13,7 +13,12 @@
 <div id="loginSnippet" class="modal-dialog" style = 'margin:auto;  '>
     <div class="loginmodal-container" style = 'min-width:400px;'>
         <h1>Login</h1><br>
-
+        <% if (passwordChange){ %>
+        <div id="forgotPasswordReset" class="alert alert-success" role="alert">
+            <span class="fa fa-exclamation-circle fa-lg"></span>
+            Your password has been successfully changed
+        </div>
+        <% } %>
         <input type="text" id = 'username' name="user" placeholder="Username">
         <input type="password" id = 'password' name="pass" placeholder="Password">
         <p align="right"><a href="javascript:loginForgotSwitch()" style="color: blue">Forgot Password?</a></p>

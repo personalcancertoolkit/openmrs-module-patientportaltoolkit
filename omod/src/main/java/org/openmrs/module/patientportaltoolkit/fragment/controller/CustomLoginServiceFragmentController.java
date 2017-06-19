@@ -11,13 +11,21 @@ package org.openmrs.module.patientportaltoolkit.fragment.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
 
 public class CustomLoginServiceFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(PageRequest pageRequest) {
+    public void controller(PageRequest pageRequest, FragmentModel model) {
+
+       String passwordChangeRequest= pageRequest.getRequest().getParameter("passwordChangeRequest");
+       if (passwordChangeRequest!=null && passwordChangeRequest.equals("Success")){
+           model.addAttribute("passwordChange", true);
+       }
+       else
+           model.addAttribute("passwordChange", false);
         
     }
 
