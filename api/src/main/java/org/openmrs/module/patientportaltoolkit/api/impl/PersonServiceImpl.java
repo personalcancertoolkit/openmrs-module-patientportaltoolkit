@@ -10,6 +10,7 @@
 package org.openmrs.module.patientportaltoolkit.api.impl;
 
 import org.openmrs.Person;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.api.PersonService;
@@ -35,5 +36,14 @@ public class PersonServiceImpl extends BaseOpenmrsService implements PersonServi
     @Override
     public Object updatePerson(String personJson) {
         return ToolkitResourceUtil.updatePerson(personJson);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        org.openmrs.api.PersonService ps = Context.getPersonService();
+        ps.getPersonAttributeTypeByName("Email");
+
+
+        return null;
     }
 }

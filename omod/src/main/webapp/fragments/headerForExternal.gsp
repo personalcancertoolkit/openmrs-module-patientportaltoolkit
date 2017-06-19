@@ -6,7 +6,19 @@
     
     <script type="text/javascript" src="${ ui.resourceLink("patientportaltoolkit", "/scripts/jquery-1.11.1.min.js") }"></script>
     <script type="text/javascript" src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap.min.js") }"></script>
-    <script> jq = jQuery; </script>
+    <link rel="stylesheet"
+          href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap.min.css") }"
+          type="text/css">
+    <link rel="stylesheet"
+          href="${ ui.resourceLink("patientportaltoolkit", "styles/font-awesome.min.css") }"
+          type="text/css">
+
+    <script> jq = jQuery;
+    function loginForgotSwitch() {
+        jq("#loginSnippet").toggle();
+        jq("#forgotPasswordSnippet").toggle();
+    }
+    </script>
 
 
 

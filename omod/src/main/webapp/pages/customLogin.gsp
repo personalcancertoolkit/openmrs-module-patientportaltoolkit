@@ -1,7 +1,7 @@
 <script>
     var user_is_logged_in = ${loggedInBoolean};
     //console.log(user_is_logged_in);
-    if(user_is_logged_in) window.location.replace("/openmrs/patientportaltoolkit/home.page"); 
+    if(user_is_logged_in) window.location.replace("/openmrs/patientportaltoolkit/home.page");
 </script>
 
 
@@ -30,6 +30,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForExternal") }
 <div style = 'position:absolute; width:100%; top:100px; left:0; right:0; display:flex;' >
     <div style = 'margin:auto;'>
         ${ui.includeFragment("patientportaltoolkit","customLoginService")}
+        ${ui.includeFragment("patientportaltoolkit","forgotPassword")}
     </div>
 </div>
 

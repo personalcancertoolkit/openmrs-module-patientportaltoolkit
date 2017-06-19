@@ -9,6 +9,8 @@
  */
 package org.openmrs.module.patientportaltoolkit.api;
 
+import org.openmrs.User;
+
 import java.util.Map;
 
 /**
@@ -35,4 +37,6 @@ public interface PersonService {
      * @return person resource and will return null if patient not found for the given id
      */
     Object updatePerson(String personJson);
+
+    User getUserByEmail(String email);
 }
