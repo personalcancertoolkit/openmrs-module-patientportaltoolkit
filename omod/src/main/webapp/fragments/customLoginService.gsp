@@ -1,18 +1,8 @@
 
-<div class="modal-dialog" style = 'margin:auto;  '>
-    <div class="loginmodal-container" style = 'min-width:400px;'>
-        <h1>Welcome to</h1><br>
-        <div style = 'text-align:center;'>
-            <img src = "${ ui.resourceLink("patientportaltoolkit", "/images/Personal-Cancer-Toolkit-Logo.jpg") }" style = 'max-width:100%'></img>
-        </div>
-    </div>
-</div>
-
-<div style = 'height:50px;'></div>
 
 <div id="loginSnippet" class="modal-dialog" style = 'margin:auto;  '>
     <div class="loginmodal-container" style = 'min-width:400px;'>
-        <h1>Login</h1><br>
+        <h1 style = ''> <div style = 'margin-top:-15px;'></div>Login <Br> <div style = 'font-size:16px; margin-top:10px;'> to your Personal Cancer Toolkit</div></h1><br> 
         <% if (passwordChange){ %>
         <div id="forgotPasswordReset" class="alert alert-success" role="alert">
             <span class="fa fa-exclamation-circle fa-lg"></span>
@@ -21,8 +11,8 @@
         <% } %>
         <input type="text" id = 'username' name="user" placeholder="Username">
         <input type="password" id = 'password' name="pass" placeholder="Password">
-        <p align="right"><a href="javascript:loginForgotSwitch()" style="color: blue">Forgot Password?</a></p>
         <input type="submit" name="login" class="login loginmodal-submit" value="Login" onclick = 'attempt_login()'>
+        <p align="left"><a href="javascript:loginForgotSwitch()" style="color: blue; font-size:12px;">Forgot Password?</a></p>
 
         <div style = "font-size: 12px;">
         <!-- 
