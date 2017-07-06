@@ -3,7 +3,7 @@
     <div class="loginmodal-container" style = 'min-width:400px;'>
         <h1>Welcome to</h1><br>
         <div style = 'text-align:center;'>
-            <img src = "${ ui.resourceLink("patientportaltoolkit", "/images/Personal-Cancer-Toolkit-Logo.jpg") }" style = 'max-width:100%'></img>
+            <img src = "${ ui.resourceLink("patientportaltoolkit", "/images/Personal-Cancer-Toolkit-Logo.png") }" style = 'max-width:100%'></img>
         </div>
     </div>
 </div>
