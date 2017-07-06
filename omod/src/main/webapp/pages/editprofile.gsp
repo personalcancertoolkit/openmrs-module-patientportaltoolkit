@@ -7,7 +7,6 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         jq("[name='userprofileMyCancerBuddies']").bootstrapSwitch(function(){
 
         });
-
     });
 </script>
 <body>
@@ -23,7 +22,15 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 
    <h3>Edit Profile</h3>
     <br>
-    <form class="form-horizontal">
+    ${ ui.includeFragment("patientportaltoolkit", "changePassword") }
+    <br>
+    <form id="editProfileForm" class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-xs-2" for="changePassword"> Security </label>
+            <div class="col-xs-10">
+                <button type="button" class="btn btn-primary" id="changePassword">Change Password</button>
+            </div>
+        </div>
         <div class="form-group">
             <input id="personIdHolder" type="hidden" value="${ (person.getId()) }">
             <label class="control-label col-xs-2" for="userprofileGivenName">Given Name </label>
@@ -72,6 +79,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                 </div>
             </div>
         <% }%>
+
         <div class="form-group pull-right">
             <button type="button" class="btn btn-default cancelModal">Cancel Changes</button>
             <button type="button" class="btn btn-primary" id="saveuserprofile">Save</button>
@@ -92,6 +100,16 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                 }, function () {
                     jq('#alertContainer').css('display','block');
                 });
+            });
+        jq('#changePassword').click(
+            function () {
+                jq('#editProfileForm').hide();
+                jq('#changePasswordForm').show();
+            });
+        jq('#saveNewPasswordCancel').click(
+            function () {
+                jq('#editProfileForm').show();
+                jq('#changePasswordForm').hide();
             });
     </script>
 </div>
