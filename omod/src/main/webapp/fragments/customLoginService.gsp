@@ -1,3 +1,14 @@
+<!--
+<div class="modal-dialog" style = 'margin:auto;  '>
+    <div class="loginmodal-container" style = 'min-width:400px;'>
+        <h1>Welcome to</h1><br>
+        <div style = 'text-align:center;'>
+            <img src = "${ ui.resourceLink("patientportaltoolkit", "/images/Personal-Cancer-Toolkit-Logo.png") }" style = 'max-width:100%'></img>
+        </div>
+    </div>
+</div>
+<div style = 'height:50px;'></div>
+-->
 
 
 <div id="loginSnippet" class="modal-dialog" style = 'margin:auto;  '>

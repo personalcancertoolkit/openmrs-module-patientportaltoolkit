@@ -64,7 +64,7 @@ ${ui.includeFragment("patientportaltoolkit", "communityLifestyleMap")}
     Cancer Survivor Toolbox <a href="http://www.canceradvocacy.org/"
                                target="_blank"><u>www.canceradvocacy.org/</u></a>
     </li>
-    <li>Lance Armstrong Foundation LiveStrong <a
+    <li>Livestrong Foundation <a
             href="http://www.livestrong.org/" target="_blank"><u>http://www.livestrong.org</u></a></li>
     <li>NCI - Office of Cancer Survivorship <a
             href="http://dccps.nci.nih.gov/ocs/" target="_blank"><u>http://dccps.nci.nih.gov/ocs/</u></a></li>

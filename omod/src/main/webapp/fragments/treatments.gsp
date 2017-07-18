@@ -151,7 +151,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
     ${ ui.includeFragment("patientportaltoolkit", "treatmentsRadiationModal") }
     <div>
         <div class="clearfix">
-            <h4>Radiation Surgery&emsp;
+            <h4>Radiation Therapy&emsp;
                 <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#edit-radiation-modal">Add</a>
             </h4>
         </div>
