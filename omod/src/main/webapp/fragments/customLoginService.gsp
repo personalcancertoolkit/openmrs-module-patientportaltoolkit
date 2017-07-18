@@ -48,4 +48,10 @@
             location.reload();
         });
     }
+    document.getElementById("username").addEventListener("keyup", function(e){
+        if(e.keyCode == 13) document.getElementById("password").focus(); 
+    });
+    document.getElementById("password").addEventListener("keyup", function(e){
+        if(e.keyCode == 13) attempt_login(); 
+    });
 </script>
