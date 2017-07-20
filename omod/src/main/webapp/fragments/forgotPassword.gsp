@@ -12,7 +12,7 @@
             An email has been sent with further instructions
         </div>
         <div id="emailIdgroup" class="form-group">
-            <label class="control-label" for="forgotPasswordEmail">Email ID</label>
+            <label class="control-label" style = 'font-weight:300;' for="forgotPasswordEmail">Email ID</label>
                 <input id = 'forgotPasswordEmail' type="email" class="form-control"/>
         </div>
         <input type="submit" name="sendEmail" class="login loginmodal-submit" value="Send Email" onclick = 'sendFogotPasswordEmail()'>
