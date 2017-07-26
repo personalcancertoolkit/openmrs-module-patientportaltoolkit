@@ -130,12 +130,11 @@ Calendar_Handler.prototype = { // Static Properties and Methods
         this.calendar_object = calendar;
     },
     color_name_to_hex : function(colour) {
-        var colours = {"black":"#000000", "blue":"#0000ff", "blueviolet":"#8a2be2", "brown":"#a52a2a", "crimson":"#dc143c", "cyan":"#00ffff", "darkred":"#8b0000", "gold":"#ffd700", "gray":"#808080", "grey"
-:"#808080", "green":"#008000", "ivory":"#fffff0", "lavender":"#e6e6fa", "magenta":"#ff00ff", "maroon":"#800000", "navy":"#000080", "orange":"#ffa500", "orangered":"#ff4500", "plum":"#dda0dd", "powderblue":"#b0e0e6", "purple":"#800080", "red":"#ff0000", "royalblue":"#4169e1", "salmon":"#fa8072", "sandybrown":"#f4a460", "seagreen":"#2e8b57", "tan":"#d2b48c", "teal":"#008080", "turquoise":"#40e0d0", "violet":"#ee82ee", "white":"#ffffff", "yellow":"#ffff00"};
+        var colours = {"black":"#000000", "blue":"#0000ff", "blueviolet":"#8a2be2", "brown":"#a52a2a", "crimson":"#dc143c", "cyan":"#00ffff", "darkred":"#8b0000", "gold":"#ffd700", "gray":"#808080", "grey":"#808080", "green":"#008000", "ivory":"#fffff0", "lavender":"#e6e6fa", "magenta":"#ff00ff", "maroon":"#800000", "navy":"#000080", "orange":"#ffa500", "orangered":"#ff4500", "plum":"#dda0dd", "powderblue":"#b0e0e6", "purple":"#800080", "red":"#ff0000", "royalblue":"#4169e1", "salmon":"#fa8072", "sandybrown":"#f4a460", "seagreen":"#2e8b57", "tan":"#d2b48c", "teal":"#008080", "turquoise":"#40e0d0", "violet":"#ee82ee", "white":"#ffffff", "yellow":"#ffff00"};
 
         if (typeof colours[colour.toLowerCase()] != 'undefined')
             return colours[colour.toLowerCase()];
-        console.log(colour + "was not found" )
+        console.log(colour + " was not found" )
         return  colours["gray"];
     },
     blend_these_colors : function(the_colors){
@@ -165,16 +164,28 @@ Calendar_Handler.prototype = { // Static Properties and Methods
 
 function Event_Data_Manager(){
     this.data = {};
-    this.valid_reminders = [];
+    this.possible_events = null;
 }
 Event_Data_Manager.prototype = {
+    get nonkeyed_data(){
+        return Object.keys(this.data).map(item => this.data[item]);
+    },
     set_data : function(the_data){
+        if(this.possible_events == null){
+            console.error("Valid events must be defined before defining data.");
+            return;
+        }
+        var possible_concept_ids = this.possible_events.map(item => parseInt(item.concept_id));
         for(var i = 0; i < the_data.length; i++){
             var this_event = the_data[i];
-            this.data[this_event.id] = this_event;
+            if(possible_concept_ids.indexOf(parseInt(this_event.concept_id)) > -1){
+                 this.data[this_event.id] = this_event;   
+            } else {
+                console.warn("Event ("+this_event.concept_id+", " + this_event.followProcedureName + ") is not valid.");
+            }
         }
     },
-    set_valid_reminders : function(the_data){
+    set_possible_events : function(the_data){
         //console.log(the_data);
         var added_reminders = [];
         var valid_reminders = [];
@@ -185,7 +196,7 @@ Event_Data_Manager.prototype = {
             added_reminders.push(this_reminder_name);
             valid_reminders.push(this_data);
         }
-        this.valid_reminders = valid_reminders.sort(this.reminder_sort_function);
+        this.possible_events = valid_reminders.sort(this.reminder_sort_function);
         //console.log(this.valid_reminders);
     },
     reminder_sort_function : function(a,b){

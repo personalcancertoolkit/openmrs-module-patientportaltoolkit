@@ -612,7 +612,7 @@ public class ToolkitResourceUtil {
         ////
         switch (reminder.getFollowProcedure().getConceptId()) {
             //Colonoscopy
-            case 162900: reminderMap.put("color", "brown");
+            case 162900: reminderMap.put("color", "orange");
                 break;
             //H & E
             case 162901 : reminderMap.put("color", "red");
@@ -625,9 +625,6 @@ public class ToolkitResourceUtil {
                 break;
             //CT Scan Pelvis
             case 162904 : reminderMap.put("color", "purple");
-                break;
-            //Flex Sigmoidoscopy
-            case 162905 : reminderMap.put("color", "orange");
                 break;
         }
         //reminderMap.put("status",reminder.getStatus());
@@ -731,7 +728,7 @@ public class ToolkitResourceUtil {
                 break;
             //Cholesterol Screening
             case 162940 : 
-                eventDataMap.put("color", "black");
+                eventDataMap.put("color", "turquoise");
                 break;
         }
         
