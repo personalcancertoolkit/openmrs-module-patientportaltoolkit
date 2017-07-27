@@ -75,7 +75,7 @@
                 this.dropdown_handler.main_display_element = this.input.add_new.new_appointment_type;
                 this.dropdown_handler.main_display_element_dropdown_contents = this.input.add_new.new_appointment_type_dropdown_contents;
                 this.dropdown_handler.dropdown_contents = this.input.add_new.new_appointment_type_dropdown_contents;
-                this.dropdown_handler.initialize_with_data(this.data_manager.valid_reminders);
+                this.dropdown_handler.initialize_with_data(this.data_manager.possible_events);
             }
             this.dropdown_handler.handle_dropdown_change(0);
         },
