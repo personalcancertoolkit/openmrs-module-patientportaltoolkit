@@ -2,22 +2,41 @@
     function load_reminder_data() {
         //console.log(jq("#personUuid").val());
         var OpenMRSInstance=window.location.href;
-        //Load Reminder data, insert reminders into calendar and table
-        //console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
-        jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val(), function (reminderData) {
-            // Set datasource for reminder table
-            reminder_table_handler.setDataSource(reminderData);
-            // Set datasource for calendar
-            reminder_calendar_handler.calendar_object.setDataSource(reminderData);
-            // Set datasource for data_manager
-            appointment_data_manager.set_data(reminderData);
-        });
-        //Load all possible guidelines that user can choose to create a new reminder from
-        jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getpossiblenewremindersforpatient/'+ jq("#personUuid").val(), function (reminderData) {
-            // console.log(reminderData);
+        
+        // use promises to ensure that all possible guidelines are loaded before we load reminder data. Because of this, we are able to remove non-valid reminders from the reminders we display.
+        var load_all_possible_events = new Promise((resolve, reject)=>{
+            //Load all possible guidelines that user can choose to create a new reminder from
+            jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getpossiblenewremindersforpatient/'+ jq("#personUuid").val(), function (data) {
+                resolve(data);
+            });
+        })
+        var load_all_current_events = new Promise((resolve, reject)=>{
+            //Load Reminder data, insert reminders into calendar and table
+            //console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
+            jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val(), function (data) {
+                resolve(data);
+            });
+        })
+        
+        var promise_to_load_valid_options_and_recorded_data = Promise.all([load_all_possible_events, load_all_current_events])
+        
+        var initialize_objects = promise_to_load_valid_options_and_recorded_data.then((data_array)=>{
+            var possible_events = data_array[0];
+            var events = data_array[1];
+
             // record the data in appointment data manager
-            appointment_data_manager.set_valid_reminders(reminderData);
-        });
+            appointment_data_manager.set_possible_events(possible_events);
+
+            // Set datasource for data_manager
+            appointment_data_manager.set_data(events);
+            
+            // get valid events
+            var valid_events = appointment_data_manager.nonkeyed_data;
+            
+            // fill table and calendar based on valid data
+            reminder_table_handler.setDataSource(valid_events);
+            reminder_calendar_handler.calendar_object.setDataSource(valid_events);
+        })
     }
     window.addEventListener("load", function(){
         ///////////////////
