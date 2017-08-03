@@ -26,6 +26,7 @@ public class HeaderForAppFragmentController {
     public void controller(FragmentModel model, PageRequest pageRequest) {
 
         model.addAttribute("username", Context.getAuthenticatedUser().getUsername());
+        model.addAttribute("contextUser", Context.getAuthenticatedUser());
         log.info(PPTLogAppender.appendLog("REQUEST_NAVIGATION_FRAGMENT", pageRequest.getRequest()));
 
     }
