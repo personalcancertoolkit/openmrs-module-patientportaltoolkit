@@ -195,6 +195,14 @@
             }, function () {
                 console.log("Request Responded");
                 location.reload();
+            }).fail(()=>{
+                if(typeof window.submission_error_count == "undefined") window.submission_error_count = 0;
+                window.submission_error_count += 1;
+                if(window.submission_error_count <= 2){
+                    alert("Please make sure you have filled out all input fields before submitting.");
+                } else {
+                    alert("An error occured while sending your feedback. Please notify an administrator or try again later.");
+                }
             });
         },
         
