@@ -47,6 +47,7 @@
 		<openMRSVersion>2.0.4</openMRSVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<webservices.restVersion>2.16</webservices.restVersion>
+		<simpleformserviceVersion>1.0-SNAPSHOT</simpleformserviceVersion>
 	</properties>
 
 	<dependencyManagement>
@@ -119,7 +120,7 @@
 			<dependency>
 				<groupId>org.openmrs.module</groupId>
 				<artifactId>simpleformservice-api</artifactId>
-				<version>1.0-SNAPSHOT</version>
+				<version>${simpleformserviceVersion}</version>
 				<type>jar</type>
 				<scope>provided</scope>
 			</dependency>

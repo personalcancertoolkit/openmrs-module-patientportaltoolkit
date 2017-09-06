@@ -32,10 +32,6 @@
 	
 	
 	<!-- Adds link to admin page -->
-	<extension>
-		<point>org.openmrs.admin.list</point>
-		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
-	</extension>
 
 	<privilege>
 		<name>App: patientportaltoolkit</name>
@@ -56,6 +52,12 @@
 			org.openmrs.module.uiframework
 		</require_module>
 		<require_module version="${webservices.restVersion}">org.openmrs.module.webservices.rest</require_module>
+	</require_modules>
+	<require_modules>
+		<require_module>
+			org.openmrs.module.simpleformservice
+		</require_module>
+		<require_module version="1.0-SNAPSHOT">org.openmrs.module.simpleformservice</require_module>
 	</require_modules>
 
 	<!-- Global Properties -->

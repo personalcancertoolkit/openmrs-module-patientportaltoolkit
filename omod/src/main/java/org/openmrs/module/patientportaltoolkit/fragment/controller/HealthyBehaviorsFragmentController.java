@@ -8,6 +8,7 @@ import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.simpleformservice.DataAccessPermission;
 import org.openmrs.module.simpleformservice.api.DataAccessPermissionService;
+import org.openmrs.ui.framework.annotation.SpringBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,10 @@ import java.util.List;
 public class HealthyBehaviorsFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
-    public void controller(){
+    //@Autowired
+            //@Qualifier("")
+   // DataAccessPermissionService permissionService;
+    public void controller(@SpringBean("myBean") DataAccessPermissionService permissionService){
 
         Person currentPerson = Context.getAuthenticatedUser().getPerson();
         List<PatientPortalRelation> pprRelations=new ArrayList<>();
@@ -26,17 +30,19 @@ public class HealthyBehaviorsFragmentController {
         for (PatientPortalRelation ppr:pprRelations){
             //if(ppr.getPerson().equals(currentPerson) && ppr.getRelatedPerson().getIsPatient() && ppr.getShareStatus()==1 && (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_MEDICAL) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH))){
             if(ppr.getPerson().equals(currentPerson) && ppr.getRelatedPerson().getIsPatient() && ppr.getShareStatus()==1){
-               checkAndAddPermission(ppr.getRelatedPerson(), currentPerson);
+               checkAndAddPermission(ppr.getRelatedPerson(), currentPerson, permissionService);
             }
             //else if(ppr.getRelatedPerson().equals(currentPerson) && ppr.getPerson().getIsPatient() && ppr.getShareStatus()==1 && (ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_MEDICAL) || ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH))){
             else if(ppr.getRelatedPerson().equals(currentPerson) && ppr.getPerson().getIsPatient() && ppr.getShareStatus()==1){
-                checkAndAddPermission(ppr.getPerson(),currentPerson);
+                checkAndAddPermission(ppr.getPerson(),currentPerson, permissionService);
             }
         }
-        DataAccessPermissionService permissionService = Context.getService(DataAccessPermissionService.class);
+        //DataAccessPermissionService permissionService = Context.getService(DataAccessPermissionService.class);
+
         List<DataAccessPermission> dataAccessList = new ArrayList<>();
         dataAccessList = permissionService.getDataAccessPermissionByGrantedToPerson(currentPerson);
         boolean relationshipExists=false;
+        if (dataAccessList!=null){
         for (DataAccessPermission dap: dataAccessList) {
             relationshipExists=false;
             Person getAccessToPerson=dap.getAccessToPerson();
@@ -46,14 +52,15 @@ public class HealthyBehaviorsFragmentController {
                 }
             }
             if(!relationshipExists){
-                checkAndDeletePermission(currentPerson, dap.getAccessToPerson());
+                checkAndDeletePermission(currentPerson, dap.getAccessToPerson(), permissionService);
             }
+        }
         }
 
     }
 
-    private void checkAndAddPermission(Person person, Person secondPerson){
-        DataAccessPermissionService permissionService = Context.getService(DataAccessPermissionService.class);
+    private void checkAndAddPermission(Person person, Person secondPerson,DataAccessPermissionService permissionService){
+        //DataAccessPermissionService permissionService = Context.getService(DataAccessPermissionService.class);
         // check to make sure the permission does not already exist
         System.out.println("Try to find an already existing permission...");
         DataAccessPermission nutritionPermission = permissionService.getDataAccessPermission(person, secondPerson, "nutrition_form", "read");
@@ -67,8 +74,8 @@ public class HealthyBehaviorsFragmentController {
             permissionService.saveDataAccessPermission(newExercisePermission);
         }
     }
-    private void checkAndDeletePermission(Person person, Person secondPerson){
-        DataAccessPermissionService permissionService = Context.getService(DataAccessPermissionService.class);
+    private void checkAndDeletePermission(Person person, Person secondPerson,DataAccessPermissionService permissionService){
+        //DataAccessPermissionService permissionService = Context.getService(DataAccessPermissionService.class);
         // check to make sure the permission does not already exist
         System.out.println("Try to delete permissions not required");
         DataAccessPermission nutritionPermission = permissionService.getDataAccessPermission(person, secondPerson, "nutrition_form", "read");
