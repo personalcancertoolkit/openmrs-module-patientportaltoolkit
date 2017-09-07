@@ -48,18 +48,10 @@
 		<url-pattern>/ws/patientportaltoolkit/*</url-pattern>
 	</filter-mapping>
 	<require_modules>
-		<require_module>
-			org.openmrs.module.uiframework
-		</require_module>
+		<require_module>org.openmrs.module.uiframework</require_module>
 		<require_module version="${webservices.restVersion}">org.openmrs.module.webservices.rest</require_module>
-	</require_modules>
-	<require_modules>
-		<require_module>
-			org.openmrs.module.simpleformservice
-		</require_module>
 		<require_module version="1.0-SNAPSHOT">org.openmrs.module.simpleformservice</require_module>
 	</require_modules>
-
 	<!-- Global Properties -->
 	<globalProperty>
 		<property>${project.parent.artifactId}.symptommanagementURL</property>
