@@ -16,6 +16,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
+import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.module.patientportaltoolkit.api.util.PatientPortalUtil;
 import org.openmrs.ui.framework.page.PageModel;
@@ -36,10 +37,14 @@ public class HomePageController {
 
         if(personId != null && personId != ""){
 
+            PatientPortalRelationService patientPortalRelationService=Context.getService(PatientPortalRelationService.class);
+            SecurityLayerService securityLayerService=Context.getService(SecurityLayerService.class);
            Person person = Context.getPersonService().getPersonByUuid(personId);
             log.info(PPTLogAppender.appendLog(token, pageRequest.getRequest(),"RequestedUserId:",Context.getUserService().getUsersByPerson(person,false).get(0).getSystemId(),"RequestedUserName:", Context.getUserService().getUsersByPerson(person,false).get(0).getUsername()));
-            PatientPortalRelation ppr = Context.getService(PatientPortalRelationService.class).getPatientPortalRelation(person,Context.getAuthenticatedUser().getPerson(),Context.getAuthenticatedUser());
-            if(ppr !=null && ppr.getShareStatus() == 1 && (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_MEDICAL) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH))) {
+            PatientPortalRelation ppr = patientPortalRelationService.getPatientPortalRelation(person,Context.getAuthenticatedUser().getPerson(),Context.getAuthenticatedUser());
+
+            //if(ppr !=null && ppr.getShareStatus() == 1 && (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_MEDICAL) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH))) {
+            if(ppr !=null && ppr.getShareStatus() == 1 && (patientPortalRelationService.hasAccessToShareType(Context.getAuthenticatedUser().getPerson(),person,securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_MEDICAL),Context.getAuthenticatedUser()))) {
                 model.addAttribute("person", person);
                 model.addAttribute("securitylevel", 2);
             }

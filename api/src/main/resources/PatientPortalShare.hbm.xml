@@ -23,7 +23,7 @@
 
         <many-to-one name="person" class="org.openmrs.Person" not-null="true" column="person_id" />
 
-        <many-to-one name="relatedPerson" class="org.openmrs.Person" not-null="false" column="relationship_person_id" />
+        <many-to-one name="relatedPerson" class="org.openmrs.Person" not-null="false" column="relatedperson_id" />
 
         <!--  Standard Openmrs MetaData -->
 

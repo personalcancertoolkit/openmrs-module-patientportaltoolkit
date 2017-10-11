@@ -116,6 +116,7 @@
 		PreventiveCareGuidelineInterval.hbm.xml
 		PatientPortalPersonAttributes.hbm.xml
 		PasswordChangeRequest.hbm.xml
+		PatientPortalShare.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->
