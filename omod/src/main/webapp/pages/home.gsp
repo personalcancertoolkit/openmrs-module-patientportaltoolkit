@@ -21,7 +21,6 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
     <li><a data-toggle="tab" href="#preventiveCare">Preventive Care</a></li>
     <li><a data-toggle="tab" href="#healthyBehaviors">Healthy Behaviors</a></li>
     </ul>
-
     <script>
         console.log("test : ${person}"  )
     </script>
