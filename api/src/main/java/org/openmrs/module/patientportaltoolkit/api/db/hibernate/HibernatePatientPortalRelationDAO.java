@@ -19,6 +19,8 @@ import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.User;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.PatientPortalShare;
+import org.openmrs.module.patientportaltoolkit.SecurityLayer;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalRelationDAO;
 
 import java.util.Date;
@@ -181,5 +183,14 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         this.log.debug("Sharing token is ignored because it is invalid: " + uuid);
     }
 
+    }
+
+    @Override
+    public boolean getShareType(Person person, Person relatedPerson, SecurityLayer shareType) {
+        Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
+        crit.add(Restrictions.eq("relatedPerson", relatedPerson));
+        crit.add(Restrictions.eq("person", person));
+        crit.add(Restrictions.eq("shareType", shareType));
+        return false;
     }
 }

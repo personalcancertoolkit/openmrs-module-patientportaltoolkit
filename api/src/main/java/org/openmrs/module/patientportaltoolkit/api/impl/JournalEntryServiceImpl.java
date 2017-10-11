@@ -21,7 +21,9 @@ import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.JournalEntryService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
+import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.db.JournalEntryDAO;
+
 import java.util.*;
 
 /**
@@ -88,17 +90,25 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
         if(dao.getJournalEntryForPerson(user, orderByDateDesc)!=null)
         totalJournalList.addAll(dao.getJournalEntryForPerson(user, orderByDateDesc));
         List<PatientPortalRelation>  pprlist= new ArrayList<PatientPortalRelation>();
-        if(Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(user.getPerson())!=null) {
+        PatientPortalRelationService patientPortalRelationService=Context.getService(PatientPortalRelationService.class);
+        SecurityLayerService securityLayerService=Context.getService(SecurityLayerService.class);
+        if(patientPortalRelationService.getPatientPortalRelationByPerson(user.getPerson())!=null) {
             pprlist.addAll(Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(user.getPerson()));
             for (PatientPortalRelation ppr : pprlist) {
                 if (ppr.getShareStatus()==1) {
                     if (ppr.getPerson().equals(user.getPerson())) {
-                        if (ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
+                        /*if (ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
+                            totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getRelatedPerson(), false).get(0), orderByDateDesc));
+                        }*/
+                        if (patientPortalRelationService.hasAccessToShareType(ppr.getRelatedPerson(),ppr.getPerson(),securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_POSTS),user)){
                             totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getRelatedPerson(), false).get(0), orderByDateDesc));
                         }
                     }
                     if (ppr.getRelatedPerson().equals(user.getPerson())) {
-                        if (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
+                        /*if (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
+                            totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getPerson(), false).get(0), orderByDateDesc));
+                        }*/
+                        if (patientPortalRelationService.hasAccessToShareType(ppr.getPerson(),ppr.getRelatedPerson(),securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_POSTS),user)){
                             totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getPerson(), false).get(0), orderByDateDesc));
                         }
                     }

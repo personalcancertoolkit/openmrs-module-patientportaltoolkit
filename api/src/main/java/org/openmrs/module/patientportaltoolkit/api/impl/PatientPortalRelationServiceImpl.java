@@ -14,6 +14,7 @@ import org.openmrs.Person;
 import org.openmrs.User;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.SecurityLayer;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalRelationDAO;
 import java.util.ArrayList;
@@ -128,5 +129,17 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
     @Override
     public void updatePatientPortalRelation(User user, Person person, String uuid) {
 
+    }
+
+    @Override
+    public boolean hasAccessToShareType(Person person, Person relatedPerson, SecurityLayer shareType,User user) {
+        //Check if both parties have an active relationship
+        PatientPortalRelation pptRelation=getPatientPortalRelation(person,relatedPerson,user);
+        if (pptRelation!=null) {
+            if (!pptRelation.getRetired()) {
+                return dao.getShareType(person, relatedPerson, shareType);
+            }
+        }
+        return false;
     }
 }

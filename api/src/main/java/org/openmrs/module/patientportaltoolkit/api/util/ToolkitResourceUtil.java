@@ -337,7 +337,7 @@ public class ToolkitResourceUtil {
         Map<String, Object> patientRelationMap = new HashMap<String, Object>();
         patientRelationMap.put("id", patientPortalRelation.getUuid());
         patientRelationMap.put("relationType", relationshipTypeMap);
-        patientRelationMap.put("shareType", patientPortalRelation.getShareTypeA());
+        //patientRelationMap.put("shareType", patientPortalRelation.getShareType());
         patientRelationMap.put("dateStarted", new SimpleDateFormat().format(new Date(patientPortalRelation.getStartDate().getTime())));
         patientRelationMap.put("patient", patientPersonMap);
         patientRelationMap.put("creator", creatorPersonMap);
