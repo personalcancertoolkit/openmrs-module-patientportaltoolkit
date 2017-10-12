@@ -186,12 +186,12 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     }
 
     @Override
-    public boolean getShareType(Person person, Person relatedPerson, SecurityLayer shareType) {
+    public boolean hasShareType(Person person, Person relatedPerson, SecurityLayer shareType) {
         Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
         crit.add(Restrictions.eq("relatedPerson", relatedPerson));
         crit.add(Restrictions.eq("person", person));
-       // crit.add(Restrictions.eq("shareType", shareType));
-        //crit.add(Restrictions.eq("retired", false));
+        // crit.add(Restrictions.eq("shareType", shareType));
+        crit.add(Restrictions.eq("retired", false));
         List<PatientPortalShare> list = crit.list();
         if (list.size() >= 1) {
             return true;
@@ -199,4 +199,36 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
             return false;
         }
     }
+
+    @Override
+    public PatientPortalShare getShareType(Person person, Person relatedPerson, SecurityLayer shareType) {
+        Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
+        crit.add(Restrictions.eq("relatedPerson", relatedPerson));
+        crit.add(Restrictions.eq("person", person));
+        crit.add(Restrictions.eq("retired", false));
+        List<PatientPortalShare> list = crit.list();
+        if (list.size() >= 1) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<PatientPortalShare> getAllAccess(Person person, Person relatedPerson) {
+        Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
+        crit.add(Restrictions.eq("relatedPerson", relatedPerson));
+        crit.add(Restrictions.eq("person", person));
+        // crit.add(Restrictions.eq("shareType", shareType));
+        crit.add(Restrictions.eq("retired", false));
+        //List<PatientPortalShare> list = crit.list();
+        return crit.list();
+    }
+
+    @Override
+    public PatientPortalShare saveShareType(PatientPortalShare patientPortalShare) {
+        sessionFactory.getCurrentSession().saveOrUpdate(patientPortalShare);
+        return patientPortalShare;
+    }
+
 }

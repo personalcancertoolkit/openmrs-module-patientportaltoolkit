@@ -16,6 +16,14 @@ public class PatientPortalShare extends BaseOpenmrsMetadata {
 
     private SecurityLayer shareType;
 
+    public PatientPortalShare() {
+
+    }
+    public PatientPortalShare(Person person,Person relatedperson, SecurityLayer shareType) {
+        this.person=person;
+        this.relatedPerson=relatedperson;
+        this.shareType=shareType;
+    }
     @Override
     public Integer getId() {
         return this.id;

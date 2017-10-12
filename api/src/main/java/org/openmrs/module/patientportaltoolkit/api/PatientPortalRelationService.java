@@ -66,4 +66,7 @@ public interface PatientPortalRelationService extends OpenmrsService {
 
     @Transactional(readOnly = true)
     boolean hasAccessToShareType(Person person, Person relatedPerson, SecurityLayer shareType,User user);
+
+    @Transactional(readOnly = false)
+    void saveShareTypes(Person personGrantingAccess, Person personGettingAccess, List<SecurityLayer> shareTypes);
 }

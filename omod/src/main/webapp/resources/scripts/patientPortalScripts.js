@@ -420,11 +420,34 @@ jq(document).ready(function(){
 //------------- Edit Relation Button save JS ---------
     $('#editRelationshipSaveButton').click(
         function () {
-            jq.get("connections/saveRelationshipfromEdit.action", {relationshipId:  jq("#editRelationshipIdHolder").val(),personRelationType:  jq("#editRelationshipSelect").val(),personRelationSecurityLayer:jq("#editRelationSecurityLevels").val()}, function(){
+            var checkboxValuesList=[];
+            jq(".editRelationShareCheckbox:checkbox:checked").each(function () {
+                checkboxValuesList.push($(this).val());
+                //checkboxValues=checkboxValues+$(this).val()+",";
+           });
+            var checkboxValues=checkboxValuesList.toString();
+            $.ajax({
+                type : "POST",
+                url : "connections/saveRelationshipfromEdit.action",
+                data : {
+                    relationshipId: jq("#editRelationshipIdHolder").val(),
+                    personRelationType: jq("#editRelationshipSelect").val(),
+                    personRelationSecurityLayer: checkboxValues
+                },
+                success : function() {
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
+                },
+                error : function(e) {
+                    alert('Error: ' + e);
+                },
             });
-            setTimeout(function(){
-                location.reload();
-            }, 2000);
+            //$("#specialty").val( chkbxValues.join(",") );
+            //jq.("connections/saveRelationshipfromEdit.action", {relationshipId:  jq("#editRelationshipIdHolder").val(),personRelationType:  jq("#editRelationshipSelect").val(),personRelationSecurityLayer:checkboxValues}, function(){
+           // setTimeout(function(){
+            //    location.reload();
+           // }, 10000);
         });
 
     //------------------- Edit Relation Button save JS Ends -----

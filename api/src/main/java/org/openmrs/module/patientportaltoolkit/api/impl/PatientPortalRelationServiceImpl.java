@@ -14,6 +14,7 @@ import org.openmrs.Person;
 import org.openmrs.User;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.PatientPortalShare;
 import org.openmrs.module.patientportaltoolkit.SecurityLayer;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalRelationDAO;
@@ -137,9 +138,34 @@ public class PatientPortalRelationServiceImpl extends BaseOpenmrsService impleme
         PatientPortalRelation pptRelation=getPatientPortalRelation(person,relatedPerson,user);
         if (pptRelation!=null) {
             if (!pptRelation.getRetired()) {
-                return dao.getShareType(person, relatedPerson, shareType);
+                return dao.hasShareType(person, relatedPerson, shareType);
             }
         }
         return false;
     }
+    @Override
+    public void saveShareTypes(Person personGrantingAccess, Person personGettingAccess, List<SecurityLayer> shareTypes) {
+       List<PatientPortalShare> ppsharelist=dao.getAllAccess(personGettingAccess,personGrantingAccess);
+       List<PatientPortalShare> ppsharelistDontRetire= new ArrayList<>();
+       // List<PatientPortalShare> ppsharelistRetire= new ArrayList<>();
+        PatientPortalShare pps=null;
+        for (SecurityLayer sl:shareTypes) {
+
+            pps=dao.getShareType(personGettingAccess,personGrantingAccess,sl);
+            if (ppsharelist.contains(pps)){
+                ppsharelistDontRetire.add(pps);
+            }
+            else{
+                ppsharelistDontRetire.add(dao.saveShareType(new PatientPortalShare(personGettingAccess,personGrantingAccess,sl)));
+            }
+
+        }
+        for (PatientPortalShare ppshare:ppsharelist) {
+            if (!ppsharelistDontRetire.contains(ppshare)){
+                ppshare.setRetired(true);
+                dao.saveShareType(ppshare);
+            }
+        }
+    }
+
 }
