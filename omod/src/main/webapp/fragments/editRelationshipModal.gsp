@@ -58,7 +58,7 @@
                         <% securityLayers.each { securityLayer -> %>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input editRelationShareCheckbox" type="checkbox" id="${securityLayer.getUuid()}"
+                                <input class="form-check-input editRelationShareCheckbox" type="checkbox" id="editShareType${securityLayer.getUuid()}"
                                        value="${securityLayer.getUuid()}"> ${securityLayer.getDescription()}
                             </label>
                         </div>
