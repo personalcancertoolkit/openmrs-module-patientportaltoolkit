@@ -190,7 +190,7 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
         crit.add(Restrictions.eq("relatedPerson", relatedPerson));
         crit.add(Restrictions.eq("person", person));
-        // crit.add(Restrictions.eq("shareType", shareType));
+         crit.add(Restrictions.eq("shareType", shareType));
         crit.add(Restrictions.eq("retired", false));
         List<PatientPortalShare> list = crit.list();
         if (list.size() >= 1) {
@@ -205,6 +205,7 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
         crit.add(Restrictions.eq("relatedPerson", relatedPerson));
         crit.add(Restrictions.eq("person", person));
+        crit.add(Restrictions.eq("shareType", shareType));
         crit.add(Restrictions.eq("retired", false));
         List<PatientPortalShare> list = crit.list();
         if (list.size() >= 1) {
