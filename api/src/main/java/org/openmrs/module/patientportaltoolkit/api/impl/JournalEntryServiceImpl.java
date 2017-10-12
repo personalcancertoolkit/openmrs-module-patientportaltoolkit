@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.User;
 import org.openmrs.api.APIException;
+import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.JournalEntry;
@@ -92,26 +93,35 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
         List<PatientPortalRelation>  pprlist= new ArrayList<PatientPortalRelation>();
         PatientPortalRelationService patientPortalRelationService=Context.getService(PatientPortalRelationService.class);
         SecurityLayerService securityLayerService=Context.getService(SecurityLayerService.class);
+        Person personCheckingAccess=user.getPerson();
+        Person personWhoMightHaveGivenAccess=null;
         if(patientPortalRelationService.getPatientPortalRelationByPerson(user.getPerson())!=null) {
             pprlist.addAll(Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(user.getPerson()));
             for (PatientPortalRelation ppr : pprlist) {
                 if (ppr.getShareStatus()==1) {
-                    if (ppr.getPerson().equals(user.getPerson())) {
-                        /*if (ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
+                    if(ppr.getPerson().equals(personCheckingAccess))
+                        personWhoMightHaveGivenAccess=ppr.getRelatedPerson();
+                    else
+                        personWhoMightHaveGivenAccess=ppr.getPerson();
+
+                    if(patientPortalRelationService.hasAccessToShareType(personCheckingAccess,personWhoMightHaveGivenAccess,securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_POSTS),user))
+                        totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getService(UserService.class).getUsersByPerson(personWhoMightHaveGivenAccess, false).get(0), orderByDateDesc));
+                    /*if (ppr.getPerson().equals(user.getPerson())) {
+                        if (ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
                             totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getRelatedPerson(), false).get(0), orderByDateDesc));
-                        }*/
+                        }
                         if (patientPortalRelationService.hasAccessToShareType(ppr.getRelatedPerson(),ppr.getPerson(),securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_POSTS),user)){
                             totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getRelatedPerson(), false).get(0), orderByDateDesc));
                         }
                     }
                     if (ppr.getRelatedPerson().equals(user.getPerson())) {
-                        /*if (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
+                        if (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
                             totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getPerson(), false).get(0), orderByDateDesc));
-                        }*/
+                        }
                         if (patientPortalRelationService.hasAccessToShareType(ppr.getPerson(),ppr.getRelatedPerson(),securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_POSTS),user)){
                             totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getPerson(), false).get(0), orderByDateDesc));
                         }
-                    }
+                    }*/
                 }
             }
         }

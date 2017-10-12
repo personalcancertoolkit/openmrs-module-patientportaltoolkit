@@ -426,7 +426,6 @@ jq(document).ready(function(){
                     else {
                         $("#editShareType" + "6776d050-e2fe-47cc-8af4-de3fdeb1b76d").prop('checked', false);
                     }
-
                 },
                 error : function(e) {
                     alert('Error: ' + e);
@@ -446,7 +445,6 @@ jq(document).ready(function(){
                     else {
                         $("#editShareType" + "18e440a6-518b-4dbd-8057-dd0f88ee6d15").prop('checked', false);
                     }
-
                 },
                 error : function(e) {
                     alert('Error: ' + e);
@@ -466,7 +464,6 @@ jq(document).ready(function(){
                     else {
                         $("#editShareType" + "c21b5749-5972-425b-a8dc-15dc8f899a96").prop('checked', false);
                     }
-
                 },
                 error : function(e) {
                     alert('Error: ' + e);
