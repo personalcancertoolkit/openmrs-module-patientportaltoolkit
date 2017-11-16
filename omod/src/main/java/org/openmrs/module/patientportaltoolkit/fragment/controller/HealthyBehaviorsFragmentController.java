@@ -38,7 +38,7 @@ public class HealthyBehaviorsFragmentController {
                     otherPerson = ppr.getPerson();
                 }
                 if (Context.getService(PatientPortalRelationService.class).hasAccessToShareType(currentPerson, otherPerson, Context.getService(SecurityLayerService.class).getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_HEALTHYBEHAVIOR), Context.getAuthenticatedUser()))
-                    checkAndAddPermission(currentPerson, otherPerson, permissionService);
+                    checkAndAddPermission(otherPerson, currentPerson, permissionService);
                 //if(ppr.getPerson().equals(currentPerson) && ppr.getRelatedPerson().getIsPatient() && ppr.getShareStatus()==1 && (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_MEDICAL) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH))){
                 //if (ppr.getPerson().equals(currentPerson) && ppr.getRelatedPerson().getIsPatient() && ppr.getShareStatus() == 1) {
                  //   checkAndAddPermission(ppr.getRelatedPerson(), currentPerson, permissionService);

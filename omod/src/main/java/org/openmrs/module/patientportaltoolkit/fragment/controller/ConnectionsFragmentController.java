@@ -123,18 +123,5 @@ public class ConnectionsFragmentController {
         //log.info("Ignore Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
-    public boolean getHasAccess(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId,
-                                         @RequestParam(value = "shareType", required = true) String shareType, HttpServletRequest servletRequest) {
 
-        PatientPortalRelationService pprService=Context.getService(PatientPortalRelationService.class);
-        PatientPortalRelation ppr=pprService.getPatientPortalRelation(relationshipId);
-        User user = Context.getAuthenticatedUser();
-        Person personGettingAccess=null;
-        if (ppr.getPerson().equals(user.getPerson()))
-            personGettingAccess=ppr.getRelatedPerson();
-        else
-            personGettingAccess=ppr.getPerson();
-
-        return pprService.hasAccessToShareType(personGettingAccess,user.getPerson(),Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(shareType),user);
-    }
 }

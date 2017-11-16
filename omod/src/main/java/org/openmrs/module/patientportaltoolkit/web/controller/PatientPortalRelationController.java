@@ -12,14 +12,20 @@ package org.openmrs.module.patientportaltoolkit.web.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
+import org.openmrs.Person;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
+import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -55,5 +61,22 @@ public class PatientPortalRelationController {
     {
         List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations());
         return relations;
+    }
+
+    @RequestMapping( value = "/patientportaltoolkit/hasaccess")
+    @ResponseBody
+    public boolean getHasAccess(@RequestParam(value = "relationshipId", required = true) String relationshipId,
+                                @RequestParam(value = "shareType", required = true) String shareType, HttpServletRequest servletRequest) {
+
+        PatientPortalRelationService pprService=Context.getService(PatientPortalRelationService.class);
+        PatientPortalRelation ppr=pprService.getPatientPortalRelation(relationshipId);
+        User user = Context.getAuthenticatedUser();
+        Person personGettingAccess=null;
+        if (ppr.getPerson().equals(user.getPerson()))
+            personGettingAccess=ppr.getRelatedPerson();
+        else
+            personGettingAccess=ppr.getPerson();
+
+        return pprService.hasAccessToShareType(personGettingAccess,user.getPerson(),Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(shareType),user);
     }
 }
