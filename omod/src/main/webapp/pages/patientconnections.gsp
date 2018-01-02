@@ -19,6 +19,6 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
     <% } %>
     <% } %>
 <br>
-${ ui.includeFragment("patientportaltoolkit", "connections") }
+${ ui.includeFragment("patientportaltoolkit", "connections/connections") }
 </div>
 </body>

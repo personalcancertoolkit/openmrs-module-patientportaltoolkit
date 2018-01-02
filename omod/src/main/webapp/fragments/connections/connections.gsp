@@ -16,9 +16,9 @@
 </div>
 <% } %>
 <div class="clearfix" id="friends-list">
-    ${ ui.includeFragment("patientportaltoolkit", "removeRelationship") }
-    ${ ui.includeFragment("patientportaltoolkit", "addRelationship") }
-    ${ ui.includeFragment("patientportaltoolkit", "editRelationshipModal") }
+    ${ ui.includeFragment("patientportaltoolkit", "connections/removeRelationship") }
+    ${ ui.includeFragment("patientportaltoolkit", "connections/addRelationship") }
+    ${ ui.includeFragment("patientportaltoolkit", "connections/editRelationshipModal") }
     <% if (relationships) { %>
     <div>
     <% relationships.each { relationship -> %>
