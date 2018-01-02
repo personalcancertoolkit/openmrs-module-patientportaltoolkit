@@ -19,6 +19,8 @@ import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.User;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.PatientPortalShare;
+import org.openmrs.module.patientportaltoolkit.SecurityLayer;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalRelationDAO;
 
 import java.util.Date;
@@ -124,18 +126,18 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     }
 
     @Override
-    public PatientPortalRelation getPatientPortalRelation(Person person, Person requestedPerson, User requestingUser) {
+    public PatientPortalRelation getPatientPortalRelation(Person person, Person relatedPerson, User requestingUser) {
 
         Person user = requestingUser.getPerson();
 
         Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
-        crit.add(Restrictions.eq("relatedPerson", requestedPerson));
+        crit.add(Restrictions.eq("relatedPerson", relatedPerson));
         crit.add(Restrictions.eq("person", person));
         crit.addOrder(Order.desc("dateCreated"));
 
         List<PatientPortalRelation> list = crit.list();
 
-        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingToken->" + person + "|" + requestedPerson + "|"
+        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingToken->" + person + "|" + relatedPerson + "|"
                 + requestingUser + "|token count=" + list.size());
 
         if (list.size() >= 1) {
@@ -143,13 +145,13 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         } else {
             Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
             criteria.add(Restrictions.eq("relatedPerson", person));
-            crit.add(Restrictions.eq("person", requestedPerson));
-            crit.addOrder(Order.desc("dateCreated"));
+            criteria.add(Restrictions.eq("person", relatedPerson));
+            criteria.addOrder(Order.desc("dateCreated"));
 
-            List<PatientPortalRelation> secondList = crit.list();
+            List<PatientPortalRelation> secondList = criteria.list();
 
-            if (list.size() >= 1) {
-                return list.get(0);
+            if (secondList.size() >= 1) {
+                return secondList.get(0);
             } else {
                 return null;
             }
@@ -182,4 +184,52 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     }
 
     }
+
+    @Override
+    public boolean hasShareType(Person person, Person relatedPerson, SecurityLayer shareType) {
+        Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
+        crit.add(Restrictions.eq("relatedPerson", relatedPerson));
+        crit.add(Restrictions.eq("person", person));
+         crit.add(Restrictions.eq("shareType", shareType));
+        crit.add(Restrictions.eq("retired", false));
+        List<PatientPortalShare> list = crit.list();
+        if (list.size() >= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public PatientPortalShare getShareType(Person person, Person relatedPerson, SecurityLayer shareType) {
+        Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
+        crit.add(Restrictions.eq("relatedPerson", relatedPerson));
+        crit.add(Restrictions.eq("person", person));
+        crit.add(Restrictions.eq("shareType", shareType));
+        crit.add(Restrictions.eq("retired", false));
+        List<PatientPortalShare> list = crit.list();
+        if (list.size() >= 1) {
+            return list.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<PatientPortalShare> getAllAccess(Person person, Person relatedPerson) {
+        Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
+        crit.add(Restrictions.eq("relatedPerson", relatedPerson));
+        crit.add(Restrictions.eq("person", person));
+        // crit.add(Restrictions.eq("shareType", shareType));
+        crit.add(Restrictions.eq("retired", false));
+        //List<PatientPortalShare> list = crit.list();
+        return crit.list();
+    }
+
+    @Override
+    public PatientPortalShare saveShareType(PatientPortalShare patientPortalShare) {
+        sessionFactory.getCurrentSession().saveOrUpdate(patientPortalShare);
+        return patientPortalShare;
+    }
+
 }

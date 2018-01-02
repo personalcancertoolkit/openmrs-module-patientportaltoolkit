@@ -84,6 +84,13 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>simpleformservice-api</artifactId>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- End OpenMRS core -->
 		<dependency>
 			<groupId>joda-time</groupId>

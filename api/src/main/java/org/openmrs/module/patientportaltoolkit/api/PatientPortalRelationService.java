@@ -14,6 +14,7 @@ import org.openmrs.Person;
 import org.openmrs.User;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.SecurityLayer;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -62,4 +63,10 @@ public interface PatientPortalRelationService extends OpenmrsService {
 
     @Transactional(readOnly = false)
     void updatePatientPortalRelation(User user, Person person, String uuid);
+
+    @Transactional(readOnly = true)
+    boolean hasAccessToShareType(Person person, Person relatedPerson, SecurityLayer shareType,User user);
+
+    @Transactional(readOnly = false)
+    void saveShareTypes(Person personGrantingAccess, Person personGettingAccess, List<SecurityLayer> shareTypes);
 }

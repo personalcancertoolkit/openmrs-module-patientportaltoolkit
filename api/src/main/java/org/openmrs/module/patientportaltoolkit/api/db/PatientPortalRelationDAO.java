@@ -14,6 +14,8 @@ import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.User;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.PatientPortalShare;
+import org.openmrs.module.patientportaltoolkit.SecurityLayer;
 
 import java.util.List;
 
@@ -73,4 +75,12 @@ public interface PatientPortalRelationDAO {
     /**
      */
     void updatePatientPortalRelation(User user, Person person, String uuid);
+
+    boolean hasShareType(Person person, Person relatedPerson,SecurityLayer shareType);
+
+    PatientPortalShare getShareType(Person person, Person relatedPerson, SecurityLayer shareType);
+
+    PatientPortalShare saveShareType(PatientPortalShare patientPortalShare);
+
+    List<PatientPortalShare> getAllAccess(Person person, Person relatedPerson);
 }

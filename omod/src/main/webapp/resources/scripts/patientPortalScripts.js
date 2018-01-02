@@ -412,6 +412,63 @@ jq(document).ready(function(){
                 $("#editRelationshipSelect").attr('disabled',true);
             }
 
+            $.ajax({
+                type : "POST",
+                url : OpenMRSInstance.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/hasaccess",
+                data : {
+                    relationshipId: relationshipID,
+                    shareType: "6776d050-e2fe-47cc-8af4-de3fdeb1b76d"
+        },
+                success : function setChecked(response) {
+                    if (response) {
+                        $("#editShareType" + "6776d050-e2fe-47cc-8af4-de3fdeb1b76d").prop('checked', true);
+                    }
+                    else {
+                        $("#editShareType" + "6776d050-e2fe-47cc-8af4-de3fdeb1b76d").prop('checked', false);
+                    }
+                },
+                error : function(e) {
+                    alert('Error: ' + e);
+                },
+            });
+            $.ajax({
+                type : "POST",
+                url : OpenMRSInstance.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/hasaccess",
+                data : {
+                    relationshipId: relationshipID,
+                    shareType: "18e440a6-518b-4dbd-8057-dd0f88ee6d15"
+                },
+                success : function setChecked(response) {
+                    if (response) {
+                        $("#editShareType" + "18e440a6-518b-4dbd-8057-dd0f88ee6d15").prop('checked', true);
+                    }
+                    else {
+                        $("#editShareType" + "18e440a6-518b-4dbd-8057-dd0f88ee6d15").prop('checked', false);
+                    }
+                },
+                error : function(e) {
+                    alert('Error: ' + e);
+                },
+            });
+            $.ajax({
+                type : "POST",
+                url : OpenMRSInstance.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/hasaccess",
+                data : {
+                    relationshipId: relationshipID,
+                    shareType: "c21b5749-5972-425b-a8dc-15dc8f899a96"
+                },
+                success : function setChecked(response) {
+                    if (response) {
+                        $("#editShareType" + "c21b5749-5972-425b-a8dc-15dc8f899a96").prop('checked', true);
+                    }
+                    else {
+                        $("#editShareType" + "c21b5749-5972-425b-a8dc-15dc8f899a96").prop('checked', false);
+                    }
+                },
+                error : function(e) {
+                    alert('Error: ' + e);
+                },
+            });
         });
 
     //------------------- Edit Relation Button JS Ends ----------------------
@@ -420,11 +477,34 @@ jq(document).ready(function(){
 //------------- Edit Relation Button save JS ---------
     $('#editRelationshipSaveButton').click(
         function () {
-            jq.get("connections/saveRelationshipfromEdit.action", {relationshipId:  jq("#editRelationshipIdHolder").val(),personRelationType:  jq("#editRelationshipSelect").val(),personRelationSecurityLayer:jq("#editRelationSecurityLevels").val()}, function(){
+            var checkboxValuesList=[];
+            jq(".editRelationShareCheckbox:checkbox:checked").each(function () {
+                checkboxValuesList.push($(this).val());
+                //checkboxValues=checkboxValues+$(this).val()+",";
+           });
+            var checkboxValues=checkboxValuesList.toString();
+            $.ajax({
+                type : "POST",
+                url : "connections/saveRelationshipfromEdit.action",
+                data : {
+                    relationshipId: jq("#editRelationshipIdHolder").val(),
+                    personRelationType: jq("#editRelationshipSelect").val(),
+                    personRelationSecurityLayer: checkboxValues
+                },
+                success : function() {
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
+                },
+                error : function(e) {
+                    alert('Error: ' + e);
+                },
             });
-            setTimeout(function(){
-                location.reload();
-            }, 2000);
+            //$("#specialty").val( chkbxValues.join(",") );
+            //jq.("connections/saveRelationshipfromEdit.action", {relationshipId:  jq("#editRelationshipIdHolder").val(),personRelationType:  jq("#editRelationshipSelect").val(),personRelationSecurityLayer:checkboxValues}, function(){
+           // setTimeout(function(){
+            //    location.reload();
+           // }, 10000);
         });
 
     //------------------- Edit Relation Button save JS Ends -----
@@ -573,23 +653,6 @@ jq(document).ready(function(){
     //JS for the Button Events END
 
     //------------------- Follow up care JS ENDS ----------------------
-
-    // JS for Feedback Form
-
-    $('#sendFeedback').click(
-        function () {
-            if(jq("#feedbacktextdata").val() != null || jq("#feedbacktextdata").val() != '') {
-                jq.get("feedback/sendFeedback.action", {
-                    feedbackMessage: jq("#feedbacktextdata").val()
-                }, function (text) { 
-                    //console.log(text); //console.log('here i am');
-                });
-                setTimeout(
-                    function () {
-                        //location.reload();
-                    }, 2000);
-            }
-        });
 
     // make all items having class 'edit' editable
     $('.edit').editable();

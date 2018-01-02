@@ -137,6 +137,11 @@
             var parameters = 'reminderId='+reminder_id + '&conceptId='+concept_id + '&markCompletedDate='+completed_date + '&doctorName='+doctor_name + '&comments='+comments + '&personUuid='+personUuid + '&formatedTargetDate='+formatedTargetDate;
             
             
+            if(completed_date == "" || doctor_name == "" || comments == ""){
+                alert("Please make sure all input fields are filled out before marking this completed.")
+                return false;
+            } 
+            
             /*
             jq.get("appointments/markCompleted.action", {
                 reminderId: reminder_id, 
@@ -154,6 +159,9 @@
                 console.log("Success!");
                 window.location.reload();
             };
+            xhr.onerror = function(){
+                alert("An error occured while sending your feedback. Please notify an administrator or try again later.");
+            }
             xhr.send(null);
         },
         attempt_modify_completed : function(){

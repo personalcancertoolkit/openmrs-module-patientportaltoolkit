@@ -54,6 +54,8 @@ public class PatientPortalToolkitConstants {
 
     public static final String CAN_SEE_MEDICAL ="canseemedical";
 
+    public static final String CAN_SEE_HEALTHYBEHAVIOR ="canseehealthybehavior";
+
     public static final String CAN_SEE_BOTH ="canseeboth";
 
     public static final String INFLUENZA_VACCINE ="Influenza Vaccine Form";
