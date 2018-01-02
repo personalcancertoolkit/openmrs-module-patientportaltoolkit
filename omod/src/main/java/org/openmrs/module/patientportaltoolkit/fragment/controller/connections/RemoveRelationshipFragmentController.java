@@ -7,7 +7,7 @@
  * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
  * graphic logo is a trademark of OpenMRS Inc.
  */
-package org.openmrs.module.patientportaltoolkit.fragment.controller;
+package org.openmrs.module.patientportaltoolkit.fragment.controller.connections;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,4 +38,3 @@ public class RemoveRelationshipFragmentController {
         //log.info("Relation/Connection Removed for relation id -" + relationshipId + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 }
-
