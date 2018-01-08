@@ -37,7 +37,9 @@ public class AddRelationshipFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(PageRequest pageRequest) {
+    public void controller(FragmentModel model,PageRequest pageRequest) {
+        model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());
+        model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
         log.info(PPTLogAppender.appendLog("REQUEST_ADDRELATIONSHIP_FRAGMENT", pageRequest.getRequest()));
     }
 

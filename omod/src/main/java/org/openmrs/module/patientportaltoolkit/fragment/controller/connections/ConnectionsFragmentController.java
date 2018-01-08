@@ -21,7 +21,6 @@ import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
-import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -37,7 +36,7 @@ public class ConnectionsFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(PageModel model,PageRequest pageRequest) {
+    public void controller(FragmentModel model,PageRequest pageRequest) {
         model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(Context.getAuthenticatedUser().getPerson()));
         model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
         model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());

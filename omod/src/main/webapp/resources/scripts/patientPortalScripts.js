@@ -485,7 +485,7 @@ jq(document).ready(function(){
             var checkboxValues=checkboxValuesList.toString();
             $.ajax({
                 type : "POST",
-                url : "connections/saveRelationshipfromEdit.action",
+                url : "connections/connections/saveRelationshipfromEdit.action",
                 data : {
                     relationshipId: jq("#editRelationshipIdHolder").val(),
                     personRelationType: jq("#editRelationshipSelect").val(),
