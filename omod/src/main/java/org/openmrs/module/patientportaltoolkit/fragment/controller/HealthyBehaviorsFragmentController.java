@@ -101,6 +101,10 @@ public class HealthyBehaviorsFragmentController {
         //DataAccessPermissionService permissionService = Context.getService(DataAccessPermissionService.class);
         // check to make sure the permission does not already exist
         System.out.println("Try to delete permissions not required");
+        if (Context.getService(PatientPortalRelationService.class).hasAccessToShareType(person, secondPerson, Context.getService(SecurityLayerService.class).getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_HEALTHYBEHAVIOR), Context.getAuthenticatedUser())){
+            System.out.println("Not deleting permission as the permission is available");
+            return;
+        }
         DataAccessPermission nutritionPermission = permissionService.getDataAccessPermission(person, secondPerson, "nutrition_form", "read");
         if (nutritionPermission != null) {
              permissionService.deleteDataAccessPermission(nutritionPermission);

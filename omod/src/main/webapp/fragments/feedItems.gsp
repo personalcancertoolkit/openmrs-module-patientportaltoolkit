@@ -51,7 +51,8 @@
                             <div class="media-body" style="width: 100%">
 
                                 ${ ui.includeFragment("patientportaltoolkit", "commentBox",[parentId: (journal.uuid)]) }
-                            </div>
+                                </div>
+                            <label><small><span class="fa fa-info-circle fa-lg"></span> &nbsp;Your comment will be visible with all the people with access to this post</small></label>
                         </div>
                     </li>
                 </ul>
