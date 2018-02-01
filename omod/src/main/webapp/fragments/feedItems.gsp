@@ -52,7 +52,7 @@
 
                                 ${ ui.includeFragment("patientportaltoolkit", "commentBox",[parentId: (journal.uuid)]) }
                                 </div>
-                            <label><small><span class="fa fa-info-circle fa-lg"></span> &nbsp;Your comment will be visible with all the people with access to this post</small></label>
+                            <label><small><span class="fa fa-info-circle fa-lg"></span> &nbsp;Your comments will be shared with all the people who the patient has provided access to this post, such as doctors or family members</small></label>
                         </div>
                     </li>
                 </ul>
