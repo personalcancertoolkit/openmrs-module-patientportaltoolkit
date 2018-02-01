@@ -48,7 +48,7 @@
                         <div class="col-sm-10" id="share-connections">
                             <select class="form-control" id="addRelationSecurityLevels">
                                 <% securityLayers.each { securityLayer -> %>
-                                <option  value="${securityLayer.getUuid()}">${securityLayer.getDescription()} </option>
+                                <option  value="${securityLayer.getUuid()}">Can see my ${securityLayer.getDescription()} </option>
                                 <% } %>
                             </select>
                         </div>

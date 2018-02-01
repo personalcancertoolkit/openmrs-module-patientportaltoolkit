@@ -23,12 +23,12 @@
                     <form class="form-inline" role="form">
                         <% if(oneDirectionFragmentSide=="patient") { %>
                         <div class="form-group">
-                            <span id="${ oneDirectionFragmentRelation.uuid }relationType" hidden>${ (oneDirectionFragmentRelation.getRelationType().getId()) }</span>  ${ (oneDirectionFragmentRelation.getRelationType().getaIsToB()) } -  <span id="${ oneDirectionFragmentRelation.uuid }relationShare"> This Person ${oneDirectionFragmentRelation.getShareTypeA().getDescription()}</span> <input id="${ oneDirectionFragmentRelation.uuid }relationShareID" value="${oneDirectionFragmentRelation.getShareTypeA().getUuid()}" type="hidden"/>
+                            <span id="${ oneDirectionFragmentRelation.uuid }relationType" hidden>${ (oneDirectionFragmentRelation.getRelationType().getId()) }</span>  ${ (oneDirectionFragmentRelation.getRelationType().getaIsToB()) } -  <span id="${ oneDirectionFragmentRelation.uuid }relationShare"> This Person can see my ${oneDirectionFragmentRelation.getShareTypeA().getDescription()}</span> <input id="${ oneDirectionFragmentRelation.uuid }relationShareID" value="${oneDirectionFragmentRelation.getShareTypeA().getUuid()}" type="hidden"/>
                         </div>
                         <% } %>
                         <% if(oneDirectionFragmentSide=="other") { %>
                         <div class="form-group">
-                            <span id="${ oneDirectionFragmentRelation.uuid }relationType" hidden>${ (oneDirectionFragmentRelation.getRelationType().getId()) }</span>  ${ (oneDirectionFragmentRelation.getRelationType().getbIsToA()) } -  <span id="${ oneDirectionFragmentRelation.uuid }relationShare"> You ${oneDirectionFragmentRelation.getShareTypeA().getDescription()}</span> <input id="${ oneDirectionFragmentRelation.uuid }relationShareID" value="${oneDirectionFragmentRelation.getShareTypeB().getUuid()}" type="hidden"/>
+                            <span id="${ oneDirectionFragmentRelation.uuid }relationType" hidden>${ (oneDirectionFragmentRelation.getRelationType().getId()) }</span>  ${ (oneDirectionFragmentRelation.getRelationType().getbIsToA()) } -  <span id="${ oneDirectionFragmentRelation.uuid }relationShare"> You can see their ${oneDirectionFragmentRelation.getShareTypeA().getDescription()}</span> <input id="${ oneDirectionFragmentRelation.uuid }relationShareID" value="${oneDirectionFragmentRelation.getShareTypeB().getUuid()}" type="hidden"/>
                         </div>
                         <% } %>
                     </form>

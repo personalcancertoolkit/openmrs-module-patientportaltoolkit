@@ -78,7 +78,7 @@
     </button>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-            <li id="patientPortalJournals"> <a href="/openmrs/patientportaltoolkit/journals.page"><span class="fa fa-comments-o  fa-lg"></span> &nbsp; Posts</a></li>
+            <li id="patientPortalJournals"> <a href="/openmrs/patientportaltoolkit/journals.page"><span class="fa fa-comments-o  fa-lg"></span> &nbsp; My Posts</a></li>
             <% if(contextUser.person.isPatient()) { %>
                 <li id="patientPortalNavHome"><a href="/openmrs/patientportaltoolkit/home.page"> <span class="fa fa-medkit fa-lg"></span>  &nbsp; My Medical Profile</a></li> 
             <% } %>
