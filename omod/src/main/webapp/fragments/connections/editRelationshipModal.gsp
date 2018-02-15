@@ -59,7 +59,7 @@
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
                                 <input class="form-check-input editRelationShareCheckbox" type="checkbox" id="editShareType${securityLayer.getUuid()}"
-                                       value="${securityLayer.getUuid()}"> Can see my ${securityLayer.getDescription()}
+                                       value="${securityLayer.getUuid()}"> Can see My ${securityLayer.getDescription()}
                             </label>
                         </div>
                         <% } %>
