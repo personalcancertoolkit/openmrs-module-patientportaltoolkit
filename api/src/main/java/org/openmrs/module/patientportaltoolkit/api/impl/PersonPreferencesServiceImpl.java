@@ -56,9 +56,12 @@ public class PersonPreferencesServiceImpl implements PersonPreferencesService {
     public List<PersonPreferences> getAllEnrolledPersonPreferences() {
         List<PersonPreferences> allpersonPreferences = getAllPersonPreferences ();
         List<PersonPreferences> enrolledpersonPreferences = new ArrayList<>();
-        for(PersonPreferences pp: allpersonPreferences){
-            if(pp.getMyCancerBuddies()==true)
-                enrolledpersonPreferences.add(pp);
+        Person person= Context.getAuthenticatedUser().getPerson();
+        for(PersonPreferences pp: allpersonPreferences) {
+            if (pp.getPerson().getAttribute(12)!=null) {
+                if (pp.getMyCancerBuddies() == true && person.getAttribute(12).equalsContent(pp.getPerson().getAttribute(12)))
+                    enrolledpersonPreferences.add(pp);
+            }
         }
         return enrolledpersonPreferences;
     }
