@@ -84,8 +84,12 @@
             <% } %>
             <li id="patientPortalConnections"><a href="/openmrs/patientportaltoolkit/patientconnections.page"><span class="fa fa-address-book-o  fa-lg"></span>  &nbsp; My Connections</a></li>
             <% if(contextUser.person.isPatient()) { %>
-                <li id="patientPortalMyCancerBuddies"><a href="/openmrs/patientportaltoolkit/myCancerBuddies.page"> <span class="fa fa-users fa-lg" ></span>  &nbsp; My CancerBuddies</a></li>
+                <li id="patientPortalMyCancerBuddies"><a href="/openmrs/patientportaltoolkit/myCancerBuddies.page"><span class="fa fa-users fa-lg"></span>  &nbsp; My CancerBuddies</a></li>
             <% } %>
+            <% if(isAdmin) { %>
+                <li id="patientPortalAdminDashBoard"><a href="/openmrs/patientportaltoolkit/adminDashBoard.page"><span class="fa fa-users fa-lg"></span>&nbsp; Admin DashBoard</a></li>
+            <% } %>
+
             </ul>
         <ul class="nav navbar-nav navbar-right">
             <li id="patientPortalUserName"><a href="/openmrs/patientportaltoolkit/editprofile.page"><span class="fa fa-user-circle fa-lg"></span> &nbsp; ${ (username) }</a></li>

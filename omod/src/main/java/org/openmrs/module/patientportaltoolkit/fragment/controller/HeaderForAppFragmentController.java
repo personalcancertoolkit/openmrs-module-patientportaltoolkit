@@ -11,10 +11,13 @@ package org.openmrs.module.patientportaltoolkit.fragment.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Role;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
+
+import java.util.Set;
 
 /**
  * Created by maurya on 7/13/16.
@@ -27,8 +30,16 @@ public class HeaderForAppFragmentController {
 
         model.addAttribute("username", Context.getAuthenticatedUser().getUsername());
         model.addAttribute("contextUser", Context.getAuthenticatedUser());
+        model.addAttribute("isAdmin", false);
+        Set<Role> roles = Context.getAuthenticatedUser().getAllRoles();
+
+        for (Role r: roles) {
+            if (r.getRole().equals("System Developer")) {
+                model.addAttribute("isAdmin", true);
+                break;
+            }
+        }
+
         log.info(PPTLogAppender.appendLog("REQUEST_NAVIGATION_FRAGMENT", pageRequest.getRequest()));
-
     }
-
 }
