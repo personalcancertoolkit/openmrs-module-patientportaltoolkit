@@ -1,4 +1,4 @@
-<script>
+venue_list_title<script>
 /*
 Logic:
     search_options_handler handles defining the current position at which to search at and updating this position based on user input
@@ -723,9 +723,15 @@ window.addEventListener("load", function(){
     </div>
     
 </div> 
-                
 
+<div>
+ <% if (CancerCommunityData != null) { %>
+        ${(CancerCommunityData.usefulContacts)}
+        ${(CancerCommunityData.resources)}
+ <% } %>      
+</div>
 
 <script>
 </script>
+
 

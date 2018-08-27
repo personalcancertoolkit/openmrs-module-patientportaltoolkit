@@ -250,6 +250,18 @@ jq(document).ready(function(){
             $("#chemotherapyInstitutionState").val($('#'+encounterID+'chemotherapyState').text());
         });
 
+
+    $('.editCancerCommunityDataresourcesButton').click( function () {
+           var cancerTypeID=this.id;
+           var dropdownValue = $('#cancerType'+cancerTypeID).text().toLowerCase().replace(/\s/g, '');
+           $('#dropdownCancer').val(dropdownValue);
+           $("#dropdownCancer").attr("disabled", "disabled");
+
+           $("#cancerId").val(cancerTypeID);
+           $("#txtUsefulContacts").val($('#usefulContacts'+cancerTypeID).html());
+           $("#txtResources").val($('#resources'+cancerTypeID).html());
+     });
+
     $('#saveChemotherapyButton').click(
         function () {
             var chemotherapyMedTypesList='';
