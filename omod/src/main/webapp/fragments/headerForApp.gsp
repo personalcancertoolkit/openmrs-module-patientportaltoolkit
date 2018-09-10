@@ -46,6 +46,9 @@
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-year-calendar.min.css") }"
           type="text/css">
+    <link rel="stylesheet"
+          href="${ ui.resourceLink("patientportaltoolkit", "styles/formio.full.min.css") }"
+          type="text/css">
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}"></script>
 
@@ -58,7 +61,8 @@
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/jquery.mockjax.js") }"></script>
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-editable.min.js") }"></script>
-
+    <script type="text/javascript"
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/formio.full.min.js") }"></script>
 
     <script type="text/javascript">
         jq('.profileBadge').profileBadge();
