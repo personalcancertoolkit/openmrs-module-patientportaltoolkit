@@ -34,14 +34,14 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.PersonService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.PersonService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.PersonServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.PersonServiceImpl">
 						</bean>
 					</property>
 					<property name="preInterceptors">
@@ -57,14 +57,14 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.PatientService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.PatientService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.PatientServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.PatientServiceImpl">
 						</bean>
 					</property>
 					<property name="preInterceptors">
@@ -80,16 +80,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.JournalEntryService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.JournalEntryService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.JournalEntryServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.JournalEntryServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateJournalEntryDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernateJournalEntryDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -110,16 +110,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.PatientPortalRelationService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.PatientPortalRelationServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.PatientPortalRelationServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernatePatientPortalRelationDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernatePatientPortalRelationDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -140,16 +140,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.PatientPortalFormService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.PatientPortalFormServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.PatientPortalFormServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernatePatientPortalFormDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernatePatientPortalFormDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -170,47 +170,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.SideEffectService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.SideEffectService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.SideEffectServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.SideEffectServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateSideEffectDAO">
-									<property name="sessionFactory">
-										<ref bean="sessionFactory"/>
-									</property>
-								</bean>
-							</property>
-						</bean>
-					</property>
-					<property name="preInterceptors">
-						<ref bean="serviceInterceptors"/>
-					</property>
-					<property name="transactionAttributeSource">
-						<ref bean="transactionAttributeSource"/>
-					</property>
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.GuidelineService</value>
-				<bean
-						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-					<property name="transactionManager">
-						<ref bean="transactionManager"/>
-					</property>
-					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.GuidelineServiceImpl">
-							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateGuidelineDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernateSideEffectDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -232,16 +201,47 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.ReminderService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.GuidelineService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.ReminderServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.GuidelineServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateReminderDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernateGuidelineDAO">
+									<property name="sessionFactory">
+										<ref bean="sessionFactory"/>
+									</property>
+								</bean>
+							</property>
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<ref bean="serviceInterceptors"/>
+					</property>
+					<property name="transactionAttributeSource">
+						<ref bean="transactionAttributeSource"/>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>org.openmrs.module.patientportaltoolkit.api.ReminderService</value>
+				<bean
+						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager">
+						<ref bean="transactionManager"/>
+					</property>
+					<property name="target">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.ReminderServiceImpl">
+							<property name="dao">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernateReminderDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -262,16 +262,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.MessageService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.MessageService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.MessageServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.MessageServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateMessageDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernateMessageDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -292,16 +292,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.SecurityLayerService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.SecurityLayerService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.SecurityLayerServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.SecurityLayerServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateSecurityLayerDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernateSecurityLayerDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -322,16 +322,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.PersonPreferencesService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.PersonPreferencesServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.PersonPreferencesServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernatePersonPreferencesDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernatePersonPreferencesDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -352,16 +352,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.PatientPortalPersonAttributesService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.PatientPortalPersonAttributesService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.PatientPortalPersonAttributesServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.PatientPortalPersonAttributesServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernatePatientPortalPersonAttributesDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernatePatientPortalPersonAttributesDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -382,16 +382,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.PreventativeCareService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.PreventativeCareService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.PreventativeCareServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.PreventativeCareServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernatePreventativeCareDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernatePreventativeCareDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -412,16 +412,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.PatientPortalMiscService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.PatientPortalMiscServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.PatientPortalMiscServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernatePatientPortalMiscDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernatePatientPortalMiscDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>
@@ -442,16 +442,16 @@
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>
-				<value>${project.parent.groupId}.${project.parent.artifactId}.api.CancerCommunityResourcesService</value>
+				<value>org.openmrs.module.patientportaltoolkit.api.CancerCommunityResourcesService</value>
 				<bean
 						class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 					<property name="transactionManager">
 						<ref bean="transactionManager"/>
 					</property>
 					<property name="target">
-						<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.impl.CancerCommunityResourcesServiceImpl">
+						<bean class="org.openmrs.module.patientportaltoolkit.api.impl.CancerCommunityResourcesServiceImpl">
 							<property name="dao">
-								<bean class="${project.parent.groupId}.${project.parent.artifactId}.api.db.hibernate.HibernateCancerCommunityDAO">
+								<bean class="org.openmrs.module.patientportaltoolkit.api.db.hibernate.HibernateCancerCommunityDAO">
 									<property name="sessionFactory">
 										<ref bean="sessionFactory"/>
 									</property>

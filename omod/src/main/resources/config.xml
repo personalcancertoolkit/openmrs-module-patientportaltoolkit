@@ -117,6 +117,7 @@
 		PatientPortalPersonAttributes.hbm.xml
 		PasswordChangeRequest.hbm.xml
 		PatientPortalShare.hbm.xml
+		CancerCommunityResources.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->
