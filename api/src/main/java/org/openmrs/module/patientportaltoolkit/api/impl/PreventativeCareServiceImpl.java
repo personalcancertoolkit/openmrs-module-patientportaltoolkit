@@ -22,6 +22,7 @@ import org.openmrs.module.patientportaltoolkit.PreventiveCareGuidelineInterval;
 import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
 import org.openmrs.module.patientportaltoolkit.api.db.PreventativeCareDAO;
 import org.openmrs.Encounter;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,10 +51,7 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
         this.dao = dao;
     }
 
-    
-    
-    
-    
+
     @Override
     public PreventativeCareEvent getEventById(String Id) {
         // If id is not a valid integer, return null - like would be returned if no reminders with a valid integer id were found.
@@ -273,4 +271,47 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
 
         return totalPreventiveCareGuidelines;
     }
+
+
+    @Override
+    public void savePreventiveCareGuideLine(PreventiveCareGuideline pcg) {
+        dao.savePreventiveCareGuideLine(pcg);
+    }
+
+    public List<PreventiveCareGuideline> getPreventiveCareGuideLine()
+    {
+      return dao.getPreventiveCareGuideLine();
+    }
+
+
+    public PreventiveCareGuideline getPreventiveCareGuideLine(int id)
+    {
+        return dao.getPreventiveCareGuideLine(id);
+    }
+
+    @Override
+    public void deletePreventiveCareGuideLine(PreventiveCareGuideline pcg) {
+        dao.deletePreventiveCareGuideLine(pcg);
+    }
+
+    @Override
+    public void savePreventiveCareGuidelineInterval(PreventiveCareGuidelineInterval pcg_interval) {
+        dao.savePreventiveCareGuidelineInterval(pcg_interval);
+    }
+
+    @Override
+    public List<PreventiveCareGuidelineInterval> getPreventiveCareGuidelineInterval() {
+        return dao.getPreventiveCareGuidelineInterval();
+    }
+
+    @Override
+    public List<PreventiveCareGuidelineInterval> getPreventiveCareGuidelineInterval(PreventiveCareGuideline pcg) {
+        return dao.getPreventiveCareGuidelineInterval(pcg);
+    }
+
+    @Override
+    public void deletePreventiveCareGuidelineInterval(PreventiveCareGuidelineInterval pcg_interval) {
+        dao.deletePreventiveCareGuidelineInterval(pcg_interval);
+    }
+
 }

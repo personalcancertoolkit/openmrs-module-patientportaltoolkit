@@ -16,10 +16,12 @@ import org.hibernate.FlushMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Patient;
 import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
 import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
+import org.openmrs.module.patientportaltoolkit.PreventiveCareGuidelineInterval;
 import org.openmrs.module.patientportaltoolkit.api.db.PreventativeCareDAO;
 
 import java.util.List;
@@ -74,5 +76,56 @@ public class HibernatePreventativeCareDAO implements PreventativeCareDAO {
     @Override
     public PreventiveCareGuideline getPreventativeCareGuidelinebyID(Integer id) {
         return (PreventiveCareGuideline) sessionFactory.getCurrentSession().get(PreventiveCareGuideline.class, id);
+    }
+
+    @Override
+    public void savePreventiveCareGuideLine(PreventiveCareGuideline pcg) {
+        sessionFactory.getCurrentSession().saveOrUpdate(pcg);
+    }
+
+    @Override
+    public List<PreventiveCareGuideline> getPreventiveCareGuideLine() {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(PreventiveCareGuideline.class);
+        c.addOrder(Order.asc("id"));
+        return c.list();
+    }
+
+    @Override
+    public PreventiveCareGuideline getPreventiveCareGuideLine(int pcg_id)
+    {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(PreventiveCareGuideline.class);
+        c.add(Restrictions.eq("id", pcg_id));
+        return (PreventiveCareGuideline) c.uniqueResult();
+    }
+
+    @Override
+    public void deletePreventiveCareGuideLine(PreventiveCareGuideline pcg) {
+        sessionFactory.getCurrentSession().delete(pcg);
+    }
+
+    @Override
+    public void savePreventiveCareGuidelineInterval(PreventiveCareGuidelineInterval pcg_interval) {
+        sessionFactory.getCurrentSession().saveOrUpdate(pcg_interval);
+    }
+
+    @Override
+    public List<PreventiveCareGuidelineInterval> getPreventiveCareGuidelineInterval() {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(PreventiveCareGuidelineInterval.class);
+        c.addOrder(Order.asc("id"));
+        return c.list();
+    }
+
+    @Override
+    public List<PreventiveCareGuidelineInterval> getPreventiveCareGuidelineInterval(PreventiveCareGuideline pcg) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(PreventiveCareGuidelineInterval.class);
+        c.add(Restrictions.eq("pcgguideline", pcg));
+        c.addOrder(Order.asc("id"));
+        return c.list();
+    }
+
+
+    @Override
+    public void deletePreventiveCareGuidelineInterval(PreventiveCareGuidelineInterval pcg_intervalId) {
+        sessionFactory.getCurrentSession().delete(pcg_intervalId);
     }
 }

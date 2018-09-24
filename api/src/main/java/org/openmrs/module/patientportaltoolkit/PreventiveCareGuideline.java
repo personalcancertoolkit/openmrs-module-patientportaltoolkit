@@ -22,6 +22,10 @@ public class PreventiveCareGuideline {
     private String name;
     private Concept followupProcedure;
     private Set<PreventiveCareGuidelineInterval> pcgguidelineIntervalSet = new HashSet<PreventiveCareGuidelineInterval>(0);
+    private Integer cancerTypeId;
+    private Integer noOfInterval;
+    private Integer intervalLength;
+
 
     public Integer getId() {
         return id;
@@ -54,4 +58,30 @@ public class PreventiveCareGuideline {
     public void setPcgguidelineIntervalSet(Set<PreventiveCareGuidelineInterval> pcgguidelineIntervalSet) {
         this.pcgguidelineIntervalSet = pcgguidelineIntervalSet;
     }
+
+    public Integer getCancerTypeId() {
+        return cancerTypeId;
+    }
+
+    public void setCancerTypeId(Integer cancerTypeId) {
+        this.cancerTypeId = cancerTypeId;
+    }
+
+    public Integer getNoOfInterval() {
+        return noOfInterval;
+    }
+
+    public void setNoOfInterval(Integer noOfInterval) {
+        this.noOfInterval = noOfInterval;
+    }
+
+
+    public Integer getIntervalLength() {
+        return intervalLength;
+    }
+
+    public void setIntervalLength(Integer intervalLength) {
+        this.intervalLength = intervalLength;
+    }
+
 }

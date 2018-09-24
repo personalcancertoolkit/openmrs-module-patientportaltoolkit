@@ -250,8 +250,56 @@ jq(document).ready(function(){
             $("#chemotherapyInstitutionState").val($('#'+encounterID+'chemotherapyState').text());
         });
 
+    $('.editPCGResourcesButton').click( function () {
 
-    $('.editCancerCommunityDataresourcesButton').click( function () {
+           var btnId=this.id;
+           btnId = btnId.replace('pcgEdit', '');
+           if(btnId != "pcgBtnAdd")
+           {
+                var dropdownValue = $('#pcgCancerType'+btnId).text().toLowerCase().replace(/\s/g, '') + $("#pcgCancerID"+btnId).val();
+                $("#dropDownPreventiveCancerType").val(dropdownValue);
+                $("#pcg_Name").val($('#pcgName'+btnId).html());
+                $("#pcg_Name").attr("disabled", "disabled");
+                $("#pcg_noofIntervals").val($('#pcgNoOfInteval'+btnId).html());
+                $("#pcg_intervalLength").val($('#pcgIntervalLength'+btnId).html());
+                $("#pcgOperation").val('EDIT' + ','  + btnId);
+           }
+           else
+           {
+                $("#pcgOperation").val('ADD' + ',' + -1);
+           }
+    });
+
+    $("#savePreventiveCareGuideLines").click( function () {
+
+           var pcgOperation = $("#pcgOperation").val().split(',');
+           var pcgOp =  pcgOperation[0];
+           var pcg_id = pcgOperation[1];
+
+           var preventiveCareCancerTypeId = $("#dropDownPreventiveCancerType").val().slice(-1);;
+           var preventiveCareGuidLineName = $("#pcg_Name").val();
+           var preventiveCareNoInterval = $("#pcg_noofIntervals").val();
+           var preventiveCareIntervalLength = $("#pcg_intervalLength").val();
+
+           if(preventiveCareNoInterval < 2){
+                jq('#pcgErrorDetails').text("No of Interval Should be greater than 1");
+                jq('#pcgErrorDetails').show();
+            }
+            else
+            {
+                jq.get("editPreventiveCareGuideLine/SavePreventiveCareGuideLines.action", {
+                                                                   operation: pcgOp,
+                                                                   pcgId: pcg_id,
+                                                                   cancerTypeId: preventiveCareCancerTypeId,
+                                                                   guidLineName: preventiveCareGuidLineName,
+                                                                   noOfInterval: preventiveCareNoInterval,
+                                                                   intervalLength: preventiveCareIntervalLength
+                                                               });
+                setTimeout(function () {location.reload();}, 2000);
+            }
+     });
+
+     $('.editCancerCommunityDataresourcesButton').click( function () {
            var cancerTypeID=this.id;
            var dropdownValue = $('#cancerType'+cancerTypeID).text().toLowerCase().replace(/\s/g, '');
            $('#dropdownCancer').val(dropdownValue);
@@ -261,6 +309,8 @@ jq(document).ready(function(){
            $("#txtUsefulContacts").val($('#usefulContacts'+cancerTypeID).html());
            $("#txtResources").val($('#resources'+cancerTypeID).html());
      });
+
+
 
     $('#saveChemotherapyButton').click(
         function () {
