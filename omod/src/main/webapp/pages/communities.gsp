@@ -26,17 +26,6 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
             <td><a href="http://www.fightcolorectalcancer.org/"
                    target="_blank"><u>www.fightcolorectalcancer.org</u></a></td>
         </tr>
-        <tr>
-            <td>Frankly Speaking about Colorectal Cancer, 2nd ed, 2008</td>
-            <td>703-548-1225, Ext 10</td>
-            <td><a href="http://advocacy.fightcrc.org/FranklySpeaking"
-                   target="_blank"><u>dvocacy.fightcrc.org/FranklySpeaking</u></a></td>
-        </tr>
-        <tr>
-            <td>Yearly calendar of colon cancer survivors</td>
-            <td></td>
-            <td><a href="http://www.colondar.com/" target="_blank"><u>www.colondar.com</u></a></td>
-        </tr>
         </tbody>
     </table>
     <br>
@@ -68,7 +57,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         <li>NCI - Office of Cancer Survivorship <a
                 href="http://dccps.nci.nih.gov/ocs/" target="_blank"><u>http://dccps.nci.nih.gov/ocs/</u></a></li>
         <li>NPR - "My Cancer" blog <a
-                href="http://www.npr.org/blogs/mycancer/" target="_blank"><u>http://www.npr.org/blogs/mycancer/</u></a></li>
+                href="https://www.npr.org/sections/mycancer/" target="_blank"><u>https://www.npr.org/sections/mycancer/</u></a></li>
         <li>The Wellness Community, <a
                 href="http://www.thewellnesscommunity.org/" target="_blank"><u>www.thewellnesscommunity.org</u></a>,
         888-793-WELL
@@ -80,8 +69,8 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         <li>FertileHope: <a
                 href="http://www.fertilehope.org//oFertileHope" target="_blank"><u>http://www.fertilehope.org</u></a>
         </li>
-        <li>Facing Forward: Life After Cancer Treatment, NCI, NIH
-        Publication No. 06-2424</li>
+        <li><a href="https://www.cancer.gov/publications/patient-education/facing-forward Facing" target="_blank"><u> Forward: Life After Cancer Treatment, NCI, NIH
+        Publication No. 06-2424</u></a></li>
         <li>CURE magazine <a href="http://www.curetoday.com/subscribe"
                              target="_blank"><u>www.curetoday.com/subscribe</u></a>, 800-210-CURE
         </li>
