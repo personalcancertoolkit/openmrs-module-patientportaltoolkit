@@ -60,7 +60,7 @@
                         <% if (obs.getValueCoded().uuid==answers.answerConcept.uuid) { %>
                         <option selected  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
                         <% } else {%>
-                        <option  value="${(answers.answerConcept.uuid)}" class="reformatText">${(answers.answerConcept.getName())}</option>
+                        <option  value="${(answers.answerConcept.uuid)}">${(answers.answerConcept.getName())}</option>
                         <% } %>
                         <% } %>
                     </select> </form>

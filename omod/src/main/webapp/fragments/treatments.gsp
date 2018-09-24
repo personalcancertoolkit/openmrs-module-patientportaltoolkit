@@ -57,7 +57,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
             <% if (genhistory.hasGeneticOrPredisposingAbnormality) { %>
             <div>
                 <label>Genetic or Predisposing Abnormality&emsp;</label>
-                <span class="reformatText">${(genhistory.geneticOrPredisposingAbnormality)}</span>
+                <span>${(genhistory.geneticOrPredisposingAbnormality)}</span>
             </div>
             <% } %>
             <div>
