@@ -119,7 +119,7 @@ public class HibernatePreventativeCareDAO implements PreventativeCareDAO {
     public List<PreventiveCareGuidelineInterval> getPreventiveCareGuidelineInterval(PreventiveCareGuideline pcg) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(PreventiveCareGuidelineInterval.class);
         c.add(Restrictions.eq("pcgguideline", pcg));
-        c.addOrder(Order.asc("id"));
+        c.addOrder(Order.asc("intervalLength"));
         return c.list();
     }
 

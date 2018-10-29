@@ -24,14 +24,111 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                             </div>
                         </div>
                 </div>
+
                 <div id="tabs-3">
                         <div class="clearfix">
-                            <div class="pull-left">
-                                <h4>Categorize/create followup rules </h4>
+                            <div id="divGuideLine" style="margin: auto;width: 75%;border: 3px solid black;padding: 10px;">
+                                <div class="clearfix">
+                                      <b>Categorize/Create followup rules</b> &emsp;&emsp;
+                                      
+                                      <br />
+                                      <br />
+                                      <br />
+                                </div>
+
+                                <div class="clearfix">
+                                    <% GuideLineData.each { guideLineData -> %>
+                                             <div>   
+                                                <div class="clearfix">
+                                                    <div class="pull-left">
+                                                        <div>
+                                                            <label><b>Concept ID:</b></label>
+                                                            <span id="guideLineConceptId${(guideLineData.id)}">${(guideLineData.followupProcedure.conceptId)} </span> (${(guideLineData.followupProcedure.getName().name)})
+                                                            <br />
+
+                                                            <label><b>Guideline Name:</b></label>
+                                                            <span id="guideLineName${(guideLineData.id)}">${(guideLineData.name)}</span>
+                                                            <br />
+
+                                                            <label><b>Follow up TimeLine:</b></label>
+                                                            <span id="guideLinefollowupTimeLine${(guideLineData.id)}">${(guideLineData.followupTimline)}</span>
+                                                            <br />
+
+                                                            <input id="guideLineConditionSet${(guideLineData.id)}" type="hidden" value=${(guideLineData.guideLineConditionName)}>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="pull-right">
+                                                        <a id="guideLineEdit${(guideLineData.id)}" class="no-underline-edit fa fa-pencil fa-lg editGuideLineButton"  data-toggle="modal" data-target="#edit-GuideLine-modal"></a>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <hr />
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div>
+                              ${ ui.includeFragment("patientportaltoolkit", "editGuideLine")}
                             </div>
                         </div>
                 </div>
+                
+                <div id="tabs-4">
+                        <div class="clearfix">
+                            <div id="divPreventiveCareGuideLine" style="margin: auto;width: 75%;border: 3px solid black;padding: 10px;">
+                                <div class="clearfix">
+                                      <b>Preventive Care GuideLines</b> &emsp;&emsp;
+                                      <a class="btn btn-primary btn-sm editPCGResourcesButton" id="pcgBtnAdd" style="color: white;" data-toggle="modal" data-target="#edit-PreventiveCareGuideLine-modal">Add</a>
+                                      <br />
+                                      <br />
+                                      <br />
+                                </div>
 
+                                <div class="clearfix">
+                                    <% preventiveCareGuideLineData.each { pcgData -> %>
+                                             <div>   
+                                                <div class="clearfix">
+                                                   <div class="pull-left">
+                                                      <div>
+                                                           <label><b>Cancer Type:</b></label>
+                                                               <% CancerCommunityData.each { pcgCancerCommunity -> %>
+                                                                    <% if (pcgCancerCommunity.id== pcgData.cancerTypeId) { %>
+                                                                        <input id="pcgCancerID${(pcgData.id)}" type="hidden" value=${(pcgData.cancerTypeId)}>
+                                                                        <span id="pcgCancerType${(pcgData.id)}">${(pcgCancerCommunity.cancerType)}</span>
+                                                                    <% } %>
+                                                                <% } %>
+                                                      </div>
+                                                   </div>
+                                                   <div class="pull-right">
+                                                        <a id="pcgEdit${(pcgData.id)}" class="no-underline-edit fa fa-pencil fa-lg editPCGResourcesButton"  data-toggle="modal" data-target="#edit-PreventiveCareGuideLine-modal"></a>
+                                                   </div>
+                                                </div>
+                                                
+                                                <div class="clearfix">
+                                                    <div class="pull-left">
+                                                        <div>
+                                                            <label><b>Prevetice Care Guideline Name:</b></label>
+                                                            <span id="pcgName${(pcgData.id)}">${(pcgData.name)}</span>
+
+                                                            <br />
+                                                            <label><b>Follow-Up TimeLine:</b></label>
+                                                            <span id="pcgfollowupTimeLine${(pcgData.id)}">${(pcgData.followupTimeLine)}</span>
+                                                               
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                             <hr />
+                                    <% } %>
+                                </div>
+                            </div>
+                            <div>
+                              ${ ui.includeFragment("patientportaltoolkit", "editPreventiveCareGuideLine")}
+                            </div>
+                        </div>
+                </div>
+                   
                 <div id="tabs-5">
                         <div class="clearfix">
                             <div id="divCategorizeCommunitiesData" class="pull-left">
@@ -76,63 +173,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 
 
 
-                <div id="tabs-4">
-                        <div class="clearfix">
-                            <div id="divPreventiveCareGuideLine" style="margin: auto;width: 75%;border: 3px solid black;padding: 10px;">
-                                <div class="clearfix">
-                                      <b>Categorize/Create preventive Care Rules</b> &emsp;&emsp;
-                                      <a class="btn btn-primary btn-sm editPCGResourcesButton" id="pcgBtnAdd" style="color: white;" data-toggle="modal" data-target="#edit-PreventiveCareGuideLine-modal">Add</a>
-                                      <br />
-                                      <br />
-                                      <br />
-                                </div>
-
-                                <div class="clearfix">
-                                    <% preventiveCareGuideLineData.each { pcgData -> %>
-                                             <div>   
-                                                <div class="clearfix">
-                                                   <div class="pull-left">
-                                                      <div>
-                                                           <label><b>Cancer Type:</b></label>
-                                                               <% CancerCommunityData.each { pcgCancerCommunity -> %>
-                                                                    <% if (pcgCancerCommunity.id== pcgData.cancerTypeId) { %>
-                                                                        <input id="pcgCancerID${(pcgData.id)}" type="hidden" value=${(pcgData.cancerTypeId)}>
-                                                                        <span id="pcgCancerType${(pcgData.id)}">${(pcgCancerCommunity.cancerType)}</span>
-                                                                    <% } %>
-                                                                <% } %>
-                                                      </div>
-                                                   </div>
-                                                   <div class="pull-right">
-                                                        <a id="pcgEdit${(pcgData.id)}" class="no-underline-edit fa fa-pencil fa-lg editPCGResourcesButton"  data-toggle="modal" data-target="#edit-PreventiveCareGuideLine-modal"></a>
-                                                   </div>
-                                                </div>
-                                                
-                                                <div class="clearfix">
-                                                    <div class="pull-left">
-                                                        <div>
-                                                            <label><b>Prevetice Care Guideline Name:</b></label>
-                                                            <span id="pcgName${(pcgData.id)}">${(pcgData.name)}</span>
-
-                                                            <br />
-                                                            <label><b>No. of Intervals:</b></label>
-                                                            <span id="pcgNoOfInteval${(pcgData.id)}">${(pcgData.noOfInterval)}</span>
-                                                               
-                                                            <br />
-                                                            <label><b>Interval Length (in months):</b></label>
-                                                            <span id="pcgIntervalLength${(pcgData.id)}">${(pcgData.intervalLength)}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                             <div>
-                                             <hr />
-                                    <% } %>
-                                </div>
-                            </div>
-                            <div>
-                              ${ ui.includeFragment("patientportaltoolkit", "editPreventiveCareGuideLine")}
-                            </div>
-                        </div>
-                </div>
+                
 
                 
             </div>

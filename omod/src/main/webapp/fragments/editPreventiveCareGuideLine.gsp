@@ -26,16 +26,11 @@
                 <br />
 
                 <form class="form-inline" role="form">
-                    <label class="reformatText">No. of intervals</label>
-                    <input class="form-control" id="pcg_noofIntervals" type="text" />
+                    <label class="reformatText">Follow Up TimeLine:</label>
+                    <input class="form-control" id="pcg_followupTimeLine" type="text" />
                 </form>
                 <br />
 
-                <form class="form-inline" role="form">
-                    <label class="reformatText">Interval Length</label>
-                    <input class="form-control" id="pcg_intervalLength" type="text" />
-                </form>
-                <br />
             </div>
                 
             <div class="modal-footer">

@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,15 +25,14 @@ public class EditPreventiveCareGuideLineFragmentController {
     protected final Log log = LogFactory.getLog(getClass());
 
     public void controller(FragmentModel model, PageRequest pageRequest) {
-        log.info(PPTLogAppender.appendLog("REQUEST_EditCategorizeCommunitiesDataModal_FRAGMENT", pageRequest.getRequest()));
+        log.info(PPTLogAppender.appendLog("REQUEST_EditPreventiveCareGuideLineDataModal_FRAGMENT", pageRequest.getRequest()));
     }
 
     public void SavePreventiveCareGuideLines(FragmentModel model,@RequestParam(value = "operation", required = false) String OpeartionType,
                                              @RequestParam(value = "pcgId", required = false) int pcg_Id,
                                              @RequestParam(value = "cancerTypeId", required = false) int cancerTypeId,
                                              @RequestParam(value = "guidLineName", required = false) String pcg_name,
-                                             @RequestParam(value = "noOfInterval", required = false) int noOfInterval,
-                                             @RequestParam(value = "intervalLength", required = false) int intervalLength,
+                                             @RequestParam(value = "followUpTimeLine", required = false) String followUpTimeLine,
                                              HttpServletRequest servletRequestest) throws ParseException {
 
         //log.info(PPTLogAppender.appendLog("Admin_PreventiveCareGuideLines", servletRequestest,"Cancer Type Id:" , cancerTypeId ,"GuidLine Name:", guidLineName));
@@ -61,16 +61,18 @@ public class EditPreventiveCareGuideLineFragmentController {
         Set<PreventiveCareGuidelineInterval> hSetPreventiveCareGuidelineInterval = new HashSet<PreventiveCareGuidelineInterval>();
         PreventiveCareGuidelineInterval preventiveCareGuidelineInterval;
         int noOfIntervalSteps = 0;
-        for(int i=1; i <= noOfInterval; i++)
+
+        List<String> listIntevalLength = Arrays.asList(followUpTimeLine.split("\\s*,\\s*"));
+        for(int i=0; i < listIntevalLength.size(); i++)
         {
             preventiveCareGuidelineInterval = new PreventiveCareGuidelineInterval();
 
             preventiveCareGuidelineInterval.setIntervalNumber(i);
             preventiveCareGuidelineInterval.setPcgguideline(preventiveCareGuideline);
-            preventiveCareGuidelineInterval.setIntervalLength(noOfIntervalSteps);
+            preventiveCareGuidelineInterval.setIntervalLength(Integer.parseInt(listIntevalLength.get(i)));
             hSetPreventiveCareGuidelineInterval.add(preventiveCareGuidelineInterval);
-            noOfIntervalSteps += intervalLength;
         }
+
         preventiveCareGuideline.setPcgguidelineIntervalSet(hSetPreventiveCareGuidelineInterval);
 
         // Save Data in patientportal_pcg and patientportal_pcg_interval Table

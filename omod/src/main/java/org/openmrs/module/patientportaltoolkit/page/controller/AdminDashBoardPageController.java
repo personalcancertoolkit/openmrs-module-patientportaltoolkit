@@ -2,12 +2,12 @@ package org.openmrs.module.patientportaltoolkit.page.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.patientportaltoolkit.CancerCommunityResources;
-import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
-import org.openmrs.module.patientportaltoolkit.PreventiveCareGuidelineInterval;
+import org.openmrs.module.patientportaltoolkit.*;
 import org.openmrs.module.patientportaltoolkit.api.CancerCommunityResourcesService;
 import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
+import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -22,7 +22,91 @@ public class AdminDashBoardPageController {
         List<CancerCommunityResources> cancerComunityData = Context.getService(CancerCommunityResourcesService.class).getCancerCommunityResourcesService();
         List<PreventiveCareGuideline> listPreventiveCareGuideLine = Context.getService(PreventativeCareService.class).getPreventiveCareGuideLine();
         List<PreventiveCareGuideline> adminListPreventiveCareGuideLine = new ArrayList<PreventiveCareGuideline>();
+        List<Guideline> listGuideLines = Context.getService(GuidelineService.class).getAllGuidlines();
+        List<GuidelineConditionSet> listGuideLineConditionSet = Context.getService(GuidelineService.class).getGuidlineConditionSetbyConditions();
+        List<Guideline> adminListGuideLine = new ArrayList<Guideline>();
 
+        // Preventive Care GuideLine
+        for(PreventiveCareGuideline pcg : listPreventiveCareGuideLine) {
+
+            int intervalNumber = -1, intervalLength = -1;
+            PreventiveCareGuideline admin_pcg;
+            List<PreventiveCareGuidelineInterval> listPreventiveCareGuideLineInterval = Context.getService(PreventativeCareService.class).getPreventiveCareGuidelineInterval(pcg);
+
+            admin_pcg = new PreventiveCareGuideline();
+            admin_pcg.setId(pcg.getId());
+            admin_pcg.setName(pcg.getName());
+            admin_pcg.setCancerTypeId(pcg.getCancerTypeId());
+
+            StringBuilder sbFollowUpTimeline = new StringBuilder();
+            for(PreventiveCareGuidelineInterval pcg_interval : listPreventiveCareGuideLineInterval) {
+
+                sbFollowUpTimeline.append(pcg_interval.getIntervalLength() + ",");
+
+//                To get the interval Length ( (id = 2) - (id = 1))
+//                if(pcg_interval.getIntervalNumber() == 2) {
+//                    intervalLength = pcg_interval.getIntervalLength();
+//                }
+//
+//                // To get the maximum interval Number
+//                if(pcg_interval.getIntervalNumber() > intervalNumber) {
+//                    intervalNumber = pcg_interval.getIntervalNumber();
+//                }
+            }
+            if(sbFollowUpTimeline != null && !sbFollowUpTimeline.toString().isEmpty() && sbFollowUpTimeline.toString().length() > 0)
+                admin_pcg.setfollowupTimeLine(sbFollowUpTimeline.substring(0, sbFollowUpTimeline.length() - 1));
+            else
+                admin_pcg.setfollowupTimeLine(null);
+
+            adminListPreventiveCareGuideLine.add(admin_pcg);
+        }
+
+        for(Guideline guideLineObj : listGuideLines) {
+
+            Guideline admin_guideLine;
+            List<GuidelineInterval> listGuideLineInterval = Context.getService(GuidelineService.class).getAllGuidlinesInterval(guideLineObj);
+
+            admin_guideLine = new Guideline();
+            admin_guideLine.setId(guideLineObj.getId());
+            admin_guideLine.setName(guideLineObj.getName());
+            admin_guideLine.setFollowupProcedure(guideLineObj.getFollowupProcedure());
+            admin_guideLine.setConditionsSet(guideLineObj.getConditionsSet());
+            admin_guideLine.setFollowupTimline(guideLineObj.getFollowupTimline());
+
+
+            // Interval Length
+//            StringBuilder sbIntervalLength = new StringBuilder();
+//            for(GuidelineInterval guideLine_interval : listGuideLineInterval) {
+//                sbIntervalLength.append(guideLine_interval.getIntervalLength() + ", ");
+//            }
+//            String strIntervalLength = sbIntervalLength.toString().replaceAll(", $", "");
+//            admin_guideLine.setIntervalLength(strIntervalLength);
+
+            StringBuilder sbConditionSet = new StringBuilder();
+
+            for(GuidelineConditionSet guidelineConditionSetIter:listGuideLineConditionSet){
+                Set<Guideline> guidelineConditionSetGuideLines = guidelineConditionSetIter.getGuidelines();
+                //if (guidelineConditionConcepts.size() == guideLineObj.getConditionsSet().size() && guidelineConditionConcepts.containsAll(guideLineObj.getConditionsSet())) {
+                if (guidelineConditionSetGuideLines.contains(guideLineObj)) {
+
+                    sbConditionSet.append(guidelineConditionSetIter.getConditionName() + "|");
+                  //For future - If we need condition set
+//                  for(Concept guideLineConditionSetConceptID: guidelineConditionSetIter.getConceptSet()) {
+//                        sbConditionSet.append(guideLineConditionSetConceptID.getConceptId() + ",");
+//                  }
+                }
+            }
+
+            String stringConditionSet = sbConditionSet.toString().toLowerCase().replaceAll("[, ;]", "");
+            if(sbConditionSet != null && !sbConditionSet.toString().isEmpty() && sbConditionSet.toString().length() > 0)
+                admin_guideLine.setGuidelineConditionSet(stringConditionSet.substring(0, stringConditionSet.length() - 1));
+            else
+                admin_guideLine.setGuidelineConditionSet(null);
+
+            adminListGuideLine.add(admin_guideLine);
+        }
+
+        //Attribute Binding - Cancer Type
         if(cancerComunityData != null) {
             model.addAttribute("CancerCommunityData", cancerComunityData);
         }
@@ -30,38 +114,12 @@ public class AdminDashBoardPageController {
             model.addAttribute("CancerCommunityData", null);
         }
 
-
-        for(PreventiveCareGuideline pcg : listPreventiveCareGuideLine) {
-
-            int intervalNumber = -1, intervalLength = -1;
-            PreventiveCareGuideline admin_pcgInterval;
-            List<PreventiveCareGuidelineInterval> listPreventiveCareGuideLineInterval = Context.getService(PreventativeCareService.class).getPreventiveCareGuidelineInterval(pcg);
-
-            admin_pcgInterval = new PreventiveCareGuideline();
-            admin_pcgInterval.setId(pcg.getId());
-            admin_pcgInterval.setName(pcg.getName());
-            admin_pcgInterval.setCancerTypeId(pcg.getCancerTypeId());
-
-            for(PreventiveCareGuidelineInterval pcg_interval : listPreventiveCareGuideLineInterval) {
-
-                // To get the interval Length ( (id = 2) - (id = 1))
-                if(pcg_interval.getIntervalNumber() == 2) {
-                    intervalLength = pcg_interval.getIntervalLength();
-                }
-
-                // To get the maximum interval Number
-                if(pcg_interval.getIntervalNumber() > intervalNumber) {
-                    intervalNumber = pcg_interval.getIntervalNumber();
-                }
-            }
-            admin_pcgInterval.setIntervalLength(intervalLength);
-            admin_pcgInterval.setNoOfInterval(intervalNumber);
-
-            if(intervalNumber != -1 && intervalLength != -1) {
-                adminListPreventiveCareGuideLine.add(admin_pcgInterval);
-            }
-        }
+        //Attribute Binding - Preventive Care GuideLine
         model.addAttribute("preventiveCareGuideLineData", adminListPreventiveCareGuideLine);
+
+        //Attribute Binding - GuideLine
+        model.addAttribute("GuideLineData", adminListGuideLine);
+
         log.info(PPTLogAppender.appendLog("REQUEST_ADMINDASHBOARD_PAGE", pageRequest.getRequest()));
     }
 }
