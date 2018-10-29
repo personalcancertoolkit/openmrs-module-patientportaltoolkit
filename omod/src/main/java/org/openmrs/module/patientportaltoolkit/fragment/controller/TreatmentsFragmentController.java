@@ -11,6 +11,8 @@ package org.openmrs.module.patientportaltoolkit.fragment.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Encounter;
+import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
@@ -25,6 +27,7 @@ import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -57,7 +60,15 @@ public class TreatmentsFragmentController {
             model.addAttribute("surgeryConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.SURGERY_ENCOUNTER));
             model.addAttribute("chemotherapyConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHEMOTHERAPY_ENCOUNTER));
             model.addAttribute("radiationConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.RADIATION_ENCOUNTER));
-            model.addAttribute("latestTreatmentSummary", GenerateTreatmentClassesUtil.generateLatestGeneralHistory(patient));
+            Encounter latestGeneralHistory = GenerateTreatmentClassesUtil.generateLatestGeneralHistory(patient);
+            model.addAttribute("generalCancerAbnormality", null);
+            for (Obs obs: latestGeneralHistory.getObs())
+            {
+                if (obs.getConcept().getUuid().equals("8719adbe-0975-477f-a95f-2fae4d6cbdae"))
+                    model.addAttribute("generalCancerAbnormality", obs.getValueCoded().getUuid());
+            }
+            model.addAttribute("latestTreatmentSummary", latestGeneralHistory);
+            model.addAttribute("cancerAbnormalityType", Context.getConceptService().getConceptByUuid("8719adbe-0975-477f-a95f-2fae4d6cbdae"));
             model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
             model.addAttribute("radiationencounters", GenerateTreatmentClassesUtil.generateRadiations(patient));
             model.addAttribute("surgeryencounters",GenerateTreatmentClassesUtil.generateSurgeries(patient));

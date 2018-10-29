@@ -34,6 +34,7 @@ public class TreatmentsGenHistoryModalFragmentController {
 
     public void controller(PageRequest pageRequest) {
         log.info(PPTLogAppender.appendLog("REQUEST_GENERALHISTORY_FRAGMENT", pageRequest.getRequest()));
+
     }
 
     public void saveGenHistoryForm(FragmentModel model,  @RequestParam(value = "encounterId", required = true) String encounterId,
@@ -135,7 +136,11 @@ public class TreatmentsGenHistoryModalFragmentController {
                         case "cancerAbnormalityType":
                             if (observationConceptUUIDToObsMap.get("8719adbe-0975-477f-a95f-2fae4d6cbdae") != null) {
                                 Obs o = observationConceptUUIDToObsMap.get("8719adbe-0975-477f-a95f-2fae4d6cbdae").get(0);
-                                o.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityType));
+                                if (cancerAbnormalityType.isEmpty()){
+                                    o.setVoided(true);
+                                }
+                                else
+                                    o.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityType));
                             } else {
                                 if(!cancerAbnormalityType.isEmpty()) {
                                     Obs o = new Obs();

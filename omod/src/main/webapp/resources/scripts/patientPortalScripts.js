@@ -107,14 +107,32 @@ jq(document).ready(function(){
         });
     jq('#saveGeneralHistorybutton').click(
         function () {
+           if ("yes"==jq('#genHistoryCancerabnormalitySelect').find(":selected").text().toLowerCase()){
             jq.get("treatmentsGenHistoryModal/saveGenHistoryForm.action", {encounterId: jq("#genHistEncounterHolder").val(), cancerType:  jq("#genHistoryCancerTypeSelect").val(),cancerStage:  jq("#genHistoryCancerStageSelect").val(),cancerDate:jq("#genHistoryDate").val(),cancerAbnormalityBool:jq("#genHistoryCancerabnormalitySelect").val(),cancerAbnormalityType:jq("#genHistoryCancerabnormalityTypeSelect").val(),genHistoryCancerPcpName:jq("#genHistoryCancerPcpName").val(),genHistoryCancerPcpEmail:jq("#genHistoryCancerPcpEmail").val(),genHistoryCancerPcpPhone:jq("#genHistoryCancerPcpPhone").val()}, function(){
             });
+           }
+           else {
+               jq.get("treatmentsGenHistoryModal/saveGenHistoryForm.action", {encounterId: jq("#genHistEncounterHolder").val(), cancerType:  jq("#genHistoryCancerTypeSelect").val(),cancerStage:  jq("#genHistoryCancerStageSelect").val(),cancerDate:jq("#genHistoryDate").val(),cancerAbnormalityBool:jq("#genHistoryCancerabnormalitySelect").val(),genHistoryCancerPcpName:jq("#genHistoryCancerPcpName").val(),genHistoryCancerPcpEmail:jq("#genHistoryCancerPcpEmail").val(),genHistoryCancerPcpPhone:jq("#genHistoryCancerPcpPhone").val()}, function(){
+               });
+           }
             //alert("refreshing");
             setTimeout(function(){
                 location.reload();
-            }, 1000);
+            }, 1500);
         });
 
+    if ("yes"==jq('#genHistoryCancerabnormalitySelect').find(":selected").text().toLowerCase()){
+        jq('#cancerAbnormalitySelectForm').show();
+    }
+
+    jq('#genHistoryCancerabnormalitySelect').change(function(){
+        if ("yes"==jq('#genHistoryCancerabnormalitySelect').find(":selected").text().toLowerCase()){
+            jq('#cancerAbnormalitySelectForm').show();
+        }
+        else {
+            jq('#cancerAbnormalitySelectForm').hide();
+        }
+    });
     var surgerydatePicker= jq( "#surgeryDate" ).datepicker({
         format: 'mm/dd/yyyy'
     }).on('changeDate', function() {

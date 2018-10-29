@@ -28,7 +28,7 @@ public class GenerateTreatmentClassesUtil {
         for(Encounter e: encounters){
             GeneralHistory generalHistory=new GeneralHistory();
             generalHistory.setEncounterUuid(e.getUuid());
-            Set<Obs> obsList= e.getObs();
+            Set<Obs> obsList= e.getAllObs(false);
             for(Obs o: obsList){
                 if(o.getConcept().getUuid().equals("efa3f9eb-ade4-4ddb-92c9-0fc1119d112d"))
                     generalHistory.setCancerStage(o.getValueCoded().getName().getName());

@@ -69,18 +69,18 @@
 
                 <% latestTreatmentSummary.obs.each { obs -> %>
                 <% /* cancer abnormality type*/ %>
-                <% if (obs.concept.uuid=="8719adbe-0975-477f-a95f-2fae4d6cbdae") { %>
-                <form class="form-inline" role="form"> <label class="reformatText">${(obs.concept.getName())}  </label>
+
+                <form class="form-inline" id="cancerAbnormalitySelectForm" role="form" hidden> <label class="reformatText">${(cancerAbnormalityType.getName())}  </label>
                     <select class="form-control" id="genHistoryCancerabnormalityTypeSelect">
-                        <% obs.concept.getAnswers().each { answers -> %>
-                        <% if (obs.getValueCoded().uuid==answers.answerConcept.uuid) { %>
+                        <% cancerAbnormalityType.getAnswers().each { answers -> %>
+                        <% if (generalCancerAbnormality==answers.answerConcept.uuid) { %>
                         <option selected  value="${(answers.answerConcept.uuid)}" class="reformatText">${(answers.answerConcept.getName())}</option>
                         <% } else {%>
                         <option  value="${(answers.answerConcept.uuid)}" class="reformatText">${(answers.answerConcept.getName())}</option>
                         <% } %>
                         <% } %>
-                    </select> </form>
-                <% } %>
+                    </select>
+                </form>
                 <% } %>
 
                 <label>Primary Care Physician : </label>
