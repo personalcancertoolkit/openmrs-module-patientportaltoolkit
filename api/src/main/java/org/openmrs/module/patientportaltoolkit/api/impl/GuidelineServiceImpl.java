@@ -20,6 +20,7 @@ import org.openmrs.module.patientportaltoolkit.Guideline;
 import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
 import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
 import org.openmrs.module.patientportaltoolkit.api.db.GuidelineDAO;
+import org.openmrs.module.patientportaltoolkit.GuidelineInterval;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -57,6 +58,12 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
     public List<Guideline> getAllGuidlines() {
         return dao.getAllGuidelines();
     }
+
+    @Override
+    public List<Guideline> getAllGuidlinesInterval(int guideLineID) {
+        return dao.getAllGuidelines();
+    }
+
 
     @Override
     public List<Guideline> getGuidlinesByConditions(Set<Concept> conditions) {
@@ -135,12 +142,50 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
                     if(latest == null || latest.getDateCreated().before(obs.getDateCreated())) {
                         latest = obs;
                     }
-
                 }
             }
         }
 
         return latest;
+    }
+
+    @Override
+    public Guideline getGuidelineById(int guidLineId) {
+        return dao.getGuidelineById(guidLineId);
+    }
+
+    @Override
+    public List<GuidelineInterval> getAllGuidlinesInterval(Guideline guidLineObj) {
+        return dao.getAllGuidelinesInterval(guidLineObj);
+    }
+
+    @Override
+    public void saveGuideLine(Guideline guidLineObj) {
+        dao.saveGuideLine(guidLineObj);
+    }
+
+    @Override
+    public void saveGuideLineInterval(GuidelineInterval guidLineIntervalObj) {
+        dao.saveGuideLineInterval(guidLineIntervalObj);
+    }
+
+    public void deleteGuidelineInterval(GuidelineInterval guidLineIntervalObj) {
+        dao.deleteGuidelineInterval(guidLineIntervalObj);
+    }
+
+    @Override
+    public List<GuidelineConditionSet> getGuidlineConditionSetbyConditions() {
+        return dao.getAllGuidelineConditionSet();
+    }
+
+    @Override
+    public GuidelineConditionSet getGuidelineConditionSetByConditionName(String ConditionName) {
+        return dao.getGuidelineConditionSetByConditionName(ConditionName);
+    }
+
+    @Override
+    public void saveGuideLineConditionSet(GuidelineConditionSet guideLineConditionSetObj) {
+        dao.saveGuideLineConditionSet(guideLineConditionSetObj);
     }
 
 }

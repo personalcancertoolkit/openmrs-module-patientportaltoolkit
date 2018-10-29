@@ -250,8 +250,140 @@ jq(document).ready(function(){
             $("#chemotherapyInstitutionState").val($('#'+encounterID+'chemotherapyState').text());
         });
 
+    $('.editPCGResourcesButton').click( function () {
 
-    $('.editCancerCommunityDataresourcesButton').click( function () {
+           var btnId=this.id;
+           btnId = btnId.replace('pcgEdit', '');
+           if(btnId != "pcgBtnAdd")
+           {
+                var dropdownValue = $('#pcgCancerType'+btnId).text().toLowerCase().replace(/\s/g, '') + $("#pcgCancerID"+btnId).val();
+                $("#dropDownPreventiveCancerType").val(dropdownValue);
+                $("#pcg_Name").val($('#pcgName'+btnId).html());
+                $("#pcg_Name").attr("disabled", "disabled");
+                $("#pcg_followupTimeLine").val($('#pcgfollowupTimeLine'+btnId).html());
+
+                //$("#pcg_noofIntervals").val($('#pcgNoOfInteval'+btnId).html());
+                //$("#pcg_intervalLength").val($('#pcgIntervalLength'+btnId).html());
+                $("#pcgOperation").val('EDIT' + ','  + btnId);
+           }
+           else
+           {
+                $("#pcgOperation").val('ADD' + ',' + -1);
+           }
+    });
+
+
+    $('.editGuideLineButton').click( function () {
+
+               var btnId=this.id;
+               btnId = btnId.replace('guideLineEdit', '');
+               $("#guidLine_ConceptId").val($('#guideLineConceptId'+btnId).html());
+               $("#guidLine_Name").val($('#guideLineName'+btnId).html());
+               //$("#guidLine_Name").attr("disabled", "disabled");
+               $("#guideLine_FollowupTimeLine").val($('#guideLinefollowupTimeLine'+btnId).html());
+               //$("#guideLine_IntervalLength").val($('#guideLineIntervalLength'+btnId).html());
+               $("#guideLineOperation").val('EDIT' + ','  + btnId);
+
+                var conditionSets = $("#guideLineConditionSet"+btnId).val();
+                var arrayconditionSets = arrayconditionSets = conditionSets.split('|');
+                $('input:checkbox').removeAttr('checked');
+                for (var i = 0; i < arrayconditionSets.length; i++) {
+
+                    if($("#coloncancerstage1").val() == arrayconditionSets[i])
+                    {
+
+                        $("#coloncancerstage1").prop("checked", true);
+                    }
+                    if($("#coloncancerstage2").val() == arrayconditionSets[i])
+                    {
+                       $("#coloncancerstage2").prop("checked", true);
+                    }
+                    if($("#coloncancerstage3").val() == arrayconditionSets[i])
+                    {
+                       $("#coloncancerstage3").prop("checked", true);
+                    }
+                    if($("#rectalcancerstage1").val() == arrayconditionSets[i])
+                    {
+                       $("#rectalcancerstage1").prop("checked", true);
+                    }
+                    if($("#rectalcancerstage2").val() == arrayconditionSets[i])
+                    {
+                       $("#rectalcancerstage2").prop("checked", true);
+                    }
+                    if($("#rectalcancerstage3").val() == arrayconditionSets[i])
+                    {
+                    $("#rectalcancerstage3").prop("checked", true);
+                    }
+                }
+     });
+
+    $("#savePreventiveCareGuideLines").click( function () {
+
+           var pcgOperation = $("#pcgOperation").val().split(',');
+           var pcgOp =  pcgOperation[0];
+           var pcg_id = pcgOperation[1];
+
+           var preventiveCareCancerTypeId = $("#dropDownPreventiveCancerType").val().slice(-1);;
+           var preventiveCareGuidLineName = $("#pcg_Name").val();
+           var preventiveCareFollowUpTimeLine = $("#pcg_followupTimeLine").val();
+           //var preventiveCareIntervalLength = $("#pcg_intervalLength").val();
+
+
+
+            jq.get("editPreventiveCareGuideLine/SavePreventiveCareGuideLines.action", {
+                                                                               operation: pcgOp,
+                                                                               pcgId: pcg_id,
+                                                                               cancerTypeId: preventiveCareCancerTypeId,
+                                                                               guidLineName: preventiveCareGuidLineName,
+                                                                               followUpTimeLine: preventiveCareFollowUpTimeLine
+                                                                           });
+             setTimeout(function () {location.reload();}, 2000);
+
+
+//           if(preventiveCareNoInterval < 2){
+//                jq('#pcgErrorDetails').text("No of Interval Should be greater than 1");
+//                jq('#pcgErrorDetails').show();
+//            }
+//            else
+//            {
+//
+//            }
+     });
+
+
+     $("#saveGuideLines").click( function () {
+
+                var guideLineOperation = $("#guideLineOperation").val().split(',');
+                var guideLineOp =  guideLineOperation[0];
+                var guideLine_id = guideLineOperation[1];
+
+                var guideLineConceptID = $("#guidLine_ConceptId").val();
+                var guideLineName = $("#guidLine_Name").val();
+                var guideLineFollowupTime = $("#guideLine_FollowupTimeLine").val();
+                //var guideLineIntervalLength = $("#guideLine_IntervalLength").val();
+
+                //console.log(guideLineOp + "; " + guideLine_id + "; " + guideLineCancerTypeId + "; " + guidLineName + "; " + guideLineFollowupTime + "; " + guideLineIntervalLength);
+
+                var guideLineConditionSet = "";
+                 $("input[name='checkboxconditionset']").each(function () {
+                        if ($(this).is(':checked')) {
+                              guideLineConditionSet +=  $(this).val() + "|";
+                         }
+                 });
+                guideLineConditionSet= guideLineConditionSet.slice(0, guideLineConditionSet.length-1);
+                jq.get("editGuideLine/SaveGuideLines.action", {
+                                                               operation: guideLineOp,
+                                                               guideLineId: guideLine_id,
+                                                               conceptId: guideLineConceptID,
+                                                               conditionSet: guideLineConditionSet,
+                                                               guideLineName: guideLineName,
+                                                               followupTimeLine: guideLineFollowupTime
+                                                               //intervalLength: guideLineIntervalLength
+                                                               });
+                setTimeout(function () {location.reload();}, 2000);
+     });
+
+     $('.editCancerCommunityDataresourcesButton').click( function () {
            var cancerTypeID=this.id;
            var dropdownValue = $('#cancerType'+cancerTypeID).text().toLowerCase().replace(/\s/g, '');
            $('#dropdownCancer').val(dropdownValue);

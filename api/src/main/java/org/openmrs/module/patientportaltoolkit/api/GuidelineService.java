@@ -14,6 +14,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.patientportaltoolkit.Guideline;
 import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
+import org.openmrs.module.patientportaltoolkit.GuidelineInterval;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -28,6 +29,9 @@ public interface GuidelineService extends OpenmrsService {
     List<Guideline> getAllGuidlines();
 
     @Transactional(readOnly = true)
+    List<Guideline> getAllGuidlinesInterval(int guideLineID);
+
+    @Transactional(readOnly = true)
     List<Guideline> getGuidlinesByConditions(Set<Concept> conditions);
 
     @Transactional(readOnly = true)
@@ -35,4 +39,28 @@ public interface GuidelineService extends OpenmrsService {
 
     @Transactional(readOnly = true)
     GuidelineConditionSet getGuidlineConditionSetbyConditions(Set<Concept> conditions);
+
+    @Transactional(readOnly = true)
+    List<GuidelineInterval> getAllGuidlinesInterval(Guideline guidLineObj);
+
+    @Transactional(readOnly = true)
+    Guideline getGuidelineById(int guidLineId);
+
+    @Transactional
+    void saveGuideLine(Guideline guidLineObj);
+
+    @Transactional
+    void saveGuideLineInterval(GuidelineInterval guidLineIntervalObj);
+
+    @Transactional
+    void deleteGuidelineInterval(GuidelineInterval guidLineIntervalObj);
+
+    @Transactional(readOnly = true)
+    List<GuidelineConditionSet> getGuidlineConditionSetbyConditions();
+
+    @Transactional(readOnly = true)
+    GuidelineConditionSet getGuidelineConditionSetByConditionName(String ConditionName);
+
+    @Transactional
+    void saveGuideLineConditionSet(GuidelineConditionSet guideLineConditionSetObj);
 }

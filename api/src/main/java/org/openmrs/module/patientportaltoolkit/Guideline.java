@@ -12,6 +12,7 @@ package org.openmrs.module.patientportaltoolkit;
 import org.openmrs.Concept;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,6 +26,8 @@ public class Guideline {
     private Set<Concept> conditionsSet = new HashSet<Concept>(0);
     private String followupTimline;
     private Set<GuidelineInterval> guidelineIntervalSet = new HashSet<GuidelineInterval>(0);
+    //private String intervalLength;
+    private String guideLineConditionName;
 
     public Integer getId() {
         return id;
@@ -71,5 +74,21 @@ public class Guideline {
 
     public void setGuidelineIntervalSet(Set<GuidelineInterval> guidelineIntervalSet) {
         this.guidelineIntervalSet = guidelineIntervalSet;
+    }
+
+//    public String getIntervalLength() {
+//        return intervalLength;
+//    }
+//
+//    public void setIntervalLength(String intervalLength) {
+//        this.intervalLength = intervalLength;
+//    }
+
+    public String getGuidelineConditionSet() {
+        return guideLineConditionName;
+    }
+
+    public void setGuidelineConditionSet(String strGuideLineConditionSet) {
+        this.guideLineConditionName = strGuideLineConditionSet;
     }
 }

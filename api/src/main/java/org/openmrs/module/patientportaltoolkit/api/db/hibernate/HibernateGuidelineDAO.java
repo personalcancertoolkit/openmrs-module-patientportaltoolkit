@@ -13,9 +13,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.Concept;
-import org.openmrs.module.patientportaltoolkit.Guideline;
-import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
+import org.openmrs.module.patientportaltoolkit.*;
 import org.openmrs.module.patientportaltoolkit.api.db.GuidelineDAO;
 
 import java.util.List;
@@ -45,6 +46,15 @@ public class HibernateGuidelineDAO implements GuidelineDAO {
         return c.list();
     }
 
+
+    @Override
+    public List<GuidelineInterval> getAllGuidelinesInterval(GuidelineInterval guideLineIntervalObj) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(GuidelineInterval.class);
+        c.add(Restrictions.eq("guideline", guideLineIntervalObj));
+        c.addOrder(Order.asc("id"));
+        return c.list();
+    }
+
     @Override
     public void saveGuideline(Guideline guideline) {
 
@@ -59,5 +69,50 @@ public class HibernateGuidelineDAO implements GuidelineDAO {
     public List<GuidelineConditionSet> getAllGuidelineConditionSet() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(GuidelineConditionSet.class);
         return c.list();
+    }
+
+    @Override
+    public Guideline getGuidelineById(int guideLineId) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(Guideline.class);
+        c.add(Restrictions.eq("id", guideLineId));
+        return (Guideline) c.uniqueResult();
+    }
+
+
+
+    @Override
+    public List<GuidelineInterval> getAllGuidelinesInterval(Guideline guidLineObj) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(GuidelineInterval.class);
+        c.add(Restrictions.eq("guideline", guidLineObj));
+        c.addOrder(Order.asc("id"));
+        return c.list();
+    }
+
+    @Override
+    public void saveGuideLine(Guideline guidLineObj) {
+        sessionFactory.getCurrentSession().saveOrUpdate(guidLineObj);
+    }
+
+    @Override
+    public void saveGuideLineInterval(GuidelineInterval guidLineIntervalObj) {
+        sessionFactory.getCurrentSession().saveOrUpdate(guidLineIntervalObj);
+    }
+
+    @Override
+    public void deleteGuidelineInterval(GuidelineInterval guidLineIntervalObj) {
+        sessionFactory.getCurrentSession().delete(guidLineIntervalObj);
+    }
+
+
+    @Override
+    public GuidelineConditionSet getGuidelineConditionSetByConditionName(String ConditionName) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(GuidelineConditionSet.class);
+        c.add(Restrictions.eq("conditionName", ConditionName));
+        return  (GuidelineConditionSet) c.uniqueResult();
+    }
+
+    @Override
+    public void saveGuideLineConditionSet(GuidelineConditionSet guideLineConditionSetObj) {
+        sessionFactory.getCurrentSession().saveOrUpdate(guideLineConditionSetObj);
     }
 }

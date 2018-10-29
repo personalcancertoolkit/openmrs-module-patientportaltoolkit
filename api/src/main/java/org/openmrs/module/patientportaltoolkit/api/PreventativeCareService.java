@@ -12,6 +12,8 @@ package org.openmrs.module.patientportaltoolkit.api;
 import org.openmrs.Patient;
 import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
 import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
+
+import org.openmrs.module.patientportaltoolkit.PreventiveCareGuidelineInterval;
 import org.springframework.transaction.annotation.Transactional;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
@@ -69,6 +71,29 @@ public interface PreventativeCareService {
         
     @Transactional
     PreventativeCareEvent generateEventFromGuidelineData(Patient patient, Concept followupConcept, Date targetDate);
-    
-    
+
+
+    @Transactional
+    void savePreventiveCareGuideLine(PreventiveCareGuideline pcg);
+
+    @Transactional
+    List<PreventiveCareGuideline> getPreventiveCareGuideLine();
+
+    @Transactional
+    PreventiveCareGuideline getPreventiveCareGuideLine(int id);
+
+
+    @Transactional
+    void deletePreventiveCareGuideLine(PreventiveCareGuideline pcg);
+
+    @Transactional
+    void savePreventiveCareGuidelineInterval(PreventiveCareGuidelineInterval pcg_interval);
+
+    @Transactional
+    List<PreventiveCareGuidelineInterval> getPreventiveCareGuidelineInterval();
+
+    List<PreventiveCareGuidelineInterval> getPreventiveCareGuidelineInterval(PreventiveCareGuideline pcg);
+
+    @Transactional
+    void deletePreventiveCareGuidelineInterval(PreventiveCareGuidelineInterval pcg_interval);
 }
