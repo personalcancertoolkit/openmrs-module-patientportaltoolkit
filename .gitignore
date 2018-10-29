@@ -27,5 +27,3 @@ local.properties
 
 # Mac OS files
 .DS_Store
-omod/src/main/java/org/openmrs/module/patientportaltoolkit/fragment/controller/EditCancerCommunityResourcesFragmentController.java
-omod/src/main/java/org/openmrs/module/patientportaltoolkit/fragment/controller/EditCancerCommunityResourcesFragmentController.java
