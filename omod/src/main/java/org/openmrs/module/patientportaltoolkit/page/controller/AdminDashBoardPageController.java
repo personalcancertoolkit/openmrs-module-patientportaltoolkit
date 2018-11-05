@@ -13,6 +13,7 @@ import org.openmrs.ui.framework.page.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class AdminDashBoardPageController {
 
@@ -82,7 +83,7 @@ public class AdminDashBoardPageController {
 //            String strIntervalLength = sbIntervalLength.toString().replaceAll(", $", "");
 //            admin_guideLine.setIntervalLength(strIntervalLength);
 
-           /* StringBuilder sbConditionSet = new StringBuilder();
+            StringBuilder sbConditionSet = new StringBuilder();
 
             for(GuidelineConditionSet guidelineConditionSetIter:listGuideLineConditionSet){
                 Set<Guideline> guidelineConditionSetGuideLines = guidelineConditionSetIter.getGuidelines();
@@ -101,7 +102,7 @@ public class AdminDashBoardPageController {
             if(sbConditionSet != null && !sbConditionSet.toString().isEmpty() && sbConditionSet.toString().length() > 0)
                 admin_guideLine.setGuidelineConditionSet(stringConditionSet.substring(0, stringConditionSet.length() - 1));
             else
-                admin_guideLine.setGuidelineConditionSet(null);*/
+                admin_guideLine.setGuidelineConditionSet(null);
 
             adminListGuideLine.add(admin_guideLine);
         }
