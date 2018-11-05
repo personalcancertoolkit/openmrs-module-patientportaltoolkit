@@ -6,7 +6,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                     <li><a href="#tabs-1">Categorize Patients</a></li>
                     <li><a href="#tabs-2">Categorize Forms</a></li>
                     <li><a href="#tabs-3">Categorize/Create Followup Rules</a></li>
-                    <li><a href="#tabs-4">Categorize/Create Side Effect Rules</a></li>
+                    <li><a href="#tabs-4">Categorize/Create Preventive Care Rules</a></li>
                     <li><a href="#tabs-5">Cancer Community Data</a></li>
                 </ul>
                 
