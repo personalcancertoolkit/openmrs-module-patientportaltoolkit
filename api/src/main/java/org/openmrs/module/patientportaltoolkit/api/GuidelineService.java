@@ -10,7 +10,6 @@
 package org.openmrs.module.patientportaltoolkit.api;
 
 import org.openmrs.Concept;
-import org.openmrs.Patient;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.patientportaltoolkit.Guideline;
 import org.openmrs.module.patientportaltoolkit.GuidelineConditionSet;
@@ -31,11 +30,11 @@ public interface GuidelineService extends OpenmrsService {
     @Transactional(readOnly = true)
     List<Guideline> getAllGuidlinesInterval(int guideLineID);
 
-    @Transactional(readOnly = true)
-    List<Guideline> getGuidlinesByConditions(Set<Concept> conditions);
+    //@Transactional(readOnly = true)
+    //List<Guideline> getGuidlinesByConditions(Set<Concept> conditions);
 
-    @Transactional(readOnly = true)
-    public List<Guideline>  findGuidelines(Patient pat);
+    /*@Transactional(readOnly = true)
+    public List<Guideline>  findGuidelines(Patient pat);*/
 
     @Transactional(readOnly = true)
     GuidelineConditionSet getGuidlineConditionSetbyConditions(Set<Concept> conditions);

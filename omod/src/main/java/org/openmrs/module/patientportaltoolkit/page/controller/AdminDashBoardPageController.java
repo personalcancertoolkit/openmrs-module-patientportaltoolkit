@@ -2,17 +2,17 @@ package org.openmrs.module.patientportaltoolkit.page.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.*;
 import org.openmrs.module.patientportaltoolkit.api.CancerCommunityResourcesService;
-import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
 import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
+import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdminDashBoardPageController {
 
@@ -70,7 +70,7 @@ public class AdminDashBoardPageController {
             admin_guideLine.setId(guideLineObj.getId());
             admin_guideLine.setName(guideLineObj.getName());
             admin_guideLine.setFollowupProcedure(guideLineObj.getFollowupProcedure());
-            admin_guideLine.setConditionsSet(guideLineObj.getConditionsSet());
+            //admin_guideLine.setConditionsSet(guideLineObj.getConditionsSet());
             admin_guideLine.setFollowupTimline(guideLineObj.getFollowupTimline());
 
 
@@ -82,7 +82,7 @@ public class AdminDashBoardPageController {
 //            String strIntervalLength = sbIntervalLength.toString().replaceAll(", $", "");
 //            admin_guideLine.setIntervalLength(strIntervalLength);
 
-            StringBuilder sbConditionSet = new StringBuilder();
+           /* StringBuilder sbConditionSet = new StringBuilder();
 
             for(GuidelineConditionSet guidelineConditionSetIter:listGuideLineConditionSet){
                 Set<Guideline> guidelineConditionSetGuideLines = guidelineConditionSetIter.getGuidelines();
@@ -101,7 +101,7 @@ public class AdminDashBoardPageController {
             if(sbConditionSet != null && !sbConditionSet.toString().isEmpty() && sbConditionSet.toString().length() > 0)
                 admin_guideLine.setGuidelineConditionSet(stringConditionSet.substring(0, stringConditionSet.length() - 1));
             else
-                admin_guideLine.setGuidelineConditionSet(null);
+                admin_guideLine.setGuidelineConditionSet(null);*/
 
             adminListGuideLine.add(admin_guideLine);
         }

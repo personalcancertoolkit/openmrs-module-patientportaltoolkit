@@ -65,7 +65,7 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
     }
 
 
-    @Override
+    /*@Override
     public List<Guideline> getGuidlinesByConditions(Set<Concept> conditions) {
         List<Guideline> allGuidelines=dao.getAllGuidelines();
         List<Guideline> conditionGuidelines = new ArrayList<>();
@@ -76,14 +76,14 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
             }
         }
         return conditionGuidelines;
-    }
+    }*/
 
     /**
      * Find guidelines for a given patient
      *
      * @param pat
      */
-    @Override
+   /* @Override
     public List<Guideline>  findGuidelines(Patient pat) {
         //find cancer type
         Concept type = getCancerType(pat);
@@ -105,7 +105,7 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
            // System.out.print(guidlineIterator.getFollowupProcedure().getConceptId());
         }
         return guidelines;
-    }
+    }*/
 
     @Override
     public GuidelineConditionSet getGuidlineConditionSetbyConditions(Set<Concept> conditions) {

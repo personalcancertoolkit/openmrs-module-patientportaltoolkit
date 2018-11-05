@@ -556,12 +556,12 @@ public class ToolkitResourceUtil {
 
         Map<String, Object> guidelineMap = new HashMap<String, Object>();
         List<Concept> conditionsList=new ArrayList<Concept>();
-        conditionsList.addAll(guideline.getConditionsSet());
+        //conditionsList.addAll(guideline.getConditionsSet());
         guidelineMap.put("id", guideline.getId());
         guidelineMap.put("name",guideline.getName());
         guidelineMap.put("followupTimeline",guideline.getFollowupTimline());
         guidelineMap.put("followupProcedure",generateConcept(guideline.getFollowupProcedure()));
-        guidelineMap.put("conditions",generateConcepts(conditionsList));
+        //guidelineMap.put("conditions",generateConcepts(conditionsList));
         return guidelineMap;
     }
 

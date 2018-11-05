@@ -66,13 +66,13 @@ public class EditGuideLineFragmentController {
                 Context.getService(GuidelineService.class).deleteGuidelineInterval(guidelineInterval);
             }
         }
-        Set<Concept> hSetConditionSet = guideline.getConditionsSet();
+        //Set<Concept> hSetConditionSet = guideline.getConditionsSet();
         //Set<Concept> hSetConditionSet = new HashSet<Concept>();
 
         // Creating objects for Guideline and GuidelineInterval Object
         guideline.setName(guideLineName);
         guideline.setFollowupProcedure(concept);
-        guideline.setConditionsSet(hSetConditionSet);
+        //guideline.setConditionsSet(hSetConditionSet);
         guideline.setFollowupTimline(followupTimeLine);
 
         // GuideLine Interval
