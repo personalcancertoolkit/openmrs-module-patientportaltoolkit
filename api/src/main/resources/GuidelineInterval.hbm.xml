@@ -17,8 +17,7 @@
         <id name="id" type="int" column="id"  unsaved-value="0">
             <generator class="native" />
         </id>
-        <property name="intervalLength" type="java.lang.Integer" column="interval_length"/>
-        <property name="intervalNumber" type="java.lang.Integer" column="interval_number"/>
+        <property name="intervalLength" type="java.lang.Integer" column="interval_length" not-null="true"/>
         <many-to-one name="guideline" class="org.openmrs.module.patientportaltoolkit.Guideline" column="guideline_id" not-null="true"/>
     </class>
 </hibernate-mapping>

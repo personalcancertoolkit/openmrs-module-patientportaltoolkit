@@ -32,10 +32,7 @@ public class EditGuideLineFragmentController {
                                              @RequestParam(value = "guideLineName", required = false) String guideLineName,
                                              @RequestParam(value = "followupTimeLine", required = false) String followupTimeLine,
                                              HttpServletRequest servletRequestest) throws ParseException {
-
-        //
-        Concept concept = Context.getConceptService().getConcept(conceptId);
-        //List<GuidelineConditionSet> listGuideLineConditionSet = Context.getService(GuidelineService.class).getGuidlineConditionSetbyConditions();
+        Concept concept = Context.getConceptService().getConcept(Integer.valueOf(conceptId.trim()));
         Guideline guideline;
 
         HashMap<String, String> hMapconditionSet = new HashMap<String, String>();
@@ -43,8 +40,8 @@ public class EditGuideLineFragmentController {
         hMapconditionSet.put("coloncancerstage2", "Colon cancer, Stage 2");
         hMapconditionSet.put("coloncancerstage3", "Colon cancer, Stage 3");
         hMapconditionSet.put("rectalcancerstage1", "Rectal cancer, Stage 1");
-        hMapconditionSet.put("rectalcancerstage2", "Rectal cancer, Stage2");
-        hMapconditionSet.put("rectalcancerstage3", "Rectal cancer, Stage3");
+        hMapconditionSet.put("rectalcancerstage2", "Rectal cancer, Stage 2");
+        hMapconditionSet.put("rectalcancerstage3", "Rectal cancer, Stage 3");
 
         List<String> listConditionsets = Arrays.asList(strConditionSet.split("\\|"));
         Set<String> hSetCheckedConditionSet = new HashSet<String>();
@@ -52,22 +49,13 @@ public class EditGuideLineFragmentController {
             hSetCheckedConditionSet.add(hMapconditionSet.get(listConditionsets.get(i)));
         }
 
-
         if(OpeartionType.equals("ADD")) {
 
             guideline = new Guideline();
         }
         else {
             guideline = Context.getService(GuidelineService.class).getGuidelineById(Integer.parseInt(guideLineId));
-
-            // deleting records from guideLine_interval table, for edit functionality
-            List<GuidelineInterval> listGuideLineInterval = Context.getService(GuidelineService.class).getAllGuidlinesInterval(guideline);
-            for (GuidelineInterval guidelineInterval: listGuideLineInterval) {
-                Context.getService(GuidelineService.class).deleteGuidelineInterval(guidelineInterval);
-            }
         }
-        //Set<Concept> hSetConditionSet = guideline.getConditionsSet();
-        //Set<Concept> hSetConditionSet = new HashSet<Concept>();
 
         // Creating objects for Guideline and GuidelineInterval Object
         guideline.setName(guideLineName);
@@ -86,11 +74,24 @@ public class EditGuideLineFragmentController {
             guidelineInterval = new GuidelineInterval();
 
             guidelineInterval.setGuideline(guideline);
-            guidelineInterval.setIntervalNumber(i);
+            //guidelineInterval.setIntervalNumber(i);
             guidelineInterval.setIntervalLength(Integer.parseInt(listIntevalLength.get(i-1)));
             hSetGuidelineInterval.add(guidelineInterval);
         }
-        guideline.setGuidelineIntervalSet(hSetGuidelineInterval);
+       // guideline.setGuidelineIntervalSet(hSetGuidelineInterval);
+        for (GuidelineInterval guideLineInterval: hSetGuidelineInterval) {
+            Context.getService(GuidelineService.class).saveGuideLineInterval(guideLineInterval);
+        }
+        List<GuidelineInterval> gIList=Context.getService(GuidelineService.class).getAllGuidlinesInterval(guideline);
+
+        Iterator<GuidelineInterval> elementListIterator = gIList.iterator();
+        while (elementListIterator.hasNext()) {
+            GuidelineInterval element = elementListIterator.next();
+
+            if (!hSetGuidelineInterval.contains(element))
+                Context.getService(GuidelineService.class).deleteGuidelineInterval(element);
+        }
+
         // GuideLine Interval
 
         //GuideLineConditionSet - GuideLine ConditionSet Object
@@ -112,9 +113,7 @@ public class EditGuideLineFragmentController {
         // Save Data in guideline and guidelineInterval Table
         Context.getService(GuidelineService.class).saveGuideLine(guideline);
 
-        for (GuidelineInterval guideLineInterval: hSetGuidelineInterval) {
-            Context.getService(GuidelineService.class).saveGuideLineInterval(guideLineInterval);
-        }
+
 
     }
 }
