@@ -20,6 +20,7 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.SideEffect;
 import org.openmrs.module.patientportaltoolkit.api.SideEffectService;
 import org.openmrs.module.patientportaltoolkit.api.db.SideEffectDAO;
+
 import java.util.*;
 
 /**
@@ -171,4 +172,17 @@ public class SideEffectServiceImpl extends BaseOpenmrsService implements SideEff
 
         return latest;
     }
+
+    public void saveSideEffect(SideEffect sideEffectObj){
+        dao.saveSideEffect(sideEffectObj);
+    }
+
+    public SideEffect getSideEffect(int id){
+        return dao.getSideEffectbyId(id);
+    }
+
+    public void deleteSideEffect(SideEffect sideEffectObj){
+        dao.deleteSideEffect(sideEffectObj);
+    }
+
 }

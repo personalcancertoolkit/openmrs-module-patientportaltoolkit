@@ -2,15 +2,13 @@ package org.openmrs.module.patientportaltoolkit.page.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.*;
-import org.openmrs.module.patientportaltoolkit.api.CancerCommunityResourcesService;
-import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
-import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
+import org.openmrs.module.patientportaltoolkit.api.*;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,14 +16,19 @@ import java.util.Set;
 public class AdminDashBoardPageController {
 
     protected final Log log = LogFactory.getLog(getClass());
+
+
     public void controller(PageModel model, PageRequest pageRequest) {
 
         List<CancerCommunityResources> cancerComunityData = Context.getService(CancerCommunityResourcesService.class).getCancerCommunityResourcesService();
         List<PreventiveCareGuideline> listPreventiveCareGuideLine = Context.getService(PreventativeCareService.class).getPreventiveCareGuideLine();
-        List<PreventiveCareGuideline> adminListPreventiveCareGuideLine = new ArrayList<PreventiveCareGuideline>();
         List<Guideline> listGuideLines = Context.getService(GuidelineService.class).getAllGuidlines();
         List<GuidelineConditionSet> listGuideLineConditionSet = Context.getService(GuidelineService.class).getGuidlineConditionSetbyConditions();
+        List<SideEffect> listSideEfect = Context.getService(SideEffectService.class).getAllSideEffects();
+
+        List<PreventiveCareGuideline> adminListPreventiveCareGuideLine = new ArrayList<PreventiveCareGuideline>();
         List<Guideline> adminListGuideLine = new ArrayList<Guideline>();
+        List<SideEffect> adminListSideEffect = new ArrayList<SideEffect>();
 
         // Preventive Care GuideLine
         for(PreventiveCareGuideline pcg : listPreventiveCareGuideLine) {
@@ -107,6 +110,30 @@ public class AdminDashBoardPageController {
             adminListGuideLine.add(admin_guideLine);
         }
 
+
+        for(SideEffect sideEffectObj : listSideEfect) {
+
+            StringBuilder sbSideEffectConcept =  new StringBuilder();
+            Set<Concept>  hSetConcept = sideEffectObj.getConcepts();
+            for(Concept conceptObj : hSetConcept)
+            {
+                sbSideEffectConcept.append(conceptObj.getConceptId() + " (" + conceptObj.getName() + "), ");
+            }
+
+            if(sbSideEffectConcept != null && !sbSideEffectConcept.toString().isEmpty() && sbSideEffectConcept.toString().length() > 0)
+            {
+                int lastCommaIndex = sbSideEffectConcept.toString().lastIndexOf(',');
+                sideEffectObj.setConceptIdName(sbSideEffectConcept.toString().substring(0, lastCommaIndex));;
+            }
+            else
+            {
+                sideEffectObj.setConceptIdName(null);
+            }
+            adminListSideEffect.add(sideEffectObj);
+        }
+
+
+
         //Attribute Binding - Cancer Type
         if(cancerComunityData != null) {
             model.addAttribute("CancerCommunityData", cancerComunityData);
@@ -120,6 +147,9 @@ public class AdminDashBoardPageController {
 
         //Attribute Binding - GuideLine
         model.addAttribute("GuideLineData", adminListGuideLine);
+
+        //Attribute Binding - SideEffect
+        model.addAttribute("SideEffectConceptMapping", adminListSideEffect);
 
         log.info(PPTLogAppender.appendLog("REQUEST_ADMINDASHBOARD_PAGE", pageRequest.getRequest()));
     }

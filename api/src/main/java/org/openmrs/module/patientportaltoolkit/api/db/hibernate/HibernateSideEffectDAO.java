@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.patientportaltoolkit.SideEffect;
 import org.openmrs.module.patientportaltoolkit.api.db.SideEffectDAO;
 
@@ -31,12 +32,6 @@ public class HibernateSideEffectDAO implements SideEffectDAO {
         this.sessionFactory = sessionFactory;
     }
 
-
-    @Override
-    public void deleteSideEffect(SideEffect sideEffect) {
-
-    }
-
     @Override
     public List<SideEffect> getAllSideEffects() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(SideEffect.class);
@@ -44,7 +39,20 @@ public class HibernateSideEffectDAO implements SideEffectDAO {
     }
 
     @Override
-    public void saveSideEffect(SideEffect sideEffect) {
-
+    public SideEffect getSideEffectbyId(int sideEffectId) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(SideEffect.class);
+        c.add(Restrictions.eq("id", sideEffectId));
+        return (SideEffect) c.uniqueResult();
     }
+
+    @Override
+    public void saveSideEffect(SideEffect sideEffectObj) {
+        sessionFactory.getCurrentSession().saveOrUpdate(sideEffectObj);
+    }
+
+    @Override
+    public void deleteSideEffect(SideEffect sideEffectObj) {
+        sessionFactory.getCurrentSession().delete(sideEffectObj);
+    }
+
 }

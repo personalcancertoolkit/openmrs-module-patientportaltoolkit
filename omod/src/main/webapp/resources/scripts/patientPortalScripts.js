@@ -303,7 +303,7 @@ jq(document).ready(function(){
                $("#guideLineOperation").val('EDIT' + ','  + btnId);
 
                 var conditionSets = $("#guideLineConditionSet"+btnId).val();
-                var arrayconditionSets = arrayconditionSets = conditionSets.split('|');
+                var arrayconditionSets = conditionSets.split('|');
                 $('input:checkbox').removeAttr('checked');
                 for (var i = 0; i < arrayconditionSets.length; i++) {
 
@@ -357,15 +357,6 @@ jq(document).ready(function(){
                                                                            });
              setTimeout(function () {location.reload();}, 2000);
 
-
-//           if(preventiveCareNoInterval < 2){
-//                jq('#pcgErrorDetails').text("No of Interval Should be greater than 1");
-//                jq('#pcgErrorDetails').show();
-//            }
-//            else
-//            {
-//
-//            }
      });
 
 
@@ -400,6 +391,67 @@ jq(document).ready(function(){
                                                                });
                 setTimeout(function () {location.reload();}, 2000);
      });
+
+
+      $('.editSideEffectData').click( function () {
+
+          var btnId=this.id;
+          btnId = btnId.replace('sideEffectEdit', '');
+          $("#sideEffect_ConditionName").val('');
+          $("#addNewSideEffect_Concept").val('');
+
+          if(btnId != "sideEffectBtnAdd")
+          {
+               $("#sideEffect_Concepts").show();
+               $("#labelSideEffect_Concepts").show();
+
+               $("#sideEffect_Operation").val('EDIT' + ','  + btnId);
+               $("#sideEffect_ConditionName").val($('#sideEffectConditionName'+btnId).html());
+
+               var sideEffectConditionSet = $('#sideEffectConceptIdName'+btnId).html();
+               var arraySideEffectConceptIdName = sideEffectConditionSet.split(',');
+
+               var strSideEffectConcepts = "";
+               for (var i = 0; i < arraySideEffectConceptIdName.length; i++) {
+                    strSideEffectConcepts  += parseInt(arraySideEffectConceptIdName[i], 10) + ",";
+               }
+               strSideEffectConcepts =  strSideEffectConcepts.replace(/,\s*$/, "").slice(0, strSideEffectConcepts.length-1);;
+               $("#sideEffect_Concepts").val(strSideEffectConcepts);
+          }
+          else
+          {
+               $("#sideEffect_Operation").val('ADD' + ',' + -1);
+               $("#sideEffect_Concepts").hide();
+               $("#labelSideEffect_Concepts").hide();
+          }
+      });
+
+
+      $("#saveSideEffectRules").click( function () {
+
+                      var sideEffectOperation = $("#sideEffect_Operation").val().split(',');
+                      var sideEffectOp =  sideEffectOperation[0];
+                      var sideEffectId = sideEffectOperation[1];
+
+                      var sideEffectConditionName = $("#sideEffect_ConditionName").val();
+                      var sideEffectConceptIDs = $("#sideEffect_Concepts").val();
+                      var addNewSideEffectConceptID = $("#addNewSideEffect_Concept").val();
+
+                      jq.get("editSideEffect/SaveEffect.action", {
+                                                                     SideEffectOperation: sideEffectOp,
+                                                                     SideEffectId: sideEffectId,
+                                                                     SideEffectConditionName: sideEffectConditionName,
+                                                                     SideEffectConceptIds: sideEffectConceptIDs,
+                                                                     SideEffectConceptIdNew: addNewSideEffectConceptID
+                                                                  });
+
+                      setTimeout(function () {location.reload();}, 5000);
+       });
+
+
+
+
+
 
      $('.editCancerCommunityDataresourcesButton').click( function () {
            var cancerTypeID=this.id;
@@ -670,6 +722,90 @@ jq(document).ready(function(){
         });
 
     //------------------- Edit Relation Button save JS Ends -----
+
+
+
+    var availableTags = [
+      "ActionScript",
+      "AppleScript",
+      "Asp",
+      "BASIC",
+      "C",
+      "C++",
+      "Clojure",
+      "COBOL",
+      "ColdFusion",
+      "Erlang",
+      "Fortran",
+      "Groovy",
+      "Haskell",
+      "Java",
+      "JavaScript",
+      "Lisp",
+      "Perl",
+      "PHP",
+      "Python",
+      "Ruby",
+      "Scala",
+      "Scheme"
+    ];
+
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+
+    $("#txtConcept")
+      // don't navigate away from the field on tab when selecting an item
+      .on( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) ) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( ", " );
+          return false;
+        }
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //------------- accept connection request Button JS ----------------
     $('.acceptConnectionRequest').click(
