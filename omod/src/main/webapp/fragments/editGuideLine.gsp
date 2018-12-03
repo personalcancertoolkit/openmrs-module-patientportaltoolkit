@@ -22,7 +22,7 @@
 
                 <form class="form-inline" role="form">
                     <label class="reformatText">Guideline ConceptID</label>
-                    <input class="form-control" id="guidLine_ConceptId" type="text" />
+                    <input class="form-control searchConcept" id="guidLine_ConceptId" type="text" />
                 </form>
                 <br />
 
@@ -54,8 +54,6 @@
 
 <script>
     jq( function() {
-        
         jq("#accordion").accordion();
-        
     });
 </script>

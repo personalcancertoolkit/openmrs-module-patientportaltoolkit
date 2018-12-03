@@ -272,6 +272,8 @@ jq(document).ready(function(){
 
            var btnId=this.id;
            btnId = btnId.replace('pcgEdit', '');
+           jq('#pcgErrorDetails').hide();
+
            if(btnId != "pcgBtnAdd")
            {
                 var dropdownValue = $('#pcgCancerType'+btnId).text().toLowerCase().replace(/\s/g, '') + $("#pcgCancerID"+btnId).val();
@@ -295,6 +297,8 @@ jq(document).ready(function(){
 
                var btnId=this.id;
                btnId = btnId.replace('guideLineEdit', '');
+               jq('#guideLineErrorDetails').hide();
+
                $("#guidLine_ConceptId").val($('#guideLineConceptId'+btnId).html());
                $("#guidLine_Name").val($('#guideLineName'+btnId).html());
                //$("#guidLine_Name").attr("disabled", "disabled");
@@ -346,16 +350,27 @@ jq(document).ready(function(){
            var preventiveCareFollowUpTimeLine = $("#pcg_followupTimeLine").val();
            //var preventiveCareIntervalLength = $("#pcg_intervalLength").val();
 
-
-
-            jq.get("editPreventiveCareGuideLine/SavePreventiveCareGuideLines.action", {
-                                                                               operation: pcgOp,
-                                                                               pcgId: pcg_id,
-                                                                               cancerTypeId: preventiveCareCancerTypeId,
-                                                                               guidLineName: preventiveCareGuidLineName,
-                                                                               followUpTimeLine: preventiveCareFollowUpTimeLine
-                                                                           });
-             setTimeout(function () {location.reload();}, 2000);
+            var errorPCG = "";
+            if(preventiveCareFollowUpTimeLine == "" || preventiveCareFollowUpTimeLine == null)
+            {
+               errorPCG += "Preventive care Follow up Timeline is Mandatory. ";
+            }
+            if(errorPCG != "")
+            {
+               jq('#pcgErrorDetails').text(errorPCG);
+               jq('#pcgErrorDetails').show();
+               return;
+            }
+            else{
+                jq.get("editPreventiveCareGuideLine/SavePreventiveCareGuideLines.action", {
+                                                                                               operation: pcgOp,
+                                                                                               pcgId: pcg_id,
+                                                                                               cancerTypeId: preventiveCareCancerTypeId,
+                                                                                               guidLineName: preventiveCareGuidLineName,
+                                                                                               followUpTimeLine: preventiveCareFollowUpTimeLine
+                                                                                           });
+                setTimeout(function () {location.reload();}, 2000);
+            }
 
      });
 
@@ -372,24 +387,51 @@ jq(document).ready(function(){
                 //var guideLineIntervalLength = $("#guideLine_IntervalLength").val();
 
                 //console.log(guideLineOp + "; " + guideLine_id + "; " + guideLineCancerTypeId + "; " + guidLineName + "; " + guideLineFollowupTime + "; " + guideLineIntervalLength);
-
+                var isCheckedExists=0;
                 var guideLineConditionSet = "";
                  $("input[name='checkboxconditionset']").each(function () {
                         if ($(this).is(':checked')) {
                               guideLineConditionSet +=  $(this).val() + "|";
+                              isCheckedExists=1;
                          }
                  });
-                guideLineConditionSet= guideLineConditionSet.slice(0, guideLineConditionSet.length-1);
-                jq.get("editGuideLine/SaveGuideLines.action", {
-                                                               operation: guideLineOp,
-                                                               guideLineId: guideLine_id,
-                                                               conceptId: guideLineConceptID,
-                                                               conditionSet: guideLineConditionSet,
-                                                               guideLineName: guideLineName,
-                                                               followupTimeLine: guideLineFollowupTime
-                                                               //intervalLength: guideLineIntervalLength
-                                                               });
-                setTimeout(function () {location.reload();}, 2000);
+
+                var errorGuideLine = "";
+                if(isCheckedExists == 0){
+                    errorGuideLine += "Please Select atleast one Guideline Checkbox. "
+                }
+                if(guideLineConceptID == "" || guideLineConceptID == null)
+                {
+                     errorGuideLine += "Guideline Concept Id is Mandatory. ";
+                }
+                if(guideLineName == "" || guideLineName == null)
+                {
+                     errorGuideLine += "Guideline Name is Mandatory. ";
+                }
+                if(guideLineFollowupTime == "" || guideLineFollowupTime == null)
+                {
+                     errorGuideLine += "Guideline Followup TimeLine is Mandatory. ";
+                }
+
+                if(errorGuideLine != ""){
+                      jq('#guideLineErrorDetails').text(errorGuideLine);
+                      jq('#guideLineErrorDetails').show();
+                      return;
+                }
+                else
+                {
+                    guideLineConditionSet= guideLineConditionSet.slice(0, guideLineConditionSet.length-1);
+                    jq.get("editGuideLine/SaveGuideLines.action", {
+                                                                      operation: guideLineOp,
+                                                                      guideLineId: guideLine_id,
+                                                                      conceptId: guideLineConceptID,
+                                                                      conditionSet: guideLineConditionSet,
+                                                                      guideLineName: guideLineName,
+                                                                      followupTimeLine: guideLineFollowupTime
+
+                                                                   });
+                    setTimeout(function () {location.reload();}, 2000);
+                }
      });
 
 
@@ -399,6 +441,7 @@ jq(document).ready(function(){
           btnId = btnId.replace('sideEffectEdit', '');
           $("#sideEffect_ConditionName").val('');
           $("#addNewSideEffect_Concept").val('');
+          jq('#sideEffectErrorDetails').hide();
 
           if(btnId != "sideEffectBtnAdd")
           {
@@ -437,20 +480,34 @@ jq(document).ready(function(){
                       var sideEffectConceptIDs = $("#sideEffect_Concepts").val();
                       var addNewSideEffectConceptID = $("#addNewSideEffect_Concept").val();
 
-                      jq.get("editSideEffect/SaveEffect.action", {
-                                                                     SideEffectOperation: sideEffectOp,
-                                                                     SideEffectId: sideEffectId,
-                                                                     SideEffectConditionName: sideEffectConditionName,
-                                                                     SideEffectConceptIds: sideEffectConceptIDs,
-                                                                     SideEffectConceptIdNew: addNewSideEffectConceptID
-                                                                  });
+                      var errorSideEffect = "";
+                      if(sideEffectConditionName == "" || sideEffectConditionName == null)
+                      {
+                        errorSideEffect += "Side Effect Condition Name is Mandatory. ";
+                      }
+                      if(sideEffectConceptIDs == "" || sideEffectConceptIDs == null)
+                      {
+                        errorSideEffect += "Side Effect Concepts are Mandatory. ";
+                      }
 
-                      setTimeout(function () {location.reload();}, 5000);
+                      if(errorSideEffect != "")
+                      {
+                         jq('#sideEffectErrorDetails').text(errorSideEffect);
+                         jq('#sideEffectErrorDetails').show();
+                         return;
+                      }
+                      else{
+                           jq.get("editSideEffect/SaveEffect.action", {
+                                                                         SideEffectOperation: sideEffectOp,
+                                                                         SideEffectId: sideEffectId,
+                                                                         SideEffectConditionName: sideEffectConditionName,
+                                                                         SideEffectConceptIds: sideEffectConceptIDs,
+                                                                         SideEffectConceptIdNew: addNewSideEffectConceptID
+                                                                       });
+                           setTimeout(function () {location.reload();}, 2000);
+                      }
+
        });
-
-
-
-
 
 
      $('.editCancerCommunityDataresourcesButton').click( function () {
@@ -463,6 +520,32 @@ jq(document).ready(function(){
            $("#txtUsefulContacts").val($('#usefulContacts'+cancerTypeID).html());
            $("#txtResources").val($('#resources'+cancerTypeID).html());
      });
+
+
+      $('.searchConcept').autocomplete({
+                             source: function (request, response) {
+                                 $.ajax({
+                                     type: "GET",
+                                     url: OpenMRSInstance.split("/patientportaltoolkit")[0]+ '/ws/rest/v1/concept?q="' + request.term + '"&v=custom:(display,id)',
+                                     success: function (data) {
+                                         response($.map(data.results, function (index,value) {
+                                             return { label: index.display + "-" + index.id }
+                                         }))
+                                     },
+                                     error: function (response) {
+                                         alert(response.responseText);
+                                     },
+                                     failure: function (response) {
+                                         alert(response.responseText);
+                                     }
+                                 });
+                             },
+                             minLength: 3
+       });
+
+
+
+
 
     $('#saveChemotherapyButton').click(
         function () {
@@ -722,89 +805,6 @@ jq(document).ready(function(){
         });
 
     //------------------- Edit Relation Button save JS Ends -----
-
-
-
-    var availableTags = [
-      "ActionScript",
-      "AppleScript",
-      "Asp",
-      "BASIC",
-      "C",
-      "C++",
-      "Clojure",
-      "COBOL",
-      "ColdFusion",
-      "Erlang",
-      "Fortran",
-      "Groovy",
-      "Haskell",
-      "Java",
-      "JavaScript",
-      "Lisp",
-      "Perl",
-      "PHP",
-      "Python",
-      "Ruby",
-      "Scala",
-      "Scheme"
-    ];
-
-    function split( val ) {
-      return val.split( /,\s*/ );
-    }
-    function extractLast( term ) {
-      return split( term ).pop();
-    }
-
-    $("#txtConcept")
-      // don't navigate away from the field on tab when selecting an item
-      .on( "keydown", function( event ) {
-        if ( event.keyCode === $.ui.keyCode.TAB &&
-            $( this ).autocomplete( "instance" ).menu.active ) {
-          event.preventDefault();
-        }
-      })
-      .autocomplete({
-        minLength: 0,
-        source: function( request, response ) {
-          // delegate back to autocomplete, but extract the last term
-          response( $.ui.autocomplete.filter(
-            availableTags, extractLast( request.term ) ) );
-        },
-        focus: function() {
-          // prevent value inserted on focus
-          return false;
-        },
-        select: function( event, ui ) {
-          var terms = split( this.value );
-          // remove the current input
-          terms.pop();
-          // add the selected item
-          terms.push( ui.item.value );
-          // add placeholder to get the comma-and-space at the end
-          terms.push( "" );
-          this.value = terms.join( ", " );
-          return false;
-        }
-      });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     //------------- accept connection request Button JS ----------------

@@ -34,8 +34,7 @@ public class EditGuideLineFragmentController {
                                              HttpServletRequest servletRequestest) throws ParseException {
 
         //
-        Concept concept = Context.getConceptService().getConcept(conceptId);
-        //List<GuidelineConditionSet> listGuideLineConditionSet = Context.getService(GuidelineService.class).getGuidlineConditionSetbyConditions();
+        Concept concept = null;
         Guideline guideline;
 
         HashMap<String, String> hMapconditionSet = new HashMap<String, String>();
@@ -52,6 +51,11 @@ public class EditGuideLineFragmentController {
             hSetCheckedConditionSet.add(hMapconditionSet.get(listConditionsets.get(i)));
         }
 
+        if(conceptId != null && !conceptId.isEmpty())
+        {
+            String[] conceptIdArr = conceptId.split("-");
+            concept = Context.getConceptService().getConcept(conceptIdArr[1].trim());
+        }
 
         if(OpeartionType.equals("ADD")) {
 

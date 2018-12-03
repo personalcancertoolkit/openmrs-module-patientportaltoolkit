@@ -63,7 +63,8 @@ public class EditSideEffectFragmentController {
         sideEffectObj.setCondition(sideEffectConditionName);
         if(sideEffectConceptIdNew != null && !sideEffectConceptIdNew.isEmpty())
         {
-            Concept concept = Context.getConceptService().getConcept(sideEffectConceptIdNew);
+            String[] sideEffectConceptIdNewArr = sideEffectConceptIdNew.split("-");
+            Concept concept = Context.getConceptService().getConcept(sideEffectConceptIdNewArr[1].trim());
             hashSetSideffectConcept.add(concept);
         }
         sideEffectObj.setConcepts(hashSetSideffectConcept);

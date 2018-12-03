@@ -29,8 +29,8 @@
                             </div>
             
                             <div class="modal-footer">
+                                <div id="cancerCommunityDataErrorDetails" style="color: red" hidden></div>
                                 <div class="button-div pull-right">
-                                        <div id="cancerCommunityDataErrorDetails" style="color: red" hidden></div>
                                         <button type="button" class="btn btn-default cancelModal">Cancel Changes</button>
                                         <button type="button" class="btn btn-primary" id="saveCategoryCommunityButton">Save Changes</button>
                                 </div>
