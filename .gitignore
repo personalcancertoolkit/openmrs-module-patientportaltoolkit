@@ -27,15 +27,3 @@ local.properties
 
 # Mac OS files
 .DS_Store
-hs_err_pid18684.log
-hs_err_pid20648.log
-hs_err_pid21748.log
-hs_err_pid22596.log
-replay_pid18684.log
-replay_pid20648.log
-replay_pid21748.log
-replay_pid22596.log
-omod/src/main/webapp/fragments/headerForApp.gsp
-omod/src/main/webapp/fragments/headerForApp.gsp
-omod/src/main/webapp/fragments/editGuideLine.gsp
-omod/src/main/java/org/openmrs/module/patientportaltoolkit/fragment/controller/EditGuideLineFragmentController.java
