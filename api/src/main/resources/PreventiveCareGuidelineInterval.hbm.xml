@@ -18,7 +18,6 @@
             <generator class="native" />
         </id>
         <property name="intervalLength" type="java.lang.Integer" column="interval_length"/>
-        <property name="intervalNumber" type="java.lang.Integer" column="interval_number"/>
         <many-to-one name="pcgguideline" class="org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline" column="pcg_id" not-null="true"/>
     </class>
 </hibernate-mapping>

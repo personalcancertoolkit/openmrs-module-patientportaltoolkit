@@ -19,7 +19,6 @@
         </id>
         <property name="name" type="java.lang.String" column="pcg_name"/>
         <many-to-one name="followupProcedure" class="org.openmrs.Concept" column="followup_procedure" not-null="true"/>
-        <property name="cancerTypeId" type="java.lang.Integer" column="cancerType_id"/>
 
         <set name="pcgguidelineIntervalSet" table="patientportal_pcg_interval" inverse="true" fetch="select">
             <key column="pcg_id" not-null="true" />

@@ -15,7 +15,7 @@ package org.openmrs.module.patientportaltoolkit;
 public class GuidelineInterval {
     private Integer id;
     private Guideline guideline;
-    private Integer intervalNumber;
+   // private Integer intervalNumber;
     private Integer intervalLength;
 
     public Integer getId() {
@@ -34,13 +34,13 @@ public class GuidelineInterval {
         this.guideline = guideline;
     }
 
-    public Integer getIntervalNumber() {
+    /*public Integer getIntervalNumber() {
         return intervalNumber;
     }
 
     public void setIntervalNumber(Integer intervalNumber) {
         this.intervalNumber = intervalNumber;
-    }
+    }*/
 
     public Integer getIntervalLength() {
         return intervalLength;
