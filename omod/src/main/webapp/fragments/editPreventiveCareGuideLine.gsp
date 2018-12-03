@@ -9,15 +9,6 @@
 
             <div class="modal-body">
                 <input id="pcgOperation" type="hidden" >
-                <form class="form-inline" role="form">
-                      <label class="reformatText">Cancer Type</label> 
-                       <select class="form-control" id="dropDownPreventiveCancerType">
-                               <option class="reformatText" value="thyroidcancer1">Thyroid Cancer</option>
-                               <option class="reformatText" value="colorectalcancer2">Colorectal Cancer</option>
-                               <option class="reformatText" value="coloncancer3">Colon Cancer</option>
-                       </select>
-                </form>
-                <br />
 
                 <form class="form-inline" role="form">
                     <label class="reformatText">Prevetice Care Guideline Name</label>

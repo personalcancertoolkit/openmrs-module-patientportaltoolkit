@@ -60,7 +60,6 @@ public class EditGuideLineFragmentController {
         // Creating objects for Guideline and GuidelineInterval Object
         guideline.setName(guideLineName);
         guideline.setFollowupProcedure(concept);
-        //guideline.setConditionsSet(hSetConditionSet);
         guideline.setFollowupTimline(followupTimeLine);
 
         // GuideLine Interval
@@ -74,11 +73,9 @@ public class EditGuideLineFragmentController {
             guidelineInterval = new GuidelineInterval();
 
             guidelineInterval.setGuideline(guideline);
-            //guidelineInterval.setIntervalNumber(i);
             guidelineInterval.setIntervalLength(Integer.parseInt(listIntevalLength.get(i-1)));
             hSetGuidelineInterval.add(guidelineInterval);
         }
-       // guideline.setGuidelineIntervalSet(hSetGuidelineInterval);
         for (GuidelineInterval guideLineInterval: hSetGuidelineInterval) {
             Context.getService(GuidelineService.class).saveGuideLineInterval(guideLineInterval);
         }
@@ -112,7 +109,6 @@ public class EditGuideLineFragmentController {
 
         // Save Data in guideline and guidelineInterval Table
         Context.getService(GuidelineService.class).saveGuideLine(guideline);
-
 
 
     }

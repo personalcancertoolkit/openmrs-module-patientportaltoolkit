@@ -58,11 +58,6 @@ public class EventDataController {
         List<Map<String, String>> data = new ArrayList<>();
         Map<String, String> map = new HashMap<String, String>();
 
-        /*
-        map.put("procedure_name", procedureName);
-        map.put("concept_id", Integer.toString(conceptID));
-        data.add(map.clone());
-        */
 
         Patient patient= Context.getPatientService().getPatientByUuid(patientId);
         GuidelineConditionSet guidelineConditionSet = Context.getService(ReminderService.class).generateGuidelineConditionSet(patient);

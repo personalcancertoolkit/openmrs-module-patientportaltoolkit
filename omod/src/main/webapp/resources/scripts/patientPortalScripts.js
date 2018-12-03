@@ -280,8 +280,6 @@ jq(document).ready(function(){
                 $("#pcg_Name").attr("disabled", "disabled");
                 $("#pcg_followupTimeLine").val($('#pcgfollowupTimeLine'+btnId).html());
 
-                //$("#pcg_noofIntervals").val($('#pcgNoOfInteval'+btnId).html());
-                //$("#pcg_intervalLength").val($('#pcgIntervalLength'+btnId).html());
                 $("#pcgOperation").val('EDIT' + ','  + btnId);
            }
            else
@@ -297,9 +295,7 @@ jq(document).ready(function(){
                btnId = btnId.replace('guideLineEdit', '');
                $("#guidLine_ConceptId").val($('#guideLineConceptId'+btnId).html());
                $("#guidLine_Name").val($('#guideLineName'+btnId).html());
-               //$("#guidLine_Name").attr("disabled", "disabled");
                $("#guideLine_FollowupTimeLine").val($('#guideLinefollowupTimeLine'+btnId).html());
-               //$("#guideLine_IntervalLength").val($('#guideLineIntervalLength'+btnId).html());
                $("#guideLineOperation").val('EDIT' + ','  + btnId);
 
                 var conditionSets = $("#guideLineConditionSet"+btnId).val();
@@ -340,32 +336,20 @@ jq(document).ready(function(){
            var pcgOperation = $("#pcgOperation").val().split(',');
            var pcgOp =  pcgOperation[0];
            var pcg_id = pcgOperation[1];
-
-           var preventiveCareCancerTypeId = $("#dropDownPreventiveCancerType").val().slice(-1);;
            var preventiveCareGuidLineName = $("#pcg_Name").val();
            var preventiveCareFollowUpTimeLine = $("#pcg_followupTimeLine").val();
-           //var preventiveCareIntervalLength = $("#pcg_intervalLength").val();
 
 
 
             jq.get("editPreventiveCareGuideLine/SavePreventiveCareGuideLines.action", {
                                                                                operation: pcgOp,
                                                                                pcgId: pcg_id,
-                                                                               cancerTypeId: preventiveCareCancerTypeId,
                                                                                guidLineName: preventiveCareGuidLineName,
                                                                                followUpTimeLine: preventiveCareFollowUpTimeLine
                                                                            });
              setTimeout(function () {location.reload();}, 2000);
 
 
-//           if(preventiveCareNoInterval < 2){
-//                jq('#pcgErrorDetails').text("No of Interval Should be greater than 1");
-//                jq('#pcgErrorDetails').show();
-//            }
-//            else
-//            {
-//
-//            }
      });
 
 
@@ -378,10 +362,6 @@ jq(document).ready(function(){
                 var guideLineConceptID = $("#guidLine_ConceptId").val();
                 var guideLineName = $("#guidLine_Name").val();
                 var guideLineFollowupTime = $("#guideLine_FollowupTimeLine").val();
-                //var guideLineIntervalLength = $("#guideLine_IntervalLength").val();
-
-                //console.log(guideLineOp + "; " + guideLine_id + "; " + guideLineCancerTypeId + "; " + guidLineName + "; " + guideLineFollowupTime + "; " + guideLineIntervalLength);
-
                 var guideLineConditionSet = "";
                  $("input[name='checkboxconditionset']").each(function () {
                         if ($(this).is(':checked')) {
@@ -561,11 +541,7 @@ jq(document).ready(function(){
     $('.editRelationButton').click(
         function () {
             var relationshipID=this.id.split('relationedit')[1];
-            //console.log(relationshipID);
             $("#editRelationshipIdHolder").val(relationshipID);
-            //console.log($('#'+relationshipID+'relationPerson').text());
-
-            // console.log($('#'+encounterID+'surgeryPCPName').text());
             $("#editPersonName").text($('#'+relationshipID+'relationPerson').text());
             $("#editRelationProfileBadge").text($('#'+relationshipID+'relationPerson').text().match(/\b(\w)/g).join(''));
             $("#editRelationshipSelect").val($('#'+relationshipID+'relationType').text());
@@ -642,7 +618,6 @@ jq(document).ready(function(){
             var checkboxValuesList=[];
             jq(".editRelationShareCheckbox:checkbox:checked").each(function () {
                 checkboxValuesList.push($(this).val());
-                //checkboxValues=checkboxValues+$(this).val()+",";
            });
             var checkboxValues=checkboxValuesList.toString();
             $.ajax({
@@ -662,11 +637,6 @@ jq(document).ready(function(){
                     alert('Error: ' + e);
                 },
             });
-            //$("#specialty").val( chkbxValues.join(",") );
-            //jq.("connections/saveRelationshipfromEdit.action", {relationshipId:  jq("#editRelationshipIdHolder").val(),personRelationType:  jq("#editRelationshipSelect").val(),personRelationSecurityLayer:checkboxValues}, function(){
-           // setTimeout(function(){
-            //    location.reload();
-           // }, 10000);
         });
 
     //------------------- Edit Relation Button save JS Ends -----

@@ -15,7 +15,6 @@ package org.openmrs.module.patientportaltoolkit;
 public class PreventiveCareGuidelineInterval {
     private Integer id;
     private PreventiveCareGuideline pcgguideline;
-    private Integer intervalNumber;
     private Integer intervalLength;
 
     public Integer getId() {
@@ -32,14 +31,6 @@ public class PreventiveCareGuidelineInterval {
 
     public void setPcgguideline(PreventiveCareGuideline pcgguideline) {
         this.pcgguideline = pcgguideline;
-    }
-
-    public Integer getIntervalNumber() {
-        return intervalNumber;
-    }
-
-    public void setIntervalNumber(Integer intervalNumber) {
-        this.intervalNumber = intervalNumber;
     }
 
     public Integer getIntervalLength() {

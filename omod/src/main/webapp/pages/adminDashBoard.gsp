@@ -88,17 +88,6 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                                     <% preventiveCareGuideLineData.each { pcgData -> %>
                                              <div>   
                                                 <div class="clearfix">
-                                                   <div class="pull-left">
-                                                      <div>
-                                                           <label><b>Cancer Type:</b></label>
-                                                               <% CancerCommunityData.each { pcgCancerCommunity -> %>
-                                                                    <% if (pcgCancerCommunity.id== pcgData.cancerTypeId) { %>
-                                                                        <input id="pcgCancerID${(pcgData.id)}" type="hidden" value=${(pcgData.cancerTypeId)}>
-                                                                        <span id="pcgCancerType${(pcgData.id)}">${(pcgCancerCommunity.cancerType)}</span>
-                                                                    <% } %>
-                                                                <% } %>
-                                                      </div>
-                                                   </div>
                                                    <div class="pull-right">
                                                         <a id="pcgEdit${(pcgData.id)}" class="no-underline-edit fa fa-pencil fa-lg editPCGResourcesButton"  data-toggle="modal" data-target="#edit-PreventiveCareGuideLine-modal"></a>
                                                    </div>
