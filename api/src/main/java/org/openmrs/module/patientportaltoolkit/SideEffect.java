@@ -22,6 +22,7 @@ public class SideEffect  {
     private Integer id;
     private String condition;
     private Set<Concept> concepts = new HashSet<Concept>(0);
+    private String conceptIdName;
 
 
     public Integer getId() {
@@ -44,5 +45,9 @@ public class SideEffect  {
     }
     public void setConcepts(Set<Concept> concepts) {
         this.concepts = concepts;
+    }
+
+    public void setConceptIdName(String conceptIdName) {
+        this.conceptIdName = conceptIdName;
     }
 }

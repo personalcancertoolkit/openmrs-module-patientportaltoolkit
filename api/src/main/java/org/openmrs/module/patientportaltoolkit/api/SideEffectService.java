@@ -27,4 +27,13 @@ public interface SideEffectService extends OpenmrsService {
 
     @Transactional(readOnly = true)
     List<Concept> getAllSideEffectsForPatient(Patient patient);
+
+    @Transactional
+    void saveSideEffect(SideEffect sideEffectObj);
+
+    @Transactional
+    SideEffect getSideEffect(int id);
+
+    @Transactional
+    void deleteSideEffect(SideEffect sideEffectObj);
 }

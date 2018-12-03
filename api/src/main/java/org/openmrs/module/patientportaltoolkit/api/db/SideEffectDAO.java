@@ -18,9 +18,12 @@ import java.util.List;
  */
 public interface SideEffectDAO {
 
-    void deleteSideEffect(SideEffect sideEffect);
-
     List<SideEffect> getAllSideEffects();
 
     void saveSideEffect(SideEffect sideEffect);
+
+    void deleteSideEffect(SideEffect sideEffect);
+
+    SideEffect getSideEffectbyId(int sideEffectId);
+
 }

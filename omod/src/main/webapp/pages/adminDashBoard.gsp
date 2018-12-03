@@ -3,28 +3,13 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 
             <div id="tabs">
                 <ul>
-                    <li><a href="#tabs-1">Categorize Patients</a></li>
-                    <li><a href="#tabs-2">Categorize Forms</a></li>
+                    <li><a href="#tabs-2">Categorize/Create Side Effect Rules</a></li>
                     <li><a href="#tabs-3">Categorize/Create Followup Rules</a></li>
-                    <li><a href="#tabs-4">Categorize/Create Preventive Care Rules</a></li>
+                    <li><a href="#tabs-4">Preventive Care Guidelines</a></li>
                     <li><a href="#tabs-5">Cancer Community Data</a></li>
                 </ul>
-                
-                <div id="tabs-1">
-                       <div class="clearfix">
-                            <div class="pull-left">
-                                <h4>Categorize patients</h4>
-                            </div>
-                        </div>
-                </div>
-                <div id="tabs-2">
-                        <div class="clearfix">
-                            <div class="pull-left">
-                                <h4>Categorize forms</h4>
-                            </div>
-                        </div>
-                </div>
 
+                
                 <div id="tabs-3">
                         <div class="clearfix">
                             <div id="divGuideLine" style="margin: auto;width: 75%;border: 3px solid black;padding: 10px;">
@@ -159,14 +144,53 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                             ${ ui.includeFragment("patientportaltoolkit", "editCancerCommunityResources")}
                         </div>
                 </div>
-
-
-
                 
+                <div id="tabs-2">
+                    <div class="clearfix">
+                        <div id="divSideEffectRuleConceptMap" style="margin: auto;width: 75%;border: 3px solid black;padding: 10px;">
+                            <div class="clearfix">
 
+                                <div class="clearfix">
+                                    <b>Categorize/Create Side Effect Rules</b>
+                                    <br />
+                                    <br />
+                                </div>
                 
+                                <div>
+                                    <div class="clearfix">
+                                       <% SideEffectConceptMapping.each { sideEffectConceptMapData -> %>
+                                           <div>   
+                                              <div class="clearfix">
+                                                 <div class="pull-left">
+                                                    <div>
+                                                        <label><b>Side Effect Condition Name:</b></label>
+                                                        <span id="sideEffectConditionName${(sideEffectConceptMapData.id)}">${(sideEffectConceptMapData.condition)}</span>
+                                                         <br />
+
+                                                        <label><b>Side Effect Concepts:</b></label>
+                                                        <span id="sideEffectConceptIdName${(sideEffectConceptMapData.id)}">${(sideEffectConceptMapData.conceptIdName)}</span>
+                                                        <br />
+                                                    </div>
+                                                 </div>
+                                                 <div class="pull-right">
+                                                    <a id="sideEffectEdit${(sideEffectConceptMapData.id)}" class="no-underline-edit fa fa-pencil fa-lg editSideEffectData"  data-toggle="modal" data-target="#edit-SideEffect-modal"></a>
+                                                 </div>
+                                              </div>
+                                           </div>
+                                            <hr />
+                                       <% } %>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                        <div>
+                            ${ ui.includeFragment("patientportaltoolkit", "editSideEffect")}
+                        </div>
+                    </div>
+                 </div>
             </div>
 </form>
+
 
 <script>
     jq( function() {
