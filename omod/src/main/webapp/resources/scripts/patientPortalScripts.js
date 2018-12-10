@@ -77,14 +77,14 @@ jq(document).ready(function(){
         });
     jq("#relation-delete-btn").click(
         function () {
-            jq.get("removeRelationship/removeRelationship.action", {relationshipId:  jq("#remove-relationId").val()}, function(){
+            jq.get("connections/removeRelationship/removeRelationship.action", {relationshipId:  jq("#remove-relationId").val()}, function(){
                 location.reload();
             });
         });
 
     jq("#addrelationshipbutton").click(
         function () {
-          jq.get("addRelationship/addRelationshipfromForm.action", {given:  jq("#givenpersonName").val(),family:  jq("#familypersonName").val(),gender:jq("#genderSelect").val(),personEmail:jq("#personEmail").val(),personRelationType:jq("#addRelationshipSelect").val(),securityLayerType:jq("#addRelationSecurityLevels").val()}, function(){
+          jq.get("connections/addRelationship/addRelationshipfromForm.action", {given:  jq("#givenpersonName").val(),family:  jq("#familypersonName").val(),gender:jq("#genderSelect").val(),personEmail:jq("#personEmail").val(),personRelationType:jq("#addRelationshipSelect").val(),securityLayerType:jq("#addRelationSecurityLevels").val()}, function(){
             });
             setTimeout(function(){
                 location.reload();
@@ -358,7 +358,6 @@ jq(document).ready(function(){
                 jq.get("editPreventiveCareGuideLine/SavePreventiveCareGuideLines.action", {
                                                                                                operation: pcgOp,
                                                                                                pcgId: pcg_id,
-                                                                                               cancerTypeId: preventiveCareCancerTypeId,
                                                                                                guidLineName: preventiveCareGuidLineName,
                                                                                                followUpTimeLine: preventiveCareFollowUpTimeLine
                                                                                            });

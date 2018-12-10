@@ -5,10 +5,14 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.*;
-import org.openmrs.module.patientportaltoolkit.api.*;
+import org.openmrs.module.patientportaltoolkit.api.CancerCommunityResourcesService;
+import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
+import org.openmrs.module.patientportaltoolkit.api.PreventativeCareService;
+import org.openmrs.module.patientportaltoolkit.api.SideEffectService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -123,7 +127,7 @@ public class AdminDashBoardPageController {
             if(sbSideEffectConcept != null && !sbSideEffectConcept.toString().isEmpty() && sbSideEffectConcept.toString().length() > 0)
             {
                 int lastCommaIndex = sbSideEffectConcept.toString().lastIndexOf(',');
-                sideEffectObj.setConceptIdName(sbSideEffectConcept.toString().substring(0, lastCommaIndex));;
+                sideEffectObj.setConceptIdName(sbSideEffectConcept.toString().substring(0, lastCommaIndex));
             }
             else
             {
