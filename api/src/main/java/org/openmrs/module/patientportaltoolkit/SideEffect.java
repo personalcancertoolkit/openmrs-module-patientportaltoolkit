@@ -23,7 +23,7 @@ public class SideEffect  {
     private String condition;
     private Set<Concept> concepts = new HashSet<Concept>(0);
     private String conceptIdName;
-
+    private Integer creator;
 
     public Integer getId() {
         return this.id;
@@ -50,4 +50,12 @@ public class SideEffect  {
     public void setConceptIdName(String conceptIdName) {
         this.conceptIdName = conceptIdName;
     }
+
+    public Integer getCreator() {
+        return this.creator;
+    }
+    public void setCreator(Integer creator) {
+        this.creator = creator;
+    }
+
 }

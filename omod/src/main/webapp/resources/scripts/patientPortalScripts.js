@@ -278,8 +278,7 @@ jq(document).ready(function(){
            {
                 var dropdownValue = $('#pcgCancerType'+btnId).text().toLowerCase().replace(/\s/g, '') + $("#pcgCancerID"+btnId).val();
                 $("#dropDownPreventiveCancerType").val(dropdownValue);
-                $("#pcg_Name").val($('#pcgName'+btnId).html());
-                $("#pcg_Name").attr("disabled", "disabled");
+                $("#pcg_ConceptId").val($('#pcgConceptId'+btnId).html());
                 $("#pcg_followupTimeLine").val($('#pcgfollowupTimeLine'+btnId).html());
 
                 $("#pcgOperation").val('EDIT' + ','  + btnId);
@@ -297,42 +296,50 @@ jq(document).ready(function(){
                btnId = btnId.replace('guideLineEdit', '');
                jq('#guideLineErrorDetails').hide();
 
-               $("#guidLine_ConceptId").val($('#guideLineConceptId'+btnId).html());
-               $("#guidLine_Name").val($('#guideLineName'+btnId).html());
-               $("#guideLine_FollowupTimeLine").val($('#guideLinefollowupTimeLine'+btnId).html());
-               $("#guideLineOperation").val('EDIT' + ','  + btnId);
+               if(btnId != "guidelineBtnAdd")
+               {
+                   $("#guidLine_ConceptId").val($('#guideLineConceptId'+btnId).html());
+                   $("#guidLine_Name").val($('#guideLineName'+btnId).html());
+                   //$("#guidLine_Name").attr("disabled", "disabled");
+                   $("#guideLine_FollowupTimeLine").val($('#guideLinefollowupTimeLine'+btnId).html());
+                   //$("#guideLine_IntervalLength").val($('#guideLineIntervalLength'+btnId).html());
+                   $("#guideLineOperation").val('EDIT' + ','  + btnId);
 
-                var conditionSets = $("#guideLineConditionSet"+btnId).val();
-                var arrayconditionSets = conditionSets.split('|');
-                $('input:checkbox').removeAttr('checked');
-                for (var i = 0; i < arrayconditionSets.length; i++) {
+                    var conditionSets = $("#guideLineConditionSet"+btnId).val();
+                    var arrayconditionSets = conditionSets.split('|');
+                    $('input:checkbox').removeAttr('checked');
+                    for (var i = 0; i < arrayconditionSets.length; i++) {
 
-                    if($("#coloncancerstage1").val() == arrayconditionSets[i])
-                    {
-
-                        $("#coloncancerstage1").prop("checked", true);
+                        if($("#coloncancerstage1").val() == arrayconditionSets[i])
+                        {
+                            $("#coloncancerstage1").prop("checked", true);
+                        }
+                        if($("#coloncancerstage2").val() == arrayconditionSets[i])
+                        {
+                           $("#coloncancerstage2").prop("checked", true);
+                        }
+                        if($("#coloncancerstage3").val() == arrayconditionSets[i])
+                        {
+                           $("#coloncancerstage3").prop("checked", true);
+                        }
+                        if($("#rectalcancerstage1").val() == arrayconditionSets[i])
+                        {
+                           $("#rectalcancerstage1").prop("checked", true);
+                        }
+                        if($("#rectalcancerstage2").val() == arrayconditionSets[i])
+                        {
+                           $("#rectalcancerstage2").prop("checked", true);
+                        }
+                        if($("#rectalcancerstage3").val() == arrayconditionSets[i])
+                        {
+                        $("#rectalcancerstage3").prop("checked", true);
+                        }
                     }
-                    if($("#coloncancerstage2").val() == arrayconditionSets[i])
-                    {
-                       $("#coloncancerstage2").prop("checked", true);
-                    }
-                    if($("#coloncancerstage3").val() == arrayconditionSets[i])
-                    {
-                       $("#coloncancerstage3").prop("checked", true);
-                    }
-                    if($("#rectalcancerstage1").val() == arrayconditionSets[i])
-                    {
-                       $("#rectalcancerstage1").prop("checked", true);
-                    }
-                    if($("#rectalcancerstage2").val() == arrayconditionSets[i])
-                    {
-                       $("#rectalcancerstage2").prop("checked", true);
-                    }
-                    if($("#rectalcancerstage3").val() == arrayconditionSets[i])
-                    {
-                    $("#rectalcancerstage3").prop("checked", true);
-                    }
-                }
+               }
+               else
+               {
+                    $("#guideLineOperation").val('ADD' + ',' + -1);
+               }
      });
 
     $("#savePreventiveCareGuideLines").click( function () {
@@ -340,10 +347,17 @@ jq(document).ready(function(){
            var pcgOperation = $("#pcgOperation").val().split(',');
            var pcgOp =  pcgOperation[0];
            var pcg_id = pcgOperation[1];
-           var preventiveCareGuidLineName = $("#pcg_Name").val();
+
+           var preventiveCareCancerTypeId = $("#dropDownPreventiveCancerType").val().slice(-1);;
+           var preventiveCareGuidLineConcept = $("#pcg_ConceptId").val();
+
            var preventiveCareFollowUpTimeLine = $("#pcg_followupTimeLine").val();
 
             var errorPCG = "";
+            if(preventiveCareGuidLineConcept == "" || preventiveCareGuidLineConcept == null)
+            {
+               errorPCG += "Preventive care Concept is Mandatory. ";
+            }
             if(preventiveCareFollowUpTimeLine == "" || preventiveCareFollowUpTimeLine == null)
             {
                errorPCG += "Preventive care Follow up Timeline is Mandatory. ";
@@ -359,7 +373,7 @@ jq(document).ready(function(){
                                                                                                operation: pcgOp,
                                                                                                pcgId: pcg_id,
                                                                                                cancerTypeId: preventiveCareCancerTypeId,
-                                                                                               guidLineName: preventiveCareGuidLineName,
+                                                                                               pcgConcept: preventiveCareGuidLineConcept,
                                                                                                followUpTimeLine: preventiveCareFollowUpTimeLine
                                                                                            });
                 setTimeout(function () {location.reload();}, 2000);
@@ -478,7 +492,7 @@ jq(document).ready(function(){
                       {
                         errorSideEffect += "Side Effect Condition Name is Mandatory. ";
                       }
-                      if(sideEffectConceptIDs == "" || sideEffectConceptIDs == null)
+                      if(sideEffectOp != "ADD" && (sideEffectConceptIDs == "" || sideEffectConceptIDs == null))
                       {
                         errorSideEffect += "Side Effect Concepts are Mandatory. ";
                       }

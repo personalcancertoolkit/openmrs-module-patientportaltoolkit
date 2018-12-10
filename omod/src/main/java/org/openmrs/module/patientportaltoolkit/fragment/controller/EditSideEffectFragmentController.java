@@ -34,7 +34,7 @@ public class EditSideEffectFragmentController {
                                HttpServletRequest servletRequestest) throws ParseException {
 
         //System.out.print(OpeartionType + "   " +  sideEffectId + "  " + sideEffectConditionName + "  " + sideEffectConceptIds + "  " +  sideEffectConceptIdNew);
-        SideEffect sideEffectObj = null;
+        SideEffect sideEffectObj;
         Set<Concept> hashSetSideffectConcept = new HashSet<Concept>();
 
         if(OpeartionType.equals("EDIT"))
@@ -68,7 +68,7 @@ public class EditSideEffectFragmentController {
             hashSetSideffectConcept.add(concept);
         }
         sideEffectObj.setConcepts(hashSetSideffectConcept);
-
+        //sideEffectObj.setCreator(new Integer(1));
         //Saving Side Effect
         Context.getService(SideEffectService.class).saveSideEffect(sideEffectObj);
     }

@@ -9,13 +9,12 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                     <li><a href="#tabs-5">Cancer Community Data</a></li>
                 </ul>
 
-                
                 <div id="tabs-3">
                         <div class="clearfix">
                             <div id="divGuideLine" style="margin: auto;width: 75%;border: 3px solid black;padding: 10px;">
                                 <div class="clearfix">
                                       <b>Categorize/Create followup rules</b> &emsp;&emsp;
-                                      
+                                      <a class="btn btn-primary btn-sm editGuideLineButton" id="guidelineBtnAdd" style="color: white;" data-toggle="modal" data-target="#edit-GuideLine-modal">Add</a>
                                       <br />
                                       <br />
                                       <br />
@@ -81,13 +80,12 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                                                 <div class="clearfix">
                                                     <div class="pull-left">
                                                         <div>
-                                                            <label><b>Prevetice Care Guideline Name:</b></label>
-                                                            <span id="pcgName${(pcgData.id)}">${(pcgData.name)}</span>
+                                                            <label><b>Prevetice Care Guideline Concept Id:</b></label>
+                                                            <span id="pcgConceptId${(pcgData.id)}">${(pcgData.followupProcedure.conceptId)}</span>(${(pcgData.followupProcedure.getName().name)})
 
                                                             <br />
                                                             <label><b>Follow-Up TimeLine:</b></label>
                                                             <span id="pcgfollowupTimeLine${(pcgData.id)}">${(pcgData.followupTimeLine)}</span>
-                                                               
                                                             
                                                         </div>
                                                     </div>
@@ -152,6 +150,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 
                                 <div class="clearfix">
                                     <b>Categorize/Create Side Effect Rules</b>
+                                    <a class="btn btn-primary btn-sm editSideEffectData" id="sideEffectBtnAdd" style="color: white;" data-toggle="modal" data-target="#edit-SideEffect-modal">Add</a>
                                     <br />
                                     <br />
                                 </div>

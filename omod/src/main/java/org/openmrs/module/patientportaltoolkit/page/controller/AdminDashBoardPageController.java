@@ -41,21 +41,12 @@ public class AdminDashBoardPageController {
             admin_pcg.setId(pcg.getId());
             admin_pcg.setName(pcg.getName());
             admin_pcg.setCancerTypeId(pcg.getCancerTypeId());
+            admin_pcg.setFollowupProcedure(pcg.getFollowupProcedure());
 
             StringBuilder sbFollowUpTimeline = new StringBuilder();
             for(PreventiveCareGuidelineInterval pcg_interval : listPreventiveCareGuideLineInterval) {
 
                 sbFollowUpTimeline.append(pcg_interval.getIntervalLength() + ",");
-
-//                To get the interval Length ( (id = 2) - (id = 1))
-//                if(pcg_interval.getIntervalNumber() == 2) {
-//                    intervalLength = pcg_interval.getIntervalLength();
-//                }
-//
-//                // To get the maximum interval Number
-//                if(pcg_interval.getIntervalNumber() > intervalNumber) {
-//                    intervalNumber = pcg_interval.getIntervalNumber();
-//                }
             }
             if(sbFollowUpTimeline != null && !sbFollowUpTimeline.toString().isEmpty() && sbFollowUpTimeline.toString().length() > 0)
                 admin_pcg.setfollowupTimeLine(sbFollowUpTimeline.substring(0, sbFollowUpTimeline.length() - 1));

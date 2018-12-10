@@ -11,8 +11,8 @@
                 <input id="pcgOperation" type="hidden" >
 
                 <form class="form-inline" role="form">
-                    <label class="reformatText">Prevetice Care Guideline Name</label>
-                    <input class="form-control" id="pcg_Name" type="text" />
+                    <label class="reformatText">Prevetice Care Concept Id:</label>
+                    <input class="form-control searchConcept" id="pcg_ConceptId" type="text" />
                 </form>
                 <br />
 

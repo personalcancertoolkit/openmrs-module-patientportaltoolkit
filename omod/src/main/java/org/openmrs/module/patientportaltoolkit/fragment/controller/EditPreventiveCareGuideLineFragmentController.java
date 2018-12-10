@@ -26,17 +26,24 @@ public class EditPreventiveCareGuideLineFragmentController {
 
     public void SavePreventiveCareGuideLines(FragmentModel model,@RequestParam(value = "operation", required = false) String OpeartionType,
                                              @RequestParam(value = "pcgId", required = false) int pcg_Id,
-                                             @RequestParam(value = "guidLineName", required = false) String pcg_name,
+                                             @RequestParam(value = "cancerTypeId", required = false) int cancerTypeId,
+                                             @RequestParam(value = "pcgConcept", required = false) String pcgConcept,
                                              @RequestParam(value = "followUpTimeLine", required = false) String followUpTimeLine,
                                              HttpServletRequest servletRequestest) throws ParseException {
 
-        Concept concept = Context.getConceptService().getConcept(pcg_name);
+        //log.info(PPTLogAppender.appendLog("Admin_PreventiveCareGuideLines", servletRequestest,"Cancer Type Id:" , cancerTypeId ,"GuidLine Name:", guidLineName));
+        Concept concept = null;
         PreventiveCareGuideline preventiveCareGuideline;
+
+        if(pcgConcept != null && !pcgConcept.isEmpty())
+        {
+            String[] conceptIdArr = pcgConcept.split("-");
+            concept = Context.getConceptService().getConcept(conceptIdArr[1].trim());
+        }
 
         // Create preventiveCareGuideline object Based on Add or Edit Option
         if(OpeartionType.equals("ADD")) {
             preventiveCareGuideline = new PreventiveCareGuideline();
-            preventiveCareGuideline.setName(pcg_name);
             preventiveCareGuideline.setFollowupProcedure(concept);
         }
         else {
@@ -51,6 +58,9 @@ public class EditPreventiveCareGuideLineFragmentController {
 
         // Creating objects for PreventiveCareGuideline and PreventiveCareGuidelineInterval Object
 
+        preventiveCareGuideline.setCancerTypeId(cancerTypeId);
+        preventiveCareGuideline.setName(concept.getName().getName());
+        preventiveCareGuideline.setFollowupProcedure(concept);
 
         Set<PreventiveCareGuidelineInterval> hSetPreventiveCareGuidelineInterval = new HashSet<PreventiveCareGuidelineInterval>();
         PreventiveCareGuidelineInterval preventiveCareGuidelineInterval;
