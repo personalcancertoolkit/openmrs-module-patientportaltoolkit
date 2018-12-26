@@ -16,7 +16,7 @@
         <h1 style = ''> <div style = 'margin-top:-15px;'></div>Login <Br> <div style = 'font-size:16px; margin-top:10px;'> to your Personal Cancer Toolkit</div></h1><br> 
         <% if (passwordChange){ %>
         <div id="forgotPasswordReset" class="alert alert-success" role="alert">
-            <span class="fa fa-exclamation-circle fa-lg"></span>
+        <i class="material-icons">notification_important</i>
             Your password has been successfully changed
         </div>
         <% } %>

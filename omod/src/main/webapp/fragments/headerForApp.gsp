@@ -16,8 +16,7 @@
 	src="${ ui.resourceLink("uicommons", "/scripts/jquery.toastmessage.js")}"></script>
     <script type="text/javascript"
 	src="${ ui.resourceLink("uicommons", "/scripts/jquery.simplemodal.1.4.4.min.js")}"></script>
-    <script type="text/javascript"
-	src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap.min.js") }"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-year-calendar.js") }"></script>
     <script type="text/javascript"
@@ -27,10 +26,10 @@
           type="text/css">
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
 
-<link rel="stylesheet"
-	href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap.min.css") }"
-	type="text/css">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/datepicker.css") }"
           type="text/css">
@@ -82,25 +81,25 @@
     </button>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-            <li id="patientPortalJournals"> <a href="/openmrs/patientportaltoolkit/journals.page"><span class="fa fa-comments-o  fa-lg"></span> &nbsp; My Posts</a></li>
+            <li id="patientPortalJournals"> <a href="/openmrs/patientportaltoolkit/journals.page"><i class="material-icons">forum</i> My Posts</a></li>
             <% if(contextUser.person.isPatient()) { %>
-                <li id="patientPortalNavHome"><a href="/openmrs/patientportaltoolkit/home.page"> <span class="fa fa-medkit fa-lg"></span>  &nbsp; My Medical Profile</a></li> 
+                <li id="patientPortalNavHome"><a href="/openmrs/patientportaltoolkit/home.page"> <i class="material-icons">local_hospital</i> My Medical Profile</a></li>
             <% } %>
-            <li id="patientPortalConnections"><a href="/openmrs/patientportaltoolkit/patientconnections.page"><span class="fa fa-address-book-o  fa-lg"></span>  &nbsp; My Connections</a></li>
+            <li id="patientPortalConnections"><a href="/openmrs/patientportaltoolkit/patientconnections.page"><i class="material-icons">perm_contact_calendar</i> My Connections</a></li>
             <% if(contextUser.person.isPatient()) { %>
-                <li id="patientPortalMyCancerBuddies"><a href="/openmrs/patientportaltoolkit/myCancerBuddies.page"><span class="fa fa-users fa-lg"></span>  &nbsp; My CancerBuddies</a></li>
+                <li id="patientPortalMyCancerBuddies"><a href="/openmrs/patientportaltoolkit/myCancerBuddies.page"><i class="material-icons">group</i> My CancerBuddies</a></li>
             <% } %>
             <% if(isAdmin) { %>
-                <li id="patientPortalAdminDashBoard"><a href="/openmrs/patientportaltoolkit/adminDashBoard.page"><span class="fa fa-users fa-lg"></span>&nbsp; Admin DashBoard</a></li>
+                <li id="patientPortalAdminDashBoard"><a href="/openmrs/patientportaltoolkit/adminDashBoard.page"><i class="material-icons">dashboard</i> Admin DashBoard</a></li>
             <% } %>
 
             </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li id="patientPortalUserName"><a href="/openmrs/patientportaltoolkit/editprofile.page"><span class="fa fa-user-circle fa-lg"></span> &nbsp; ${ (username) }</a></li>
-            <li><a href="/openmrs/patientportaltoolkit/messages.page"><span class="fa fa-envelope fa-lg"></span> &nbsp; Messages</a></li>
+            <li id="patientPortalUserName"><a href="/openmrs/patientportaltoolkit/editprofile.page"><i class="material-icons">face</i> ${ (username) }</a></li>
+            <li><a href="/openmrs/patientportaltoolkit/messages.page"><i class="material-icons">email</i>  Messages</a></li>
             
             <li class="dropdown">
-                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="fa fa-life-ring fa-lg"></span>  &nbsp; Help <b class="caret"></b></a>
+                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="material-icons">help</i> Help <b class="caret"></b></a>
                 <ul class="dropdown-menu" id="menu1">
                   <li><a  href="/openmrs/patientportaltoolkit/help/walkthroughs.page"> Video Walk Throughs </a></li>
                   <li class="divider"></li>
@@ -108,7 +107,7 @@
                 </ul>
             </li>
             
-            <li><a id="navigationLogout">Logout &nbsp; <span class="fa fa-sign-out fa-lg"></span>  </a></li>
+            <li><a id="navigationLogout">Logout <i class="material-icons">exit_to_app</i></span>  </a></li>
 
         </ul>
     </div>

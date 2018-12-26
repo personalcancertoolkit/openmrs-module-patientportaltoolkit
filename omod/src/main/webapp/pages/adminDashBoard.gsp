@@ -44,7 +44,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                                                         </div>
                                                     </div>
                                                     <div class="pull-right">
-                                                        <a id="guideLineEdit${(guideLineData.id)}" class="no-underline-edit fa fa-pencil fa-lg editGuideLineButton"  data-toggle="modal" data-target="#edit-GuideLine-modal"></a>
+                                                        <a id="guideLineEdit${(guideLineData.id)}" class="no-underline-edit editGuideLineButton"  data-toggle="modal" data-target="#edit-GuideLine-modal"><i class="material-icons">edit</i></a>
                                                    </div>
                                                 </div>
                                              </div>
@@ -74,7 +74,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                                              <div>   
                                                 <div class="clearfix">
                                                    <div class="pull-right">
-                                                        <a id="pcgEdit${(pcgData.id)}" class="no-underline-edit fa fa-pencil fa-lg editPCGResourcesButton"  data-toggle="modal" data-target="#edit-PreventiveCareGuideLine-modal"></a>
+                                                        <a id="pcgEdit${(pcgData.id)}" class="no-underline-edit editPCGResourcesButton"  data-toggle="modal" data-target="#edit-PreventiveCareGuideLine-modal"><i class="material-icons">edit</i></a>
                                                    </div>
                                                 </div>
                                                 
@@ -121,7 +121,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                                                 <label><b>Cancer Type:</b></label>
                                                 <label> <span id="cancerType${(cancerCommunity.id)}">${(cancerCommunity.cancerType)}</span> </label>
                                                     <div class="pull-right">
-                                                        <a id="${(cancerCommunity.id)}" class="no-underline-edit fa fa-pencil fa-lg editCancerCommunityDataresourcesButton"  data-toggle="modal" data-target="#edit-CancerCommunityResourcesData-modal"></a>
+                                                        <a id="${(cancerCommunity.id)}" class="no-underline-edit editCancerCommunityDataresourcesButton"  data-toggle="modal" data-target="#edit-CancerCommunityResourcesData-modal"><i class="material-icons">edit</i></a>
                                                      </div>
                                             </div>
                                     
@@ -173,7 +173,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                                                     </div>
                                                  </div>
                                                  <div class="pull-right">
-                                                    <a id="sideEffectEdit${(sideEffectConceptMapData.id)}" class="no-underline-edit fa fa-pencil fa-lg editSideEffectData"  data-toggle="modal" data-target="#edit-SideEffect-modal"></a>
+                                                    <a id="sideEffectEdit${(sideEffectConceptMapData.id)}" class="no-underline-edit editSideEffectData"  data-toggle="modal" data-target="#edit-SideEffect-modal"><i class="material-icons">edit</i></a>
                                                  </div>
                                               </div>
                                            </div>

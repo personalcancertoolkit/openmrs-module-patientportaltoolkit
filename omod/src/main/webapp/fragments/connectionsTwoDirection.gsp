@@ -16,7 +16,7 @@
                     <h4 class="media-heading" id = "${ twoDirectionFragmentRelation.uuid }relationPerson"><a class="no-underline-edit connectionlink" id ="connectionlink${ twoDirectionFragmentPerson.uuid}"> ${ (twoDirectionFragmentPerson.getGivenName()) } ${ (twoDirectionFragmentPerson.getFamilyName()) }</a>
                         <% if(person.isPatient()) { %>
                         <div class="pull-right">
-                            <a id="relationedit${ twoDirectionFragmentRelation.uuid }" class="no-underline-edit fa fa-pencil editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"></a>
+                            <a id="relationedit${ twoDirectionFragmentRelation.uuid }" class="no-underline-edit editRelationButton"  data-toggle="modal" data-target="#edit-relationship-modal"><i class="material-icons">edit</i></a>
                         </div>
                         <% } %>
                     </h4>

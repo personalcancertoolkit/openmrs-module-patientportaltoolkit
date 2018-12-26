@@ -12,7 +12,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
     <input id="isCurrentPatient" value="<% if(contextUser.person !=person) { %>false<% } else{%>true<%} %>" hidden>
     ${ ui.includeFragment("patientportaltoolkit", "profileHeader") }
     <% if(person.isPatient() && securitylevel != 1) { %>
-    <label><small><span class="fa fa-info-circle fa-lg"></span> &nbsp;The below tabs will be visible to the people you share your medical privilege with (including your healthy behavior tab)</small></label>
+    <label><small><i class="material-icons">notification_important</i>The below tabs will be visible to the people you share your medical privilege with (including your healthy behavior tab)</small></label>
     <ul class="nav nav-pills">
     <li class="active"><a data-toggle="tab" href="#treatments">Treatments</a></li>
     <li><a data-toggle="tab" href="#sideEffects">Side Effects</a></li>

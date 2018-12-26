@@ -1,10 +1,10 @@
 <form id="changePasswordForm" class="form-horizontal col-xs-8" hidden>
     <div id="bothentriesNotSameError" class="alert alert-danger" role="alert" style="display: none">
-        <span class="fa fa-exclamation-circle fa-lg"></span>
+        <i class="material-icons">error</i>
         Error: Please make sure both entries are same
     </div>
     <div id="passwordSaveSuccess" class="alert alert-success" role="alert" style="display: none">
-        <span class="fa fa-exclamation-circle fa-lg"></span>
+        <i class="material-icons">notification_important</i>
         Success: your new password has been successfully saved
     </div>
     <div class="form-group">

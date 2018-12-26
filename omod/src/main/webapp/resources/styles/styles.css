@@ -292,3 +292,9 @@ a.no-underline-edit:hover {
   background-color: #ebebeb;
   border-color: rgba(0, 0, 0, 0.3);
 }
+.material-icons {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	vertical-align: middle;
+}

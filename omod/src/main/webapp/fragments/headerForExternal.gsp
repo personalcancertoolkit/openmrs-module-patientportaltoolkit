@@ -9,9 +9,8 @@
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap.min.css") }"
           type="text/css">
-    <link rel="stylesheet"
-          href="${ ui.resourceLink("patientportaltoolkit", "styles/font-awesome.min.css") }"
-          type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
 
     <script> jq = jQuery;
     function loginForgotSwitch() {

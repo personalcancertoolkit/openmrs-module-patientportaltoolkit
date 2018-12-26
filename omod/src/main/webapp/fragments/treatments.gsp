@@ -43,7 +43,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
             <% if(isACareGiver != 1) { %>
             <div class="pull-right">
                 <a id="${(genhistory.encounterUuid)}"
-                   class="no-underline-edit fa fa-pencil fa-lg editGenHistButton" data-toggle="modal" data-target="#edit-genHistory-modal"></a>
+                   class="no-underline-edit editGenHistButton" data-toggle="modal" data-target="#edit-genHistory-modal"><i class="material-icons">edit</i></a>
             </div>
             <% } %>
             <div>
@@ -86,7 +86,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
             <% surgeryencounters.each { surgery -> %>
             <% if(isACareGiver != 1) { %>
             <div class="pull-right">
-                <a id="${(surgery.encounterUuid)}" class="no-underline-edit fa fa-pencil fa-lg editSurgeryButton"  data-toggle="modal" data-target="#edit-surgeries-modal"></a>
+                <a id="${(surgery.encounterUuid)}" class="no-underline-edit editSurgeryButton" data-toggle="modal" data-target="#edit-surgeries-modal"><i class="material-icons">edit</i></a>
             </div>
             <% } %>
             <div class="clearfix">
@@ -136,7 +136,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
                 <% chemotherapyencounters.each { chemotherapy -> %>
                 <% if(isACareGiver != 1) { %>
                 <div class="pull-right">
-                    <a id="${(chemotherapy.encounterUuid)}" class="no-underline-edit fa fa-pencil fa-lg editChemotherapyButton"  data-toggle="modal" data-target="#edit-chemotherapies-modal"></a>
+                    <a id="${(chemotherapy.encounterUuid)}" class="no-underline-edit editChemotherapyButton"  data-toggle="modal" data-target="#edit-chemotherapies-modal"><i class="material-icons">edit</i></a>
                 </div>
                 <% } %>
                 <div class="clearfix">
@@ -186,7 +186,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
                 <% radiationencounters.each { radiation -> %>
                 <% if(isACareGiver != 1) { %>
                 <div class="pull-right">
-                    <a id="${(radiation.encounterUuid)}" class="no-underline-edit fa fa-pencil fa-lg editRadiationButton" data-toggle="modal" data-target="#edit-radiation-modal"></a>
+                    <a id="${(radiation.encounterUuid)}" class="no-underline-edit editRadiationButton" data-toggle="modal" data-target="#edit-radiation-modal"><i class="material-icons">edit</i></a>
                 </div>
                 <% } %>
                 <div class="clearfix">

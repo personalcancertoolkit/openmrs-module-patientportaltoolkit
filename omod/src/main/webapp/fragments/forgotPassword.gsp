@@ -3,12 +3,12 @@
         <h1>Forgot Password</h1><br>
 
         <div id="forgotPasswordEmailError" class="alert alert-danger" role="alert" style="display: none">
-           <span class="fa fa-exclamation-circle fa-lg"></span>
+            <i class="material-icons">error</i>
             Error: Enter a valid email address
         </div>
 
         <div id="forgotPasswordEmailSent" class="alert alert-success" role="alert" style="display: none">
-            <span class="fa fa-exclamation-circle fa-lg"></span>
+            <i class="material-icons">notification_important</i>
             An email has been sent with further instructions
         </div>
         <div id="emailIdgroup" class="form-group">
