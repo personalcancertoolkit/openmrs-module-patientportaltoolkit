@@ -5,8 +5,7 @@
 	href="/openmrs/images/openmrs-favicon.ico">
     <link rel="icon" type="image/png\"
 	href="/openmrs/images/openmrs-favicon.png">
-    <script type="text/javascript"
-	src="${ ui.resourceLink("patientportaltoolkit", "/scripts/jquery-1.11.1.min.js") }"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script type="text/javascript"
 	src="${ ui.resourceLink("uicommons", "/scripts/jquery-ui-1.9.2.custom.min.js")}"></script>
     <script type="text/javascript"
@@ -39,14 +38,10 @@
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-editable.css") }"
           type="text/css">
-    <link rel="stylesheet"
-          href="${ ui.resourceLink("patientportaltoolkit", "styles/font-awesome.min.css") }"
           type="text/css">
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-year-calendar.min.css") }"
           type="text/css">
-    <link rel="stylesheet"
-          href="${ ui.resourceLink("patientportaltoolkit", "styles/formio.full.min.css") }"
           type="text/css">
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}"></script>
@@ -60,8 +55,8 @@
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/jquery.mockjax.js") }"></script>
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-editable.min.js") }"></script>
-    <script type="text/javascript"
-            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/formio.full.min.js") }"></script>
+    <link rel='stylesheet' href='https://unpkg.com/formiojs@latest/dist/formio.full.min.css'>
+    <script src='https://unpkg.com/formiojs@latest/dist/formio.full.min.js'></script>
 
     <script type="text/javascript">
         jq('.profileBadge').profileBadge();
