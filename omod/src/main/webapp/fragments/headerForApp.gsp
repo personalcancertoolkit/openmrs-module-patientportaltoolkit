@@ -15,8 +15,7 @@
 	src="${ ui.resourceLink("uicommons", "/scripts/jquery.toastmessage.js")}"></script>
     <script type="text/javascript"
 	src="${ ui.resourceLink("uicommons", "/scripts/jquery.simplemodal.1.4.4.min.js")}"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script type="text/javascript"
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" integrity="sha384-Nud2SriDt2fZ+u85IBC48Yn9p+l4AGlapnX1EGA2KrnZjYJx8sxKnw/CIxc1wU1B" crossorigin="anonymous"></script>    <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-year-calendar.js") }"></script>
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-switch.min.js") }"></script>
@@ -38,10 +37,8 @@
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-editable.css") }"
           type="text/css">
-          type="text/css">
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-year-calendar.min.css") }"
-          type="text/css">
           type="text/css">
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}"></script>
