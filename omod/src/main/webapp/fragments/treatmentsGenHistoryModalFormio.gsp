@@ -1,3 +1,30 @@
+<script> jq = jQuery;
+window.onload = function() {
+    Formio.createForm(document.getElementById('generalHistoryForm'), {components: [
+            {
+                type: 'select',
+                key: 'cancertype',
+                label: 'Cancer Type',
+                placeholder: 'Select a Cancer Type',
+                dataSrc:['Colon Cancer','Rectal Cancer'],
+                input: true
+            },
+            {
+                type: 'textfield',
+                key: 'lastName',
+                label: 'Last Name',
+                placeholder: 'Enter your last name',
+                input: true
+            },
+            {
+                type: 'button',
+                action: 'submit',
+                label: 'Submit',
+                theme: 'primary'
+            }
+        ]});
+}
+</script>
 <div class="modal fade modal-wide treatment_form_uniform_label_width"  id="edit-genHistory-modal" role="dialog" aria-labelledby="editGenHistoryLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -8,6 +35,7 @@
             </div>
 
             <div class="modal-body">
+                <div id='generalHistoryForm'></div>
                 <input id="genHistEncounterHolder" type="hidden" value="">
                 <% if (latestTreatmentSummary) { %>
                 <% if (latestTreatmentSummary.obs) { %>

@@ -1,3 +1,33 @@
+<script> jq = jQuery;
+window.onload = function() {
+    Formio.createForm(document.getElementById('generalHistoryForm'), {components: [
+            {
+                type: 'select',
+                key: 'cancertype',
+                label: 'Cancer Type',
+                placeholder: 'Select a Cancer Type',
+                dataSrc: "url",
+                data:{
+                    url:'http://localhost:8080/openmrs/ws/rest/v1/concept/cdf6d767-2aa3-40b6-ae78-0386eebe2411/answers'
+                },
+                input: true
+            },
+            {
+                type: 'textfield',
+                key: 'lastName',
+                label: 'Last Name',
+                placeholder: 'Enter your last name',
+                input: true
+            },
+            {
+                type: 'button',
+                action: 'submit',
+                label: 'Submit',
+                theme: 'primary'
+            }
+        ]});
+}
+</script>
 <div class="modal fade modal-wide treatment_form_uniform_label_width"  id="edit-genHistory-modal" role="dialog" aria-labelledby="editGenHistoryLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -8,6 +38,7 @@
             </div>
 
             <div class="modal-body">
+                <div id='generalHistoryForm'></div>
                 <input id="genHistEncounterHolder" type="hidden" value="">
                 <% if (latestTreatmentSummary) { %>
                 <% if (latestTreatmentSummary.obs) { %>
