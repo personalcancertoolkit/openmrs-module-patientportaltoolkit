@@ -68,8 +68,10 @@ jq(document).ready(function(){
     jq("#statusUpdaterButton").click(
         function () {
             jq.get("statusUpdater/savePost.action", {title: jq("#statusUpdaterTitle").val(), content:jq("#statusUpdaterContent").val()}, function(){
-                location.reload();
             });
+            setTimeout(function(){
+                location.reload();
+            }, 1000);
         });
     jq(".removeRelationCloseButton").click(
         function () {
