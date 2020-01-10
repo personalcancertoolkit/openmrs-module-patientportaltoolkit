@@ -58,7 +58,9 @@ jq(document).ready(function(){
                 var journalID=(this.id).split("commentbox")[1];
                 console.log(journalID);
                 jq.get("commentBox/saveComment.action", {commentContent: this.value, parentId:journalID}, function(){
-                    location.reload();
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
                 });
                 return false;
             }
@@ -69,7 +71,7 @@ jq(document).ready(function(){
         function () {
             jq.get("statusUpdater/savePost.action", {title: jq("#statusUpdaterTitle").val(), content:jq("#statusUpdaterContent").val()}, function(){
                 location.reload();
-            });
+            }, 2000);
         });
     jq(".removeRelationCloseButton").click(
         function () {

@@ -49,10 +49,12 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         <div class="form-group">
             <label class="control-label col-xs-2" for="userprofileGenderSelect">Gender </label>
             <div class="col-xs-10">
+
                 <select class="form-control" id="userprofileGenderSelect">
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
+                    <option value="M"<% if (person.getGender()=="M"){%> selected <% }%>>Male</option>
+                    <option value="F"<% if (person.getGender()=="F"){%> selected <% }%>>Female</option>
                 </select>
+
             </div>
         </div>
         
