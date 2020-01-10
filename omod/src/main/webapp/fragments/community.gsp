@@ -33,11 +33,6 @@ ${ui.includeFragment("patientportaltoolkit", "communityLifestyleMap")}
         <td><a href="http://advocacy.fightcrc.org/FranklySpeaking"
                target="_blank"><u>dvocacy.fightcrc.org/FranklySpeaking</u></a></td>
     </tr>
-    <tr>
-        <td>Yearly calendar of colon cancer survivors</td>
-        <td></td>
-        <td><a href="http://www.colondar.com/" target="_blank"><u>www.colondar.com</u></a></td>
-    </tr>
     </tbody>
 </table>
 <br>
