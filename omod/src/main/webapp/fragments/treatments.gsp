@@ -179,7 +179,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
                             <span id="${(radiation.encounterUuid)}radState">${(radiation.institutionState)}</span><% } %>
                         </div>
                         <div>
-                            <label>Radiation Specialist&emsp;</label>
+                            <label>Radiation Oncologist&emsp;</label>
                             <span>  <% if (radiation.pcpName) { %><span id="${(radiation.encounterUuid)}radPCPName">${(radiation.pcpName)}</span><% } %>
                             <% if (radiation.pcpPhone) { %> &emsp; <small id="${(radiation.encounterUuid)}radPCPPhone">${(radiation.pcpPhone)}</small><% } %>
                             <% if (radiation.pcpEmail) { %>&emsp; <small id="${(radiation.encounterUuid)}radPCPEmail">${(radiation.pcpEmail)}</small><% } %>
