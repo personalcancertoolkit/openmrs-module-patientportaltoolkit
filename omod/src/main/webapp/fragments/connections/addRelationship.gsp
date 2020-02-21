@@ -43,7 +43,7 @@
                             <% } %>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label class="control-label col-sm-2" for="share-connections">Have Access:</label>
                         <div class="col-sm-10" id="share-connections">
                             <select class="form-control" id="addRelationSecurityLevels">
@@ -52,6 +52,17 @@
                                 <% } %>
                             </select>
                         </div>
+                    </div>-->
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Have Access:</label>
+                        <% securityLayers.each { securityLayer -> %>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input addRelationShareCheckbox" type="checkbox" id="addShareType${securityLayer.getUuid()}"
+                                       value="${securityLayer.getUuid()}"> Can see My ${securityLayer.getDescription()}
+                            </label>
+                        </div>
+                        <% } %>
                     </div>
                 </form>
             </div>
