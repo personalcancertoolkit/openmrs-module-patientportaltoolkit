@@ -17,6 +17,7 @@ import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.SecurityLayer;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.util.MailHelper;
@@ -126,7 +127,19 @@ public class AddRelationshipFragmentController {
         }
         PatientPortalRelation ppr=new PatientPortalRelation(user.getPerson(),person);
         ppr.setRelationType(Context.getPersonService().getRelationshipType(personRelationType));
-        ppr.setShareTypeA(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(securityLayerType));
+        Person personGettingAccess=null;
+        List<String> shareTypesList = Arrays.asList(securityLayerType.split(","));
+        SecurityLayerService securityLayerService= Context.getService(SecurityLayerService.class);
+        List<SecurityLayer> shareTypes=new ArrayList<>();
+        if (ppr.getPerson().equals(user.getPerson()))
+            personGettingAccess=ppr.getRelatedPerson();
+        else
+            personGettingAccess=ppr.getPerson();
+        for (String s:shareTypesList) {
+            shareTypes.add(securityLayerService.getSecurityLayerByUuid(s));
+        }
+        PatientPortalRelationService pprService=Context.getService(PatientPortalRelationService.class);
+        ppr.setShareTypeA(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid("c21b5749-5972-425b-a8dc-15dc8f899a96"));
         ppr.setShareTypeB(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid("c21b5749-5972-425b-a8dc-15dc8f899a96")); //share posts by default
         ppr.setShareStatus(0);
         Calendar date = Calendar.getInstance();
@@ -135,7 +148,8 @@ public class AddRelationshipFragmentController {
         //System.out.println(f.format(date.getTime()));
         date.add(Calendar.YEAR, 20);
         ppr.setExpireDate(date.getTime());
-        Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
+        pprService.savePatientPortalRelation(ppr);
+        pprService.saveShareTypes(user.getPerson(),personGettingAccess,shareTypes);
         //return "Success";
     }
 

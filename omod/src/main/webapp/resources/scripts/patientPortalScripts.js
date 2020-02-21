@@ -73,26 +73,6 @@ jq(document).ready(function(){
                 location.reload();
             }, 2000);
         });
-    jq(".removeRelationCloseButton").click(
-        function () {
-            jq("#remove-relationId").val(this.id.split("removeRelation")[1]);
-        });
-    jq("#relation-delete-btn").click(
-        function () {
-            jq.get("connections/removeRelationship/removeRelationship.action", {relationshipId:  jq("#remove-relationId").val()}, function(){
-                location.reload();
-            });
-        });
-
-    jq("#addrelationshipbutton").click(
-        function () {
-          jq.get("connections/addRelationship/addRelationshipfromForm.action", {given:  jq("#givenpersonName").val(),family:  jq("#familypersonName").val(),gender:jq("#genderSelect").val(),personEmail:jq("#personEmail").val(),personRelationType:jq("#addRelationshipSelect").val(),securityLayerType:jq("#addRelationSecurityLevels").val()}, function(){
-            });
-            setTimeout(function(){
-                location.reload();
-            }, 3000);
-        });
-
     jq(".editGenHistButton").click(
         function () {
             jq("#genHistEncounterHolder").val(this.id);
@@ -686,6 +666,52 @@ jq(document).ready(function(){
     }
         });
 
+
+    jq(".removeRelationCloseButton").click(
+        function () {
+            jq("#remove-relationId").val(this.id.split("removeRelation")[1]);
+        });
+    jq("#relation-delete-btn").click(
+        function () {
+            jq.get("removeRelationship/removeRelationship.action", {relationshipId:  jq("#remove-relationId").val()}, function(){
+                location.reload();
+            });
+        });
+
+    //------------- Add Relation Button save JS ---------
+
+    jq("#addrelationshipbutton").click(
+        function () {
+            var checkboxValuesList=[];
+            jq(".addRelationShareCheckbox:checkbox:checked").each(function () {
+                checkboxValuesList.push($(this).val());
+                //alert(checkboxValues);
+                //checkboxValues=checkboxValues+$(this).val()+",";
+            });
+            var checkboxValues=checkboxValuesList.toString();
+            $.ajax({
+                type : "GET",
+                url : "connections/addRelationship/addRelationshipfromForm.action",
+                data : {
+                    given:  jq("#givenpersonName").val(),
+                    family: jq("#familypersonName").val(),
+                    gender:jq("#genderSelect").val(),
+                    personEmail:jq("#personEmail").val(),
+                    personRelationType:jq("#addRelationshipSelect").val(),
+                    securityLayerType: checkboxValues
+                },
+                success : function() {
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
+                },
+                error : function(e) {
+                    alert('Error: ' + e);
+                },
+            });
+        });
+    //------------- Add Relation Button save JS Ends ---------
+
 //------------- Edit Relation Button JS ---------
     $('.editRelationButton').click(
         function () {
@@ -795,7 +821,7 @@ jq(document).ready(function(){
     $('.acceptConnectionRequest').click(
         function () {
             var relationId = this.id.split("acceptConnectionRequest")[0];
-            jq.get("connections/acceptConnectionRequest.action", {relationshipId: relationId}, function(){
+            jq.get("connections/connections/acceptConnectionRequest.action", {relationshipId: relationId}, function(){
             });
             setTimeout(function(){
                 location.reload();
