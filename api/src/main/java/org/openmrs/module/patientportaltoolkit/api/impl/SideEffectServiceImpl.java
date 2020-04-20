@@ -67,7 +67,7 @@ public class SideEffectServiceImpl extends BaseOpenmrsService implements SideEff
         for(SideEffect se:allSideEffects){
             allSideEffectsMap.put(se.getCondition(),se.getConcepts());
         }
-
+/*
         //Male condition
         if ("M".equalsIgnoreCase(patient.getGender()))
         patientSideEffects.addAll(allSideEffectsMap.get("Male"));
@@ -78,7 +78,10 @@ public class SideEffectServiceImpl extends BaseOpenmrsService implements SideEff
             patientSideEffects.addAll(allSideEffectsMap.get("Male"));
             patientSideEffects.addAll(allSideEffectsMap.get("Female"));
         }
-
+*/
+        //Adding all side effects for all patients
+        patientSideEffects.addAll(allSideEffectsMap.get("Male"));
+        patientSideEffects.addAll(allSideEffectsMap.get("Female"));
         //Chemotherapy medication used side effects
         Encounter enc = findCancerTreatment(patient, CHEMOTHERAPY_ENCOUNTER);
         if(enc != null) {
