@@ -1,4 +1,14 @@
+<script>
+
+    jq(document).ready(function() {
+        jq(".removeJournalButton").click(
+            function () {
+                jq("#remove-postId").val(this.id.split("journalRemove")[1]);
+            });
+    });
+</script>
 <% if (journals) { %>
+${ ui.includeFragment("patientportaltoolkit", "removePost") }
 <ul class="media-list">
     <% journals.each { journal -> %>
     <li class="media feed-item">
@@ -13,7 +23,12 @@
                 <div class="media-body">
                     <h5 class="media-heading">${(journal.creator.getGivenName())}  - ${(journal.title)} <small>&emsp;
                             ${ pptutil.formatDate(journal.dateCreated)}</small></h5>
-
+                    <% if(journal.creator.person==person) { %>
+                    <div class="pull-right">
+                        <a id="journalEdit" class="no-underline-edit fa fa-pencil editJournalButton"  data-toggle="modal"></a>
+                        <a id="journalRemove${ journal.uuid }" class="no-underline-edit fa fa-trash removeJournalButton"  data-toggle="modal" data-target="#confirm-post-remove"></a>
+                    </div>
+                    <% } %>
                     <p>${(journal.content)}</p>
                 </div>
             </div>
@@ -32,9 +47,14 @@
                             </div>
 
                             <div class="media-body">
-                                <h5 class="media-heading">${(it.creator.getGivenName())}  - ${
-                                        (it.title)} <small>&emsp; ${ pptutil.formatDate(it.dateCreated) }</small></h5>
+                                <h5 class="media-heading">${(it.creator.getGivenName())}  - ${(it.title)} <small>&emsp; ${ pptutil.formatDate(it.dateCreated) }</small></h5>
+                                <% if(it.creator.person==person) { %>
+                                <div class="pull-right">
+                                    <a id="itEdit" class="no-underline-edit fa fa-pencil editJounralButton"  data-toggle="modal"></a>
+                                     <a id="journalRemove${ it.uuid }" class="no-underline-edit fa fa-trash removeJounralButton"  data-toggle="modal" data-target="#confirm-post-remove"></a>
 
+                                </div>
+                                <% } %>
                                 <p>${(it.content)}</p>
                             </div>
                         </div>

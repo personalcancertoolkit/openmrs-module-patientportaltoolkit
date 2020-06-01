@@ -39,4 +39,8 @@ public class StatusUpdaterFragmentController {
         //log.info("Save Post/Journal of -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         return null;
     }
+    public void deletePost(@RequestParam(value = "remove-postId", required = true) String removePostId, HttpServletRequest servletRequest) {
+        log.info(PPTLogAppender.appendLog("remove Post", servletRequest, "removePostId:", removePostId));
+        Context.getService(JournalEntryService.class).softDelete(Context.getService(JournalEntryService.class).getJournalEntry(removePostId));
+    }
 }
