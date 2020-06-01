@@ -3,8 +3,8 @@
         jq("#post-delete-btn").click(
             function () {
                 jq.get("statusUpdater/deletePost.action", {postId:  jq("#remove-postId").val()}, function(){
-               //     location.reload();
-               // });
+                    location.reload();
+                });
             });
     });
 </script>

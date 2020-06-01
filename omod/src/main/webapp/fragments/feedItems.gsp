@@ -50,8 +50,8 @@ ${ ui.includeFragment("patientportaltoolkit", "removePost") }
                                 <h5 class="media-heading">${(it.creator.getGivenName())}  - ${(it.title)} <small>&emsp; ${ pptutil.formatDate(it.dateCreated) }</small></h5>
                                 <% if(it.creator.person==person) { %>
                                 <div class="pull-right">
-                                    <a id="itEdit" class="no-underline-edit fa fa-pencil editJounralButton"  data-toggle="modal"></a>
-                                     <a id="journalRemove${ it.uuid }" class="no-underline-edit fa fa-trash removeJounralButton"  data-toggle="modal" data-target="#confirm-post-remove"></a>
+                                    <a id="itEdit" class="no-underline-edit fa fa-pencil editJournalButton"  data-toggle="modal"></a>
+                                     <a id="journalRemove${ it.uuid }" class="no-underline-edit fa fa-trash removeJournalButton"  data-toggle="modal" data-target="#confirm-post-remove"></a>
 
                                 </div>
                                 <% } %>

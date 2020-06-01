@@ -36,11 +36,12 @@ public class StatusUpdaterFragmentController {
         log.info(PPTLogAppender.appendLog("SAVE_POST", servletRequest, "title:", title, "content:", content));
         JournalEntry journalEntry = new JournalEntry(title,content);
         Context.getService(JournalEntryService.class).saveJournalEntry(journalEntry);
-        //log.info("Save Post/Journal of -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
         return null;
     }
-    public void deletePost(@RequestParam(value = "remove-postId", required = true) String removePostId, HttpServletRequest servletRequest) {
+    public void deletePost(@RequestParam(value = "postId", required = true) String removePostId, HttpServletRequest servletRequest) {
         log.info(PPTLogAppender.appendLog("remove Post", servletRequest, "removePostId:", removePostId));
-        Context.getService(JournalEntryService.class).softDelete(Context.getService(JournalEntryService.class).getJournalEntry(removePostId));
+        JournalEntryService journalEntryService=Context.getService(JournalEntryService.class);
+        JournalEntry journalEntry =journalEntryService.getJournalEntry(removePostId);
+        journalEntryService.softDelete(journalEntry);
     }
 }

@@ -67,14 +67,6 @@ jq(document).ready(function(){
 
 
         });
-    jq("#statusUpdaterButton").click(
-        function () {
-            jq.get("statusUpdater/savePost.action", {title: jq("#statusUpdaterTitle").val(), content:jq("#statusUpdaterContent").val()}, function(){
-            });
-            setTimeout(function(){
-                location.reload();
-            }, 2000);
-        });
 
     jq(".editGenHistButton").click(
         function () {

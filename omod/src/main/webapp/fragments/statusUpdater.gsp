@@ -1,4 +1,13 @@
-<form method="POST" class="form" id="status-update-form">
+<script>
+    jq(document).ready(function() {
+        jq("#statusUpdaterButton").click(
+            function () {
+                jq.get("statusUpdater/savePost.action", {title: jq("#statusUpdaterTitle").val(), content:jq("#statusUpdaterContent").val()}, function(){
+                        location.reload();
+                });
+            });
+    });
+</script>
     <div class="form-group">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -14,4 +23,3 @@
             </div>
         </div>
     </div>
-</form>
