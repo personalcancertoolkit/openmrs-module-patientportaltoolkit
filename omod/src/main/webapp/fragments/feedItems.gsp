@@ -5,6 +5,20 @@
             function () {
                 jq("#remove-postId").val(this.id.split("journalRemove")[1]);
             });
+        jq(".journalComment").keypress(
+            function (event) {
+                if (event.which !== 13) {
+                } else {
+                    var journalID = (this.id).split("commentbox")[1];
+                    console.log(journalID);
+                    jq.get("commentBox/saveComment.action", {
+                        commentContent: this.value,
+                        parentId: journalID
+                    }, function () {
+                        location.reload();
+                    });
+                }
+            });
     });
 </script>
 <% if (journals) { %>

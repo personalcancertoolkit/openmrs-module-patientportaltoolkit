@@ -145,7 +145,12 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
                         return je1.getDateCreated().compareTo(je2.getDateCreated());
                     }
                 });
-                journalEntriesSet.addAll(je.getChildren());
+                for (JournalEntry jeChild:je.getChildren()){
+                    if(!jeChild.isDeleted()){
+                        journalEntriesSet.add(jeChild);
+                    }
+                }
+                //journalEntriesSet.addAll(je.getChildren());
 
                 je.setChildren(journalEntriesSet);
             }

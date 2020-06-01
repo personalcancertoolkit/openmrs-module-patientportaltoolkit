@@ -51,23 +51,6 @@ jq(document).ready(function(){
         }
     });
 
-    jq(".journalComment").keydown(
-        function (event) {
-
-            if (event.which == 13) {
-                var journalID=(this.id).split("commentbox")[1];
-                console.log(journalID);
-                jq.get("commentBox/saveComment.action", {commentContent: this.value, parentId:journalID}, function(){
-                    setTimeout(function(){
-                        location.reload();
-                    }, 2000);
-                });
-                return false;
-            }
-
-
-        });
-
     jq(".editGenHistButton").click(
         function () {
             jq("#genHistEncounterHolder").val(this.id);
