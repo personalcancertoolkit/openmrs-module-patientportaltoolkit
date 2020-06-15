@@ -44,4 +44,13 @@ public class StatusUpdaterFragmentController {
         JournalEntry journalEntry =journalEntryService.getJournalEntry(removePostId);
         journalEntryService.softDelete(journalEntry);
     }
+    public String editSavePost(@RequestParam(value = "title", required = true) String title,
+                           @RequestParam(value = "content", required = true) String content, @RequestParam(value = "postId", required = true) String postId , HttpServletRequest servletRequest) {
+        log.info(PPTLogAppender.appendLog("SAVE_POST", servletRequest, "title:", title, "content:", content));
+        JournalEntry journalEntry = Context.getService(JournalEntryService.class).getJournalEntry(postId);
+        journalEntry.setTitle(title);
+        journalEntry.setContent(content);
+        Context.getService(JournalEntryService.class).saveJournalEntry(journalEntry);
+        return null;
+    }
 }

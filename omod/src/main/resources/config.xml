@@ -18,7 +18,7 @@
 	<name>${project.parent.name}</name>
 	<version>${project.parent.version}</version>
 	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
-	<author>maurya, uladkasach</author>
+	<author>maurya</author>
 	<description>
 		${project.parent.description}
 	</description>

@@ -5,11 +5,18 @@
             function () {
                 jq("#remove-postId").val(this.id.split("journalRemove")[1]);
             });
+        jq(".editJournalButton").click(
+            function () {
+                const journalId = this.id.split("journalEdit")[1];
+                jq("#edit-postId").val(journalId);
+                jq("#editPostTitle").val(jq("#journalTitle"+journalId).text());
+                jq("#editPostContent").val(jq("#journalContent"+journalId).text());
+            });
         jq(".journalComment").keypress(
             function (event) {
                 if (event.which !== 13) {
                 } else {
-                    var journalID = (this.id).split("commentbox")[1];
+                    const journalID = (this.id).split("commentbox")[1];
                     console.log(journalID);
                     jq.get("commentBox/saveComment.action", {
                         commentContent: this.value,
@@ -23,6 +30,7 @@
 </script>
 <% if (journals) { %>
 ${ ui.includeFragment("patientportaltoolkit", "removePost") }
+${ ui.includeFragment("patientportaltoolkit", "editPost") }
 <ul class="media-list">
     <% journals.each { journal -> %>
     <li class="media feed-item">
@@ -35,15 +43,16 @@ ${ ui.includeFragment("patientportaltoolkit", "removePost") }
                 </div>
 
                 <div class="media-body">
-                    <h5 class="media-heading">${(journal.creator.getGivenName())}  - ${(journal.title)} <small>&emsp;
+                    <h5 class="media-heading">${(journal.creator.getGivenName())}  - <span id="journalTitle${ journal.uuid }">${(journal.title)}</span> <small>&emsp;
                             ${ pptutil.formatDate(journal.dateCreated)}</small></h5>
                     <% if(journal.creator.person==person) { %>
                     <div class="pull-right">
-                        <a id="journalEdit" class="no-underline-edit fa fa-pencil editJournalButton"  data-toggle="modal"></a>
+                        <a id="journalEdit${ journal.uuid }" class="no-underline-edit fa fa-pencil editJournalButton"  data-toggle="modal" data-target="#post-edit"></a>
+                        &nbsp;
                         <a id="journalRemove${ journal.uuid }" class="no-underline-edit fa fa-trash removeJournalButton"  data-toggle="modal" data-target="#confirm-post-remove"></a>
                     </div>
                     <% } %>
-                    <p>${(journal.content)}</p>
+                    <p id="journalContent${ journal.uuid }">${(journal.content)}</p>
                 </div>
             </div>
 
@@ -61,15 +70,16 @@ ${ ui.includeFragment("patientportaltoolkit", "removePost") }
                             </div>
 
                             <div class="media-body">
-                                <h5 class="media-heading">${(it.creator.getGivenName())}  - ${(it.title)} <small>&emsp; ${ pptutil.formatDate(it.dateCreated) }</small></h5>
+                                <h5 class="media-heading">${(it.creator.getGivenName())}  - <span id="journalTitle${ it.uuid }">${(it.title)}</span> <small>&emsp; ${ pptutil.formatDate(it.dateCreated) }</small></h5>
                                 <% if(it.creator.person==person) { %>
                                 <div class="pull-right">
-                                    <a id="itEdit" class="no-underline-edit fa fa-pencil editJournalButton"  data-toggle="modal"></a>
+                                    <a id="itEdit" class="no-underline-edit fa fa-pencil editJournalButton"  data-toggle="modal" data-target="#post-edit"></a>
+                                &nbsp;
                                      <a id="journalRemove${ it.uuid }" class="no-underline-edit fa fa-trash removeJournalButton"  data-toggle="modal" data-target="#confirm-post-remove"></a>
 
                                 </div>
                                 <% } %>
-                                <p>${(it.content)}</p>
+                                <p id="journalContent${ it.uuid }">${(it.content)}</p>
                             </div>
                         </div>
                     </li>
