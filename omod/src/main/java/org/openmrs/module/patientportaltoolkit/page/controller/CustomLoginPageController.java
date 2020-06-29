@@ -22,7 +22,7 @@ import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -32,11 +32,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CustomLoginPageController {
     
     
-    public void controller(PageModel model, PageRequest pageRequest) {
+    public void controller(PageModel model, PageRequest pageRequest, HttpServletRequest request) {
         //Log Processing events
         //HttpServletRequest request=pageRequest.getRequest();
 
         //log.info(PPTLogAppender.appendLog(token, pageRequest.getRequest()));
+        String login_status = (String)request.getSession().getAttribute("login_status");
         Boolean loggedInBoolean = false;
         if (Context.isAuthenticated()) {
             loggedInBoolean = true;
@@ -45,6 +46,7 @@ public class CustomLoginPageController {
             //System.out.println("Not logged in");
         }
         model.addAttribute("loggedInBoolean", loggedInBoolean);
+        model.addAttribute("login_status", login_status);
     }
     
     
@@ -95,18 +97,21 @@ public class CustomLoginPageController {
         // Attempt to log user in
         /////////////////////////////////
         Boolean login_success = false;
+        String login_status= "0"; // 0-default, 1-success, 2-login failed
         try {
             Context.authenticate(username, password);
             if (Context.isAuthenticated()) {
                 if (log.isDebugEnabled())
                     log.debug("User has successfully authenticated");
                 login_success = true;
+                login_status="1";
             }
         } catch (ContextAuthenticationException ex) {
             if (log.isDebugEnabled())
                 log.debug("Failed to authenticate user");
+            login_status="2";
         }
-
+        pageRequest.getSession().setAttribute("login_status", login_status);
 		
         /////////////////////////////////////
         // Define where to redirect user

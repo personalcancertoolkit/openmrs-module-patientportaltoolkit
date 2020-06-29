@@ -20,7 +20,12 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForExternal") }
         </div>    
     </div>
 </div>
-
+<% if(login_status=="2") { %>
+<div class="alert alert-dismissible alert-danger">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Wrong username/password!</strong> please try again.
+</div>
+<% } %>
 <div style = 'position:absolute; width:100%; top:100px; left:0; right:0; display:flex;' >
     <div style = 'margin:auto;'>
         ${ui.includeFragment("patientportaltoolkit","customLoginService")}
