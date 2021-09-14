@@ -111,6 +111,7 @@
 		SecurityLayer.hbm.xml
 		PersonPreferences.hbm.xml
 		PreventativeCareEvent.hbm.xml
+		EventLog.hbm.xml
 		PreventativeCareRule.hbm.xml
 		PreventiveCareGuideline.hbm.xml
 		PreventiveCareGuidelineInterval.hbm.xml

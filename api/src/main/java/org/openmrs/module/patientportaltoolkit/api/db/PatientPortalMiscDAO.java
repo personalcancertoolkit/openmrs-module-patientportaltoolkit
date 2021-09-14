@@ -1,5 +1,6 @@
 package org.openmrs.module.patientportaltoolkit.api.db;
 
+import org.openmrs.module.patientportaltoolkit.EventLog;
 import org.openmrs.module.patientportaltoolkit.PasswordChangeRequest;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface PatientPortalMiscDAO {
     PasswordChangeRequest getPasswordChangeRequestbyUuid(String uuid);
 
     PasswordChangeRequest savePasswordChangeRequest(PasswordChangeRequest passwordChangeRequest);
+
+    EventLog logEvent(EventLog el);
 }

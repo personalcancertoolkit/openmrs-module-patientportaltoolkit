@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.module.patientportaltoolkit.EventLog;
 import org.openmrs.module.patientportaltoolkit.PasswordChangeRequest;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalMiscDAO;
 
@@ -40,6 +41,12 @@ public class HibernatePatientPortalMiscDAO implements PatientPortalMiscDAO {
     public PasswordChangeRequest savePasswordChangeRequest(PasswordChangeRequest passwordChangeRequest) {
         sessionFactory.getCurrentSession().saveOrUpdate(passwordChangeRequest);
         return passwordChangeRequest;
+    }
+
+    @Override
+    public EventLog logEvent(EventLog el) {
+        sessionFactory.getCurrentSession().saveOrUpdate(el);
+        return el;
     }
 
 

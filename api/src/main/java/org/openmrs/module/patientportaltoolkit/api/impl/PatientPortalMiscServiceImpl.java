@@ -2,10 +2,13 @@ package org.openmrs.module.patientportaltoolkit.api.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.EventLog;
 import org.openmrs.module.patientportaltoolkit.PasswordChangeRequest;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalMiscDAO;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,6 +17,7 @@ import java.util.List;
 public class PatientPortalMiscServiceImpl implements PatientPortalMiscService {
 
     protected PatientPortalMiscDAO dao;
+
 
     protected final Log log = LogFactory.getLog(this.getClass());
 
@@ -45,5 +49,11 @@ public class PatientPortalMiscServiceImpl implements PatientPortalMiscService {
     @Override
     public PasswordChangeRequest savePasswordChangeRequest(PasswordChangeRequest passwordChangeRequest) {
         return dao.savePasswordChangeRequest(passwordChangeRequest);
+    }
+
+    @Override
+    public EventLog logEvent(String event, String eventData) {
+        EventLog el = new EventLog(event,eventData, Context.getAuthenticatedUser(),new Date());
+        return dao.logEvent(el);
     }
 }

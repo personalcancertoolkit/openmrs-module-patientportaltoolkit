@@ -15,6 +15,7 @@ import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
@@ -33,8 +34,7 @@ public class HomePageController {
 
 
     public void controller(PageModel model, @RequestParam(value = "personId", required = false) String personId, PageRequest pageRequest) {
-
-
+        Context.getService(PatientPortalMiscService.class).logEvent("HOME_PAGE_VIEWED",null);
         if(personId != null && personId != ""){
 
             PatientPortalRelationService patientPortalRelationService=Context.getService(PatientPortalRelationService.class);

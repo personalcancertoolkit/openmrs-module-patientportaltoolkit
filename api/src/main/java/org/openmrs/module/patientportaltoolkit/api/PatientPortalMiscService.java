@@ -1,5 +1,6 @@
 package org.openmrs.module.patientportaltoolkit.api;
 
+import org.openmrs.module.patientportaltoolkit.EventLog;
 import org.openmrs.module.patientportaltoolkit.PasswordChangeRequest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,5 +19,8 @@ public interface PatientPortalMiscService {
 
     @Transactional(readOnly = false)
     PasswordChangeRequest savePasswordChangeRequest(PasswordChangeRequest passwordChangeRequest);
+
+    @Transactional(readOnly = false)
+    EventLog logEvent(String event, String data);
 
 }
