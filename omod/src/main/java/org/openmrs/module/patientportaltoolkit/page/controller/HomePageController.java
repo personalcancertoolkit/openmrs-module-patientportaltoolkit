@@ -34,7 +34,7 @@ public class HomePageController {
 
 
     public void controller(PageModel model, @RequestParam(value = "personId", required = false) String personId, PageRequest pageRequest) {
-        Context.getService(PatientPortalMiscService.class).logEvent("HOME_PAGE_VIEWED",null);
+        Context.getService(PatientPortalMiscService.class).logEvent("MY_MEDICAL_PROFILE_PAGE_VIEWED",null);
         if(personId != null && personId != ""){
 
             PatientPortalRelationService patientPortalRelationService=Context.getService(PatientPortalRelationService.class);
