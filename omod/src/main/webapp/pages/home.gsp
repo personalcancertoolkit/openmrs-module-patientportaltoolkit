@@ -14,13 +14,13 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
     <% if(person.isPatient() && securitylevel != 1) { %>
     <label><small><span class="fa fa-info-circle fa-lg"></span> &nbsp;The below tabs will be visible to the people you share your medical privilege with (including your healthy behavior tab)</small></label>
     <ul class="nav nav-pills">
-    <li class="active"><a data-toggle="tab" href="#treatments">Treatments</a></li>
-    <li><a data-toggle="tab" href="#sideEffects">Side Effects</a></li>
-    <li><a data-toggle="tab" href="#followUpCare">Follow up Care</a></li>
-    <li><a data-toggle="tab" href="#community">Communities</a></li>
-    <li><a data-toggle="tab" href="#symptomManagement">Symptom Management</a></li>
-    <li><a data-toggle="tab" href="#preventiveCare">Preventive Care</a></li>
-    <li><a data-toggle="tab" href="#healthyBehaviors">Healthy Behaviors</a></li>
+    <li class="active" onclick="logEvent('clicked_Treatment_Tab','')"><a data-toggle="tab" href="#treatments">Treatments</a></li>
+    <li onclick="logEvent('clicked_SideEffects_Tab','')"><a data-toggle="tab" href="#sideEffects">Side Effects</a></li>
+    <li onclick="logEvent('clicked_FollowUpCare_Tab','')"><a data-toggle="tab" href="#followUpCare">Follow up Care</a></li>
+    <li onclick="logEvent('clicked_Communities_Tab','')"><a data-toggle="tab" href="#community">Communities</a></li>
+    <li onclick="logEvent('clicked_SymptomManagement_Tab','')"><a data-toggle="tab" href="#symptomManagement">Symptom Management</a></li>
+    <li onclick="logEvent('clicked_PreventiveCare_Tab','')"><a data-toggle="tab" href="#preventiveCare">Preventive Care</a></li>
+    <li onclick="logEvent('clicked_HealthyBehaviours_Tab','')"><a data-toggle="tab" href="#healthyBehaviors">Healthy Behaviors</a></li>
     </ul>
     <script>
         console.log("test : ${person}"  )

@@ -671,4 +671,22 @@ jq(document).ready(function(){
             $('#mycancerbuddiesSave').removeClass('disabled');
             $('#mycancerbuddiesSave').prop('disabled', false);
         });
+    //------------------- Function to log events ----------------------
+
 });
+function logEvent (event,data) {
+    $.ajax({
+        type : "POST",
+        url : window.location.href.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/logEvent",
+        data : {
+            event: event,
+            data: data
+        },
+        success : function (response) {
+            console.log(response);
+        },
+        error : function(e) {
+            console.log('Error: ' + e);
+        }
+    });
+}

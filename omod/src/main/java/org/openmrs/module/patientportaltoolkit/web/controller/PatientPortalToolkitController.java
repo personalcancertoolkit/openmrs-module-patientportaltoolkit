@@ -9,12 +9,16 @@ import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PasswordChangeRequest;
+import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
+import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.util.MailHelper;
 import org.openmrs.module.patientportaltoolkit.api.util.PasswordUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,7 +92,16 @@ public class PatientPortalToolkitController {
         httpServletResponse.sendRedirect(sendingReuqestURL);
 
     }
+    @RequestMapping( value = "/patientportaltoolkit/logEvent")
+    @ResponseBody
+    public String getHasAccess(@RequestParam(value = "event", required = true) String event,
+                                @RequestParam(value = "data", required = false) String data) {
 
-
-
+        PatientPortalMiscService ppmService=Context.getService(PatientPortalMiscService.class);
+        //to set jquery empty strings as null when saving JSON in MySQL
+        if (data.isEmpty())
+            data=null;
+        ppmService.logEvent(event,data);
+        return "success";
+    }
 }
