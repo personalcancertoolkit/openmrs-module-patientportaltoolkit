@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.module.patientportaltoolkit.api.util.PatientPortalUtil;
@@ -26,6 +27,7 @@ public class EditprofilePageController {
 
     protected final Log log = LogFactory.getLog(getClass());
     public void controller(PageModel model, PageRequest pageRequest) {
+        Context.getService(PatientPortalMiscService.class).logEvent("USER_ACCOUNT_PAGE_VIEWED",null);
         log.info(PPTLogAppender.appendLog("REQUEST_EDITPROFILE_PAGE", pageRequest.getRequest()));
         Person person=Context.getAuthenticatedUser().getPerson();
         model.addAttribute("person", person);

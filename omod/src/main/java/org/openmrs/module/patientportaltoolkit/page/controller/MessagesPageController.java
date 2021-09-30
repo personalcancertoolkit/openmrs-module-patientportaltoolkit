@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.MessageService;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.module.patientportaltoolkit.api.util.PatientPortalUtil;
 import org.openmrs.ui.framework.page.PageModel;
@@ -26,6 +27,7 @@ public class MessagesPageController {
 
     protected final Log log = LogFactory.getLog(getClass());
     public void controller(PageModel model,PageRequest pageRequest) {
+        Context.getService(PatientPortalMiscService.class).logEvent("MY_MESSAGES_PAGE_VIEWED",null);
         log.info(PPTLogAppender.appendLog("REQUEST_MESSAGES_PAGE", pageRequest.getRequest()));
         //log.info("Messages Page Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
         Person person = null;

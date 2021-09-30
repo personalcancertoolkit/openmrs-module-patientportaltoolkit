@@ -12,6 +12,7 @@ package org.openmrs.module.patientportaltoolkit.page.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.module.patientportaltoolkit.api.util.PatientPortalUtil;
 import org.openmrs.ui.framework.page.PageModel;
@@ -26,7 +27,7 @@ public class JournalsPageController {
     protected final String token="REQUEST_JOURNAL_PAGE";
     protected final Log log = LogFactory.getLog(getClass());
     public void controller(PageModel model, PageRequest pageRequest) {
-
+        Context.getService(PatientPortalMiscService.class).logEvent("MY_POSTS_PAGE_VIEWED",null);
         //Log Processing events
         HttpServletRequest request=pageRequest.getRequest();
 
