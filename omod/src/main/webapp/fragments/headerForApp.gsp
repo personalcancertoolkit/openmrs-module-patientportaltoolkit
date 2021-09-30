@@ -78,29 +78,29 @@
     </button>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-            <li id="patientPortalJournals"> <a href="/openmrs/patientportaltoolkit/journals.page"><span class="fa fa-comments-o  fa-lg"></span> &nbsp; My Posts</a></li>
+            <li id="patientPortalJournals" onclick="logEvent('MY_POSTS_MENU_CLICKED','')"> <a href="/openmrs/patientportaltoolkit/journals.page"><span class="fa fa-comments-o  fa-lg"></span> &nbsp; My Posts</a></li>
             <% if(contextUser.person.isPatient()) { %>
-                <li id="patientPortalNavHome"><a href="/openmrs/patientportaltoolkit/home.page"> <span class="fa fa-medkit fa-lg"></span>  &nbsp; My Medical Profile</a></li> 
+                <li id="patientPortalNavHome" onclick="logEvent('MY_MEDICAL_PROFILE_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/home.page"> <span class="fa fa-medkit fa-lg"></span>  &nbsp; My Medical Profile</a></li>
             <% } %>
-            <li id="patientPortalConnections"><a href="/openmrs/patientportaltoolkit/patientconnections.page"><span class="fa fa-address-book-o  fa-lg"></span>  &nbsp; My Connections</a></li>
+            <li id="patientPortalConnections" onclick="logEvent('MY_CONNECTIONS_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/patientconnections.page"><span class="fa fa-address-book-o  fa-lg"></span>  &nbsp; My Connections</a></li>
             <% if(contextUser.person.isPatient()) { %>
-                <li id="patientPortalMyCancerBuddies"><a href="/openmrs/patientportaltoolkit/myCancerBuddies.page"> <span class="fa fa-users fa-lg" ></span>  &nbsp; My CancerBuddies</a></li>
+                <li id="patientPortalMyCancerBuddies" onclick="logEvent('MY_CANCER_BUDDIES_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/myCancerBuddies.page"> <span class="fa fa-users fa-lg" ></span>  &nbsp; My CancerBuddies</a></li>
             <% } %>
             </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li id="patientPortalUserName"><a href="/openmrs/patientportaltoolkit/editprofile.page"><span class="fa fa-user-circle fa-lg"></span> &nbsp; ${ (username) }</a></li>
-            <li><a href="/openmrs/patientportaltoolkit/messages.page"><span class="fa fa-envelope fa-lg"></span> &nbsp; Messages</a></li>
+            <li id="patientPortalUserName" onclick="logEvent('USER_ACCOUNT_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/editprofile.page"><span class="fa fa-user-circle fa-lg"></span> &nbsp; ${ (username) }</a></li>
+            <li onclick="logEvent('MESSAGES_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/messages.page"><span class="fa fa-envelope fa-lg"></span> &nbsp; Messages</a></li>
             
-            <li class="dropdown">
+            <li class="dropdown" onclick="logEvent('HELP_MENU_CLICKED','')">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="fa fa-life-ring fa-lg"></span>  &nbsp; Help <b class="caret"></b></a>
                 <ul class="dropdown-menu" id="menu1">
-                  <li><a  href="/openmrs/patientportaltoolkit/help/walkthroughs.page"> Video Walk Throughs </a></li>
+                  <li onclick="logEvent('VIDEO_WALKTHROUGHS_MENU_CLICKED','')"><a  href="/openmrs/patientportaltoolkit/help/walkthroughs.page"> Video Walk Throughs </a></li>
                   <li class="divider"></li>
-                  <li><a  href="/openmrs/patientportaltoolkit/help/feedbackform.page"> Contact Us</a></li>
+                  <li onclick="logEvent('CONTACT_US_MENU_CLICKED','')"><a  href="/openmrs/patientportaltoolkit/help/feedbackform.page"> Contact Us</a></li>
                 </ul>
             </li>
             
-            <li><a id="navigationLogout">Logout &nbsp; <span class="fa fa-sign-out fa-lg"></span>  </a></li>
+            <li onclick="logEvent('LOG_OUT_MENU_CLICKED','')"><a id="navigationLogout">Logout &nbsp; <span class="fa fa-sign-out fa-lg"></span>  </a></li>
 
         </ul>
     </div>
