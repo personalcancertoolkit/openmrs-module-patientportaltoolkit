@@ -65,16 +65,6 @@ jq(document).ready(function(){
         function () {
             location.reload();
         });
-    jq('#saveGeneralHistorybutton').click(
-        function () {
-            jq.get("treatmentsGenHistoryModal/saveGenHistoryForm.action", {encounterId: jq("#genHistEncounterHolder").val(), cancerType:  jq("#genHistoryCancerTypeSelect").val(),cancerStage:  jq("#genHistoryCancerStageSelect").val(),cancerDate:jq("#genHistoryDate").val(),cancerAbnormalityBool:jq("#genHistoryCancerabnormalitySelect").val(),cancerAbnormalityType:jq("#genHistoryCancerabnormalityTypeSelect").val(),genHistoryCancerPcpName:jq("#genHistoryCancerPcpName").val(),genHistoryCancerPcpEmail:jq("#genHistoryCancerPcpEmail").val(),genHistoryCancerPcpPhone:jq("#genHistoryCancerPcpPhone").val()}, function(){
-            });
-            //alert("refreshing");
-            setTimeout(function(){
-                location.reload();
-            }, 1000);
-        });
-
     var surgerydatePicker= jq( "#surgeryDate" ).datepicker({
         format: 'mm/dd/yyyy'
     }).on('changeDate', function() {
