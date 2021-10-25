@@ -144,60 +144,6 @@ jq(document).ready(function(){
             $("#chemotherapyInstitutionState").val($('#'+encounterID+'chemotherapyState').text());
         });
 
-    $('#saveChemotherapyButton').click(
-        function () {
-            var chemotherapyMedTypesList='';
-            var isCheckedExists=0;
-            $('.chemotherapyMedTypesInModal').each(function() {
-                if ( $(this).is(':checked')) {
-                    chemotherapyMedTypesList=chemotherapyMedTypesList+($( this ).val().split('split')[0])+"split";
-                    isCheckedExists=1;
-                }
-            });
-            if(isCheckedExists==0){
-                jq('#chemotherapyErrorDetails').text("Please select at least one chemotherapy medication");
-                jq('#chemotherapyErrorDetails').show();
-            }
-            else if(jq("#chemotherapyEncounterHolder").val() == null || jq("#chemotherapyEncounterHolder").val() == '') {
-                jq.get("treatmentsChemotherapyModal/saveNewChemotherapyForm.action", {
-                    chemotherapyMeds: chemotherapyMedTypesList,
-                    centralLine: jq("#centralLineBoolSelect").val(),
-                    chemoStartDate: jq("#chemoStartDate").val(),
-                    chemoEndDate: jq("#chemoEndDate").val(),
-                    chemotherapyPcpName: jq("#oncologistPcpName").val(),
-                    chemotherapyPcpEmail: jq("#oncologistPcpEmail").val(),
-                    chemotherapyPcpPhone: jq("#oncologistPcpPhone").val(),
-                    chemotherapyInstitutionName: jq("#chemotherapyInstitutionName").val(),
-                    chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
-                    chemotherapyInstitutionState: jq("#chemotherapyInstitutionState").val()
-                }, function () {
-                  });
-                setTimeout(
-                    function () {
-                        location.reload();
-                    }, 2000);
-            }
-             else {
-                jq.get("treatmentsChemotherapyModal/saveChemotherapyForm.action", {
-                    encounterId: jq("#chemotherapyEncounterHolder").val(),
-                    chemotherapyMeds: chemotherapyMedTypesList,
-                    centralLine: jq("#centralLineBoolSelect").val(),
-                    chemoStartDate: jq("#chemoStartDate").val(),
-                    chemoEndDate: jq("#chemoEndDate").val(),
-                    chemotherapyPcpName: jq("#oncologistPcpName").val(),
-                    chemotherapyPcpEmail: jq("#oncologistPcpEmail").val(),
-                    chemotherapyPcpPhone: jq("#oncologistPcpPhone").val(),
-                    chemotherapyInstitutionName: jq("#chemotherapyInstitutionName").val(),
-                    chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
-                    chemotherapyInstitutionState: jq("#chemotherapyInstitutionState").val()
-                }, function () {
-                });
-                setTimeout(
-                    function () {
-                        location.reload();
-                    }, 2000);
-            }
-        });
 
     var radiationStartdatePicker= jq( "#radiationStartDate" ).datepicker({
         format: 'mm/dd/yyyy'

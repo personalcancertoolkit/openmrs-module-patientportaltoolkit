@@ -1,3 +1,82 @@
+<script>
+    jq(document).ready(function () {
+        let logData = '';
+        jq('#edit-chemotherapies-modal').on('show.bs.modal', function () {
+            let existingChemotherapyMedTypesList = '';
+            jq('.chemotherapyMedTypesInModal').each(function () {
+                if (jq(this).is(':checked')) {
+                    existingChemotherapyMedTypesList = existingChemotherapyMedTypesList + (jq(this).val().split('split')[1]) + ",";
+                }
+            });
+            logData = '{"chemotherapyMeds":"' + existingChemotherapyMedTypesList + '", ' +
+                '"centralLine":"' + jq("#centralLineBoolSelect option:selected").text() + '", ' +
+                '"chemoStartDate":"' + jq("#chemoStartDate").val() + '", ' +
+                '"chemoEndDate":"' + jq("#chemoEndDate").val() + '",' +
+                '"chemotherapyPcpName":"' + jq("#oncologistPcpName").val() + '",' +
+                '"chemotherapyPcpEmail":"' + jq("#oncologistPcpEmail").val() + '",' +
+                '"chemotherapyPcpPhone":"' + jq("#oncologistPcpPhone").val() + '",' +
+                '"chemotherapyInstitutionName":"' + jq("#chemotherapyInstitutionName").val() + '",' +
+                '"chemotherapyInstitutionCity":"' + jq("#chemotherapyInstitutionCity").val() + '",' +
+                '"chemotherapyInstitutionState":"' + jq("#chemotherapyInstitutionState").val() + '"}';
+        });
+        jq('#saveChemotherapyButton').click(
+            function () {
+                logEvent("Treatments_Chemotherapy_Saved",logData);
+                var chemotherapyMedTypesList='';
+                var isCheckedExists=0;
+                jq('.chemotherapyMedTypesInModal').each(function() {
+                    if ( jq(this).is(':checked')) {
+                        chemotherapyMedTypesList=chemotherapyMedTypesList+(jq( this ).val().split('split')[0])+"split";
+                        isCheckedExists=1;
+                    }
+                });
+                if(isCheckedExists==0){
+                    jq('#chemotherapyErrorDetails').text("Please select at least one chemotherapy medication");
+                    jq('#chemotherapyErrorDetails').show();
+                }
+                else if(jq("#chemotherapyEncounterHolder").val() == null || jq("#chemotherapyEncounterHolder").val() == '') {
+                    jq.get("treatmentsChemotherapyModal/saveNewChemotherapyForm.action", {
+                        chemotherapyMeds: chemotherapyMedTypesList,
+                        centralLine: jq("#centralLineBoolSelect").val(),
+                        chemoStartDate: jq("#chemoStartDate").val(),
+                        chemoEndDate: jq("#chemoEndDate").val(),
+                        chemotherapyPcpName: jq("#oncologistPcpName").val(),
+                        chemotherapyPcpEmail: jq("#oncologistPcpEmail").val(),
+                        chemotherapyPcpPhone: jq("#oncologistPcpPhone").val(),
+                        chemotherapyInstitutionName: jq("#chemotherapyInstitutionName").val(),
+                        chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
+                        chemotherapyInstitutionState: jq("#chemotherapyInstitutionState").val()
+                    }, function () {
+                    });
+                    setTimeout(
+                        function () {
+                            location.reload();
+                        }, 2000);
+                }
+                else {
+                    jq.get("treatmentsChemotherapyModal/saveChemotherapyForm.action", {
+                        encounterId: jq("#chemotherapyEncounterHolder").val(),
+                        chemotherapyMeds: chemotherapyMedTypesList,
+                        centralLine: jq("#centralLineBoolSelect").val(),
+                        chemoStartDate: jq("#chemoStartDate").val(),
+                        chemoEndDate: jq("#chemoEndDate").val(),
+                        chemotherapyPcpName: jq("#oncologistPcpName").val(),
+                        chemotherapyPcpEmail: jq("#oncologistPcpEmail").val(),
+                        chemotherapyPcpPhone: jq("#oncologistPcpPhone").val(),
+                        chemotherapyInstitutionName: jq("#chemotherapyInstitutionName").val(),
+                        chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
+                        chemotherapyInstitutionState: jq("#chemotherapyInstitutionState").val()
+                    }, function () {
+                    });
+                    setTimeout(
+                        function () {
+                            location.reload();
+                        }, 2000);
+                }
+            });
+    });
+</script>
+
 <div class="modal fade modal-wide treatment_form_uniform_label_width"  id="edit-chemotherapies-modal" role="dialog" aria-labelledby="editChemotherapiesLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
