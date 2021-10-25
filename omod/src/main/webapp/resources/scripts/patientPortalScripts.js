@@ -291,61 +291,6 @@ jq(document).ready(function(){
             $("#radiologistInstitutionState").val($('#'+encounterID+'radState').text());
         });
 
-    $('#saveRadiationButton').click(
-        function () {
-            var radiationTypesList = '';
-            var isCheckedExists=0;
-            $('.radiationTypesInModal').each(function () {
-                if ($(this).is(':checked')) {
-                    radiationTypesList = radiationTypesList + ($(this).val().split('split')[0]) + "split";
-                    isCheckedExists=1;
-                }
-            });
-            if(isCheckedExists==0){
-                jq('#radiationErrorDetails').text("Please select at least one radiation type");
-                jq('#radiationErrorDetails').show();
-            }
-            else if (jq("#radiationEncounterHolder").val() == null || jq("#radiationEncounterHolder").val() == '') {
-            jq.get("treatmentsRadiationModal/saveNewRadiationForm.action", {
-                radiationTypes: radiationTypesList,
-                radiationStartDate: jq("#radiationStartDate").val(),
-                radiationEndDate: jq("#radiationEndDate").val(),
-                radiationPcpName: jq("#radiologistPcpName").val(),
-                radiationPcpEmail: jq("#radiologistPcpEmail").val(),
-                radiationPcpPhone: jq("#radiologistPcpPhone").val(),
-                radiationInstitutionName: jq("#radiologistInstitutionName").val(),
-                radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
-                radiationInstitutionState: jq("#radiologistInstitutionState").val()
-            }, function () {
-            });
-            setTimeout(
-                function () {
-                    location.reload();
-                }, 2000);
-        }
-        else
-    {
-        jq.get("treatmentsRadiationModal/saveRadiationForm.action", {
-            encounterId: jq("#radiationEncounterHolder").val(),
-            radiationTypes: radiationTypesList,
-            radiationStartDate: jq("#radiationStartDate").val(),
-            radiationEndDate: jq("#radiationEndDate").val(),
-            radiationPcpName: jq("#radiologistPcpName").val(),
-            radiationPcpEmail: jq("#radiologistPcpEmail").val(),
-            radiationPcpPhone: jq("#radiologistPcpPhone").val(),
-            radiationInstitutionName: jq("#radiologistInstitutionName").val(),
-            radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
-            radiationInstitutionState: jq("#radiologistInstitutionState").val()
-        }, function () {
-             });
-        setTimeout(
-            function () {
-                location.reload();
-            }, 2000);
-    }
-        });
-
-
     jq(".removeRelationCloseButton").click(
         function () {
             jq("#remove-relationId").val(this.id.split("removeRelation")[1]);

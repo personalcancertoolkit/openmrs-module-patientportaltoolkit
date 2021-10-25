@@ -1,13 +1,16 @@
 <script>
     jq(document).ready(function () {
-        let logData = '{"cancerType":"' + jq("#genHistoryCancerTypeSelect option:selected").text() + '", ' +
-            '"cancerStage":"' + jq("#genHistoryCancerStageSelect option:selected").text() + '", ' +
-            '"cancerDate":"' + jq("#genHistoryDate").val() + '", ' +
-            '"cancerAbnormalityBool":"' + jq("#genHistoryCancerabnormalitySelect option:selected").text() + '",' +
-            '"cancerAbnormalityType":"' + jq("#genHistoryCancerabnormalityTypeSelect option:selected").text() + '",' +
-            '"genHistoryCancerPcpName":"' + jq("#genHistoryCancerPcpName").val() + '",' +
-            '"genHistoryCancerPcpEmail":"' + jq("#genHistoryCancerPcpEmail").val() + '",' +
-            '"genHistoryCancerPcpPhone":"' + jq("#genHistoryCancerPcpPhone").val() + '"}';
+        let logData ='';
+        jq('#edit-genHistory-modal').on('show.bs.modal', function () {
+            logData = '{"cancerType":"' + jq("#genHistoryCancerTypeSelect option:selected").text() + '", ' +
+                '"cancerStage":"' + jq("#genHistoryCancerStageSelect option:selected").text() + '", ' +
+                '"cancerDate":"' + jq("#genHistoryDate").val() + '", ' +
+                '"cancerAbnormalityBool":"' + jq("#genHistoryCancerabnormalitySelect option:selected").text() + '",' +
+                '"cancerAbnormalityType":"' + jq("#genHistoryCancerabnormalityTypeSelect option:selected").text() + '",' +
+                '"genHistoryCancerPcpName":"' + jq("#genHistoryCancerPcpName").val() + '",' +
+                '"genHistoryCancerPcpEmail":"' + jq("#genHistoryCancerPcpEmail").val() + '",' +
+                '"genHistoryCancerPcpPhone":"' + jq("#genHistoryCancerPcpPhone").val() + '"}';
+        });
         jq('#saveGeneralHistorybutton').click(
             function () {
                 logEvent("Treatments_General_History_Saved",logData);
