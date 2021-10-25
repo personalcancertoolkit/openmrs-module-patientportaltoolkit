@@ -102,62 +102,6 @@ jq(document).ready(function(){
             $("#surgeryInstitutionState").val($('#'+encounterID+'surgeryState').text());
         });
 
-    $('#saveSurgeryButton').click(
-        function () {
-            var surgeryTypeList = '';
-            var isCheckedExists=0;
-            $('.surgeryTypesInModal').each(function () {
-                if ($(this).is(':checked')) {
-                     surgeryTypeList = surgeryTypeList + ($(this).val().split('split')[0]) + "split";
-                     isCheckedExists=1;
-                }
-            });
-            if(isCheckedExists==0){
-                jq('#surgeryErrorDetails').text("Please select at least one surgery");
-                jq('#surgeryErrorDetails').show();
-            }
-
-            else if (jq("#surgeryEncounterHolder").val() == null || jq("#surgeryEncounterHolder").val() == '') {
-            jq.get("treatmentsSurgeriesModal/saveNewSurgeryForm.action", {
-                surgeryTypes: surgeryTypeList,
-                surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
-                majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
-                surgeryDate: jq("#surgeryDate").val(),
-                surgeonPcpName: jq("#surgeonPcpName").val(),
-                surgeonPcpEmail: jq("#surgeonPcpEmail").val(),
-                surgeonPcpPhone: jq("#surgeonPcpPhone").val(),
-                surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
-                surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
-                surgeryInstitutionState: jq("#surgeryInstitutionState").val()
-            }, function () {
-               });
-            setTimeout(
-                function () {
-                    location.reload();
-                }, 2000);
-        }
-             else {
-        jq.get("treatmentsSurgeriesModal/saveSurgeryForm.action", {
-            encounterId: jq("#surgeryEncounterHolder").val(),
-            surgeryTypes: surgeryTypeList,
-            surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
-            majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
-            surgeryDate: jq("#surgeryDate").val(),
-            surgeonPcpName: jq("#surgeonPcpName").val(),
-            surgeonPcpEmail: jq("#surgeonPcpEmail").val(),
-            surgeonPcpPhone: jq("#surgeonPcpPhone").val(),
-            surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
-            surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
-            surgeryInstitutionState: jq("#surgeryInstitutionState").val()
-        }, function () {
-             });
-        setTimeout(
-            function () {
-                location.reload();
-            }, 2000);
-    }
-        });
-
     var chemotherapyStartdatePicker= jq( "#chemoStartDate" ).datepicker({
         format: 'mm/dd/yyyy'
     }).on('changeDate', function() {
