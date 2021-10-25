@@ -86,11 +86,16 @@
             <% if(contextUser.person.isPatient()) { %>
                 <li id="patientPortalMyCancerBuddies" onclick="logEvent('MY_CANCER_BUDDIES_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/myCancerBuddies.page"> <span class="fa fa-users fa-lg" ></span>  &nbsp; My CancerBuddies</a></li>
             <% } %>
+            <% if(contextUser.isSuperUser()) { %>
+            <li onclick="logEvent('ADD_NEW_PATIENT_CLICKED','')"><a href="/openmrs/patientportaltoolkit/addNewPatient.page"><span class="fa fa-user-plus fa-lg"></span> &nbsp; Add New Patient</a></li>
+            <% } %>
             </ul>
         <ul class="nav navbar-nav navbar-right">
+            <% if(contextUser.isSuperUser()) { %>
+            <li><a href="/openmrs/admin/modules/module.list"><span class="fa fa-upload fa-lg"></span> Update Module</a></li>
+            <% } %>
             <li id="patientPortalUserName" onclick="logEvent('USER_ACCOUNT_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/editprofile.page"><span class="fa fa-user-circle fa-lg"></span> &nbsp; ${ (username) }</a></li>
             <li onclick="logEvent('MESSAGES_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/messages.page"><span class="fa fa-envelope fa-lg"></span> &nbsp; Messages</a></li>
-            
             <li class="dropdown" onclick="logEvent('HELP_MENU_CLICKED','')">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="fa fa-life-ring fa-lg"></span>  &nbsp; Help <b class="caret"></b></a>
                 <ul class="dropdown-menu" id="menu1">
