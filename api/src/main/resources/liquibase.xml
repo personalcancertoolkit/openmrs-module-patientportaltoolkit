@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+    <changeSet id="patientportal_event_log_create_table" author="Sri Maurya Kummamuru">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="patientportal_event_log"/>
+            </not>
+        </preConditions>
+
+        <comment>
+            Create table patientportal_event_log, for storing event log
+        </comment>
+
+        <createTable tableName="patientportal_event_log">
+            <column autoIncrement="true" name="id" type="INT UNSIGNED">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValue="CURRENT_TIMESTAMP(3)" name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INT"/>
+            <column name="event" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_data" type="JSON(1073741824)"/>
+        </createTable>
+        <createIndex indexName="User_id_fk_idx" tableName="patientportal_event_log">
+            <column name="user_id"/>
+        </createIndex>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="patientportal_event_log"
+                                 constraintName="User who generated the event_log"
+                                 referencedColumnNames="user_id" referencedTableName="users"/>
+    </changeSet>
+
+</databaseChangeLog>
