@@ -115,7 +115,7 @@ public class AddRelationshipFragmentController {
             newUser.setUsername(given + family);
             newUser.addRole(userService.getRole(PatientPortalToolkitConstants.APP_VIEW_PRIVILEGE_ROLE));
             String newPassword = String.valueOf(PasswordUtil.getNewPassword());
-            newUser.setUserProperty("forcePassword", "true");
+            //newUser.setUserProperty("forcePassword", "true");
 
             User savedUser = Context.getUserService().createUser(newUser, newPassword);
             //System.out.println("\nsystemout---password is " + "Test123" + passworduuid);
