@@ -10,11 +10,9 @@
                 <tableExists tableName="patientportal_event_log"/>
             </not>
         </preConditions>
-
         <comment>
             Create table patientportal_event_log, for storing event log
         </comment>
-
         <createTable tableName="patientportal_event_log">
             <column autoIncrement="true" name="id" type="INT UNSIGNED">
                 <constraints nullable="false" primaryKey="true"/>
@@ -26,7 +24,7 @@
             <column name="event" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="event_data" type="JSON(1073741824)"/>
+            <column name="event_data" type="JSON"/>
         </createTable>
         <createIndex indexName="User_id_fk_idx" tableName="patientportal_event_log">
             <column name="user_id"/>
@@ -35,5 +33,4 @@
                                  constraintName="User who generated the event_log"
                                  referencedColumnNames="user_id" referencedTableName="users"/>
     </changeSet>
-
 </databaseChangeLog>
