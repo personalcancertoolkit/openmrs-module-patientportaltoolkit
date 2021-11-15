@@ -1,14 +1,8 @@
 ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
-<style>
-.hidden {
-    display: none;
-}
-
-</style>
 <script>
     jq(document).ready(function () {
         let newPatientBirthDate = jq("#inputBD").datepicker({
-            format: 'mm/dd/yyyy'
+            format: 'yyyy-mm-dd'
         }).on('changeDate', function () {
             newPatientBirthDate.hide();
         }).data('datepicker');
@@ -32,6 +26,7 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                                     familyName: jq("#inputLN").val()
                                 }],
                                 gender: jq("#inputGender").val(),
+                                birthdate: jq("#inputBD").val(),
                                 attributes: [{
                                     attributeType: "a38daf97-030b-4c3e-8d08-0f910cac0cd5",
                                     value: jq("#personEmail").val()
@@ -92,7 +87,17 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                         console.log('Error: ' + e);
                     },
                 }).promise();
-                await saveGenHistory(personUUID).promise();
+                await jq.ajax({
+                    type: "GET",
+                    url: window.location.href.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/createinitialpreferences/"+personUUID,
+                    success: function (response) {
+                        console.log("Added person Preferences");
+                    },
+                    error: function (e) {
+                        console.log('Error: ' + e);
+                    },
+                }).promise();
+                saveGenHistory(personUUID);
             });
         jq('#newGenHistoryCancerabnormalitySelect').change(function () {
             if ("yes" == jq('#newGenHistoryCancerabnormalitySelect').find(":selected").text().toLowerCase()) {
@@ -258,7 +263,7 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
         <div class="form-group col-md-6">
             <label class="reformatText" for="newGenHistoryCancerabnormalitySelect">${(concept.getName())}</label>
             <select class="form-control" id="newGenHistoryCancerabnormalitySelect">
-                <option hidden>Don't Show this option</option>
+                <option style="display: none">Don't Show this option</option>
                 <% concept.getAnswers().each { answers -> %>
                 <option value="${(answers.answerConcept.uuid)}"
                         class="reformatText">${(answers.answerConcept.getName())}</option>
@@ -273,7 +278,7 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
         <% treatmentSummaryConcepts.concepts.each { concept -> %>
         <% /* cancer abnormality type*/ %>
         <% if (concept.uuid == "8719adbe-0975-477f-a95f-2fae4d6cbdae") { %>
-        <div class="form-group col-md-6" id="canAbnTypeDiv" hiddent>
+        <div class="form-group col-md-6" id="canAbnTypeDiv" style="display: none">
             <label class="reformatText" for="genHistoryCancerabnormalityTypeSelect">${(concept.getName())}</label>
             <select class="form-control" id="genHistoryCancerabnormalityTypeSelect">
                 <% concept.getAnswers().each { answers -> %>

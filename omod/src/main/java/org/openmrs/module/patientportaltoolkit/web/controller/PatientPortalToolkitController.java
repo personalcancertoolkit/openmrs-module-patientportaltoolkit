@@ -10,8 +10,10 @@ import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PasswordChangeRequest;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.PersonPreferences;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
+import org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService;
 import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.util.MailHelper;
 import org.openmrs.module.patientportaltoolkit.api.util.PasswordUtil;
@@ -94,7 +96,7 @@ public class PatientPortalToolkitController {
     }
     @RequestMapping( value = "/patientportaltoolkit/logEvent")
     @ResponseBody
-    public String getHasAccess(@RequestParam(value = "event", required = true) String event,
+    public String logEvent(@RequestParam(value = "event", required = true) String event,
                                 @RequestParam(value = "data", required = false) String data) {
 
         PatientPortalMiscService ppmService=Context.getService(PatientPortalMiscService.class);
@@ -102,6 +104,18 @@ public class PatientPortalToolkitController {
         if (data.isEmpty())
             data=null;
         ppmService.logEvent(event,data);
+        return "success";
+    }
+    @RequestMapping( value = "/patientportaltoolkit/createinitialpreferences/{personUUID}")
+    @ResponseBody
+    public String createInitialPreferences(@PathVariable( "personUUID" ) String personUUID) {
+        Person p=Context.getPersonService().getPersonByUuid(personUUID);
+        PersonPreferences personPreferences=new PersonPreferences();
+        personPreferences.setPerson(p);
+        personPreferences.setMyCancerBuddies(false);
+        personPreferences.setMyCancerBuddiesDescription("Hello, I would like to be a part of My Cancer Buddies");
+        personPreferences.setMyCancerBuddiesName(p.getGivenName()+p.getFamilyName());
+        Context.getService(PersonPreferencesService.class).savePersonPreferences(personPreferences);
         return "success";
     }
 }
