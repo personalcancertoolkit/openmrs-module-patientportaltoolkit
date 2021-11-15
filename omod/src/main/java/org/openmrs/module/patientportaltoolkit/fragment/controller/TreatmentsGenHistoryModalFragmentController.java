@@ -16,6 +16,7 @@ import org.openmrs.Obs;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -34,6 +35,106 @@ public class TreatmentsGenHistoryModalFragmentController {
 
     public void controller(PageRequest pageRequest) {
         log.info(PPTLogAppender.appendLog("REQUEST_GENERALHISTORY_FRAGMENT", pageRequest.getRequest()));
+    }
+    public void saveNewGenHistoryForm(FragmentModel model,  @RequestParam(value = "patientUuid", required = true) String patientUuid,
+                                      @RequestParam(value = "cancerType", required = true) String cancerType,
+                                      @RequestParam(value = "cancerStage", required = true) String cancerStage,
+                                      @RequestParam(value = "cancerDate", required = true) String cancerDate,
+                                      @RequestParam(value = "cancerAbnormalityBool", required = true) String cancerAbnormalityBool,
+                                      @RequestParam(value = "cancerAbnormalityType", required = false) String cancerAbnormalityType,
+                                      @RequestParam(value = "genHistoryCancerPcpName", required = true) String genHistoryCancerPcpName,
+                                      @RequestParam(value = "genHistoryCancerPcpEmail", required = true) String genHistoryCancerPcpEmail,
+                                      @RequestParam(value = "genHistoryCancerPcpPhone", required = true) String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
+
+        EncounterService encounterService= Context.getEncounterService();
+        Encounter newGenHistoryEncounter = new Encounter();
+        newGenHistoryEncounter.setPatient(Context.getPatientService().getPatientByUuid(patientUuid));
+        Date date = new Date();
+        newGenHistoryEncounter.setDateCreated(new Date());
+        newGenHistoryEncounter.setEncounterDatetime(date);
+        newGenHistoryEncounter.setEncounterType(encounterService.getEncounterType(PatientPortalToolkitConstants.TREATMENTSUMMARY_ENCOUNTER));
+        ConceptService conceptService=Context.getConceptService();
+        List<String> allTheEnteredValues = new ArrayList<>();
+        allTheEnteredValues.add("cancerType");
+        allTheEnteredValues.add("radiationEndDate");
+        allTheEnteredValues.add("cancerStage");
+        allTheEnteredValues.add("cancerDate");
+        allTheEnteredValues.add("cancerAbnormalityBool");
+        allTheEnteredValues.add("cancerAbnormalityType");
+        allTheEnteredValues.add("genHistoryCancerPcpName");
+        allTheEnteredValues.add("genHistoryCancerPcpEmail");
+        allTheEnteredValues.add("genHistoryCancerPcpPhone");
+
+        for (String entry : allTheEnteredValues)
+        {
+            if(entry !=null) {
+                switch (entry) {
+                    case "cancerType":
+                        Obs cancerTypeObs = new Obs();
+                        cancerTypeObs.setConcept(conceptService.getConceptByUuid("cdf6d767-2aa3-40b6-ae78-0386eebe2411"));
+                        cancerTypeObs.setValueCoded(conceptService.getConceptByUuid(cancerType));
+                        newGenHistoryEncounter.addObs(cancerTypeObs);
+                        break;
+                    case "cancerStage":
+                            Obs cancerStageObs = new Obs();
+                        cancerStageObs.setConcept(conceptService.getConceptByUuid("efa3f9eb-ade4-4ddb-92c9-0fc1119d112d"));
+                        cancerStageObs.setValueCoded(conceptService.getConceptByUuid(cancerStage));
+                        newGenHistoryEncounter.addObs(cancerStageObs);
+                        break;
+                    case "cancerDate":
+                            if (cancerDate != null && cancerDate != "") {
+                                Obs cancerDateObs = new Obs();
+                                cancerDateObs.setConcept(conceptService.getConceptByUuid("654e32f0-8b57-4d1f-845e-500922e800f6"));
+                                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                                Date parsedDate = formatter.parse(cancerDate);
+                                cancerDateObs.setValueDate(parsedDate);
+                                newGenHistoryEncounter.addObs(cancerDateObs);
+                        }
+                        break;
+                    case "cancerAbnormalityBool":
+                            Obs cancerAbnormalityBoolObs = new Obs();
+                        cancerAbnormalityBoolObs.setConcept(conceptService.getConceptByUuid("395878ae-5108-4aad-8ad8-9b88e812d278"));
+                        cancerAbnormalityBoolObs.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityBool));
+                        newGenHistoryEncounter.addObs(cancerAbnormalityBoolObs);
+                        break;
+                    case "cancerAbnormalityType":
+                            if(!cancerAbnormalityType.isEmpty()) {
+                                Obs cancerAbnormalityTypeObs = new Obs();
+                                cancerAbnormalityTypeObs.setConcept(conceptService.getConceptByUuid("8719adbe-0975-477f-a95f-2fae4d6cbdae"));
+                                cancerAbnormalityTypeObs.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityType));
+                                newGenHistoryEncounter.addObs(cancerAbnormalityTypeObs);
+                        }
+                        break;
+                    case "genHistoryCancerPcpName":
+                            if (genHistoryCancerPcpName != null && genHistoryCancerPcpName != "") {
+                                Obs genHistoryCancerPcpNameObs = new Obs();
+                                genHistoryCancerPcpNameObs.setConcept(conceptService.getConceptByUuid("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"));
+                                genHistoryCancerPcpNameObs.setValueText(genHistoryCancerPcpName);
+                                newGenHistoryEncounter.addObs(genHistoryCancerPcpNameObs);
+                        }
+                        break;
+                    case "genHistoryCancerPcpEmail":
+                            if (genHistoryCancerPcpEmail != null && genHistoryCancerPcpEmail != "") {
+                                Obs genHistoryCancerPcpEmailObs = new Obs();
+                                genHistoryCancerPcpEmailObs.setConcept(conceptService.getConceptByUuid("898a0028-8c65-4db9-a802-1577fce59864"));
+                                genHistoryCancerPcpEmailObs.setValueText(genHistoryCancerPcpEmail);
+                                newGenHistoryEncounter.addObs(genHistoryCancerPcpEmailObs);
+                        }
+                        break;
+                    case "genHistoryCancerPcpPhone":
+
+                            if (genHistoryCancerPcpPhone != null && genHistoryCancerPcpPhone != "") {
+                                Obs genHistoryCancerPcpPhoneObs = new Obs();
+                                genHistoryCancerPcpPhoneObs.setConcept(conceptService.getConceptByUuid("9285b227-4054-4830-ac32-5ea78462e8c4"));
+                                genHistoryCancerPcpPhoneObs.setValueText(genHistoryCancerPcpPhone);
+                                newGenHistoryEncounter.addObs(genHistoryCancerPcpPhoneObs);
+                        }
+                        break;
+                }
+            }
+        }
+        encounterService.saveEncounter(newGenHistoryEncounter);
+        //log.info("Save new Radiation Form for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
     public void saveGenHistoryForm(FragmentModel model,  @RequestParam(value = "encounterId", required = true) String encounterId,
