@@ -4,13 +4,13 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Add Connection</h4>
+                <h4 class="modal-title" id="myModalLabel">Add connection</h4>
             </div>
 
             <div class="modal-body">
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="personName">Person's Name:</label>
+                        <label class="control-label col-sm-2" for="personName">Person's name:</label>
                         <div class="col-sm-10 form-inline" id="personName">
                             <input type="name" class="form-control" id="givenpersonName" placeholder="Given Name">
                             <input type="name" class="form-control" id="familypersonName" placeholder="Family Name">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="relationship-type">Is My:</label>
+                        <label class="control-label col-sm-2" for="relationship-type">Is my:</label>
                         <div class="col-sm-10" id="relationship-type">
                             <% if (relationshipTypes) { %>
                             <select class="form-control" id="addRelationshipSelect">
@@ -54,12 +54,12 @@
                         </div>
                     </div>-->
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Have Access:</label>
+                        <label class="control-label col-sm-2">Have access:</label>
                         <% securityLayers.each { securityLayer -> %>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
                                 <input class="form-check-input addRelationShareCheckbox" type="checkbox" id="addShareType${securityLayer.getUuid()}"
-                                       value="${securityLayer.getUuid()}"> Can see My ${securityLayer.getDescription()}
+                                       value="${securityLayer.getUuid()}"> Can see my ${securityLayer.getDescription()}
                             </label>
                         </div>
                         <% } %>
