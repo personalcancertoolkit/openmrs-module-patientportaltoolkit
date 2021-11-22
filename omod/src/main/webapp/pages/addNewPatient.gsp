@@ -92,38 +92,44 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                     url: window.location.href.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/createinitialpreferences/" + personUUID,
                     success: function (response) {
                         console.log("Added person Preferences");
+                        jq(".patInput").val("");
+                        jq("#success-div").show();
                     },
                     error: function (e) {
                         console.log('Error: ' + e);
                     },
                 }).promise();
+
             });
     });
 </script>
 
 <body>
 <div class="container bgcontent col-sm-offset-2">
+    <div class="alert alert-success row" role="alert" style="display: none" id="success-div">
+        Patient has been successfully created
+    </div>
     <div class="form-row row">
         <div class="form-group col-md-6">
             <label for="inputFN">First Name</label>
-            <input type="text" class="form-control" id="inputFN" placeholder="First Name">
+            <input type="text" class="form-control patInput" id="inputFN" placeholder="First Name">
         </div>
 
         <div class="form-group col-md-6">
             <label for="inputLN">Last Name</label>
-            <input type="text" class="form-control" id="inputLN" placeholder="Last Name">
+            <input type="text" class="form-control patInput" id="inputLN" placeholder="Last Name">
         </div>
     </div>
 
     <div class="form-row row">
         <div class="form-group col-md-6">
             <label for="inputBD">Birth Date</label>
-            <input type="text" class="form-control" id="inputBD" placeholder="mm/dd/yyyy">
+            <input type="text" class="form-control patInput" id="inputBD" placeholder="mm/dd/yyyy">
         </div>
 
         <div class="form-group col-md-6">
             <label for="inputGender">Gender</label>
-            <select class="form-control" id="inputGender">
+            <select class="form-control patInput" id="inputGender">
                 <option value="M">Male</option>
                 <option value="F">Female</option>
             </select>
@@ -133,43 +139,43 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
     <div class="form-row row">
         <div class="form-group col-md-6">
             <label for="patientAddress1">Address</label>
-            <input type="text" class="form-control" id="patientAddress1" placeholder="Enter Address">
+            <input type="text" class="form-control patInput" id="patientAddress1" placeholder="Enter Address">
         </div>
 
         <div class="form-group col-md-6">
             <label for="patientCity">City</label>
-            <input type="text" class="form-control" id="patientCity" placeholder="Enter City">
+            <input type="text" class="form-control patInput" id="patientCity" placeholder="Enter City">
         </div>
     </div>
 
     <div class="form-row row">
         <div class="form-group col-md-6">
             <label for="patientCountry">Country</label>
-            <input type="text" class="form-control" id="patientCountry" placeholder="Enter Country">
+            <input type="text" class="form-control patInput" id="patientCountry" placeholder="Enter Country">
         </div>
 
         <div class="form-group col-md-6">
             <label for="patientZipcode">Zipcode</label>
-            <input type="text" class="form-control" id="patientZipcode" placeholder="Enter Zipcode">
+            <input type="text" class="form-control patInput" id="patientZipcode" placeholder="Enter Zipcode">
         </div>
     </div>
 
     <div class="form-row row">
         <div class="form-group col-md-6">
             <label for="patientEmail">Email address</label>
-            <input type="email" class="form-control" id="patientEmail" placeholder="Enter email">
+            <input type="email" class="form-control patInput" id="patientEmail" placeholder="Enter email">
         </div>
 
         <div class="form-group col-md-6">
             <label for="patientUserName">username</label>
-            <input type="text" class="form-control" id="patientUserName" placeholder="Enter username">
+            <input type="text" class="form-control patInput" id="patientUserName" placeholder="Enter username">
         </div>
     </div>
 
     <div class="form-row row">
         <div class="form-group col-md-6">
             <label for="patientPassword">Password</label>
-            <input type="password" class="form-control" id="patientPassword">
+            <input type="password" class="form-control patInput" id="patientPassword">
         </div>
     </div>
 
