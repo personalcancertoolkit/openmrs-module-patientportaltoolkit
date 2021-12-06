@@ -89,6 +89,9 @@
             <% if(contextUser.isSuperUser()) { %>
             <li onclick="logEvent('ADD_NEW_PATIENT_CLICKED','')"><a href="/openmrs/patientportaltoolkit/addNewPatient.page"><span class="fa fa-user-plus fa-lg"></span> &nbsp; Add New Patient</a></li>
             <% } %>
+            <% if(contextUser.isSuperUser()) { %>
+            <li onclick="logEvent('ADD_NEW_TREATMENT_CLICKED','')"><a href="/openmrs/patientportaltoolkit/addNewTreatments.page"><span class="fa fa-medkit fa-lg"></span> &nbsp; Add New Treatment</a></li>
+            <% } %>
             </ul>
         <ul class="nav navbar-nav navbar-right">
             <% if(contextUser.isSuperUser()) { %>
