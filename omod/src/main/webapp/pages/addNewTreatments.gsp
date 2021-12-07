@@ -1,20 +1,23 @@
 ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
 <body>
 <div class="container bgcontent col-sm-offset-2">
-<input type="text" id="searchPatients" onkeyup="filterPatients()" placeholder="Search for patients.." title="Type in a name" class="col-md-6">
-<table id="allPatientTable" class="table table-hover table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Age</th>
-        <th scope="col">MRN</th>
-        <th scope="col">Add Treatments</th>
-    </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-</div>
+    <div class="form-group col-md-8">
+        <input type="text" id="searchPatients" class="form-control" onkeyup="filterPatients()" placeholder="Search for patients.."
+               title="Type in a name">
+    </div>
+        <table id="allPatientTable" class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Age</th>
+                <th scope="col">MRN</th>
+                <th scope="col">Add Treatments</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </body>
 <script>
     jq(document).ready(function () {
@@ -26,14 +29,14 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                 var table = document.getElementById("allPatientTable");
                 response.forEach(obj => {
                     var row = table.insertRow(-1);
-                    var cell0=row.insertCell(0);
-                    var cell1=row.insertCell(1);
-                    var cell2=row.insertCell(2);
-                    var cell3=row.insertCell(3);
-                    cell0.innerHTML=obj.GivenName+" "+obj.FamilyName;
-                    cell1.innerHTML=obj.Age;
-                    cell2.innerHTML=obj.MRN;
-                    cell3.innerHTML="<button id="+obj.id+"+'addGen'>General History</button> <button id="+obj.id+"+'addSurg'>Surgery</button> <button id="+obj.id+"+'addChemo'>Chemotherapy</button> <button id="+obj.id+"+'addRad'>Radiation</button>";
+                    var cell0 = row.insertCell(0);
+                    var cell1 = row.insertCell(1);
+                    var cell2 = row.insertCell(2);
+                    var cell3 = row.insertCell(3);
+                    cell0.innerHTML = obj.GivenName + " " + obj.FamilyName;
+                    cell1.innerHTML = obj.Age;
+                    cell2.innerHTML = obj.MRN;
+                    cell3.innerHTML = "<button class='btn' id=" + obj.id + "+'addGen'>General History</button> <button id=" + obj.id + "+'addSurg'>Surgery</button> <button id=" + obj.id + "+'addChemo'>Chemotherapy</button> <button id=" + obj.id + "+'addRad'>Radiation</button>";
 
                 });
             },
@@ -42,6 +45,7 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
             },
         })
     });
+
     function filterPatients() {
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("searchPatients");
