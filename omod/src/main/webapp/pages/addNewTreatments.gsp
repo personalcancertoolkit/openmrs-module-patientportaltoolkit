@@ -1,145 +1,63 @@
 ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
-<script>
-    jq(document).ready(function () {
-
-        jq('#newGenHistoryCancerabnormalitySelect').change(function () {
-            if ("yes" == jq('#newGenHistoryCancerabnormalitySelect').find(":selected").text().toLowerCase()) {
-                jq('#canAbnTypeDiv').show();
-            } else {
-                jq('#canAbnTypeDiv').hide();
-            }
-        });
-        function saveGenHistory(personUUID) {
-           // alert(personUUID + "---" + jq("#genHistoryCancerTypeSelect").val() + "---" + jq("#genHistoryCancerStageSelect").val() + "---" + jq("#genHistoryDate").val() + "---" + jq("#newGenHistoryCancerabnormalitySelect").val() + "---" + jq("#genHistoryCancerabnormalityTypeSelect").val() + "---" + jq("#genHistoryCancerPcpName").val() + "---" + jq("#genHistoryCancerPcpEmail").val() + "---" + jq("#genHistoryCancerPcpPhone").val());
-            if ("yes" == jq('#newGenHistoryCancerabnormalitySelect').find(":selected").text().toLowerCase()) {
-                jq.get("treatmentsGenHistoryModal/saveNewGenHistoryForm.action", {
-                    patientUuid: personUUID,
-                    cancerType: jq("#genHistoryCancerTypeSelect").val(),
-                    cancerStage: jq("#genHistoryCancerStageSelect").val(),
-                    cancerDate: jq("#genHistoryDate").val(),
-                    cancerAbnormalityBool: jq("#newGenHistoryCancerabnormalitySelect").val(),
-                    cancerAbnormalityType: jq("#genHistoryCancerabnormalityTypeSelect").val(),
-                    genHistoryCancerPcpName: jq("#genHistoryCancerPcpName").val(),
-                    genHistoryCancerPcpEmail: jq("#genHistoryCancerPcpEmail").val(),
-                    genHistoryCancerPcpPhone: jq("#genHistoryCancerPcpPhone").val()
-                }, function () {
-                });
-            } else {
-                jq.get("treatmentsGenHistoryModal/saveNewGenHistoryForm.action", {
-                    patientUuid: personUUID,
-                    cancerType: jq("#genHistoryCancerTypeSelect").val(),
-                    cancerStage: jq("#genHistoryCancerStageSelect").val(),
-                    cancerDate: jq("#genHistoryDate").val(),
-                    cancerAbnormalityBool: jq("#newGenHistoryCancerabnormalitySelect").val(),
-                    genHistoryCancerPcpName: jq("#genHistoryCancerPcpName").val(),
-                    genHistoryCancerPcpEmail: jq("#genHistoryCancerPcpEmail").val(),
-                    genHistoryCancerPcpPhone: jq("#genHistoryCancerPcpPhone").val()
-                }, function () {
-                });
-            }
-        }
-    });
-</script>
-
 <body>
-
-    <div class="form-row">
-        <% if (treatmentSummaryConcepts) { %>
-        <% if (treatmentSummaryConcepts.concepts) { %>
-        <% treatmentSummaryConcepts.concepts.each { concept -> %>
-        <% /* cancer Type*/ %>
-        <% if (concept.uuid == "cdf6d767-2aa3-40b6-ae78-0386eebe2411") { %>
-        <div class="form-group col-md-6">
-            <label class="reformatText" for="genHistoryCancerTypeSelect">${(concept.getName())}</label>
-            <select class="form-control" id="genHistoryCancerTypeSelect">
-                <% concept.getAnswers().each { answers -> %>
-                <option value="${(answers.answerConcept.uuid)}"
-                        class="reformatText">${(answers.answerConcept.getName())}</option>
-                <% } %>
-            </select>
-        </div>
-        <% } %>
-        <% } %>
-        <% treatmentSummaryConcepts.concepts.each { concept -> %>
-        <% /* cancer Stage*/ %>
-        <% if (concept.uuid == "efa3f9eb-ade4-4ddb-92c9-0fc1119d112d") { %>
-        <div class="form-group col-md-6">
-            <label class="reformatText" for="genHistoryCancerStageSelect">${(concept.getName())}</label>
-            <select class="form-control" id="genHistoryCancerStageSelect">
-                <% concept.getAnswers().each { answers -> %>
-                <option value="${(answers.answerConcept.uuid)}"
-                        class="reformatText">${(answers.answerConcept.getName())}</option>
-                <% } %>
-            </select>
-        </div>
-
-        <% } %>
-        <% } %>
-    </div>
-
-    <div class="form-row">
-        <% treatmentSummaryConcepts.concepts.each { concept -> %>
-        <% /* cancer Date*/ %>
-        <% if (concept.uuid == "654e32f0-8b57-4d1f-845e-500922e800f6") { %>
-
-        <div class="form-group col-md-6">
-            <label class="reformatText" for="genHistoryDate">${(concept.getName())}</label>
-            <input class="form-control gen-history-date" id="genHistoryDate" type="text"/>
-        </div>
-        <% } %>
-        <% } %>
-
-        <% treatmentSummaryConcepts.concepts.each { concept -> %>
-        <% /* cancer abnormality*/ %>
-        <% if (concept.uuid == "395878ae-5108-4aad-8ad8-9b88e812d278") { %>
-        <div class="form-group col-md-6">
-            <label class="reformatText" for="newGenHistoryCancerabnormalitySelect">${(concept.getName())}</label>
-            <select class="form-control" id="newGenHistoryCancerabnormalitySelect">
-                <option style="display: none">Don't Show this option</option>
-                <% concept.getAnswers().each { answers -> %>
-                <option value="${(answers.answerConcept.uuid)}"
-                        class="reformatText">${(answers.answerConcept.getName())}</option>
-                <% } %>
-            </select>
-        </div>
-        <% } %>
-        <% } %>
-    </div>
-
-    <div class="form-row">
-        <% treatmentSummaryConcepts.concepts.each { concept -> %>
-        <% /* cancer abnormality type*/ %>
-        <% if (concept.uuid == "8719adbe-0975-477f-a95f-2fae4d6cbdae") { %>
-        <div class="form-group col-md-6" id="canAbnTypeDiv" style="display: none">
-            <label class="reformatText" for="genHistoryCancerabnormalityTypeSelect">${(concept.getName())}</label>
-            <select class="form-control" id="genHistoryCancerabnormalityTypeSelect">
-                <% concept.getAnswers().each { answers -> %>
-                <option value="${(answers.answerConcept.uuid)}"
-                        class="reformatText">${(answers.answerConcept.getName())}</option>
-                <% } %>
-            </select>
-        </div>
-        <% } %>
-        <% } %>
-    </div>
-    <label>Primary Care Physician :</label>
-    <br><br>
-
-    <div class="form-row">
-        <div class="form-group col-md-4"><label for="genHistoryCancerPcpName">Name</label>
-            <input class="form-control" id="genHistoryCancerPcpName" type="text"/>
-        </div>
-
-        <div class="form-group col-md-4"><label for="genHistoryCancerPcpEmail">Email</label>
-            <input class="form-control" id="genHistoryCancerPcpEmail" type="text"/>
-        </div>
-
-        <div class="form-group col-md-4"><label for="genHistoryCancerPcpPhone">Phone</label>
-            <input class="form-control" id="genHistoryCancerPcpPhone" type="text"/>
-        </div>
-    </div>
-    <% } %>
-    <% } %>
-    <button id="newPatientSave" class="btn btn-primary">Save</button>
+<div class="container bgcontent col-sm-offset-2">
+<input type="text" id="searchPatients" onkeyup="filterPatients()" placeholder="Search for patients.." title="Type in a name" class="col-md-6">
+<table id="allPatientTable" class="table table-hover table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Age</th>
+        <th scope="col">MRN</th>
+        <th scope="col">Add Treatments</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
 </div>
 </body>
+<script>
+    jq(document).ready(function () {
+        jq.ajax({
+            type: "GET",
+            dataType: 'json',
+            url: window.location.href.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/getallpatients",
+            success: function (response) {
+                var table = document.getElementById("allPatientTable");
+                response.forEach(obj => {
+                    var row = table.insertRow(-1);
+                    var cell0=row.insertCell(0);
+                    var cell1=row.insertCell(1);
+                    var cell2=row.insertCell(2);
+                    var cell3=row.insertCell(3);
+                    cell0.innerHTML=obj.GivenName+" "+obj.FamilyName;
+                    cell1.innerHTML=obj.Age;
+                    cell2.innerHTML=obj.MRN;
+                    cell3.innerHTML="<button id="+obj.id+"+'addGen'>General History</button> <button id="+obj.id+"+'addSurg'>Surgery</button> <button id="+obj.id+"+'addChemo'>Chemotherapy</button> <button id="+obj.id+"+'addRad'>Radiation</button>";
+
+                });
+            },
+            error: function (e) {
+                console.log('Error: ' + e);
+            },
+        })
+    });
+    function filterPatients() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchPatients");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("allPatientTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
