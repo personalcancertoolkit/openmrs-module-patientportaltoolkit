@@ -36,7 +36,7 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                     cell0.innerHTML = obj.GivenName + " " + obj.FamilyName;
                     cell1.innerHTML = obj.Age;
                     cell2.innerHTML = obj.MRN;
-                    cell3.innerHTML = "<button class='btn' id=" + obj.id + "+'addGen'>General History</button> <button id=" + obj.id + "+'addSurg'>Surgery</button> <button id=" + obj.id + "+'addChemo'>Chemotherapy</button> <button id=" + obj.id + "+'addRad'>Radiation</button>";
+                    cell3.innerHTML = "<button class='btn btn-primary' id=" + obj.id + "+'addGen'>General History</button> <button class='btn btn-primary'  id=" + obj.id + "+'addSurg'>Surgery</button> <button class='btn btn-primary'  id=" + obj.id + "+'addChemo'>Chemotherapy</button> <button class='btn btn-primary'  id=" + obj.id + "+'addRad'>Radiation</button>";
 
                 });
             },
