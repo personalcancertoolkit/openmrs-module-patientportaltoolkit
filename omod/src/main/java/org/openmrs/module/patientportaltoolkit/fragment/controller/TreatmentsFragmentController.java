@@ -54,7 +54,6 @@ public class TreatmentsFragmentController {
            // PatientPortalPersonAttributes pptpersonAttributes = Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
            // List<Surgery> surgeryEncounters = new ArrayList<>();
            // surgeryEncounters = GenerateTreatmentClassesUtil.generateSurgeries(patient);
-            model.addAttribute("radiationConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.RADIATION_ENCOUNTER));
             model.addAttribute("latestTreatmentSummary", GenerateTreatmentClassesUtil.generateLatestGeneralHistory(patient));
             model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
             model.addAttribute("radiationencounters", GenerateTreatmentClassesUtil.generateRadiations(patient));

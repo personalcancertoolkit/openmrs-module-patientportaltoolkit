@@ -17,6 +17,7 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -36,6 +37,9 @@ public class TreatmentsRadiationModalFragmentController {
 
     public void controller(FragmentModel model, PageRequest pageRequest){
         log.info(PPTLogAppender.appendLog("REQUEST_RADIATION_FRAGMENT", pageRequest.getRequest()));
+        PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
+        model.addAttribute("radiationConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.RADIATION_ENCOUNTER));
+
     }
 
     public void saveNewRadiationForm(FragmentModel model, @RequestParam(value = "radiationTypes", required = false) String radiationTypes,
@@ -46,12 +50,18 @@ public class TreatmentsRadiationModalFragmentController {
                                         @RequestParam(value = "radiationPcpPhone", required = false) String radiationPcpPhone,
                                         @RequestParam(value = "radiationInstitutionName", required = false) String radiationInstitutionName,
                                         @RequestParam(value = "radiationInstitutionCity", required = false) String radiationInstitutionCity,
-                                        @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState, HttpServletRequest servletRequest) throws ParseException {
+                                        @RequestParam(value = "radiationInstitutionState", required = false) String radiationInstitutionState,
+                                     @RequestParam(value = "patientUuid", required = false) String patientUuid, HttpServletRequest servletRequest) throws ParseException {
 
         log.info(PPTLogAppender.appendLog("NEW_RADIATION",servletRequest, "radiationTypes:", radiationTypes, "radiationStartDate:", radiationStartDate, "radiationEndDate:", radiationEndDate, "radiationPcpName:", radiationPcpName, "radiationPcpEmail:", radiationPcpEmail, "radiationPcpPhone:", radiationPcpPhone, "radiationInstitutionName:", radiationInstitutionName, "radiationInstitutionCity:", radiationInstitutionCity, "radiationInstitutionState:", radiationInstitutionState));
         EncounterService encounterService= Context.getEncounterService();
         Encounter newRadiationEncounter = new Encounter();
-        newRadiationEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        if (patientUuid == null || patientUuid.isEmpty()){
+            newRadiationEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        }
+        else{
+            newRadiationEncounter.setPatient(Context.getPatientService().getPatientByUuid(patientUuid));
+        }
         Date date = new Date();
         newRadiationEncounter.setDateCreated(new Date());
         newRadiationEncounter.setEncounterDatetime(date);

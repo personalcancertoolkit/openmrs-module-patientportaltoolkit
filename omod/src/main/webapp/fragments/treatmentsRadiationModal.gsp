@@ -1,78 +1,4 @@
-<script>
-    jq(document).ready(function () {
-        let logData ='';
-        jq('#edit-radiation-modal').on('show.bs.modal', function () {
-            let existingRadiationTypesList = '';
-            jq('.radiationTypesInModal').each(function () {
-                if (jq(this).is(':checked')) {
-                    existingRadiationTypesList = existingRadiationTypesList + (jq(this).val().split('split')[1]) + ",";
-                }
-            });
-            logData = '{"radiationTypes":"' + existingRadiationTypesList + '", ' +
-                '"radiationStartDate":"' + jq("#radiationStartDate").val() + '", ' +
-                '"radiationEndDate":"' + jq("#radiationEndDate").val() + '", ' +
-                '"radiologistPcpName":"' + jq("#radiologistPcpName").val() + '",' +
-                '"radiologistPcpEmail":"' + jq("#radiologistPcpEmail").val() + '",' +
-                '"radiologistPcpPhone":"' + jq("#radiologistPcpPhone").val() + '",' +
-                '"radiationInstitutionName":"' + jq("#radiologistInstitutionName").val() + '",' +
-                '"radiationInstitutionCity":"' + jq("#radiologistInstitutionCity").val() + '",' +
-                '"radiationInstitutionState":"' + jq("#radiologistInstitutionState").val() + '"}';
-        });
-        jq('#saveRadiationButton').click(
-            function () {
-                logEvent("Treatments_Radiation_Therapy_Saved",logData);
-                let radiationTypesList = '';
-                let isCheckedExists = 0;
-                jq('.radiationTypesInModal').each(function () {
-                    if (jq(this).is(':checked')) {
-                        radiationTypesList = radiationTypesList + (jq(this).val().split('split')[0]) + "split";
-                        isCheckedExists = 1;
-                    }
-                });
-                if (isCheckedExists == 0) {
-                    jq('#radiationErrorDetails').text("Please select at least one radiation type");
-                    jq('#radiationErrorDetails').show();
-                } else if (jq("#radiationEncounterHolder").val() == null || jq("#radiationEncounterHolder").val() == '') {
-                    jq.get("treatmentsRadiationModal/saveNewRadiationForm.action", {
-                        radiationTypes: radiationTypesList,
-                        radiationStartDate: jq("#radiationStartDate").val(),
-                        radiationEndDate: jq("#radiationEndDate").val(),
-                        radiationPcpName: jq("#radiologistPcpName").val(),
-                        radiationPcpEmail: jq("#radiologistPcpEmail").val(),
-                        radiationPcpPhone: jq("#radiologistPcpPhone").val(),
-                        radiationInstitutionName: jq("#radiologistInstitutionName").val(),
-                        radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
-                        radiationInstitutionState: jq("#radiologistInstitutionState").val()
-                    }, function () {
-                    });
-                    setTimeout(
-                        function () {
-                            location.reload();
-                        }, 2000);
-                } else {
-                    jq.get("treatmentsRadiationModal/saveRadiationForm.action", {
-                        encounterId: jq("#radiationEncounterHolder").val(),
-                        radiationTypes: radiationTypesList,
-                        radiationStartDate: jq("#radiationStartDate").val(),
-                        radiationEndDate: jq("#radiationEndDate").val(),
-                        radiationPcpName: jq("#radiologistPcpName").val(),
-                        radiationPcpEmail: jq("#radiologistPcpEmail").val(),
-                        radiationPcpPhone: jq("#radiologistPcpPhone").val(),
-                        radiationInstitutionName: jq("#radiologistInstitutionName").val(),
-                        radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
-                        radiationInstitutionState: jq("#radiologistInstitutionState").val()
-                    }, function () {
-                    });
-                    setTimeout(
-                        function () {
-                            location.reload();
-                        }, 2000);
-                }
-            });
-    });
-</script>
-
-<div class="modal fade modal-wide treatment_form_uniform_label_width" id="edit-radiation-modal" role="dialog"
+<div class="modal fade modal-wide treatment_form_uniform_label_width edit-radiation-modal" id="edit-radiation-modal" role="dialog"
      aria-labelledby="editRadiationsLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -84,6 +10,7 @@
 
             <div class="modal-body">
                 <input id="radiationEncounterHolder" type="hidden">
+                <input id="radiationPatientUuidHolder" type="hidden">
                 <% if (radiationConcepts) { %>
                 <% radiationConcepts.concepts.each { questions -> %>
                 <% /* radiation type used*/ %>
@@ -175,3 +102,79 @@
         </div>
     </div>
 </div>
+
+<script>
+    jq(document).ready(function () {
+        let logData ='';
+        jq('#edit-radiation-modal').on('show.bs.modal', function () {
+            let existingRadiationTypesList = '';
+            jq('.radiationTypesInModal').each(function () {
+                if (jq(this).is(':checked')) {
+                    existingRadiationTypesList = existingRadiationTypesList + (jq(this).val().split('split')[1]) + ",";
+                }
+            });
+            logData = '{"radiationTypes":"' + existingRadiationTypesList + '", ' +
+                '"radiationStartDate":"' + jq("#radiationStartDate").val() + '", ' +
+                '"radiationEndDate":"' + jq("#radiationEndDate").val() + '", ' +
+                '"radiologistPcpName":"' + jq("#radiologistPcpName").val() + '",' +
+                '"radiologistPcpEmail":"' + jq("#radiologistPcpEmail").val() + '",' +
+                '"radiologistPcpPhone":"' + jq("#radiologistPcpPhone").val() + '",' +
+                '"radiationInstitutionName":"' + jq("#radiologistInstitutionName").val() + '",' +
+                '"radiationInstitutionCity":"' + jq("#radiologistInstitutionCity").val() + '",' +
+                '"radiationInstitutionState":"' + jq("#radiologistInstitutionState").val() + '"}';
+        });
+        jq('#saveRadiationButton').click(
+            function () {
+                logEvent("Treatments_Radiation_Therapy_Saved",logData);
+                let radiationTypesList = '';
+                let isCheckedExists = 0;
+                jq('.radiationTypesInModal').each(function () {
+                    if (jq(this).is(':checked')) {
+                        radiationTypesList = radiationTypesList + (jq(this).val().split('split')[0]) + "split";
+                        isCheckedExists = 1;
+                    }
+                });
+                if (isCheckedExists == 0) {
+                    jq('#radiationErrorDetails').text("Please select at least one radiation type");
+                    jq('#radiationErrorDetails').show();
+                } else if (jq("#radiationEncounterHolder").val() == null || jq("#radiationEncounterHolder").val() == '') {
+                    jq.get("treatmentsRadiationModal/saveNewRadiationForm.action", {
+                        radiationTypes: radiationTypesList,
+                        radiationStartDate: jq("#radiationStartDate").val(),
+                        radiationEndDate: jq("#radiationEndDate").val(),
+                        radiationPcpName: jq("#radiologistPcpName").val(),
+                        radiationPcpEmail: jq("#radiologistPcpEmail").val(),
+                        radiationPcpPhone: jq("#radiologistPcpPhone").val(),
+                        radiationInstitutionName: jq("#radiologistInstitutionName").val(),
+                        radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
+                        radiationInstitutionState: jq("#radiologistInstitutionState").val(),
+                        patientUuid: jq("#radiationPatientUuidHolder").val()
+                    }, function () {
+                    });
+                    setTimeout(
+                        function () {
+                            location.reload();
+                        }, 2000);
+                } else {
+                    jq.get("treatmentsRadiationModal/saveRadiationForm.action", {
+                        encounterId: jq("#radiationEncounterHolder").val(),
+                        radiationTypes: radiationTypesList,
+                        radiationStartDate: jq("#radiationStartDate").val(),
+                        radiationEndDate: jq("#radiationEndDate").val(),
+                        radiationPcpName: jq("#radiologistPcpName").val(),
+                        radiationPcpEmail: jq("#radiologistPcpEmail").val(),
+                        radiationPcpPhone: jq("#radiologistPcpPhone").val(),
+                        radiationInstitutionName: jq("#radiologistInstitutionName").val(),
+                        radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
+                        radiationInstitutionState: jq("#radiologistInstitutionState").val(),
+                        patientUuid: jq("#radiationPatientUuidHolder").val()
+                    }, function () {
+                    });
+                    setTimeout(
+                        function () {
+                            location.reload();
+                        }, 2000);
+                }
+            });
+    });
+</script>
