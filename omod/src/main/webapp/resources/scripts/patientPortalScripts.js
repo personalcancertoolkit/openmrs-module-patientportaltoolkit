@@ -96,16 +96,7 @@ jq(document).ready(function(){
             jq("#surgeryInstitutionState").val(jq('#' + encounterID + 'surgeryState').text());
         });
 
-    var chemotherapyStartdatePicker= jq( "#chemoStartDate" ).datepicker({
-        format: 'mm/dd/yyyy'
-    }).on('changeDate', function() {
-        chemotherapyStartdatePicker.hide();
-    }).data('datepicker');
-    var chemotherapyEnddatePicker= jq( "#chemoEndDate" ).datepicker({
-        format: 'mm/dd/yyyy'
-    }).on('changeDate', function() {
-        chemotherapyEnddatePicker.hide();
-    }).data('datepicker');
+
     $('.editChemotherapyButton').click(
         function () {
             var encounterID=this.id;

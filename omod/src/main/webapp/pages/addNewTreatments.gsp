@@ -1,5 +1,6 @@
 ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
 ${ ui.includeFragment("patientportaltoolkit", "treatmentsSurgeriesModal") }
+${ ui.includeFragment("patientportaltoolkit", "treatmentsChemotherapyModal") }
 <body>
 <div class="container bgcontent col-sm-offset-2">
     <div class="form-group col-md-8">
@@ -37,7 +38,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsSurgeriesModal") }
                     cell0.innerHTML = obj.GivenName + " " + obj.FamilyName;
                     cell1.innerHTML = obj.Age;
                     cell2.innerHTML = obj.MRN;
-                    cell3.innerHTML = "<button class='btn btn-primary' id=" + obj.id + "+'addGen'>General History</button> <button class='btn btn-primary' onclick='updatePatientUuid(this)'  id=" + obj.id + "addSurg data-toggle='modal' data-target='#edit-surgeries-modal'>Surgery</button> <button class='btn btn-primary'  id=" + obj.id + "+'addChemo'>Chemotherapy</button> <button class='btn btn-primary'  id=" + obj.id + "+'addRad'>Radiation</button>";
+                    cell3.innerHTML = "<button class='btn btn-primary' id=" + obj.id + "+'addGen'>General History</button> <button class='btn btn-primary' onclick='updateSurgeryPatientUuid(this)'  id=" + obj.id + "addSurg data-toggle='modal' data-target='#edit-surgeries-modal'>Surgery</button> <button class='btn btn-primary' onclick='updateChemotherapyPatientUuid(this)'  id=" + obj.id + "addChemo data-toggle='modal' data-target='#edit-chemotherapies-modal'>Chemotherapy</button> <button class='btn btn-primary'  id=" + obj.id + "+'addRad'>Radiation</button>";
 
                 });
             },
@@ -47,9 +48,11 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsSurgeriesModal") }
         });
 
     });
-    function updatePatientUuid(event){
-        alert ((event.id).split('addSurg')[0]);
-        jq(".edit-surgeries-modal #patientUuidHolder").val((event.id).split('addSurg')[0]);
+    function updateSurgeryPatientUuid(event){
+        jq(".edit-surgeries-modal #surgeryPatientUuidHolder").val((event.id).split('addSurg')[0]);
+    }
+    function updateChemotherapyPatientUuid(event){
+        jq(".edit-chemotherapies-modal #chemotherapyPatientUuidHolder").val((event.id).split('addChemo')[0]);
     }
 
     function filterPatients() {

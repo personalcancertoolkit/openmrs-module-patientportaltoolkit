@@ -17,6 +17,7 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -35,6 +36,9 @@ public class TreatmentsChemotherapyModalFragmentController {
 
     public void controller(FragmentModel model, PageRequest pageRequest) {
         log.info(PPTLogAppender.appendLog("REQUEST_CHEMOTHERAPY_FRAGMENT", pageRequest.getRequest()));
+        PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
+        model.addAttribute("chemotherapyConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHEMOTHERAPY_ENCOUNTER));
+
     }
 
     public void saveNewChemotherapyForm(FragmentModel model, @RequestParam(value = "chemotherapyMeds", required = false) String chemotherapyMeds,
@@ -46,12 +50,18 @@ public class TreatmentsChemotherapyModalFragmentController {
                                         @RequestParam(value = "chemotherapyPcpPhone", required = false) String chemotherapyPcpPhone,
                                         @RequestParam(value = "chemotherapyInstitutionName", required = false) String chemotherapyInstitutionName,
                                         @RequestParam(value = "chemotherapyInstitutionCity", required = false) String chemotherapyInstitutionCity,
-                                        @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState, HttpServletRequest servletRequest) throws ParseException {
+                                        @RequestParam(value = "chemotherapyInstitutionState", required = false) String chemotherapyInstitutionState,
+                                        @RequestParam(value = "patientUuid", required = false) String patientUuid, HttpServletRequest servletRequest) throws ParseException {
 
         log.info(PPTLogAppender.appendLog("NEW_CHEMOTHERAPY", servletRequest, "chemotherapyMeds:", chemotherapyMeds, "centralLine:", centralLine, "chemoStartDate:", chemoStartDate, "chemoEndDate:", chemoEndDate, "chemotherapyPcpName:", chemotherapyPcpName, "chemotherapyPcpEmail:", chemotherapyPcpEmail, "chemotherapyPcpPhone:", chemotherapyPcpPhone, "chemotherapyInstitutionName:", chemotherapyInstitutionName, "chemotherapyInstitutionCity:", chemotherapyInstitutionCity, "chemotherapyInstitutionState:", chemotherapyInstitutionState));
         EncounterService encounterService = Context.getEncounterService();
         Encounter newChemotherapyEncounter = new Encounter();
-        newChemotherapyEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        if (patientUuid == null || patientUuid.isEmpty()){
+            newChemotherapyEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        }
+        else{
+            newChemotherapyEncounter.setPatient(Context.getPatientService().getPatientByUuid(patientUuid));
+        }
         Date date = new Date();
         newChemotherapyEncounter.setDateCreated(new Date());
         newChemotherapyEncounter.setEncounterDatetime(date);

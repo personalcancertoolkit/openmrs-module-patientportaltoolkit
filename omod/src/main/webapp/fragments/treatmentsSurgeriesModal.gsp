@@ -10,7 +10,7 @@
 
             <div class="modal-body">
                 <input id="surgeryEncounterHolder" type="hidden">
-                <input id="patientUuidHolder" type="hidden">
+                <input id="surgeryPatientUuidHolder" type="hidden">
                 <% if (surgeryConcepts) { %>
                 <% surgeryConcepts.concepts.each { questions -> %>
                 <% /* surgery Type*/ %>
@@ -149,11 +149,6 @@
                     jq('#surgeryErrorDetails').text("Please select at least one surgery");
                     jq('#surgeryErrorDetails').show();
                 } else if (jq("#surgeryEncounterHolder").val() == null || jq("#surgeryEncounterHolder").val() == '') {
-                    console.log("surgeries Type List"+surgeryTypeList);
-                    console.log("surgeryComplications"+jq("#majorComplicationsBoolSelect").val());
-                    console.log("majorComplicationsTypeAnswer"+jq("#majorComplicationsTypeAnswer").val());
-                    console.log("patientUuid"+jq("#patientUuidHolder").val());
-
                     jq.get("treatmentsSurgeriesModal/saveNewSurgeryForm.action", {
                         surgeryTypes: surgeryTypeList,
                         surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
@@ -165,7 +160,7 @@
                         surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
                         surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
                         surgeryInstitutionState: jq("#surgeryInstitutionState").val(),
-                        patientUuid: jq("#patientUuidHolder").val()
+                        patientUuid: jq("#surgeryPatientUuidHolder").val()
                     }, function () {
                     });
                     setTimeout(
@@ -185,7 +180,7 @@
                         surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
                         surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
                         surgeryInstitutionState: jq("#surgeryInstitutionState").val(),
-                        patientUuid: jq("#patientUuidHolder").val()
+                        patientUuid: jq("#surgeryPatientUuidHolder").val()
                     }, function () {
                     });
                     setTimeout(
