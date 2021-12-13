@@ -65,41 +65,35 @@ jq(document).ready(function(){
         function () {
             location.reload();
         });
-    var surgerydatePicker= jq( "#surgeryDate" ).datepicker({
-        format: 'mm/dd/yyyy'
-    }).on('changeDate', function() {
-        surgerydatePicker.hide();
-    }).data('datepicker');
-    $('.editSurgeryButton').click(
+    jq('.editSurgeryButton').click(
         function () {
-          var encounterID=this.id;
-            $("#surgeryEncounterHolder").val(encounterID);
-            var surgeryTypeList=[];
-            $('.'+encounterID+'surgeryType').each(function() {
-                surgeryTypeList.push(($( this ).attr('id').split('surgeryType')[1]));
+            var encounterID = this.id;
+            jq("#surgeryEncounterHolder").val(encounterID);
+            var surgeryTypeList = [];
+            jq('.' + encounterID + 'surgeryType').each(function () {
+                surgeryTypeList.push((jq(this).attr('id').split('surgeryType')[1]));
             });
-            $('.surgeryTypesInModal').each(function() {
-                if ( $.inArray(($( this ).val()).split('split')[1], surgeryTypeList)>-1) {
-                    $(this).prop('checked', true);
+            jq('.surgeryTypesInModal').each(function () {
+                if (jq.inArray((jq(this).val()).split('split')[1], surgeryTypeList) > -1) {
+                    jq(this).prop('checked', true);
                 }
             });
 
-            if($('#'+encounterID+'surgeryComplications').text() != null || $('#'+encounterID+'surgeryComplications').text() != ''){
-                $('#majorComplicationsBoolSelect').val('1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-                $('#majorComplicationsTypeAnswer').val($('#'+encounterID+'surgeryComplications').text());
+            if (jq('#' + encounterID + 'surgeryComplications').text() != null || jq('#' + encounterID + 'surgeryComplications').text() != '') {
+                jq('#majorComplicationsBoolSelect').val('1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                jq('#majorComplicationsTypeAnswer').val(jq('#' + encounterID + 'surgeryComplications').text());
+            } else {
+                jq('#majorComplicationsBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             }
-            else{
-                $('#majorComplicationsBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-            }
-            $("#surgeryDate").val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'surgeryDate').text())));
-           // console.log($('#'+encounterID+'surgeryPCPName').text());
-            $("#surgeonPcpName").val($('#'+encounterID+'surgeryPCPName').text());
-            $("#surgeonPcpEmail").val($('#'+encounterID+'surgeryPCPEmail').text());
-            $("#surgeonPcpPhone").val($('#'+encounterID+'surgeryPCPPhone').text());
+            jq("#surgeryDate").val($.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'surgeryDate').text())));
+            // console.log($('#'+encounterID+'surgeryPCPName').text());
+            jq("#surgeonPcpName").val(jq('#' + encounterID + 'surgeryPCPName').text());
+            jq("#surgeonPcpEmail").val(jq('#' + encounterID + 'surgeryPCPEmail').text());
+            jq("#surgeonPcpPhone").val(jq('#' + encounterID + 'surgeryPCPPhone').text());
 
-            $("#surgeryInstitutionName").val($('#'+encounterID+'surgeryinstituteName').text());
-            $("#surgeryInstitutionCity").val($('#'+encounterID+'surgeryCity').text());
-            $("#surgeryInstitutionState").val($('#'+encounterID+'surgeryState').text());
+            jq("#surgeryInstitutionName").val(jq('#' + encounterID + 'surgeryinstituteName').text());
+            jq("#surgeryInstitutionCity").val(jq('#' + encounterID + 'surgeryCity').text());
+            jq("#surgeryInstitutionState").val(jq('#' + encounterID + 'surgeryState').text());
         });
 
     var chemotherapyStartdatePicker= jq( "#chemoStartDate" ).datepicker({

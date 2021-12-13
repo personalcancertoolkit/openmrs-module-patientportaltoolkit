@@ -1,81 +1,4 @@
-<script>
-    jq(document).ready(function () {
-        let logData = '';
-        jq('#edit-surgeries-modal').on('show.bs.modal', function () {
-            let existingSurgeryTypeList = '';
-            jq('.surgeryTypesInModal').each(function () {
-                if (jq(this).is(':checked')) {
-                    existingSurgeryTypeList = existingSurgeryTypeList + (jq(this).val().split('split')[1]) + ",";
-                }
-            });
-            logData = '{"surgeryTypes":"' + existingSurgeryTypeList + '", ' +
-                '"surgeryComplications":"' + jq("#majorComplicationsBoolSelect option:selected").text() + '", ' +
-                '"majorComplicationsTypeAnswer":"' + jq("#majorComplicationsTypeAnswer").val() + '", ' +
-                '"surgeryDate":"' + jq("#surgeryDate").val() + '",' +
-                '"surgeonPcpName":"' + jq("#surgeonPcpName").val() + '",' +
-                '"surgeonPcpEmail":"' + jq("#surgeonPcpEmail").val() + '",' +
-                '"surgeonPcpPhone":"' + jq("#surgeonPcpPhone").val() + '",' +
-                '"surgeryInstitutionName":"' + jq("#surgeryInstitutionName").val() + '",' +
-                '"surgeryInstitutionCity":"' + jq("#surgeryInstitutionCity").val() + '",' +
-                '"surgeryInstitutionState":"' + jq("#surgeryInstitutionState").val() + '"}';
-        });
-        jq('#saveSurgeryButton').click(
-            function () {
-                logEvent("Treatments_Surgery_Saved",logData);
-                var surgeryTypeList = '';
-                var isCheckedExists = 0;
-                jq('.surgeryTypesInModal').each(function () {
-                    if (jq(this).is(':checked')) {
-                        surgeryTypeList = surgeryTypeList + (jq(this).val().split('split')[0]) + "split";
-                        isCheckedExists = 1;
-                    }
-                });
-                if (isCheckedExists == 0) {
-                    jq('#surgeryErrorDetails').text("Please select at least one surgery");
-                    jq('#surgeryErrorDetails').show();
-                } else if (jq("#surgeryEncounterHolder").val() == null || jq("#surgeryEncounterHolder").val() == '') {
-                    jq.get("treatmentsSurgeriesModal/saveNewSurgeryForm.action", {
-                        surgeryTypes: surgeryTypeList,
-                        surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
-                        majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
-                        surgeryDate: jq("#surgeryDate").val(),
-                        surgeonPcpName: jq("#surgeonPcpName").val(),
-                        surgeonPcpEmail: jq("#surgeonPcpEmail").val(),
-                        surgeonPcpPhone: jq("#surgeonPcpPhone").val(),
-                        surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
-                        surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
-                        surgeryInstitutionState: jq("#surgeryInstitutionState").val()
-                    }, function () {
-                    });
-                    setTimeout(
-                        function () {
-                            location.reload();
-                        }, 2000);
-                } else {
-                    jq.get("treatmentsSurgeriesModal/saveSurgeryForm.action", {
-                        encounterId: jq("#surgeryEncounterHolder").val(),
-                        surgeryTypes: surgeryTypeList,
-                        surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
-                        majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
-                        surgeryDate: jq("#surgeryDate").val(),
-                        surgeonPcpName: jq("#surgeonPcpName").val(),
-                        surgeonPcpEmail: jq("#surgeonPcpEmail").val(),
-                        surgeonPcpPhone: jq("#surgeonPcpPhone").val(),
-                        surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
-                        surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
-                        surgeryInstitutionState: jq("#surgeryInstitutionState").val()
-                    }, function () {
-                    });
-                    setTimeout(
-                        function () {
-                            location.reload();
-                        }, 2000);
-                }
-            });
-    });
-</script>
-
-<div class="modal fade modal-wide treatment_form_uniform_label_width" id="edit-surgeries-modal" role="dialog"
+<div class="modal fade modal-wide treatment_form_uniform_label_width edit-surgeries-modal" id="edit-surgeries-modal" role="dialog"
      aria-labelledby="editSurgeriesLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -87,6 +10,7 @@
 
             <div class="modal-body">
                 <input id="surgeryEncounterHolder" type="hidden">
+                <input id="patientUuidHolder" type="hidden">
                 <% if (surgeryConcepts) { %>
                 <% surgeryConcepts.concepts.each { questions -> %>
                 <% /* surgery Type*/ %>
@@ -189,3 +113,91 @@
         </div>
     </div>
 </div>
+<script>
+    jq(document).ready(function () {
+        let logData = '';
+        jq('#edit-surgeries-modal').on('show.bs.modal', function () {
+            let existingSurgeryTypeList = '';
+            jq('.surgeryTypesInModal').each(function () {
+                if (jq(this).is(':checked')) {
+                    existingSurgeryTypeList = existingSurgeryTypeList + (jq(this).val().split('split')[1]) + ",";
+                }
+            });
+            logData = '{"surgeryTypes":"' + existingSurgeryTypeList + '", ' +
+                '"surgeryComplications":"' + jq("#majorComplicationsBoolSelect option:selected").text() + '", ' +
+                '"majorComplicationsTypeAnswer":"' + jq("#majorComplicationsTypeAnswer").val() + '", ' +
+                '"surgeryDate":"' + jq("#surgeryDate").val() + '",' +
+                '"surgeonPcpName":"' + jq("#surgeonPcpName").val() + '",' +
+                '"surgeonPcpEmail":"' + jq("#surgeonPcpEmail").val() + '",' +
+                '"surgeonPcpPhone":"' + jq("#surgeonPcpPhone").val() + '",' +
+                '"surgeryInstitutionName":"' + jq("#surgeryInstitutionName").val() + '",' +
+                '"surgeryInstitutionCity":"' + jq("#surgeryInstitutionCity").val() + '",' +
+                '"surgeryInstitutionState":"' + jq("#surgeryInstitutionState").val() + '"}';
+        });
+        jq('#saveSurgeryButton').click(
+            function () {
+                logEvent("Treatments_Surgery_Saved", logData);
+                var surgeryTypeList = '';
+                var isCheckedExists = 0;
+                jq('.surgeryTypesInModal').each(function () {
+                    if (jq(this).is(':checked')) {
+                        surgeryTypeList = surgeryTypeList + (jq(this).val().split('split')[0]) + "split";
+                        isCheckedExists = 1;
+                    }
+                });
+                if (isCheckedExists == 0) {
+                    jq('#surgeryErrorDetails').text("Please select at least one surgery");
+                    jq('#surgeryErrorDetails').show();
+                } else if (jq("#surgeryEncounterHolder").val() == null || jq("#surgeryEncounterHolder").val() == '') {
+                    console.log("surgeries Type List"+surgeryTypeList);
+                    console.log("surgeryComplications"+jq("#majorComplicationsBoolSelect").val());
+                    console.log("majorComplicationsTypeAnswer"+jq("#majorComplicationsTypeAnswer").val());
+                    console.log("patientUuid"+jq("#patientUuidHolder").val());
+
+                    jq.get("treatmentsSurgeriesModal/saveNewSurgeryForm.action", {
+                        surgeryTypes: surgeryTypeList,
+                        surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
+                        majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
+                        surgeryDate: jq("#surgeryDate").val(),
+                        surgeonPcpName: jq("#surgeonPcpName").val(),
+                        surgeonPcpEmail: jq("#surgeonPcpEmail").val(),
+                        surgeonPcpPhone: jq("#surgeonPcpPhone").val(),
+                        surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
+                        surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
+                        surgeryInstitutionState: jq("#surgeryInstitutionState").val(),
+                        patientUuid: jq("#patientUuidHolder").val()
+                    }, function () {
+                    });
+                    setTimeout(
+                        function () {
+                            location.reload();
+                        }, 2000);
+                } else {
+                    jq.get("treatmentsSurgeriesModal/saveSurgeryForm.action", {
+                        encounterId: jq("#surgeryEncounterHolder").val(),
+                        surgeryTypes: surgeryTypeList,
+                        surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
+                        majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
+                        surgeryDate: jq("#surgeryDate").val(),
+                        surgeonPcpName: jq("#surgeonPcpName").val(),
+                        surgeonPcpEmail: jq("#surgeonPcpEmail").val(),
+                        surgeonPcpPhone: jq("#surgeonPcpPhone").val(),
+                        surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
+                        surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
+                        surgeryInstitutionState: jq("#surgeryInstitutionState").val(),
+                        patientUuid: jq("#patientUuidHolder").val()
+                    }, function () {
+                    });
+                    setTimeout(
+                        function () {
+                            location.reload();
+                        }, 2000);
+                }
+            });
+        var surgerydatePicker = jq("#surgeryDate").datepicker({
+            format: 'mm/dd/yyyy'
+        }).on('changeDate', function () {
+            surgerydatePicker.hide();
+        }).data('datepicker');
+    });
+</script>

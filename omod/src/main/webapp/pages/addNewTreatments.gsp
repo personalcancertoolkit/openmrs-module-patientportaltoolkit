@@ -1,4 +1,5 @@
 ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
+${ ui.includeFragment("patientportaltoolkit", "treatmentsSurgeriesModal") }
 <body>
 <div class="container bgcontent col-sm-offset-2">
     <div class="form-group col-md-8">
@@ -36,15 +37,20 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                     cell0.innerHTML = obj.GivenName + " " + obj.FamilyName;
                     cell1.innerHTML = obj.Age;
                     cell2.innerHTML = obj.MRN;
-                    cell3.innerHTML = "<button class='btn btn-primary' id=" + obj.id + "+'addGen'>General History</button> <button class='btn btn-primary'  id=" + obj.id + "+'addSurg'>Surgery</button> <button class='btn btn-primary'  id=" + obj.id + "+'addChemo'>Chemotherapy</button> <button class='btn btn-primary'  id=" + obj.id + "+'addRad'>Radiation</button>";
+                    cell3.innerHTML = "<button class='btn btn-primary' id=" + obj.id + "+'addGen'>General History</button> <button class='btn btn-primary' onclick='updatePatientUuid(this)'  id=" + obj.id + "addSurg data-toggle='modal' data-target='#edit-surgeries-modal'>Surgery</button> <button class='btn btn-primary'  id=" + obj.id + "+'addChemo'>Chemotherapy</button> <button class='btn btn-primary'  id=" + obj.id + "+'addRad'>Radiation</button>";
 
                 });
             },
             error: function (e) {
                 console.log('Error: ' + e);
             },
-        })
+        });
+
     });
+    function updatePatientUuid(event){
+        alert ((event.id).split('addSurg')[0]);
+        jq(".edit-surgeries-modal #patientUuidHolder").val((event.id).split('addSurg')[0]);
+    }
 
     function filterPatients() {
         var input, filter, table, tr, td, i, txtValue;

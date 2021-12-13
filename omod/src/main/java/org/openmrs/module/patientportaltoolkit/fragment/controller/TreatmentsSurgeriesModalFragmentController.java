@@ -17,6 +17,7 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -38,8 +39,11 @@ public class TreatmentsSurgeriesModalFragmentController {
 
     public void controller(FragmentModel model, PageRequest pageRequest) {
         log.info(PPTLogAppender.appendLog("REQUEST_SURGERIES_FRAGMENT", pageRequest.getRequest()));
-    }
+        PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
+        model.addAttribute("surgeryConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.SURGERY_ENCOUNTER));
 
+    }
+    
     public void saveNewSurgeryForm(FragmentModel model, @RequestParam(value = "surgeryTypes", required = false) String surgeryTypes,
                                    @RequestParam(value = "surgeryComplications", required = false) String surgeryComplications,
                                    @RequestParam(value = "majorComplicationsTypeAnswer", required = false) String majorComplicationsTypeAnswer,
@@ -49,12 +53,20 @@ public class TreatmentsSurgeriesModalFragmentController {
                                    @RequestParam(value = "surgeonPcpPhone", required = false) String surgeonPcpPhone,
                                    @RequestParam(value = "surgeryInstitutionName", required = false) String surgeryInstitutionName,
                                    @RequestParam(value = "surgeryInstitutionCity", required = false) String surgeryInstitutionCity,
-                                   @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState, HttpServletRequest servletRequestest) throws ParseException {
+                                   @RequestParam(value = "surgeryInstitutionState", required = false) String surgeryInstitutionState,
+                                   @RequestParam(value = "patientUuid", required = false) String patientUuid,
+                                   HttpServletRequest servletRequestest) throws ParseException {
 
         log.info(PPTLogAppender.appendLog("NEW_SURGERY", servletRequestest, "surgeryTypes:", surgeryTypes, "surgeryComplications:", surgeryComplications, "majorComplicationsTypeAnswer:", majorComplicationsTypeAnswer, "surgeryDate:", surgeryDate, "surgeonPcpName:", surgeonPcpName, "surgeonPcpEmail:", surgeonPcpEmail, "surgeonPcpPhone:", surgeonPcpPhone, "surgeryInstitutionName:", surgeryInstitutionName, "surgeryInstitutionCity:", surgeryInstitutionCity, "surgeryInstitutionState:", surgeryInstitutionState));
+        //System.out.println("surgeryTypes:"+ surgeryTypes+ "surgeryComplications:"+ surgeryComplications+ "majorComplicationsTypeAnswer:"+ majorComplicationsTypeAnswer+ "surgeryDate:"+ surgeryDate+ "surgeonPcpName:"+ surgeonPcpName+ "surgeonPcpEmail:"+ surgeonPcpEmail+ "surgeonPcpPhone:"+ surgeonPcpPhone+ "surgeryInstitutionName:"+ surgeryInstitutionName+ "surgeryInstitutionCity:"+ surgeryInstitutionCity+ "surgeryInstitutionState:"+ surgeryInstitutionState);
         EncounterService encounterService= Context.getEncounterService();
         Encounter newSurgeryEncounter = new Encounter();
-        newSurgeryEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        if (patientUuid == null || patientUuid.isEmpty()){
+            newSurgeryEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        }
+        else{
+            newSurgeryEncounter.setPatient(Context.getPatientService().getPatientByUuid(patientUuid));
+        }
         Date date = new Date();
         newSurgeryEncounter.setDateCreated(new Date());
         newSurgeryEncounter.setEncounterDatetime(date);
@@ -158,6 +170,7 @@ public class TreatmentsSurgeriesModalFragmentController {
         }
         newSurgeryEncounter.addObs(suregeryInstitution);
         newSurgeryEncounter.addObs(surgeon);
+        System.out.println("all obs:"+ newSurgeryEncounter.getAllObs().toString());
         encounterService.saveEncounter(newSurgeryEncounter);
         //log.info("Save New Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
