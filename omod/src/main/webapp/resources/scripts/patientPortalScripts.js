@@ -51,19 +51,30 @@ jq(document).ready(function(){
         }
     });
 
-    jq(".editGenHistButton").click(
-        function () {
-            jq("#genHistEncounterHolder").val(this.id);
-        });
-   var genHistdatePicker= jq( ".gen-history-date" ).datepicker({
-        format: 'mm/dd/yyyy'
-    }).on('changeDate', function() {
-       genHistdatePicker.hide();
-   }).data('datepicker');
-
     jq(".cancelModal").click(
         function () {
             location.reload();
+        });
+    jq(".editGenHistButton").click(
+        function () {
+            var encounterID = this.id;
+            jq("#genHistEncounterHolder").val(encounterID);
+            const dd = document.getElementById ('genHistoryCancerTypeSelect');
+            dd.selectedIndex = [...dd.options].findIndex (option => option.text === jq('#' + encounterID + 'cancerType').text());
+            const dd2 = document.getElementById ('genHistoryCancerStageSelect');
+            dd2.selectedIndex = [...dd2.options].findIndex (option => option.text === jq('#' + encounterID + 'cancerStage').text());
+
+            jq("#genHistoryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'diagnosisDate').text())));
+            if (jq('#' + encounterID + 'geneticOrPredisposingAbnormality').text() != null || jq('#' + encounterID + 'geneticOrPredisposingAbnormality').text() != '') {
+                jq('#genHistoryCancerabnormalitySelect').val('1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                const dd3 = document.getElementById ('genHistoryCancerabnormalityTypeSelect');
+                dd3.selectedIndex = [...dd3.options].findIndex (option => option.text === jq('#' + encounterID + 'geneticOrPredisposingAbnormality').text());
+            } else {
+                jq('#genHistoryCancerabnormalitySelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            }
+            jq("#genHistoryCancerPcpName").val(jq('#' + encounterID + 'genHistoryCancerPcpName').text());
+            jq("#genHistoryCancerPcpEmail").val(jq('#' + encounterID + 'genHistoryCancerPcpEmail').text());
+            jq("#genHistoryCancerPcpPhone").val(jq('#' + encounterID + 'genHistoryCancerPcpPhone').text());
         });
     jq('.editSurgeryButton').click(
         function () {
@@ -97,7 +108,7 @@ jq(document).ready(function(){
         });
 
 
-    $('.editChemotherapyButton').click(
+    jq('.editChemotherapyButton').click(
         function () {
             var encounterID=this.id;
             $("#chemotherapyEncounterHolder").val(encounterID);

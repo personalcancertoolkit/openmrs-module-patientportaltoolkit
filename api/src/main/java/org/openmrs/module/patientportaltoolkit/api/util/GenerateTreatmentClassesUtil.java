@@ -194,15 +194,24 @@ public class GenerateTreatmentClassesUtil {
         return treatmentEncounters;
     }
 
-    public static  Encounter generateLatestGeneralHistory(Patient patient){
-        return getLatestEncounterByTreatment(patient, PatientPortalToolkitConstants.TREATMENTSUMMARY_ENCOUNTER);
+    public static  GeneralHistory generateLatestGeneralHistory(Patient patient){
+        //return getLatestEncounterByTreatment(patient, PatientPortalToolkitConstants.TREATMENTSUMMARY_ENCOUNTER);
+        GeneralHistory genHistory=null;
+        List<GeneralHistory> genhistoryList= generateGeneralHistory(patient);
+        for (GeneralHistory gh: genhistoryList){
+            if(genHistory==null)
+                genHistory=gh;
+            else if(genHistory.getDiagnosisDate().before(gh.getDiagnosisDate()))
+                genHistory=gh;
+        }
+        return genHistory;
     }
 
     public static Encounter getLatestEncounterByTreatment(Patient patient,String treatmentType) {
         List<Encounter> encounters = Context.getEncounterService().getEncountersByPatient(patient);
         Encounter treatmentEncounter = null;
         for (Encounter encounter : encounters) {
-            if (!encounter.isVoided() && treatmentType.equals(encounter.getEncounterType().getName())) {
+            if (!encounter.getVoided() && treatmentType.equals(encounter.getEncounterType().getName())) {
                 if(treatmentEncounter==null)
                 treatmentEncounter=encounter;
                 else if(treatmentEncounter.getDateCreated().before(encounter.getDateCreated()))

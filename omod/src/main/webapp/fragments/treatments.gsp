@@ -14,8 +14,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
 
 
         <div>
-            <% if (treatmentsummary) { %>
-            <% treatmentsummary.each { genhistory -> %>
+            <% if (genhistory) { %>
             <% if(isACareGiver != 1) { %>
             <div class="pull-right">
                 <a id="${(genhistory.encounterUuid)}"
@@ -24,26 +23,25 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
             <% } %>
             <div>
                 <label>
-                    <span class="reformatText">${(genhistory.cancerType)}</span>
+                    <span id="${(genhistory.encounterUuid)}cancerType" class="reformatText">${(genhistory.cancerType)}</span>
                 &ensp;
-                    <span class="reformatText">${(genhistory.cancerStage)}</span>
+                    <span id="${(genhistory.encounterUuid)}cancerStage" class="reformatText">${(genhistory.cancerStage)}</span>
                 </label>
-                <span>&emsp;<small >${pptutil.formatDate((genhistory.diagnosisDate))}</small></span>
+                <span>&emsp;<small id="${(genhistory.encounterUuid)}diagnosisDate">${pptutil.formatDate((genhistory.diagnosisDate))}</small></span>
             </div>
             <% if (genhistory.hasGeneticOrPredisposingAbnormality) { %>
             <div>
                 <label>Genetic or Predisposing Abnormality&emsp;</label>
-                <span class="reformatText">${(genhistory.geneticOrPredisposingAbnormality)}</span>
+                <span id="${(genhistory.encounterUuid)}geneticOrPredisposingAbnormality" class="reformatText">${(genhistory.geneticOrPredisposingAbnormality)}</span>
             </div>
             <% } %>
             <div>
                 <label>Primary Care Provider&emsp;</label>
-                <span>${(genhistory.pcpName)}
-                    <small>&emsp;${(genhistory.pcpPhone)}</small>
-                    <small>&emsp;${(genhistory.pcpEmail)}</small>
+            <span><span id="${(genhistory.encounterUuid)}genHistoryCancerPcpName">${(genhistory.pcpName)}</span>
+                    <small id="${(genhistory.encounterUuid)}genHistoryCancerPcpPhone">&emsp;${(genhistory.pcpPhone)}</small>
+                    <small id="${(genhistory.encounterUuid)}genHistoryCancerPcpEmail">${(genhistory.pcpEmail)}</small>
                 </span>
             </div>
-            <% } %>
             <% } %>
         </div>
     </div>

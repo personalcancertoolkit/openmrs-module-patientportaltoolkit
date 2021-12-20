@@ -17,6 +17,7 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -33,22 +34,29 @@ public class TreatmentsGenHistoryModalFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(PageRequest pageRequest) {
+    public void controller(FragmentModel model, PageRequest pageRequest) {
         log.info(PPTLogAppender.appendLog("REQUEST_GENERALHISTORY_FRAGMENT", pageRequest.getRequest()));
+        PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
+        model.addAttribute("genHistoryConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.TREATMENTSUMMARY_ENCOUNTER));
     }
-    public void saveNewGenHistoryForm(FragmentModel model,  @RequestParam(value = "patientUuid", required = true) String patientUuid,
-                                      @RequestParam(value = "cancerType", required = true) String cancerType,
-                                      @RequestParam(value = "cancerStage", required = true) String cancerStage,
-                                      @RequestParam(value = "cancerDate", required = true) String cancerDate,
-                                      @RequestParam(value = "cancerAbnormalityBool", required = true) String cancerAbnormalityBool,
+    public void saveNewGenHistoryForm(FragmentModel model,  @RequestParam(value = "patientUuid") String patientUuid,
+                                      @RequestParam(value = "cancerType") String cancerType,
+                                      @RequestParam(value = "cancerStage") String cancerStage,
+                                      @RequestParam(value = "cancerDate") String cancerDate,
+                                      @RequestParam(value = "cancerAbnormalityBool") String cancerAbnormalityBool,
                                       @RequestParam(value = "cancerAbnormalityType", required = false) String cancerAbnormalityType,
-                                      @RequestParam(value = "genHistoryCancerPcpName", required = true) String genHistoryCancerPcpName,
-                                      @RequestParam(value = "genHistoryCancerPcpEmail", required = true) String genHistoryCancerPcpEmail,
-                                      @RequestParam(value = "genHistoryCancerPcpPhone", required = true) String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
+                                      @RequestParam(value = "genHistoryCancerPcpName") String genHistoryCancerPcpName,
+                                      @RequestParam(value = "genHistoryCancerPcpEmail") String genHistoryCancerPcpEmail,
+                                      @RequestParam(value = "genHistoryCancerPcpPhone") String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
 
         EncounterService encounterService= Context.getEncounterService();
         Encounter newGenHistoryEncounter = new Encounter();
-        newGenHistoryEncounter.setPatient(Context.getPatientService().getPatientByUuid(patientUuid));
+        if (patientUuid == null || patientUuid.isEmpty()){
+            newGenHistoryEncounter.setPatient(Context.getPatientService().getPatient(Context.getAuthenticatedUser().getPerson().getId()));
+        }
+        else{
+            newGenHistoryEncounter.setPatient(Context.getPatientService().getPatientByUuid(patientUuid));
+        }
         Date date = new Date();
         newGenHistoryEncounter.setDateCreated(new Date());
         newGenHistoryEncounter.setEncounterDatetime(date);
@@ -133,6 +141,7 @@ public class TreatmentsGenHistoryModalFragmentController {
                 }
             }
         }
+        System.out.println(newGenHistoryEncounter.getPatient());
         encounterService.saveEncounter(newGenHistoryEncounter);
         //log.info("Save new Radiation Form for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
