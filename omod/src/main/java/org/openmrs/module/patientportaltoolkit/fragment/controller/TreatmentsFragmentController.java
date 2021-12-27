@@ -47,7 +47,7 @@ public class TreatmentsFragmentController {
         Patient patient = null;
         Person person = (Person) model.get("person");
        // if(Context.getAuthenticatedUser().getPerson().isPatient()){
-        if(person.isPatient()){
+        if(person.getIsPatient()){
             Date firstSurgeryDate=null;
         patient= Context.getPatientService().getPatientByUuid(person.getUuid());
         PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
