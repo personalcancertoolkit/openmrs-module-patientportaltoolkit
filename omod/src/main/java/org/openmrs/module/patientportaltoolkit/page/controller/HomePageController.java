@@ -48,6 +48,10 @@ public class HomePageController {
                 model.addAttribute("person", person);
                 model.addAttribute("securitylevel", 2);
             }
+            else if (Context.getAuthenticatedUser().isSuperUser()){
+                model.addAttribute("person", person);
+                model.addAttribute("securitylevel", 2);
+            }
             else if(ppr !=null) {
                 model.addAttribute("person", person);
                 model.addAttribute("securitylevel", 1);
