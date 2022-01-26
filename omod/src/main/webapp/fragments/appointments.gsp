@@ -95,13 +95,13 @@
     ${ ui.includeFragment("patientportaltoolkit", "appointmentsManageModal") }
     <div style = 'height:15px;'></div>
     <input id="personUuid" value="${ person.uuid}" type="hidden">
-    <h4>Upcoming Appointments</h4>
+    <h4>Upcoming Tests and Procedures</h4>
     <div style = 'height:10px;'></div>
     <div>
         <table class="table table-hover-custom" id="due-appointments">
             <thead>
             <tr>
-                <th>Appointment Type</th>
+                <th>Test/Procedure Type</th>
                 <th>Recommended Date</th>
                 <th>Completed Date</th>
                 <% if(isACareGiver != 1) { %>
@@ -115,7 +115,7 @@
     </div>
     <div style = 'display:flex; margin-top:-20px; '>
         <div style = 'margin:auto; margin-left:0px;'>
-            <a class='btn btn-secondary-customized btn-sm pull-right' style = 'font-size:16px; margin-left:-8px;' id = 'add_new_followup_appointment_button'> Add New Appointment</a> <!-- id used in appointmentsManageModal.gsp -->
+            <a class='btn btn-secondary-customized btn-sm pull-right' style = 'font-size:16px; margin-left:-8px;' id = 'add_new_followup_appointment_button'> Add new Test or Procedure</a> <!-- id used in appointmentsManageModal.gsp -->
         </div>
     </div>
     <!--<div id="chart" width="100%">
