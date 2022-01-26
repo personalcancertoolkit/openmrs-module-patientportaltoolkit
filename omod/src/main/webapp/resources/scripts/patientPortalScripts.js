@@ -183,7 +183,7 @@ jq(document).ready(function(){
         });
     jq("#relation-delete-btn").click(
         function () {
-            jq.get("removeRelationship/removeRelationship.action", {relationshipId:  jq("#remove-relationId").val()}, function(){
+            jq.get("connections/removeRelationship/removeRelationship.action", {relationshipId:  jq("#remove-relationId").val()}, function(){
                 location.reload();
             });
         });
