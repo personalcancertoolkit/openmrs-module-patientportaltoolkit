@@ -15,6 +15,7 @@ import org.openmrs.*;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
+import org.openmrs.module.patientportaltoolkit.SecurityLayer;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService;
 import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
@@ -52,7 +53,18 @@ public class MyCancerBuddiesProfileThumbnailsFragmentController {
 
         PatientPortalRelation ppr=new PatientPortalRelation(user.getPerson(),relatedPerson);
         ppr.setRelationType(Context.getPersonService().getRelationshipType(10)); //for fellow patients
-        ppr.setShareTypeA(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(securityLayerType));
+        List<String> shareTypesList = Arrays.asList(securityLayerType.split(","));
+        SecurityLayerService securityLayerService= Context.getService(SecurityLayerService.class);
+        List<SecurityLayer> shareTypes=new ArrayList<>();
+        for (String s:shareTypesList) {
+            shareTypes.add(securityLayerService.getSecurityLayerByUuid(s));
+        }
+        Person personGettingAccess=null;
+        if (ppr.getPerson().equals(user.getPerson()))
+            personGettingAccess=ppr.getRelatedPerson();
+        else
+            personGettingAccess=ppr.getPerson();
+        ppr.setShareTypeA(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid("c21b5749-5972-425b-a8dc-15dc8f899a96"));
         ppr.setShareTypeB(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid("c21b5749-5972-425b-a8dc-15dc8f899a96")); //share posts by default
         ppr.setShareStatus(0);
         Calendar date = Calendar.getInstance();
@@ -61,6 +73,8 @@ public class MyCancerBuddiesProfileThumbnailsFragmentController {
         ppr.setExpireDate(date.getTime());
         if(relationshipNote!=null)
             ppr.setAddConnectionNote(relationshipNote);
-        Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
+        PatientPortalRelationService pprService = Context.getService(PatientPortalRelationService.class);
+        pprService.savePatientPortalRelation(ppr);
+        pprService.saveShareTypes(user.getPerson(),personGettingAccess,shareTypes);
     }
 }

@@ -34,7 +34,12 @@
                 });
         jq("#addmycancerbuddiesrelationshipbutton").click(
                 function () {
-                    jq.get("myCancerBuddiesProfileThumbnails/addRelationshipforFellowPatients.action", {relationshipPersonId: jq("#addFellowPatientPersonIdHolder").val(),securityLayerType:jq("#mycancerbuddiesrelationshipshare-connectionsaddRelationSecurityLevels").val(),relationshipNote:jq("#mycancerbuddiesrelationshipnoteInput").val()}, function(){
+                    var checkboxValuesList=[];
+                    jq(".mycancerbuddiesAddShareCheckbox:checkbox:checked").each(function () {
+                        checkboxValuesList.push(jq(this).val());
+                    });
+                    var checkboxValues=checkboxValuesList.toString();
+                    jq.get("myCancerBuddiesProfileThumbnails/addRelationshipforFellowPatients.action", {relationshipPersonId: jq("#addFellowPatientPersonIdHolder").val(),securityLayerType:checkboxValues,relationshipNote:jq("#mycancerbuddiesrelationshipnoteInput").val()}, function(){
                     });
                     setTimeout(function(){
                         location.reload();
@@ -78,11 +83,14 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="mycancerbuddiesrelationshipshare-connections">Have Access:</label>
                         <div class="col-sm-10" id="mycancerbuddiesrelationshipshare-connections">
-                            <select class="form-control" id="mycancerbuddiesrelationshipshare-connectionsaddRelationSecurityLevels">
-                                <% securityLayers.each { securityLayer -> %>
-                                <option  value="${securityLayer.getUuid()}">${securityLayer.getDescription()} </option>
-                                <% } %>
-                            </select>
+                            <% securityLayers.each { securityLayer -> %>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input mycancerbuddiesAddShareCheckbox" type="checkbox" id="mycancerbuddiesAddShareType${securityLayer.getUuid()}"
+                                           value="${securityLayer.getUuid()}"> Can see my ${securityLayer.getDescription()}
+                                </label>
+                            </div>
+                            <% } %>
                         </div>
                     </div>
                     <div class="form-group">
