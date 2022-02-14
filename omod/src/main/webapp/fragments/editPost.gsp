@@ -2,7 +2,8 @@
     jq(document).ready(function() {
         jq("#editPostUpdate").click(
             function () {
-                jq.get("statusUpdater/editSavePost.action", {postId:  jq("#edit-postId").val(), title: jq("#editPostTitle").val(), content:jq("#editPostContent").val()}, function(){
+                logEvent('clicked_MyPosts_Confirm_Update_Post',JSON.stringify({ 'postId': jq("#edit-postId").val() }));
+                jq.get("statusUpdater/editSavePost.action", { postId:  jq("#edit-postId").val(), title: jq("#editPostTitle").val(), content:jq("#editPostContent").val()}, function(){
                     location.reload();
                 });
             });
@@ -23,7 +24,7 @@
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="edit-postId">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Go Back</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="logEvent('clicked_MyPosts_GoBack_UpdatePost',JSON.stringify({'postId': jq('#edit-postId').val()}))">Go Back</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" id="editPostUpdate">Update</button>
             </div>
         </div>

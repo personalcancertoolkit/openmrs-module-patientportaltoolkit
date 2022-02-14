@@ -2,6 +2,7 @@
     jq(document).ready(function() {
         jq("#post-delete-btn").click(
             function () {
+                logEvent('clicked_MyPosts_Confirm_Delete_Post',JSON.stringify({'postId': jq("#remove-postId").val()}));
                 jq.get("statusUpdater/deletePost.action", {postId:  jq("#remove-postId").val()}, function(){
                     location.reload();
                 });
@@ -22,7 +23,7 @@
             </div>
             <div class="modal-footer">
                 <input type="hidden" id="remove-postId">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Go Back</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="logEvent('clicked_MyPosts_GoBack_RemovePost',JSON.stringify({'postId': jq('#remove-postId').val()}))">Go Back</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" id="post-delete-btn">Yes, Remove post</button>
             </div>
         </div>

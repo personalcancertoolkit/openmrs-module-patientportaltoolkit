@@ -2,6 +2,7 @@
     jq(document).ready(function() {
         jq("#statusUpdaterButton").click(
             function () {
+                logEvent('clicked_MyPosts_Create_Post','');
                 jq.get("statusUpdater/savePost.action", {title: jq("#statusUpdaterTitle").val(), content:jq("#statusUpdaterContent").val()}, function(){
                         location.reload();
                 });
@@ -18,7 +19,7 @@
             <div class="panel-footer clearfix">
                 <div class="pull-right">
                     <label><small><span class="fa fa-info-circle fa-lg"></span> &nbsp;Your post will be shared with all the people who have access to your posts, such as doctors or family members</small></label>
-                    <button id="statusUpdaterButton" class="btn btn-primary btn-sm" >Post</button>
+                    <button id="statusUpdaterButton" class="btn btn-primary btn-sm">Post</button>
                 </div>
             </div>
         </div>

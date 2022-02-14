@@ -4,10 +4,12 @@
         jq(".removeJournalButton").click(
             function () {
                 jq("#remove-postId").val(this.id.split("journalRemove")[1]);
+                logEvent('clicked_MyPosts_Remove_Post',JSON.stringify({'postId': jq("#remove-postId").val()}));
             });
         jq(".editJournalButton").click(
             function () {
                 const journalId = this.id.split("journalEdit")[1];
+                logEvent('clicked_MyPosts_Edit_Post',JSON.stringify({'postid': journalId}));
                 jq("#edit-postId").val(journalId);
                 jq("#editPostTitle").val(jq("#journalTitle"+journalId).text());
                 jq("#editPostContent").val(jq("#journalContent"+journalId).text());
@@ -16,6 +18,7 @@
             function (event) {
                 if (event.which !== 13) {
                 } else {
+                    logEvent('clicked_MyPosts_Add_Comment','');
                     const journalID = (this.id).split("commentbox")[1];
                     console.log(journalID);
                     jq.get("commentBox/saveComment.action", {
