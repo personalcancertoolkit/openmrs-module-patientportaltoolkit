@@ -27,6 +27,7 @@
 <script>
     jq('#saveNewPassword').click(
         function () {
+            logEvent('clicked_ChangePassword_saveNewPassword','');
             if (jq("#newPassword").val() == jq("#confirmPassword").val()) {
                 jq("#bothentriesNotSameError").hide();
                 jq("#passwordSaveSuccess").show();
