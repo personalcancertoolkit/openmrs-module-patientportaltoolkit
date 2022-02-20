@@ -5,6 +5,7 @@
     jq(document).ready(function(){
         jq('#mycancerbuddiesSave').click(
                 function () {
+                    logEvent('clicked_MyCancerBuddies_Thumbnail_save','');
                     //console.log( jq("#mycancerbuddiesname").text()+"-------"+jq("#mycancerbuddiesdescription").text())
                     if(jq("#mycancerbuddiesname").text() != null || jq("#mycancerbuddiesdescription").text() != '') {
                         jq.get("myCancerBuddiesProfileCard/saveMyCancerBuddiesProfileCard.action", {
@@ -21,7 +22,9 @@
 
         jq('.addFellowPatient').click(
                 function () {
+                    logEvent('clicked_MyCancerBuddies_addFellowPatient','');
                     var personId=this.id.split('addFellowPatient')[1];
+                    logEvent('clicked_MyCancerBuddies_addFellowPatient',JSON.stringify({"personId": personId}));
                     //console.log(personId);
                     jq("#addFellowPatientPersonIdHolder").val(personId);
 
@@ -34,6 +37,7 @@
                 });
         jq("#addmycancerbuddiesrelationshipbutton").click(
                 function () {
+                    logEvent('clicked_MyCancerBuddies_addRelationshipButton',JSON.stringify({"relationshipPersonId": jq("#addFellowPatientPersonIdHolder").val()}));
                     var checkboxValuesList=[];
                     jq(".mycancerbuddiesAddShareCheckbox:checkbox:checked").each(function () {
                         checkboxValuesList.push(jq(this).val());

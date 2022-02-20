@@ -2,6 +2,7 @@
     jq(document).ready(function(){
         jq('#mycancerbuddiesSave').click(
         function () {
+            logEvent('clicked_MyCancerBuddies_ProfileCard_save','');
             //console.log( jq("#mycancerbuddiesname").text()+"-------"+jq("#mycancerbuddiesdescription").text())
             if(jq("#mycancerbuddiesname").text() != null || jq("#mycancerbuddiesdescription").text() != '') {
                 jq.get("myCancerBuddiesProfileCard/saveMyCancerBuddiesProfileCard.action", {
@@ -17,6 +18,7 @@
         });
         jq('#mycancerbuddiesRegister').click(
                 function () {
+                    logEvent('clicked_MyCancerBuddiesRegister','');
                         jq.get("myCancerBuddiesProfileCard/RegisterMyCancerBuddiesProfileCard.action", function () {
                         });
                         setTimeout(
