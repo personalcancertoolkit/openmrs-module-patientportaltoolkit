@@ -6,7 +6,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
             <h5 class="pull-left">
                 Inbox
             </h5>
-            <div id="composeMessageButton" class="btn btn-default btn-sm pull-right">Compose Message</div>
+            <div id="composeMessageButton" class="btn btn-default btn-sm pull-right" onclick="logEvent('clicked_Messages_ComposeMessage_Clicked','')">Compose Message</div>
         </div>
         <hr style= "marginTop: '8px'"/>
         <ul class="media-list">
@@ -83,7 +83,7 @@ ${ ui.includeFragment("patientportaltoolkit", "composeMessage") }
     <textarea id="sendingReplyMessageText${(message.getUuid())}" class="form-control" placeholder="Write a Message"></textarea>
     <br />
     <div class="pull-right">
-        <div id="sendReplyMessageButton${(message.getUuid())}" class="btn btn-primary btn-sm sendReplyMessageButton">Reply</div>
+        <div id="sendReplyMessageButton${(message.getUuid())}" class="btn btn-primary btn-sm sendReplyMessageButton" onclick="logEvent('clicked_Messages_Reply',JSON.stringify({'messageId': this.id.split('sendReplyMessageButton',1)}))">Reply</div>
         <input type="hidden" id="replypersonId${(message.getUuid())}" value="${(message.receiver.getUuid())}" >
         <input type="hidden" id="replythreadparentid${(message.getUuid())}" value="${(message.getId())}">
 

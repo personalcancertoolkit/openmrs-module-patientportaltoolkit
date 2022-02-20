@@ -1,5 +1,5 @@
 <div id="newMessageComposeDiv" class="col-md-7 pull-left">
-    <div style="backgroundColor: '#f00', display: 'none'">
+    <div style="backgroundColor: '#f00';display: none">
         <form data-toggle="validator" role="form">
             <div class="form-group">
                 <label htmlFor="sendingto">To</label>
@@ -13,7 +13,7 @@
 
             <br />
             <div class="pull-right">
-                <div id="sendNewMessageButton" class="btn btn-primary btn-sm">Send</div>
+                <div id="sendNewMessageButton" class="btn btn-primary btn-sm" onclick="logEvent('clicked_ComposeMessage_Send',JSON.stringify({'message': jq('#sendingNewMessageText').val()}))">Send</div>
                 <input type="hidden" id="sendingPersonUUID">
             </div>
         </form>
