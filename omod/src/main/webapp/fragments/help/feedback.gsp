@@ -13,6 +13,7 @@
 
 <script>
     document.getElementById("sendFeedback").onclick = function(){
+        logEvent('clicked_Feedback_Send', JSON.stringify({ 'feedbackdata': jq("#feedbacktextdata").val()}));
         if(jq("#feedbacktextdata").val() == null || jq("#feedbacktextdata").val() == '') return alert("Please make sure your message is not empty!"); // dont submit w/ empty text data
         jq.get("feedback/sendFeedback.action", {
             feedbackMessage: jq("#feedbacktextdata").val()
