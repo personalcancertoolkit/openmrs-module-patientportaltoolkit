@@ -28,7 +28,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         <div class="form-group">
             <label class="control-label col-xs-2" for="changePassword"> Security </label>
             <div class="col-xs-10">
-                <button type="button" class="btn btn-primary" id="changePassword">Change Password</button>
+                <button type="button" class="btn btn-primary" id="changePassword" >Change Password</button>
             </div>
         </div>
         <div class="form-group">
@@ -90,6 +90,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
     <script>
         jq('#saveuserprofile').click(
             function () {
+                logEvent('clicked_EditProfile_save','');
                 var OpenMRSInstance=window.location.href;
                 jq.get("profileEdit/saveProfileEditForm.action", {
                     personId: jq("#personIdHolder").val(),
@@ -105,11 +106,13 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
             });
         jq('#changePassword').click(
             function () {
+                logEvent('clicked_EditProfile_changePassword','');
                 jq('#editProfileForm').hide();
                 jq('#changePasswordForm').show();
             });
         jq('#saveNewPasswordCancel').click(
             function () {
+                logEvent('clicked_EditProfile_savePassword_cancel','');
                 jq('#editProfileForm').show();
                 jq('#changePasswordForm').hide();
             });
