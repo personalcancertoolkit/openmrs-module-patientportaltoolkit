@@ -115,7 +115,7 @@
     </div>
     <div style = 'display:flex; margin-top:-20px; '>
         <div style = 'margin:auto; margin-left:0px;'>
-            <a class='btn btn-secondary-customized btn-sm pull-right' style = 'font-size:16px; margin-left:-8px;' id = 'add_new_followup_appointment_button'> Add new Test or Procedure</a> <!-- id used in appointmentsManageModal.gsp -->
+            <a class='btn btn-secondary-customized btn-sm pull-right' style = 'font-size:16px; margin-left:-8px;' onclick="logEvent('clicked_add_followup_appointment','')"  id = 'add_new_followup_appointment_button'> Add new Test or Procedure</a> <!-- id used in appointmentsManageModal.gsp -->
         </div>
     </div>
     <!--<div id="chart" width="100%">

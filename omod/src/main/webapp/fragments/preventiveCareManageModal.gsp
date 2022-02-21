@@ -830,12 +830,12 @@
                     <button type="button" class="btn btn-default all-parts menu-exclude-part add_new-exclude-part" id = 'managePreventive_back_button'>Back</button>
                 </div>
                 <div class="button-div pull-right ">
-                    <button type="button" class="btn btn-default modal_cancel_button modal-part all-parts">Cancel</button>
-                    <button type="button" class="btn btn-primary modal-part markCompleted-part" id="managePreventive_button_markCompleted"> Mark Completed </button>
-                    <button type="button" class="btn btn-primary modal-part modifyCompleted-part" id="managePreventive_button_modifyCompleted"> Modify Completed Record </button>
-                    <button type="button" class="btn btn-primary modal-part modify-part" id="managePreventive_button_modify"> Save Changes </button>
-                    <button type="button" class="btn btn-primary modal-part remove-part" id="managePreventive_button_remove"> Remove this Event </button>
-                    <button type="button" class="btn btn-primary modal-part add_new-part" id="managePreventive_button_add_new"> Add New Appointment </button>
+                    <button type="button" onclick="logEvent('clicked_cancel_preventive_appointment','')" class="btn btn-default modal_cancel_button modal-part all-parts">Cancel</button>
+                    <button type="button" onclick="logEvent('clicked_mark_completed_preventive_appointment','')" class="btn btn-primary modal-part markCompleted-part" id="managePreventive_button_markCompleted"> Mark Completed </button>
+                    <button type="button" onclick="logEvent('clicked_modify_completed_preventive_appointment','')" class="btn btn-primary modal-part modifyCompleted-part" id="managePreventive_button_modifyCompleted"> Modify Completed Record </button>
+                    <button type="button" onclick="logEvent('clicked_save_changes_preventive_appointment','')" class="btn btn-primary modal-part modify-part" id="managePreventive_button_modify"> Save Changes </button>
+                    <button type="button" onclick="logEvent('clicked_remove_this_event_preventive_appointment','')" class="btn btn-primary modal-part remove-part" id="managePreventive_button_remove"> Remove this Event </button>
+                    <button type="button" onclick="logEvent('clicked_add_new_appointment_preventive_appointment','')" class="btn btn-primary modal-part add_new-part" id="managePreventive_button_add_new"> Add New Appointment </button>
                 </div>
             </div>
         </div>
