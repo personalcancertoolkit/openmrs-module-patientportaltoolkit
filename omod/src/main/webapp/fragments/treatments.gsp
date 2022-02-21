@@ -50,7 +50,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
     ${ ui.includeFragment("patientportaltoolkit", "treatmentsSurgeriesModal") }
     <div class="clearfix">
         <h4>Surgeries&emsp;
-            <a class="btn btn-primary btn-sm"   data-toggle="modal" data-target="#edit-surgeries-modal">Add</a>
+            <a class="btn btn-primary btn-sm" onclick="logEvent('clicked_add_surgeries','')"  data-toggle="modal" data-target="#edit-surgeries-modal">Add</a>
         </h4>
     </div>
 
@@ -100,7 +100,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
     <div>
         <div class="clearfix">
             <h4>Chemotherapies&emsp;
-                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#edit-chemotherapies-modal">Add</a>
+                <a class="btn btn-primary btn-sm" onclick="logEvent('clicked_add_chemotherapy','')" data-toggle="modal" data-target="#edit-chemotherapies-modal">Add</a>
             </h4>
         </div>
 
@@ -150,7 +150,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
     <div>
         <div class="clearfix">
             <h4>Radiation Therapy&emsp;
-                <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#edit-radiation-modal">Add</a>
+                <a class="btn btn-primary btn-sm" onclick="logEvent('clicked_add_radiation','')" data-toggle="modal" data-target="#edit-radiation-modal">Add</a>
             </h4>
         </div>
 

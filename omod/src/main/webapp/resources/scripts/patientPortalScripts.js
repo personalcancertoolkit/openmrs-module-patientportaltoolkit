@@ -58,6 +58,7 @@ jq(document).ready(function(){
     jq(".editGenHistButton").click(
         function () {
             var encounterID = this.id;
+            logEvent('clicked_GenHistoryButton',JSON.stringify({'genHistoryEncounterId': encounterID}));
             jq("#genHistEncounterHolder").val(encounterID);
             const dd = document.getElementById ('genHistoryCancerTypeSelect');
             dd.selectedIndex = [...dd.options].findIndex (option => option.text === jq('#' + encounterID + 'cancerType').text());
@@ -79,6 +80,7 @@ jq(document).ready(function(){
     jq('.editSurgeryButton').click(
         function () {
             var encounterID = this.id;
+            logEvent('clicked_SurgeryButton',JSON.stringify({'surgeryEncounterId': encounterID}));
             jq("#surgeryEncounterHolder").val(encounterID);
             var surgeryTypeList = [];
             jq('.' + encounterID + 'surgeryType').each(function () {
@@ -111,6 +113,7 @@ jq(document).ready(function(){
     jq('.editChemotherapyButton').click(
         function () {
             var encounterID=this.id;
+            logEvent('clicked_ChemotherapyyButton',JSON.stringify({'chemotherapyEncounterId': encounterID}));
             $("#chemotherapyEncounterHolder").val(encounterID);
             var chemotherapyMedList=[];
             $('.'+encounterID+'chemotherapymed').each(function() {
@@ -155,6 +158,7 @@ jq(document).ready(function(){
     $('.editRadiationButton').click(
         function () {
             var encounterID=this.id;
+            logEvent('clicked_RadiationButton',JSON.stringify({'radiationEncounterId': encounterID}));
             $("#radiationEncounterHolder").val(encounterID);
             var radiationTypesList=[];
             $('.'+encounterID+'radiationType').each(function() {
