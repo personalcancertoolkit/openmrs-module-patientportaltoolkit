@@ -85,6 +85,7 @@ public class ConnectionsFragmentController {
         UserService userService=Context.getUserService();
 
         PatientPortalRelation ppr=Context.getService(PatientPortalRelationService.class).getPatientPortalRelation(relationshipId);
+        ppr.setRetired(false);
         PatientPortalRelation pprNew = new PatientPortalRelation(user.getPerson(),ppr.getPerson());
         pprNew.setShareStatus(1);
         //Remove when adding relationtype to PatientPortalRelation Class

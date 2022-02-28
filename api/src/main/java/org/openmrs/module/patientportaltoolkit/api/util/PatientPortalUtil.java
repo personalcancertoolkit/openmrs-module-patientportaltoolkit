@@ -17,6 +17,7 @@ import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by maurya on 3/7/16.
@@ -34,7 +35,10 @@ public class PatientPortalUtil {
     public PatientPortalRelation getRelationbetweenTwoPeople(Person person, Person requestedPerson){
         PatientPortalRelationService pprs = Context.getService(PatientPortalRelationService.class);
         PatientPortalRelation ppr=null;
-              ppr = pprs.getPatientPortalRelation(person,requestedPerson,Context.getAuthenticatedUser());
+        ppr = pprs.getPatientPortalRelation(person,requestedPerson,Context.getAuthenticatedUser());
+        if (ppr!=null && ppr.getRetired()){
+            ppr=null;
+        }
         return ppr;
     }
 }

@@ -161,13 +161,13 @@
                         pptrelation = pptutil.getRelationbetweenTwoPeople(mycancerbuddiesperson.person, person)
                     }
 
-                    if (pptrelation  && pptrelation.retired == false && pptrelation.shareStatus==0) { 
+                    if (pptrelation && pptrelation.shareStatus==0) {
                         the_button_to_display = '<hr/><span class="fa fa-hourglass-half text-warning"></span> <label class="text-warning"> Request Pending</label>';
                     }
-                    if (pptrelation  && pptrelation.retired == false && pptrelation.shareStatus==1) {
+                    if (pptrelation && pptrelation.shareStatus==1) {
                         the_button_to_display = '<hr/><span class="fa fa-smile-o text-success"></span> <label class="text-success">Connected</label>';
                     }
-                    if (pptrelation==null || pptrelation.getShareStatus()==2) { 
+                    if (pptrelation==null || pptrelation.getShareStatus()==2) {
                        the_button_to_display = '<hr/><button id="addFellowPatient'+mycancerbuddiesperson.person.uuid+'" class="btn btn-info btn-xs addFellowPatient" role="button" data-toggle="modal" data-target="#add-mycancerbuddies-relationship-modal">Add Connection</button>';
                     }
                 } 
