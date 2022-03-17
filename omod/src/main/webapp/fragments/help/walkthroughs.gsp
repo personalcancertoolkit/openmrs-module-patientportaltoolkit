@@ -36,10 +36,10 @@
     Symptom Management
     <br>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/ACFftQ15_Ew?rel=0" frameborder="0" allowfullscreen></iframe>
-
+    <!--  Removing Healthy Behaviour for patient study
     <br><Br>
     Healthy Behavior
     <br>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/UhN0tl_sOdo?rel=0" frameborder="0" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/UhN0tl_sOdo?rel=0" frameborder="0" allowfullscreen></iframe>-->
 
 </div>

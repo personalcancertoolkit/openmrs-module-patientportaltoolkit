@@ -20,7 +20,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
     <li onclick="logEvent('COMMUNITIES_TAB_CLICKED','')"><a data-toggle="tab" href="#community">Communities</a></li>
     <li onclick="logEvent('SYMPTOM_MANAGEMENT_TAB_CLICKED','')"><a data-toggle="tab" href="#symptomManagement">Symptom Management</a></li>
     <li onclick="logEvent('PREVENTIVE_CARE_TAB_CLICKED','')"><a data-toggle="tab" href="#preventiveCare">Preventive Care</a></li>
-    <li onclick="logEvent('HEALTHY_BEHAVIOURS_TAB_CLICKED','')"><a data-toggle="tab" href="#healthyBehaviors">Healthy Behaviors</a></li>
+        <!-- Removing Healthy Behaviour for patient study <li onclick="logEvent('HEALTHY_BEHAVIOURS_TAB_CLICKED','')"><a data-toggle="tab" href="#healthyBehaviors">Healthy Behaviors</a></li> -->
     </ul>
     <script>
         console.log("test : ${person}"  )
