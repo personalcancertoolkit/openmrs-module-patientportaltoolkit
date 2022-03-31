@@ -69,8 +69,8 @@ public class ToolkitResourceUtil {
         personObject.put("MiddleName", person.getMiddleName());
         personObject.put("FamilyName", person.getFamilyName());
         personObject.put("Age", person.getAge());
-        personObject.put("MRN",Context.getPatientService().getPatientByUuid(person.getUuid()).getPatientIdentifier().getIdentifier());
-
+        if (person.getIsPatient())
+            personObject.put("MRN", Context.getPatientService().getPatientByUuid(person.getUuid()).getPatientIdentifier().getIdentifier());
         if (person.getBirthdate() != null)
             personObject.put("DOB", new SimpleDateFormat().format(new Date(person.getBirthdate().getTime())));
         personObject.put("Gender", person.getGender());
