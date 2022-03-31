@@ -1,5 +1,5 @@
 <div id="newMessageComposeDiv" class="col-md-7 pull-left">
-    <div style="backgroundColor: '#f00';display: none">
+    <div style="backgroundColor: '#f00'">
         <form data-toggle="validator" role="form">
             <div class="form-group">
                 <label htmlFor="sendingto">To</label>
