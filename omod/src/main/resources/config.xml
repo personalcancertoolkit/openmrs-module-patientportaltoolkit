@@ -96,6 +96,16 @@
 		<defaultValue>pleaseSetThisValue</defaultValue>
 		<description>Password for the Sending Email</description>
 	</globalProperty>
+	<globalProperty>
+		<property>${project.parent.artifactId}.smtpHost</property>
+		<defaultValue>smtp.gmail.com</defaultValue>
+		<description>SMTP Host for Sending Email</description>
+	</globalProperty>
+	<globalProperty>
+		<property>${project.parent.artifactId}.smtpPort</property>
+		<defaultValue>465</defaultValue>
+		<description>SMTP Port for sending email</description>
+	</globalProperty>
 
 	<!-- Maps hibernate file's, if present -->
 	<mappingFiles>
