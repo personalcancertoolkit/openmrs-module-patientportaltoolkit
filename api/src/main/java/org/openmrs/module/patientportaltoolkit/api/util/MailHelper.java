@@ -27,10 +27,10 @@ public class MailHelper {
         Properties props = new Properties();
         props.put("mail.smtp.host", Context.getAdministrationService().getGlobalProperty("patientportaltoolkit.smtpHost"));
         props.put("mail.smtp.socketFactory.port", Context.getAdministrationService().getGlobalProperty("patientportaltoolkit.smtpPort"));
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
+      //  props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", Context.getAdministrationService().getGlobalProperty("patientportaltoolkit.smtpPort"));
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
 
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
