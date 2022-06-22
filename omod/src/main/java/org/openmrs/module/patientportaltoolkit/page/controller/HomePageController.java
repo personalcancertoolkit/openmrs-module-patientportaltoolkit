@@ -40,7 +40,7 @@ public class HomePageController {
             PatientPortalRelationService patientPortalRelationService=Context.getService(PatientPortalRelationService.class);
             SecurityLayerService securityLayerService=Context.getService(SecurityLayerService.class);
            Person person = Context.getPersonService().getPersonByUuid(personId);
-            log.info(PPTLogAppender.appendLog(token, pageRequest.getRequest(),"RequestedUserId:",Context.getUserService().getUsersByPerson(person,false).get(0).getSystemId(),"RequestedUserName:", Context.getUserService().getUsersByPerson(person,false).get(0).getUsername()));
+            //There is an index out of bounds error in this log currently - log.info(PPTLogAppender.appendLog(token, pageRequest.getRequest(),"RequestedUserId:",Context.getUserService().getUsersByPerson(person,false).get(0).getSystemId(),"RequestedUserName:", Context.getUserService().getUsersByPerson(person,false).get(0).getUsername()));
             PatientPortalRelation ppr = patientPortalRelationService.getPatientPortalRelation(person,Context.getAuthenticatedUser().getPerson(),Context.getAuthenticatedUser());
 
             //if(ppr !=null && ppr.getShareStatus() == 1 && (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_MEDICAL) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH))) {

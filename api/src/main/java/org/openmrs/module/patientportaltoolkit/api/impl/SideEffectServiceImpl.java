@@ -114,12 +114,19 @@ public class SideEffectServiceImpl extends BaseOpenmrsService implements SideEff
         enc = findCancerTreatment(patient, SURGERY_ENCOUNTER);
         if(enc != null) {
             //get the patient's cancer type
+            try {
+
             Concept cancerType = getCancerType(patient);
            if (cancerType.getUuid().equals("834a9412-9bdd-4bfd-917f-7e881dcf92af"))
                patientSideEffects.addAll(allSideEffectsMap.get("Rectal Cancer"));
             else if (cancerType.getUuid().equals("9ce42960-5d1a-4a50-a135-9b459a36d8db"))
                 patientSideEffects.addAll(allSideEffectsMap.get("Colon Cancer"));
+            }
+            catch (NullPointerException e){
+                System.out.println("Cancer Type is null");
+            }
         }
+
         return patientSideEffects;
     }
 
@@ -153,10 +160,6 @@ public class SideEffectServiceImpl extends BaseOpenmrsService implements SideEff
     }
 
     /**
-     *
-     *
-     * @param observationsByPersonAndConcept
-     * @return
      */
     private Obs findLatest(List<Obs> observations) {
         Obs latest = null;
