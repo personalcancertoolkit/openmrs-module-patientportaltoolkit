@@ -33,7 +33,7 @@
             jq("#emailIdgroup").addClass("has-error");
             return;
         }
-        //alert(document.getElementById("forgotPasswordEmail").value);
+        console.log(document.getElementById("forgotPasswordEmail").value);
         jq.get(OpenMRSInstance.split("/openmrs")[0]+"/openmrs/ws/patientportaltoolkit/sendForgotPasswordEmail/"+document.getElementById("forgotPasswordEmail").value, function(){
             jq("#forgotPasswordEmailSent").show();
         });

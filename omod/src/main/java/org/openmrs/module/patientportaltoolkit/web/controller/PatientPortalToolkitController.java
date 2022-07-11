@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.openmrs.Person;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
@@ -39,23 +40,35 @@ public class PatientPortalToolkitController {
     @RequestMapping( value = "/patientportaltoolkit/sendForgotPasswordEmail/{emailId:.+}")
     @ResponseBody
     public void getSendForgotPasswordEmail(@PathVariable( "emailId" ) String emailId, HttpServletRequest httpRequest)
-            throws Exception
     {
-        org.openmrs.api.PersonService ps = Context.getPersonService();
-        Person forgotPasswordPerson=null;
-        List<Person> people = ps.getPeople(emailId,false);
-        for (Person p:people){
-            if (p.getAttribute("Email").getValue().equals(emailId))
-                forgotPasswordPerson=p;
+        System.out.println("In Forgot Password Email method");
+        try {
+            org.openmrs.api.PersonService ps = Context.getPersonService();
+            List<Person> people = ps.getPeople(emailId,true);
+            Person person = new Person();
+                for (Person p:people){
+                  if (p.getAttribute("Email").getValue().equals(emailId))
+                      person=p;
+                 }
+                if (person!=null){
+                PasswordChangeRequest passwordChangeRequest = new PasswordChangeRequest(new Date(), UUID.randomUUID().toString(), Context.getUserService().getUsersByPerson(person, false).get(0));
+                PatientPortalMiscService ppms = Context.getService(PatientPortalMiscService.class);
+                PasswordChangeRequest savedPasswordChangeRequest = ppms.savePasswordChangeRequest(passwordChangeRequest);
+                String sendingRequestURL = "https://sphere.regenstrief.org/openmrs/ws/patientportaltoolkit/";
+                    //sendingReuqestURL = sendingReuqestURL.split("sendForgotPasswordEmail")[0];
+                sendingRequestURL = sendingRequestURL + "confirmForgotPasswordEmail/" + savedPasswordChangeRequest.getUuid() + "/" + emailId;
+                System.out.println("Before Sending request to mailhelper");
+                System.out.println("Name= " + person.getPersonName() + "sending request uri = " + sendingRequestURL + "emailid= " + emailId);
+                MailHelper.sendMail("Forgot Password", "Hello" + person.getPersonName() + "\nWe have received a password change request for your personal cancer toolkit account.\n" +
+                        "If this was you, please click on this link -" + sendingRequestURL + " \n If this request was not made by you, please reply back to this email to report this issue.", emailId);
+            }
+            else {
+                System.out.println("No user found with email: " + emailId);
+            }
         }
-        PasswordChangeRequest passwordChangeRequest =new PasswordChangeRequest(new Date(), UUID.randomUUID().toString(),Context.getUserService().getUsersByPerson(forgotPasswordPerson,false).get(0));
-        PatientPortalMiscService ppms = Context.getService(PatientPortalMiscService.class);
-        PasswordChangeRequest savedPasswordChangeRequest=ppms.savePasswordChangeRequest(passwordChangeRequest);
-        String sendingReuqestURL=httpRequest.getRequestURL().toString();
-        sendingReuqestURL=sendingReuqestURL.split("sendForgotPasswordEmail")[0];
-        sendingReuqestURL=sendingReuqestURL+"confirmForgotPasswordEmail/"+savedPasswordChangeRequest.getUuid()+"/"+emailId;
-        MailHelper.sendMail("Forgot Password", "Hello"+ forgotPasswordPerson.getPersonName()+"\nYou have requested a password change if yes, Please click on this link - "+sendingReuqestURL+" to change your password\n If this request was not made by you, please reply back to this email to report this issue.", emailId);
-
+        catch (Exception e){
+            System.out.println(e);
+        }
     }
 
     @RequestMapping( value = "/patientportaltoolkit/confirmForgotPasswordEmail/{uuid}/{emailId:.+}")
