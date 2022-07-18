@@ -59,8 +59,8 @@ public class PatientPortalToolkitController {
                 sendingRequestURL = sendingRequestURL + "confirmForgotPasswordEmail/" + savedPasswordChangeRequest.getUuid() + "/" + emailId;
                 System.out.println("Before Sending request to mailhelper");
                 System.out.println("Name= " + person.getPersonName() + "sending request uri = " + sendingRequestURL + "emailid= " + emailId);
-                MailHelper.sendMail("Forgot Password", "Hello" + person.getPersonName() + "\nWe have received a password change request for your personal cancer toolkit account.\n" +
-                        "If this was you, please click on this link -" + sendingRequestURL + " \n If this request was not made by you, please reply back to this email to report this issue.", emailId);
+                MailHelper.sendMail("Sphere - Forgot Password", "Hello " + person.getPersonName() + ", \n\nWe have received a password change request for your SPHERE personal cancer toolkit account.\n\n" +
+                        "If this was you, please click on this LINK to change your password -" + sendingRequestURL + " \n\n If you did not request a password change request, do not click on the link above. Please notify the study team at sphere@iupui.edu.", emailId);
             }
             else {
                 System.out.println("No user found with email: " + emailId);
@@ -95,7 +95,7 @@ public class PatientPortalToolkitController {
                String newPassword = String.valueOf(PasswordUtil.getNewPassword());
                Context.getUserService().changePassword(u,newPassword);
                pcr.setRetired(true);
-               MailHelper.sendMail("Forgot Password", "Hello"+ forgotPasswordPerson.getPersonName()+"\nYour password has been changed based on your request\n\n"+ newPassword +" \n\nIf this request was not made by you, please reply back to this email to report this issue.", emailId);
+               MailHelper.sendMail("Sphere - Forgot Password", "Hello "+ forgotPasswordPerson.getPersonName()+"\n\nYour password has been changed based on your request. Your new credentials are:\n\nUsername: "+u.getUsername()+"\n Password: "+ newPassword +" \n\nIf this request was not made by you, please reply back to this email to report this issue.", emailId);
            }
            else{
                pcr.setRetired(true);

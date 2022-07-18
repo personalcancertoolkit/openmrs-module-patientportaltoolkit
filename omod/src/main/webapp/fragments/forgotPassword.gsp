@@ -4,15 +4,15 @@
 
         <div id="forgotPasswordEmailError" class="alert alert-danger" role="alert" style="display: none">
            <span class="fa fa-exclamation-circle fa-lg"></span>
-            Error: Enter a valid email address
+            Error: Please enter a valid email address
         </div>
 
         <div id="forgotPasswordEmailSent" class="alert alert-success" role="alert" style="display: none">
             <span class="fa fa-exclamation-circle fa-lg"></span>
-            An email has been sent with further instructions
+            If an account exists with this email, you will receive an email with further instructions.
         </div>
         <div id="emailIdgroup" class="form-group">
-            <label class="control-label" style = 'font-weight:300;' for="forgotPasswordEmail">Email ID</label>
+            <label class="control-label" style = 'font-weight:300;' for="forgotPasswordEmail">Email</label>
                 <input id = 'forgotPasswordEmail' type="email" class="form-control"/>
         </div>
         <input type="submit" name="sendEmail" class="login loginmodal-submit" value="Send Email" onclick = 'sendFogotPasswordEmail()'>
