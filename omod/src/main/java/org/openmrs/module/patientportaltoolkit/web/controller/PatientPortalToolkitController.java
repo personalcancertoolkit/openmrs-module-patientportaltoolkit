@@ -102,11 +102,31 @@ public class PatientPortalToolkitController {
            }
             ppms.savePasswordChangeRequest(pcr);
         }
-        String sendingReuqestURL=httpRequest.getRequestURL().toString();
-        sendingReuqestURL=sendingReuqestURL.split("ws")[0]+"login.htm?passwordChangeRequest=Success";
-        httpServletResponse.sendRedirect(sendingReuqestURL);
+        String sendingRequestURL=httpRequest.getRequestURL().toString();
+        sendingRequestURL=sendingRequestURL.split("ws")[0]+"login.htm?passwordChangeRequest=Success";
+        httpServletResponse.sendRedirect(sendingRequestURL);
 
     }
+
+    @RequestMapping( value = "/patientportaltoolkit/newPatientUser/{emailId:.+}")
+    @ResponseBody
+    public void changePasswordEmail(@PathVariable( "emailId" ) String emailId)
+            throws Exception
+    {
+        UserService us=Context.getUserService();
+        org.openmrs.api.PersonService ps = Context.getPersonService();
+        Person forgotPasswordPerson=null;
+        List<Person> people = ps.getPeople(emailId,false);
+        for (Person p:people){
+            if (p.getAttribute("Email").getValue().equals(emailId))
+                forgotPasswordPerson=p;
+        }
+        User u=us.getUsersByPerson(forgotPasswordPerson,false).get(0);
+        String newPassword = String.valueOf(PasswordUtil.getNewPassword());
+        Context.getUserService().changePassword(u,newPassword);
+        MailHelper.sendMail("Sphere - New Account", "Hello "+ forgotPasswordPerson.getPersonName()+"\n\nAn account has been created in the SPHERE portal - https://sphere.regenstrief.org/. Your login credentials are:\n\nUsername: "+u.getUsername()+"\n Password: "+ newPassword +" \n\nIf this request was not made by you, please reply back to this email to report this issue.", emailId);
+    }
+
     @RequestMapping( value = "/patientportaltoolkit/logEvent")
     @ResponseBody
     public String logEvent(@RequestParam(value = "event", required = true) String event,

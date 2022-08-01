@@ -12,6 +12,7 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                 let personUUID = "";
                 let personData = "";
                 let userData = "";
+                let personEmail=jq("#patientEmail").val();
                 //get a new identifier
                 await jq.ajax({
                     type: "GET",
@@ -29,7 +30,7 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                                 birthdate: jq("#inputBD").val(),
                                 attributes: [{
                                     attributeType: "a38daf97-030b-4c3e-8d08-0f910cac0cd5",
-                                    value: jq("#personEmail").val()
+                                    value: personEmail
                                 }],
                                 addresses: [{
                                     address1: jq("#patientAddress1").val(),
@@ -58,10 +59,20 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                     url: window.location.href.split("/patientportaltoolkit")[0] + "/ws/rest/v1/patient",
                     data: JSON.stringify(personData),
                     success: function (response) {
+                        const chars = "abcdefghijklmnopqrstuvwxyz!@#%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                        const nums ="0123456789"
+                        const passwordLength = 11;
+                        let password = "";
+                        for (let i = 0; i <= passwordLength; i++) {
+                            let randomNumber = Math.floor(Math.random() * chars.length);
+                            password += chars.substring(randomNumber, randomNumber +1);
+                        }
+                        let randomNumber = Math.floor(Math.random() * nums.length);
+                        password += nums.substring(randomNumber, randomNumber +1);
                         personUUID = response.uuid;
                         userData = {
                             username: jq("#patientUserName").val(),
-                            password: jq("#patientPassword").val(),
+                            password: password,
                             person: personUUID,
                             roles: [
                                 "d619b5ac-7304-4042-8de9-ac5c7219c027"
@@ -89,6 +100,16 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                 }).promise();
                 await jq.ajax({
                     type: "GET",
+                    url: window.location.href.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/newPatientUser/"+personEmail,
+                    success: function (response) {
+                        console.log("Sent new account email");
+                    },
+                    error: function (e) {
+                        console.log('Error: ' + e);
+                    },
+                }).promise();
+                await jq.ajax({
+                    type: "GET",
                     url: window.location.href.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/createinitialpreferences/" + personUUID,
                     success: function (response) {
                         console.log("Added person Preferences");
@@ -99,7 +120,6 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                         console.log('Error: ' + e);
                     },
                 }).promise();
-
             });
     });
 </script>
@@ -172,12 +192,6 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
         </div>
     </div>
 
-    <div class="form-row row">
-        <div class="form-group col-md-6">
-            <label for="patientPassword">Password</label>
-            <input type="password" class="form-control patInput" id="patientPassword">
-        </div>
-    </div>
 
     <div class="form-row row">
         <div class="form-group col-md-6">
