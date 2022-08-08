@@ -124,7 +124,7 @@ public class PatientPortalToolkitController {
         User u=us.getUsersByPerson(forgotPasswordPerson,false).get(0);
         String newPassword = String.valueOf(PasswordUtil.getNewPassword());
         Context.getUserService().changePassword(u,newPassword);
-        MailHelper.sendMail("Sphere - New Account", "Hello "+ forgotPasswordPerson.getPersonName()+"\n\nAn account has been created in the SPHERE portal - https://sphere.regenstrief.org/. Your login credentials are:\n\nUsername: "+u.getUsername()+"\n Password: "+ newPassword +" \n\nIf this request was not made by you, please reply back to this email to report this issue.", emailId);
+        MailHelper.sendMail("Sphere - New Account", "Hello "+ forgotPasswordPerson.getPersonName()+"\n\nAn account has been created in the SPHERE portal - https://sphere.regenstrief.org/. Your login credentials are:\n\nUsername: "+u.getUsername()+"\n Password: "+ newPassword +"\n\n Please change the password after logging into the system by clicking your username on top right menu bar.\n\nIf this request was not made by you, please reply back to this email to report this issue.", emailId);
     }
 
     @RequestMapping( value = "/patientportaltoolkit/logEvent")
