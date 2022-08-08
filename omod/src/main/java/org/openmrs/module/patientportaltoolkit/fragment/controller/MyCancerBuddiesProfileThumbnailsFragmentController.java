@@ -42,28 +42,14 @@ public class MyCancerBuddiesProfileThumbnailsFragmentController {
         model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());
     }
 
-    public void addRelationshipforFellowPatients(FragmentModel model, @RequestParam(value = "securityLayerType", required = true) String securityLayerType,  @RequestParam(value = "relationshipPersonId", required = true) String relationshipPersonId, @RequestParam(value = "relationshipNote", required = false) String relationshipNote, HttpServletRequest servletRequest) {
+    public void addRelationshipforFellowPatients(FragmentModel model, @RequestParam(value = "relationshipPersonId", required = true) String relationshipPersonId, @RequestParam(value = "relationshipNote", required = false) String relationshipNote, HttpServletRequest servletRequest) {
         log.info(PPTLogAppender.appendLog("ADD_FellowPatientRelation", servletRequest));
 
         User user = Context.getAuthenticatedUser();
-        UserService userService=Context.getUserService();
         //check if person already exists in the system
-
         Person relatedPerson = Context.getPersonService().getPersonByUuid(relationshipPersonId);
-
         PatientPortalRelation ppr=new PatientPortalRelation(user.getPerson(),relatedPerson);
         ppr.setRelationType(Context.getPersonService().getRelationshipType(10)); //for fellow patients
-        List<String> shareTypesList = Arrays.asList(securityLayerType.split(","));
-        SecurityLayerService securityLayerService= Context.getService(SecurityLayerService.class);
-        List<SecurityLayer> shareTypes=new ArrayList<>();
-        for (String s:shareTypesList) {
-            shareTypes.add(securityLayerService.getSecurityLayerByUuid(s));
-        }
-        Person personGettingAccess=null;
-        if (ppr.getPerson().equals(user.getPerson()))
-            personGettingAccess=ppr.getRelatedPerson();
-        else
-            personGettingAccess=ppr.getPerson();
         ppr.setShareTypeA(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid("c21b5749-5972-425b-a8dc-15dc8f899a96"));
         ppr.setShareTypeB(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid("c21b5749-5972-425b-a8dc-15dc8f899a96")); //share posts by default
         ppr.setShareStatus(0);
@@ -75,6 +61,5 @@ public class MyCancerBuddiesProfileThumbnailsFragmentController {
             ppr.setAddConnectionNote(relationshipNote);
         PatientPortalRelationService pprService = Context.getService(PatientPortalRelationService.class);
         pprService.savePatientPortalRelation(ppr);
-        pprService.saveShareTypes(user.getPerson(),personGettingAccess,shareTypes);
     }
 }
