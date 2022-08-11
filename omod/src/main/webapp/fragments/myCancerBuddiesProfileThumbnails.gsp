@@ -97,7 +97,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="mycancerbuddiesrelationshipnote">Add a note?</label>
                         <div class="col-sm-10" id="mycancerbuddiesrelationshipnote">
-                            <textarea id="mycancerbuddiesrelationshipnoteInput"></textarea>
+                            <textarea id="mycancerbuddiesrelationshipnoteInput" placeholder="If you want to connect with other cancer survivors please add a note of introduction here..." rows="4" cols="30"></textarea>
                         </div>
                     </div>
                 </form>
