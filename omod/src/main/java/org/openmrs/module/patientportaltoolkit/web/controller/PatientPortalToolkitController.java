@@ -60,7 +60,7 @@ public class PatientPortalToolkitController {
                 System.out.println("Before Sending request to mailhelper");
                 System.out.println("Name= " + person.getPersonName() + "sending request uri = " + sendingRequestURL + "emailid= " + emailId);
                 MailHelper.sendMail("Sphere - Forgot Password", "Hello " + person.getPersonName() + ", \n\nWe have received a password change request for your SPHERE personal cancer toolkit account.\n\n" +
-                        "If this was you, please click on this LINK to change your password -" + sendingRequestURL + " \n\n If you did not request a password change request, do not click on the link above. Please notify the study team at sphere@iupui.edu.", emailId);
+                        "If this was you, please click on this LINK to change your password -" + sendingRequestURL + "\n\n(If the link on the line above is not clickable, you can copy it into your browser)\n\nIf you did not request a password change request, do not click on the link above. Please notify the study team at sphere@iupui.edu.", emailId);
             }
             else {
                 System.out.println("No user found with email: " + emailId);
@@ -95,7 +95,7 @@ public class PatientPortalToolkitController {
                String newPassword = String.valueOf(PasswordUtil.getNewPassword());
                Context.getUserService().changePassword(u,newPassword);
                pcr.setRetired(true);
-               MailHelper.sendMail("Sphere - Forgot Password", "Hello "+ forgotPasswordPerson.getPersonName()+"\n\nYour password has been changed based on your request. Your new credentials are:\n\nUsername: "+u.getUsername()+"\n Password: "+ newPassword +" \n\nIf this request was not made by you, please reply back to this email to report this issue.", emailId);
+               MailHelper.sendMail("Sphere - Forgot Password", "Hello "+ forgotPasswordPerson.getPersonName()+"\n\nYour password has been changed based on your request. Your new credentials are:\n\nUsername: "+u.getUsername()+"\n Password: "+ newPassword +"\n\nOnce you log in, please change your password to something you can easily remember by clicking on your username in the top banner and then clicking on the \"Change Password\" button."+"\n\nIf this request was not made by you, please reply back to this email to report this issue.", emailId);
            }
            else{
                pcr.setRetired(true);
@@ -124,7 +124,7 @@ public class PatientPortalToolkitController {
         User u=us.getUsersByPerson(forgotPasswordPerson,false).get(0);
         String newPassword = String.valueOf(PasswordUtil.getNewPassword());
         Context.getUserService().changePassword(u,newPassword);
-        MailHelper.sendMail("Sphere - New Account", "Hello "+ forgotPasswordPerson.getPersonName()+"\n\nAn account has been created in the SPHERE portal - https://sphere.regenstrief.org/. Your login credentials are:\n\nUsername: "+u.getUsername()+"\nPassword: "+ newPassword +"\n\nPlease change the password after logging into the system by clicking your username on top right menu bar.\n\nIf this request was not made by you, please reply back to this email to report this issue.", emailId);
+        MailHelper.sendMail("Sphere - New Account", "Hello "+ forgotPasswordPerson.getPersonName()+"\n\nAn account has been created in the SPHERE portal - https://sphere.regenstrief.org/. Your login credentials are:\n\nUsername: "+u.getUsername()+"\nPassword: "+ newPassword +"\n\nOnce you log in, please change your password to something you can easily remember by clicking on your username in the top banner and then clicking on the \"Change Password\" button."+"\n\nIf this request was not made by you, please reply back to this email to report this issue.", emailId);
     }
 
     @RequestMapping( value = "/patientportaltoolkit/logEvent")
