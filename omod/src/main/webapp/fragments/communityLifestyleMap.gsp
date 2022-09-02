@@ -478,9 +478,9 @@ var user_location_handler = {
     }, 
     handle_errors : function(error) {  
         switch(error.code)  {  
-            case error.PERMISSION_DENIED: alert("User did not share geolocation data. " + this.default_location + " will be used as default location.");  break;  
+            case error.PERMISSION_DENIED: console.log("User did not share geolocation data. " + this.default_location + " will be used as default location.");  break;
             case error.POSITION_UNAVAILABLE: 
-                alert("Geolocation could not detect current position.");  
+                console.log("Geolocation could not detect current position.");
                 this.stop_watchlocation();
                 //this.initiate_watchlocation();
                 break;  
@@ -541,7 +541,7 @@ var search_options_handler = {
         //console.log(last_found_user_position);
         if(last_found_user_position == null){
             alert("Geolocation has not detected current position yet. Map will be updated when data becomes available.");
-            // note, we dont need to set a try again timeout because in this case either the request will soon respond and update the map on its own 
+            // note, we dont need to set a try again timeout because in this case either the request will soon respond and update the map on its own
             //                                                                        or there is a failure with the geolocation system and it will never come.
             return;
         }
@@ -605,7 +605,7 @@ window.addEventListener("load", function(){
     window.addEventListener('unload', function(){
         user_location_handler.stop_watchlocation();
     });
-    user_location_handler.initiate_watchlocation();
+   // user_location_handler.initiate_watchlocation();
 
     
     
