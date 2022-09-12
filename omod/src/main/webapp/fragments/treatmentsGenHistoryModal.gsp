@@ -47,32 +47,6 @@
                 <% } %>
                 <% } %>
 
-                <% genHistoryConcepts.concepts.each { question -> %>
-                <% /* cancer abnormality*/ %>
-                <% if (question.uuid == "395878ae-5108-4aad-8ad8-9b88e812d278") { %>
-                <form class="form-inline" role="form"><label class="reformatText">${(question.getName())}</label>
-                    <select class="form-control" id="genHistoryCancerabnormalitySelect">
-                        <% question.getAnswers().each { answers -> %>
-                        <option value="${(answers.answerConcept.uuid)}"
-                                class="reformatText">${(answers.answerConcept.getName())}</option>
-                        <% } %>
-                    </select></form>
-                <% } %>
-                <% } %>
-
-                <% genHistoryConcepts.concepts.each { question -> %>
-                <% /* cancer abnormality type*/ %>
-                <% if (question.uuid == "8719adbe-0975-477f-a95f-2fae4d6cbdae") { %>
-                <form class="form-inline" role="form"><label class="reformatText">${(question.getName())}</label>
-                    <select class="form-control" id="genHistoryCancerabnormalityTypeSelect">
-                        <% question.getAnswers().each { answers -> %>
-                        <option value="${(answers.answerConcept.uuid)}"
-                                class="reformatText">${(answers.answerConcept.getName())}</option>
-                        <% } %>
-                    </select></form>
-                <% } %>
-                <% } %>
-
                 <label>Primary Care Physician :</label>
                 <br><br>
                 <% genHistoryConcepts.concepts.each { question -> %>
@@ -118,8 +92,6 @@
             logData = '{"cancerType":"' + jq("#genHistoryCancerTypeSelect option:selected").text() + '", ' +
                 '"cancerStage":"' + jq("#genHistoryCancerStageSelect option:selected").text() + '", ' +
                 '"cancerDate":"' + jq("#genHistoryDate").val() + '", ' +
-                '"cancerAbnormalityBool":"' + jq("#genHistoryCancerabnormalitySelect option:selected").text() + '",' +
-                '"cancerAbnormalityType":"' + jq("#genHistoryCancerabnormalityTypeSelect option:selected").text() + '",' +
                 '"genHistoryCancerPcpName":"' + jq("#genHistoryCancerPcpName").val() + '",' +
                 '"genHistoryCancerPcpEmail":"' + jq("#genHistoryCancerPcpEmail").val() + '",' +
                 '"genHistoryCancerPcpPhone":"' + jq("#genHistoryCancerPcpPhone").val() + '"}';
@@ -132,8 +104,6 @@
                         cancerType: jq("#genHistoryCancerTypeSelect").val(),
                         cancerStage: jq("#genHistoryCancerStageSelect").val(),
                         cancerDate: jq("#genHistoryDate").val(),
-                        cancerAbnormalityBool: jq("#genHistoryCancerabnormalitySelect").val(),
-                        cancerAbnormalityType: jq("#genHistoryCancerabnormalityTypeSelect").val(),
                         genHistoryCancerPcpName: jq("#genHistoryCancerPcpName").val(),
                         genHistoryCancerPcpEmail: jq("#genHistoryCancerPcpEmail").val(),
                         genHistoryCancerPcpPhone: jq("#genHistoryCancerPcpPhone").val(),
@@ -149,8 +119,6 @@
                         cancerType: jq("#genHistoryCancerTypeSelect").val(),
                         cancerStage: jq("#genHistoryCancerStageSelect").val(),
                         cancerDate: jq("#genHistoryDate").val(),
-                        cancerAbnormalityBool: jq("#genHistoryCancerabnormalitySelect").val(),
-                        cancerAbnormalityType: jq("#genHistoryCancerabnormalityTypeSelect").val(),
                         genHistoryCancerPcpName: jq("#genHistoryCancerPcpName").val(),
                         genHistoryCancerPcpEmail: jq("#genHistoryCancerPcpEmail").val(),
                         genHistoryCancerPcpPhone: jq("#genHistoryCancerPcpPhone").val(),

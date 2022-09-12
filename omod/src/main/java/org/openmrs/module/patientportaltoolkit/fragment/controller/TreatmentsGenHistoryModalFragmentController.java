@@ -43,8 +43,6 @@ public class TreatmentsGenHistoryModalFragmentController {
                                       @RequestParam(value = "cancerType") String cancerType,
                                       @RequestParam(value = "cancerStage") String cancerStage,
                                       @RequestParam(value = "cancerDate") String cancerDate,
-                                      @RequestParam(value = "cancerAbnormalityBool") String cancerAbnormalityBool,
-                                      @RequestParam(value = "cancerAbnormalityType", required = false) String cancerAbnormalityType,
                                       @RequestParam(value = "genHistoryCancerPcpName") String genHistoryCancerPcpName,
                                       @RequestParam(value = "genHistoryCancerPcpEmail") String genHistoryCancerPcpEmail,
                                       @RequestParam(value = "genHistoryCancerPcpPhone") String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
@@ -67,8 +65,6 @@ public class TreatmentsGenHistoryModalFragmentController {
         allTheEnteredValues.add("radiationEndDate");
         allTheEnteredValues.add("cancerStage");
         allTheEnteredValues.add("cancerDate");
-        allTheEnteredValues.add("cancerAbnormalityBool");
-        allTheEnteredValues.add("cancerAbnormalityType");
         allTheEnteredValues.add("genHistoryCancerPcpName");
         allTheEnteredValues.add("genHistoryCancerPcpEmail");
         allTheEnteredValues.add("genHistoryCancerPcpPhone");
@@ -97,20 +93,6 @@ public class TreatmentsGenHistoryModalFragmentController {
                                 Date parsedDate = formatter.parse(cancerDate);
                                 cancerDateObs.setValueDate(parsedDate);
                                 newGenHistoryEncounter.addObs(cancerDateObs);
-                        }
-                        break;
-                    case "cancerAbnormalityBool":
-                            Obs cancerAbnormalityBoolObs = new Obs();
-                        cancerAbnormalityBoolObs.setConcept(conceptService.getConceptByUuid("395878ae-5108-4aad-8ad8-9b88e812d278"));
-                        cancerAbnormalityBoolObs.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityBool));
-                        newGenHistoryEncounter.addObs(cancerAbnormalityBoolObs);
-                        break;
-                    case "cancerAbnormalityType":
-                            if(!cancerAbnormalityType.isEmpty()) {
-                                Obs cancerAbnormalityTypeObs = new Obs();
-                                cancerAbnormalityTypeObs.setConcept(conceptService.getConceptByUuid("8719adbe-0975-477f-a95f-2fae4d6cbdae"));
-                                cancerAbnormalityTypeObs.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityType));
-                                newGenHistoryEncounter.addObs(cancerAbnormalityTypeObs);
                         }
                         break;
                     case "genHistoryCancerPcpName":
@@ -150,13 +132,11 @@ public class TreatmentsGenHistoryModalFragmentController {
                                    @RequestParam(value = "cancerType", required = true) String cancerType,
                                    @RequestParam(value = "cancerStage", required = true) String cancerStage,
                                    @RequestParam(value = "cancerDate", required = true) String cancerDate,
-                                   @RequestParam(value = "cancerAbnormalityBool", required = true) String cancerAbnormalityBool,
-                                   @RequestParam(value = "cancerAbnormalityType", required = false) String cancerAbnormalityType,
                                    @RequestParam(value = "genHistoryCancerPcpName", required = true) String genHistoryCancerPcpName,
                                    @RequestParam(value = "genHistoryCancerPcpEmail", required = true) String genHistoryCancerPcpEmail,
                                    @RequestParam(value = "genHistoryCancerPcpPhone", required = true) String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
 
-        log.info(PPTLogAppender.appendLog("SAVE_GENERALHISTORY", servletRequest, "encounterId:", encounterId, "cancerType:", cancerType, "cancerStage:", cancerStage, "cancerDate:", cancerDate, "cancerAbnormalityBool:", cancerAbnormalityBool, "cancerAbnormalityType:", cancerAbnormalityType, "genHistoryCancerPcpName:", genHistoryCancerPcpName, "genHistoryCancerPcpEmail:", genHistoryCancerPcpEmail, "genHistoryCancerPcpPhone:", genHistoryCancerPcpPhone));
+        log.info(PPTLogAppender.appendLog("SAVE_GENERALHISTORY", servletRequest, "encounterId:", encounterId, "cancerType:", cancerType, "cancerStage:", cancerStage, "cancerDate:", cancerDate, "genHistoryCancerPcpName:", genHistoryCancerPcpName, "genHistoryCancerPcpEmail:", genHistoryCancerPcpEmail, "genHistoryCancerPcpPhone:", genHistoryCancerPcpPhone));
         EncounterService encounterService=Context.getEncounterService();
         ConceptService conceptService=Context.getConceptService();
         Encounter genHistoryEncounter = encounterService.getEncounterByUuid(encounterId);
@@ -164,8 +144,6 @@ public class TreatmentsGenHistoryModalFragmentController {
         allTheEnteredValues.add("cancerType");
         allTheEnteredValues.add("cancerStage");
         allTheEnteredValues.add("cancerDate");
-        allTheEnteredValues.add("cancerAbnormalityBool");
-        allTheEnteredValues.add("cancerAbnormalityType");
         allTheEnteredValues.add("genHistoryCancerPcpName");
         allTheEnteredValues.add("genHistoryCancerPcpEmail");
         allTheEnteredValues.add("genHistoryCancerPcpPhone");
@@ -231,30 +209,6 @@ public class TreatmentsGenHistoryModalFragmentController {
                                 }
                             }
                             break;
-                        case "cancerAbnormalityBool":
-                            if (observationConceptUUIDToObsMap.get("395878ae-5108-4aad-8ad8-9b88e812d278") != null) {
-                                Obs o = observationConceptUUIDToObsMap.get("395878ae-5108-4aad-8ad8-9b88e812d278").get(0);
-                                o.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityBool));
-                            } else {
-                                Obs o = new Obs();
-                                o.setConcept(conceptService.getConceptByUuid("395878ae-5108-4aad-8ad8-9b88e812d278"));
-                                o.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityBool));
-                                generalEncounter.addObs(o);
-                            }
-                            break;
-                        case "cancerAbnormalityType":
-                            if (observationConceptUUIDToObsMap.get("8719adbe-0975-477f-a95f-2fae4d6cbdae") != null) {
-                                Obs o = observationConceptUUIDToObsMap.get("8719adbe-0975-477f-a95f-2fae4d6cbdae").get(0);
-                                o.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityType));
-                            } else {
-                                if(!cancerAbnormalityType.isEmpty()) {
-                                    Obs o = new Obs();
-                                    o.setConcept(conceptService.getConceptByUuid("8719adbe-0975-477f-a95f-2fae4d6cbdae"));
-                                    o.setValueCoded(conceptService.getConceptByUuid(cancerAbnormalityType));
-                                    generalEncounter.addObs(o);
-                                }
-                            }
-                            break;
                         case "genHistoryCancerPcpName":
                             if (observationConceptUUIDToObsMap.get("c2cb2220-c07d-47c6-a4df-e5918aac3fc2") != null) {
                                 Obs o = observationConceptUUIDToObsMap.get("c2cb2220-c07d-47c6-a4df-e5918aac3fc2").get(0);
@@ -297,7 +251,6 @@ public class TreatmentsGenHistoryModalFragmentController {
                                 }
                             }
                             break;
-
                     }
                 }
             }
