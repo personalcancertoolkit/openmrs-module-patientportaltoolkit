@@ -25,7 +25,11 @@ import java.util.concurrent.SynchronousQueue;
 public class PatientPortalUtil {
 
     public String formatDate(Date date){
-        return new SimpleDateFormat(PatientPortalToolkitConstants.DATE_FORMAT_MONTHDATEYEAR).format(date);
+        if (date!=null) {
+            return new SimpleDateFormat(PatientPortalToolkitConstants.DATE_FORMAT_MONTHDATEYEAR).format(date);
+        }
+        else
+            return null;
     }
 
     public String formatDateWithSpecifiedFormat(Date date,String dateFormat){
