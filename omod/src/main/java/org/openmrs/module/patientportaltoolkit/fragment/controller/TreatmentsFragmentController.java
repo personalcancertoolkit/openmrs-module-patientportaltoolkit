@@ -43,37 +43,37 @@ public class TreatmentsFragmentController {
     protected final Log log = LogFactory.getLog(getClass());
 
     public void controller(PageModel model, PageRequest pageRequest) {
-        log.info(PPTLogAppender.appendLog("REQUEST_TREATMENTS_FRAGMENT", pageRequest.getRequest()));
-        Patient patient = null;
-        Person person = (Person) model.get("person");
-       // if(Context.getAuthenticatedUser().getPerson().isPatient()){
-        if(person.getIsPatient()){
-            Date firstSurgeryDate=null;
-        patient= Context.getPatientService().getPatientByUuid(person.getUuid());
-        PatientPortalFormService patientPortalFormService=Context.getService(PatientPortalFormService.class);
-           // PatientPortalPersonAttributes pptpersonAttributes = Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
-           // List<Surgery> surgeryEncounters = new ArrayList<>();
-           // surgeryEncounters = GenerateTreatmentClassesUtil.generateSurgeries(patient);
-            model.addAttribute("genhistory", GenerateTreatmentClassesUtil.generateLatestGeneralHistory(patient));
-            model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
-            model.addAttribute("radiationencounters", GenerateTreatmentClassesUtil.generateRadiations(patient));
-            model.addAttribute("surgeryencounters",GenerateTreatmentClassesUtil.generateSurgeries(patient));
-            model.addAttribute("chemotherapyencounters",GenerateTreatmentClassesUtil.generateChemotherapies(patient));
-           // model.addAttribute("pptpersonAttributes", pptpersonAttributes);
-            firstSurgeryDate= ToolkitResourceUtil.getFirstSurgeryDate(patient);
-            model.addAttribute("firstSurgeryDate",firstSurgeryDate);
-        }
-        else {
-            model.addAttribute("surgeryConcepts",null);
-            model.addAttribute("chemotherapyConcepts", null);
-            model.addAttribute("radiationConcepts", null);
-            model.addAttribute("latestTreatmentSummary", null);
-            model.addAttribute("treatmentsummary", null);
-            model.addAttribute("radiationencounters", null);
-            model.addAttribute("surgeryencounters",null);
-            model.addAttribute("chemotherapyencounters",null);
-        }
-        //log.info("Treatments requested for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+            log.info(PPTLogAppender.appendLog("REQUEST_TREATMENTS_FRAGMENT", pageRequest.getRequest()));
+            Patient patient = null;
+            Person person = (Person) model.get("person");
+            // if(Context.getAuthenticatedUser().getPerson().isPatient()){
+            if (person.getIsPatient()) {
+                Date firstSurgeryDate = null;
+                patient = Context.getPatientService().getPatientByUuid(person.getUuid());
+                PatientPortalFormService patientPortalFormService = Context.getService(PatientPortalFormService.class);
+                // PatientPortalPersonAttributes pptpersonAttributes = Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
+                // List<Surgery> surgeryEncounters = new ArrayList<>();
+                // surgeryEncounters = GenerateTreatmentClassesUtil.generateSurgeries(patient);
+                model.addAttribute("genhistory", GenerateTreatmentClassesUtil.generateLatestGeneralHistory(patient));
+                model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
+                model.addAttribute("radiationencounters", GenerateTreatmentClassesUtil.generateRadiations(patient));
+                model.addAttribute("surgeryencounters", GenerateTreatmentClassesUtil.generateSurgeries(patient));
+                model.addAttribute("chemotherapyencounters", GenerateTreatmentClassesUtil.generateChemotherapies(patient));
+                // model.addAttribute("pptpersonAttributes", pptpersonAttributes)
+                firstSurgeryDate = ToolkitResourceUtil.getFirstSurgeryDate(patient);
+                model.addAttribute("firstSurgeryDate", firstSurgeryDate);
+            } else {
+                model.addAttribute("genhistory", null);
+                model.addAttribute("surgeryConcepts", null);
+                model.addAttribute("chemotherapyConcepts", null);
+                model.addAttribute("radiationConcepts", null);
+                model.addAttribute("latestTreatmentSummary", null);
+                model.addAttribute("treatmentsummary", null);
+                model.addAttribute("radiationencounters", null);
+                model.addAttribute("surgeryencounters", null);
+                model.addAttribute("chemotherapyencounters", null);
+            }
+            //log.info("Treatments requested for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
     public void saveReminderTriggerDate(@RequestParam(value = "reminderTriggerDate") String reminderTriggerDate,

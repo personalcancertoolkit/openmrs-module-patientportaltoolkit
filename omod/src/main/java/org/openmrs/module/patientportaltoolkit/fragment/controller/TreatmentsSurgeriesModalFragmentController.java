@@ -26,9 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Maurya on 29/07/2015.
@@ -192,54 +190,153 @@ public class TreatmentsSurgeriesModalFragmentController {
         for(String s: str_array){
             surgeryTypeConcepts.add(s);
         }
+
         List<String> existingSurgeryTypeConcepts = new ArrayList<>();
-        if(encounterId !=null) {
+        HashMap<String, Object> observationsMap = new HashMap<>();
+        List<String> allTheEnteredValues = new ArrayList<>();
+        allTheEnteredValues.add("surgeryTypes");
+        allTheEnteredValues.add("surgeryComplications");//99ef1d68-05ed-4f37-b98b-c982e3574138
+        allTheEnteredValues.add("majorComplicationsTypeAnswer");
+        allTheEnteredValues.add("surgeryDate");
+        allTheEnteredValues.add("surgeonPcpName");
+        allTheEnteredValues.add("surgeonPcpEmail");
+        allTheEnteredValues.add("surgeonPcpPhone");
+        allTheEnteredValues.add("surgeryInstitutionName");
+        allTheEnteredValues.add("surgeryInstitutionCity");
+        allTheEnteredValues.add("surgeryInstitutionState");
+        if (encounterId != null) {
             Encounter surgeryEncounter = encounterService.getEncounterByUuid(encounterId);
-            for (Obs o:surgeryEncounter.getObs()){
-                switch (o.getConcept().getUuid()){
-                    case "d409122c-8a0b-4282-a17f-07abad81f278":
-                        existingSurgeryTypeConcepts.add(o.getValueCoded().getUuid());
+            Map<String, List<Obs>> observationConceptUUIDToObsMap = new HashMap<>();
+            for (Obs o : surgeryEncounter.getObs()) {
+                if (observationConceptUUIDToObsMap.get(o.getConcept().getUuid()) == null) {
+                    List<Obs> newObsList = new ArrayList<>();
+                    newObsList.add(o);
+                    observationConceptUUIDToObsMap.put(o.getConcept().getUuid(), newObsList);
+                } else {
+                    List<Obs> existingObsList = observationConceptUUIDToObsMap.get(o.getConcept().getUuid());
+                    existingObsList.add(o);
+                    observationConceptUUIDToObsMap.put(o.getConcept().getUuid(), existingObsList);
+                }
+            }
+        for (String entry : allTheEnteredValues)
+        {
+            if(entry !=null) {
+                switch (entry) {
+                    case "surgeryTypes":
+                        for (Obs o : observationConceptUUIDToObsMap.get("d409122c-8a0b-4282-a17f-07abad81f278"))
+                            existingSurgeryTypeConcepts.add(o.getValueCoded().getUuid());
                         break;
-                    case "99ef1d68-05ed-4f37-b98b-c982e3574138":
-                        if(o.getValueCoded().getUuid()!=surgeryComplications)
+                    case "surgeryComplications":
+                        if (observationConceptUUIDToObsMap.get("99ef1d68-05ed-4f37-b98b-c982e3574138") != null) {
+                            Obs o = observationConceptUUIDToObsMap.get("99ef1d68-05ed-4f37-b98b-c982e3574138").get(0);
                             o.setValueCoded(conceptService.getConceptByUuid(surgeryComplications));
+                        } else {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("99ef1d68-05ed-4f37-b98b-c982e3574138"));
+                            o.setValueCoded(conceptService.getConceptByUuid(surgeryComplications));
+                            surgeryEncounter.addObs(o);
+                        }
                         break;
-                    case "c2d9fca3-1e0b-4007-8c3c-b3ebb4e67963":
-                        if(!o.getValueText().equals(majorComplicationsTypeAnswer))
+                    case "majorComplicationsTypeAnswer":
+                        if (observationConceptUUIDToObsMap.get("c2d9fca3-1e0b-4007-8c3c-b3ebb4e67963") != null) {
+                            Obs o = observationConceptUUIDToObsMap.get("c2d9fca3-1e0b-4007-8c3c-b3ebb4e67963").get(0);
                             o.setValueText(majorComplicationsTypeAnswer);
+                        } else {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("c2d9fca3-1e0b-4007-8c3c-b3ebb4e67963"));
+                            o.setValueText(majorComplicationsTypeAnswer);
+                            surgeryEncounter.addObs(o);
+                        }
                         break;
-                    case "87a69397-65ef-4576-a709-ae0a526afd85":
-                        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-                        Date parsedDate = formatter.parse(surgeryDate);
-                        if(o.getValueDate()!=parsedDate)
-                            o.setValueDate(parsedDate);
+                    case "surgeryDate":
+                        if (observationConceptUUIDToObsMap.get("87a69397-65ef-4576-a709-ae0a526afd85") != null) {
+                            Obs o = observationConceptUUIDToObsMap.get("87a69397-65ef-4576-a709-ae0a526afd85").get(0);
+                            if (surgeryDate != null && surgeryDate != "") {
+                                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                                Date parsedDate = formatter.parse(surgeryDate);
+                                if (o.getValueDate() != parsedDate)
+                                    o.setValueDate(parsedDate);
+                            }
+                        } else {
+                            if (surgeryDate != null && surgeryDate != "") {
+                                Obs o = new Obs();
+                                o.setConcept(conceptService.getConceptByUuid("87a69397-65ef-4576-a709-ae0a526afd85"));
+                                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                                Date parsedDate = formatter.parse(surgeryDate);
+                                o.setValueDate(parsedDate);
+                                surgeryEncounter.addObs(o);
+                            }
+                        }
                         break;
-                    case "c2cb2220-c07d-47c6-a4df-e5918aac3fc2":
-                        if(o.getValueText()!=surgeonPcpName)
+                    case "surgeonPcpName":
+                        if (observationConceptUUIDToObsMap.get("c2cb2220-c07d-47c6-a4df-e5918aac3fc2") != null) {
+                            Obs o = observationConceptUUIDToObsMap.get("c2cb2220-c07d-47c6-a4df-e5918aac3fc2").get(0);
                             o.setValueText(surgeonPcpName);
+                        } else {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"));
+                            o.setValueText(surgeonPcpName);
+                            surgeryEncounter.addObs(o);
+                        }
                         break;
-                    case "898a0028-8c65-4db9-a802-1577fce59864":
-                        if(o.getValueText()!=surgeonPcpEmail)
+                    case "surgeonPcpEmail":
+                        if (observationConceptUUIDToObsMap.get("898a0028-8c65-4db9-a802-1577fce59864") != null) {
+                            Obs o = observationConceptUUIDToObsMap.get("898a0028-8c65-4db9-a802-1577fce59864").get(0);
                             o.setValueText(surgeonPcpEmail);
+                        } else {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("898a0028-8c65-4db9-a802-1577fce59864"));
+                            o.setValueText(surgeonPcpEmail);
+                            surgeryEncounter.addObs(o);
+                        }
                         break;
-                    case "9285b227-4054-4830-ac32-5ea78462e8c4":
-                        if(o.getValueText()!=surgeonPcpPhone)
+                    case "surgeonPcpPhone":
+                        if (observationConceptUUIDToObsMap.get("9285b227-4054-4830-ac32-5ea78462e8c4") != null) {
+                            Obs o = observationConceptUUIDToObsMap.get("9285b227-4054-4830-ac32-5ea78462e8c4").get(0);
                             o.setValueText(surgeonPcpPhone);
+                        } else {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("9285b227-4054-4830-ac32-5ea78462e8c4"));
+                            o.setValueText(surgeonPcpPhone);
+                            surgeryEncounter.addObs(o);
+                        }
                         break;
-                    case "47d58999-d3b5-4869-a52e-841e2e6bdbb3":
-                        if(o.getValueText()!=surgeryInstitutionName)
+                    case "surgeryInstitutionName":
+                        if (observationConceptUUIDToObsMap.get("47d58999-d3b5-4869-a52e-841e2e6bdbb3") != null) {
+                            Obs o = observationConceptUUIDToObsMap.get("47d58999-d3b5-4869-a52e-841e2e6bdbb3").get(0);
                             o.setValueText(surgeryInstitutionName);
+                        } else {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("47d58999-d3b5-4869-a52e-841e2e6bdbb3"));
+                            o.setValueText(surgeryInstitutionName);
+                            surgeryEncounter.addObs(o);
+                        }
                         break;
-                    case "bfa752d6-2037-465e-b0a2-c4c2d485ec32":
-                        if(o.getValueText()!=surgeryInstitutionCity)
+                    case "surgeryInstitutionCity":
+                        if (observationConceptUUIDToObsMap.get("bfa752d6-2037-465e-b0a2-c4c2d485ec32") != null) {
+                            Obs o = observationConceptUUIDToObsMap.get("bfa752d6-2037-465e-b0a2-c4c2d485ec32").get(0);
                             o.setValueText(surgeryInstitutionCity);
+                        } else {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("bfa752d6-2037-465e-b0a2-c4c2d485ec32"));
+                            o.setValueText(surgeryInstitutionCity);
+                            surgeryEncounter.addObs(o);
+                        }
                         break;
-                    case "34489100-487e-443a-bf27-1b6869fb9332":
-                        if(o.getValueText()!=surgeryInstitutionState)
+                    case "surgeryInstitutionState":
+                        if (observationConceptUUIDToObsMap.get("34489100-487e-443a-bf27-1b6869fb9332") != null) {
+                            Obs o = observationConceptUUIDToObsMap.get("34489100-487e-443a-bf27-1b6869fb9332").get(0);
                             o.setValueText(surgeryInstitutionState);
+                        } else {
+                            Obs o = new Obs();
+                            o.setConcept(conceptService.getConceptByUuid("34489100-487e-443a-bf27-1b6869fb9332"));
+                            o.setValueText(surgeryInstitutionState);
+                            surgeryEncounter.addObs(o);
+                        }
                         break;
                 }
             }
+        }
             for(String s: existingSurgeryTypeConcepts){
                 if (surgeryTypeConcepts.contains(s))
                     surgeryTypeConcepts.remove(s);
