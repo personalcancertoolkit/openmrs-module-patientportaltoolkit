@@ -168,7 +168,7 @@
                             location.reload();
                         }, 2000);
                 } else {
-                    jq.post("treatmentsSurgeriesModal/saveSurgeryForm.action", {
+                    jq.get("treatmentsSurgeriesModal/saveSurgeryForm.action", {
                         encounterId: jq("#surgeryEncounterHolder").val(),
                         surgeryTypes: surgeryTypeList,
                         surgeryComplications: jq("#majorComplicationsBoolSelect").val(),

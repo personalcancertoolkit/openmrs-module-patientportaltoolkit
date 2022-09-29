@@ -102,38 +102,73 @@ jq(document).ready(function(){
             jq("#surgeryInstitutionState").val(jq('#' + encounterID + 'surgeryState').text());
         });
 
+    jq('.addSurgeryButton').click(
+        function () {
+            jq("#surgeryPatientUuidHolder").val(jq("#treatmentsPatientUuidHolder").val());
+            jq("#surgeryEncounterHolder").val('');
+            jq('.surgeryTypesInModal').each(function () {
+                jq(this).prop('checked',false);
+            });
+            jq("#majorComplicationsBoolSelect").val('');
+            jq("#majorComplicationsTypeAnswer").val('');
+            jq("#surgeryDate").val('');
+            jq("#surgeonPcpName").val('');
+            jq("#surgeonPcpEmail").val('');
+            jq("#surgeonPcpPhone").val('');
+            jq("#surgeryInstitutionName").val('');
+            jq("#surgeryInstitutionCity").val('');
+            jq("#surgeryInstitutionState").val('');
+        });
 
     jq('.editChemotherapyButton').click(
         function () {
             var encounterID=this.id;
             logEvent('clicked_ChemotherapyyButton',JSON.stringify({'chemotherapyEncounterId': encounterID}));
-            $("#chemotherapyEncounterHolder").val(encounterID);
+            jq("#chemotherapyEncounterHolder").val(encounterID);
             var chemotherapyMedList=[];
-            $('.'+encounterID+'chemotherapymed').each(function() {
+            jq('.'+encounterID+'chemotherapymed').each(function() {
                 // console.log(($( this ).attr('id').split('surgeryType')[1]));
-                chemotherapyMedList.push(($( this ).attr('id').split('chemotherapymed')[1]));
+                chemotherapyMedList.push((jq( this ).attr('id').split('chemotherapymed')[1]));
             });
-            $('.chemotherapyMedTypesInModal').each(function() {
-                if ( $.inArray(($( this ).val()).split('split')[1], chemotherapyMedList)>-1) {
-                    $(this).prop('checked', true);
+            jq('.chemotherapyMedTypesInModal').each(function() {
+                if ( jq.inArray(($( this ).val()).split('split')[1], chemotherapyMedList)>-1) {
+                    jq(this).prop('checked', true);
                 }
             });
 
-            if($('#'+encounterID+'centralLine').text()=="Yes"){
-                $('#centralLineBoolSelect').val('1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            if(jq('#'+encounterID+'centralLine').text()=="Yes"){
+                jq('#centralLineBoolSelect').val('1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             }
             else{
-                $('#centralLineBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                jq('#centralLineBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             }
-            $('#chemoStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyStartDate').text())));
-            $('#chemoEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'chemotherapyEndDate').text())));
-            $("#oncologistPcpName").val($('#'+encounterID+'chemotherapyPCPName').text());
-            $("#oncologistPcpEmail").val($('#'+encounterID+'chemotherapyPCPEmail').text());
-            $("#oncologistPcpPhone").val($('#'+encounterID+'chemotherapyPCPPhone').text());
+            jq('#chemoStartDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'chemotherapyStartDate').text())));
+            jq('#chemoEndDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'chemotherapyEndDate').text())));
+            jq("#oncologistPcpName").val(jq('#'+encounterID+'chemotherapyPCPName').text());
+            jq("#oncologistPcpEmail").val(jq('#'+encounterID+'chemotherapyPCPEmail').text());
+            jq("#oncologistPcpPhone").val(jq('#'+encounterID+'chemotherapyPCPPhone').text());
 
-            $("#chemotherapyInstitutionName").val($('#'+encounterID+'chemotherapyinstituteName').text());
-            $("#chemotherapyInstitutionCity").val($('#'+encounterID+'chemotherapyCity').text());
-            $("#chemotherapyInstitutionState").val($('#'+encounterID+'chemotherapyState').text());
+            jq("#chemotherapyInstitutionName").val(jq('#'+encounterID+'chemotherapyinstituteName').text());
+            jq("#chemotherapyInstitutionCity").val($('#'+encounterID+'chemotherapyCity').text());
+            jq("#chemotherapyInstitutionState").val(jq('#'+encounterID+'chemotherapyState').text());
+        });
+
+    jq('.addChemotherapyButton').click(
+        function () {
+            jq("#chemotherapyPatientUuidHolder").val(jq("#treatmentsPatientUuidHolder").val());
+            jq("#chemotherapyEncounterHolder").val('');
+            jq('.chemotherapyMedTypesInModal').each(function () {
+                jq(this).prop('checked',false);
+            });
+            jq("#centralLineBoolSelect").val('');
+            jq("#chemoStartDate").val('');
+            jq("#chemoEndDate").val('');
+            jq("#oncologistPcpName").val('');
+            jq("#oncologistPcpEmail").val('');
+            jq("#oncologistPcpPhone").val('');
+            jq("#chemotherapyInstitutionName").val('');
+            jq("#chemotherapyInstitutionCity").val('');
+            jq("#chemotherapyInstitutionState").val('');
         });
 
 
@@ -148,32 +183,48 @@ jq(document).ready(function(){
         radiationEnddatePicker.hide();
     }).data('datepicker');
 
-    $('.editRadiationButton').click(
+    jq('.editRadiationButton').click(
         function () {
             var encounterID=this.id;
             logEvent('clicked_RadiationButton',JSON.stringify({'radiationEncounterId': encounterID}));
-            $("#radiationEncounterHolder").val(encounterID);
+            jq("#radiationEncounterHolder").val(encounterID);
             var radiationTypesList=[];
-            $('.'+encounterID+'radiationType').each(function() {
-                radiationTypesList.push(($( this ).attr('id').split('radiationType')[1]));
+            jq('.'+encounterID+'radiationType').each(function() {
+                radiationTypesList.push((jq( this ).attr('id').split('radiationType')[1]));
             });
-            $('.radiationTypesInModal').each(function() {
-                if ( $.inArray(($( this ).val()).split('split')[1], radiationTypesList)>-1) {
-                    $(this).prop('checked', true);
+            jq('.radiationTypesInModal').each(function() {
+                if ( jq.inArray((jq( this ).val()).split('split')[1], radiationTypesList)>-1) {
+                    jq(this).prop('checked', true);
                 }
             });
-            $('#radiationStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radStartDate').text())));
-            if($('#'+encounterID+'radEndDate').text())
-            $('#radiationEndDate').val($.datepicker.formatDate('mm/dd/yy', new Date($('#'+encounterID+'radEndDate').text())));
-            $("#radiologistPcpName").val($('#'+encounterID+'radPCPName').text());
-            $("#radiologistPcpEmail").val($('#'+encounterID+'radPCPEmail').text());
-            $("#radiologistPcpPhone").val($('#'+encounterID+'radPCPPhone').text());
+            jq('#radiationStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'radStartDate').text())));
+            if(jq('#'+encounterID+'radEndDate').text())
+            jq('#radiationEndDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'radEndDate').text())));
+            jq("#radiologistPcpName").val(jq('#'+encounterID+'radPCPName').text());
+            jq("#radiologistPcpEmail").val(jq('#'+encounterID+'radPCPEmail').text());
+            jq("#radiologistPcpPhone").val(jq('#'+encounterID+'radPCPPhone').text());
 
-            $("#radiologistInstitutionName").val($('#'+encounterID+'radinstituteName').text());
-            $("#radiologistInstitutionCity").val($('#'+encounterID+'radCity').text());
-            $("#radiologistInstitutionState").val($('#'+encounterID+'radState').text());
+            jq("#radiologistInstitutionName").val(jq('#'+encounterID+'radinstituteName').text());
+            jq("#radiologistInstitutionCity").val(jq('#'+encounterID+'radCity').text());
+            jq("#radiologistInstitutionState").val(jq('#'+encounterID+'radState').text());
         });
 
+    jq('.addRadiationButton').click(
+        function () {
+            jq("#radiationPatientUuidHolder").val(jq("#treatmentsPatientUuidHolder").val());
+            jq("#radiationEncounterHolder").val('');
+            jq('.radiationTypesInModal').each(function () {
+                jq(this).prop('checked',false);
+            });
+            jq("#radiationStartDate").val('');
+            jq("#radiationEndDate").val('');
+            jq("#radiologistPcpName").val('');
+            jq("#radiologistPcpEmail").val('');
+            jq("#radiologistPcpPhone").val('');
+            jq("#radiologistInstitutionName").val('');
+            jq("#radiologistInstitutionCity").val('');
+            jq("#radiologistInstitutionState").val('');
+        });
     jq(".removeRelationCloseButton").click(
         function () {
             jq("#remove-relationId").val(this.id.split("removeRelation")[1]);

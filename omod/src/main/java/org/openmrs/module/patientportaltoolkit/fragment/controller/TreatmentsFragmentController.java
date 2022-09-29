@@ -54,6 +54,7 @@ public class TreatmentsFragmentController {
                 // PatientPortalPersonAttributes pptpersonAttributes = Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
                 // List<Surgery> surgeryEncounters = new ArrayList<>();
                 // surgeryEncounters = GenerateTreatmentClassesUtil.generateSurgeries(patient);
+                model.addAttribute("patientUUID",patient.getUuid());
                 model.addAttribute("genhistory", GenerateTreatmentClassesUtil.generateLatestGeneralHistory(patient));
                 model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
                 model.addAttribute("radiationencounters", GenerateTreatmentClassesUtil.generateRadiations(patient));
@@ -63,6 +64,7 @@ public class TreatmentsFragmentController {
                 firstSurgeryDate = ToolkitResourceUtil.getFirstSurgeryDate(patient);
                 model.addAttribute("firstSurgeryDate", firstSurgeryDate);
             } else {
+                model.addAttribute("patientUUID",null);
                 model.addAttribute("genhistory", null);
                 model.addAttribute("surgeryConcepts", null);
                 model.addAttribute("chemotherapyConcepts", null);
