@@ -9,9 +9,9 @@ jq = jQuery;
 jq(document).ready(function(){
 
     // setting defaults for the editable
-    $.fn.editable.defaults.mode = 'inline';
-    $.fn.editable.defaults.showbuttons = true;
-    $.fn.editable.defaults.type = 'text';
+    jq.fn.editable.defaults.mode = 'inline';
+    jq.fn.editable.defaults.showbuttons = true;
+    jq.fn.editable.defaults.type = 'text';
 
     var OpenMRSInstance=window.location.href;
     jq("#navigationLogout").attr("href",OpenMRSInstance.split("/patientportaltoolkit")[0]+"/logout");
@@ -37,9 +37,9 @@ jq(document).ready(function(){
     }).data('datepicker');
 
     jq(".reformatText").each(function() {
-        var str=$(this).text().toString();
+        var str=jq(this).text().toString();
         var newStr=str[0].toUpperCase()+str.slice(1).toLowerCase();
-        $(this).text(newStr);
+        jq(this).text(newStr);
     });
     jq(function() {
         jq('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -91,7 +91,7 @@ jq(document).ready(function(){
             } else {
                 jq('#majorComplicationsBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
             }
-            jq("#surgeryDate").val($.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'surgeryDate').text())));
+            jq("#surgeryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'surgeryDate').text())));
             // console.log($('#'+encounterID+'surgeryPCPName').text());
             jq("#surgeonPcpName").val(jq('#' + encounterID + 'surgeryPCPName').text());
             jq("#surgeonPcpEmail").val(jq('#' + encounterID + 'surgeryPCPEmail').text());
@@ -131,7 +131,7 @@ jq(document).ready(function(){
                 chemotherapyMedList.push((jq( this ).attr('id').split('chemotherapymed')[1]));
             });
             jq('.chemotherapyMedTypesInModal').each(function() {
-                if ( jq.inArray(($( this ).val()).split('split')[1], chemotherapyMedList)>-1) {
+                if ( jq.inArray((jq( this ).val()).split('split')[1], chemotherapyMedList)>-1) {
                     jq(this).prop('checked', true);
                 }
             });
@@ -149,7 +149,7 @@ jq(document).ready(function(){
             jq("#oncologistPcpPhone").val(jq('#'+encounterID+'chemotherapyPCPPhone').text());
 
             jq("#chemotherapyInstitutionName").val(jq('#'+encounterID+'chemotherapyinstituteName').text());
-            jq("#chemotherapyInstitutionCity").val($('#'+encounterID+'chemotherapyCity').text());
+            jq("#chemotherapyInstitutionCity").val(jq('#'+encounterID+'chemotherapyCity').text());
             jq("#chemotherapyInstitutionState").val(jq('#'+encounterID+'chemotherapyState').text());
         });
 
@@ -197,7 +197,7 @@ jq(document).ready(function(){
                     jq(this).prop('checked', true);
                 }
             });
-            jq('#radiationStartDate').val($.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'radStartDate').text())));
+            jq('#radiationStartDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'radStartDate').text())));
             if(jq('#'+encounterID+'radEndDate').text())
             jq('#radiationEndDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'radEndDate').text())));
             jq("#radiologistPcpName").val(jq('#'+encounterID+'radPCPName').text());
@@ -242,12 +242,12 @@ jq(document).ready(function(){
         function () {
             var checkboxValuesList=[];
             jq(".addRelationShareCheckbox:checkbox:checked").each(function () {
-                checkboxValuesList.push($(this).val());
+                checkboxValuesList.push(jq(this).val());
                 //alert(checkboxValues);
                 //checkboxValues=checkboxValues+$(this).val()+",";
             });
             var checkboxValues=checkboxValuesList.toString();
-            $.ajax({
+            jq.ajax({
                 type : "GET",
                 url : "connections/addRelationship/addRelationshipfromForm.action",
                 data : {
@@ -271,23 +271,23 @@ jq(document).ready(function(){
     //------------- Add Relation Button save JS Ends ---------
 
 //------------- Edit Relation Button JS ---------
-    $('.editRelationButton').click(
+    jq('.editRelationButton').click(
         function () {
             var relationshipID=this.id.split('relationedit')[1];
             //console.log(relationshipID);
-            $("#editRelationshipIdHolder").val(relationshipID);
+            jq("#editRelationshipIdHolder").val(relationshipID);
             //console.log($('#'+relationshipID+'relationPerson').text());
 
             // console.log($('#'+encounterID+'surgeryPCPName').text());
-            $("#editPersonName").text($('#'+relationshipID+'relationPerson').text());
-            $("#editRelationProfileBadge").text($('#'+relationshipID+'relationPerson').text().match(/\b(\w)/g).join(''));
-            $("#editRelationshipSelect").val($('#'+relationshipID+'relationType').text());
-            $("#editRelationSecurityLevels").val($('#'+relationshipID+'relationShareID').val());
-            if($('#checkPersonInRelation'+relationshipID).val()== "0"){
-                $("#editRelationshipSelect").attr('disabled',true);
+            jq("#editPersonName").text(jq('#'+relationshipID+'relationPerson').text());
+            jq("#editRelationProfileBadge").text(jq('#'+relationshipID+'relationPerson').text().match(/\b(\w)/g).join(''));
+            jq("#editRelationshipSelect").val(jq('#'+relationshipID+'relationType').text());
+            jq("#editRelationSecurityLevels").val(jq('#'+relationshipID+'relationShareID').val());
+            if(jq('#checkPersonInRelation'+relationshipID).val()== "0"){
+                jq("#editRelationshipSelect").attr('disabled',true);
             }
 
-            $.ajax({
+            jq.ajax({
                 type : "POST",
                 url : OpenMRSInstance.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/hasaccess",
                 data : {
@@ -296,17 +296,17 @@ jq(document).ready(function(){
         },
                 success : function setChecked(response) {
                     if (response) {
-                        $("#editShareType" + "6776d050-e2fe-47cc-8af4-de3fdeb1b76d").prop('checked', true);
+                        jq("#editShareType" + "6776d050-e2fe-47cc-8af4-de3fdeb1b76d").prop('checked', true);
                     }
                     else {
-                        $("#editShareType" + "6776d050-e2fe-47cc-8af4-de3fdeb1b76d").prop('checked', false);
+                        jq("#editShareType" + "6776d050-e2fe-47cc-8af4-de3fdeb1b76d").prop('checked', false);
                     }
                 },
                 error : function(e) {
                     alert('Error: ' + e);
                 },
             });
-            $.ajax({
+            jq.ajax({
                 type : "POST",
                 url : OpenMRSInstance.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/hasaccess",
                 data : {
@@ -315,17 +315,17 @@ jq(document).ready(function(){
                 },
                 success : function setChecked(response) {
                     if (response) {
-                        $("#editShareType" + "18e440a6-518b-4dbd-8057-dd0f88ee6d15").prop('checked', true);
+                        jq("#editShareType" + "18e440a6-518b-4dbd-8057-dd0f88ee6d15").prop('checked', true);
                     }
                     else {
-                        $("#editShareType" + "18e440a6-518b-4dbd-8057-dd0f88ee6d15").prop('checked', false);
+                        jq("#editShareType" + "18e440a6-518b-4dbd-8057-dd0f88ee6d15").prop('checked', false);
                     }
                 },
                 error : function(e) {
                     alert('Error: ' + e);
                 },
             });
-            $.ajax({
+            jq.ajax({
                 type : "POST",
                 url : OpenMRSInstance.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/hasaccess",
                 data : {
@@ -334,10 +334,10 @@ jq(document).ready(function(){
                 },
                 success : function setChecked(response) {
                     if (response) {
-                        $("#editShareType" + "c21b5749-5972-425b-a8dc-15dc8f899a96").prop('checked', true);
+                        jq("#editShareType" + "c21b5749-5972-425b-a8dc-15dc8f899a96").prop('checked', true);
                     }
                     else {
-                        $("#editShareType" + "c21b5749-5972-425b-a8dc-15dc8f899a96").prop('checked', false);
+                        jq("#editShareType" + "c21b5749-5972-425b-a8dc-15dc8f899a96").prop('checked', false);
                     }
                 },
                 error : function(e) {
@@ -350,15 +350,15 @@ jq(document).ready(function(){
 
 
 //------------- Edit Relation Button save JS ---------
-    $('#editRelationshipSaveButton').click(
+    jq('#editRelationshipSaveButton').click(
         function () {
             var checkboxValuesList=[];
             jq(".editRelationShareCheckbox:checkbox:checked").each(function () {
-                checkboxValuesList.push($(this).val());
+                checkboxValuesList.push(jq(this).val());
                 //checkboxValues=checkboxValues+$(this).val()+",";
            });
             var checkboxValues=checkboxValuesList.toString();
-            $.ajax({
+            jq.ajax({
                 type : "POST",
                 url : "connections/connections/saveRelationshipfromEdit.action",
                 data : {
@@ -385,7 +385,7 @@ jq(document).ready(function(){
     //------------------- Edit Relation Button save JS Ends -----
 
     //------------- accept connection request Button JS ----------------
-    $('.acceptConnectionRequest').click(
+    jq('.acceptConnectionRequest').click(
         function () {
             var relationId = this.id.split("acceptConnectionRequest")[0];
             jq.get("connections/connections/acceptConnectionRequest.action", {relationshipId: relationId}, function(){
@@ -397,7 +397,7 @@ jq(document).ready(function(){
     //------------------- accept connection request Button save JS Ends -----
 
     //------------- ignore connection request Button JS ----------------
-    $('.ignoreConnectionRequest').click(
+    jq('.ignoreConnectionRequest').click(
         function () {
             var relationId = this.id.split("ignoreConnectionRequest")[0];
             jq.get("connections/ignoreConnectionRequest.action", {relationshipId: relationId}, function(){
@@ -409,35 +409,35 @@ jq(document).ready(function(){
     //------------------- ignore connection request Button save JS Ends -----
     //------------------- Messages Page JS ----------------------
 
-    $('#newMessageComposeDiv').hide();
-    $('#showDetailedList').hide();
-    $('.detailedMessageList').hide();
-    $('#composeMessageButton').click(
+    jq('#newMessageComposeDiv').hide();
+    jq('#showDetailedList').hide();
+    jq('.detailedMessageList').hide();
+    jq('#composeMessageButton').click(
         function () {
-            $('#newMessageComposeDiv').show();
-            $('#showDetailedList').hide();
-            $('.detailedMessageList').hide();
+            jq('#newMessageComposeDiv').show();
+            jq('#showDetailedList').hide();
+            jq('.detailedMessageList').hide();
         });
-    $('.messagelistLink').click(
+    jq('.messagelistLink').click(
         function () {
-            $(".messagelistLink").css("background", "#FFFFFF");
-            $("#"+this.id).css("background", "#F8F8F8");
-            $('#newMessageComposeDiv').hide();
-            $('#showDetailedList').show();
+            jq(".messagelistLink").css("background", "#FFFFFF");
+            jq("#"+this.id).css("background", "#F8F8F8");
+            jq('#newMessageComposeDiv').hide();
+            jq('#showDetailedList').show();
            // console.log(this.id);
-            $('.detailedMessageList').hide();
-            $('#mediaList'+this.id).show();
+            jq('.detailedMessageList').hide();
+            jq('#mediaList'+this.id).show();
         });
     //------------------- Messages Page JS Ends ----------------------
-        $('.profileBadge').profileBadge();
-    $('.profileBadgeJournals').profileBadge({
+        jq('.profileBadge').profileBadge();
+    jq('.profileBadgeJournals').profileBadge({
         border: {
             width: 0
         },
         margin: 0,
         size: 30
     });
-    $('.profileBadgeHeader').profileBadge({
+    jq('.profileBadgeHeader').profileBadge({
         border: {
             width: 0
         },
@@ -446,7 +446,7 @@ jq(document).ready(function(){
     });
 
     //------------------- Reply message JS ----------------------
-    $('.sendReplyMessageButton').click(
+    jq('.sendReplyMessageButton').click(
         function () {
            var messageid=this.id.split("sendReplyMessageButton")[1];
             jq.get("composeMessage/sendReplyMessage.action", {
@@ -465,10 +465,10 @@ jq(document).ready(function(){
 
     //------------------- compose message JS ----------------------
    var listOfRelationsData=[];
-    $.when(  $.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/getallrelations",
+    jq.when(  jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/getallrelations",
         function(data, status) {
 
-            $.each(data, function(k, v) {
+            jq.each(data, function(k, v) {
                 //display the key
                 var relationitem = {id:data[k]["relatedPerson"]["id"], value:data[k]["relatedPerson"]["GivenName"]+data[k]["relatedPerson"]["FamilyName"]};
                 listOfRelationsData.push(relationitem);
@@ -476,24 +476,24 @@ jq(document).ready(function(){
             });
         }) ).then(function() {
         //console.log(listOfRelationsData);
-        $( "#sendingto" ).autocomplete({
+        jq( "#sendingto" ).autocomplete({
             source: listOfRelationsData,
             minLength: 3,
             select: function(event, ui) {
                 //alert(ui.item.toString());
                 event.preventDefault();
 
-                $("#sendingto").val(ui.item.value);
-                $("#sendingPersonUUID").val(ui.item.id);
+                jq("#sendingto").val(ui.item.value);
+                jq("#sendingPersonUUID").val(ui.item.id);
             },
             focus: function(event, ui) {
                 event.preventDefault();
-                $("#sendingto").val(ui.item.value);
+                jq("#sendingto").val(ui.item.value);
             }
         });
     });
 
-    $('#sendNewMessageButton').click(
+    jq('#sendNewMessageButton').click(
         function () {
                 jq.get("composeMessage/sendNewMessage.action", {
                     personUuid: jq("#sendingPersonUUID").val(),
@@ -514,12 +514,12 @@ jq(document).ready(function(){
     //JS for the Button Events
 
     
-    $('.markScheduledReminder').click(
+    jq('.markScheduledReminder').click(
         function () {
             var reminderID=this.id.split("markScheduledReminder")[1];
-            $('#markScheduledIdHolder').val(reminderID);
+            jq('#markScheduledIdHolder').val(reminderID);
         });
-    $('#saveMarkScheduledButton').click(
+    jq('#saveMarkScheduledButton').click(
         function () {
             jq.get("appointments/markScheduled.action", {reminderId: jq("#markScheduledIdHolder").val(), markScheduledDate: jq("#markScheduledDate").val()}, function(){
             });
@@ -530,21 +530,21 @@ jq(document).ready(function(){
     //------------------- Follow up care JS ENDS ----------------------
 
     // make all items having class 'edit' editable
-    $('.edit').editable();
+    jq('.edit').editable();
 
-    $('[data-toggle="tooltip"]').tooltip();
+    jq('[data-toggle="tooltip"]').tooltip();
 
 
-    $('.mycancerbuddies').click(
+    jq('.mycancerbuddies').click(
         function () {
-            $('#mycancerbuddiesSave').removeClass('disabled');
-            $('#mycancerbuddiesSave').prop('disabled', false);
+            jq('#mycancerbuddiesSave').removeClass('disabled');
+            jq('#mycancerbuddiesSave').prop('disabled', false);
         });
     //------------------- Function to log events ----------------------
 
 });
 function logEvent (event,data) {
-    $.ajax({
+    jq.ajax({
         type : "POST",
         url : window.location.href.split("/patientportaltoolkit")[0]+"/ws/patientportaltoolkit/logEvent",
         data : {
