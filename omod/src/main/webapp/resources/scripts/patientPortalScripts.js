@@ -84,12 +84,11 @@ jq(document).ready(function(){
                     jq(this).prop('checked', true);
                 }
             });
-
-            if (jq('#' + encounterID + 'surgeryComplications').text() != null || jq('#' + encounterID + 'surgeryComplications').text() != '') {
-                jq('#majorComplicationsBoolSelect').val('1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+            if (jq('#' + encounterID + 'surgeryMajorComplications').val()=="true") {
+                jq('#majorComplicationsBoolSelect').val("1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 jq('#majorComplicationsTypeAnswer').val(jq('#' + encounterID + 'surgeryComplications').text());
             } else {
-                jq('#majorComplicationsBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                jq('#majorComplicationsBoolSelect').val("1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             }
             jq("#surgeryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'surgeryDate').text())));
             // console.log($('#'+encounterID+'surgeryPCPName').text());
@@ -137,10 +136,10 @@ jq(document).ready(function(){
             });
 
             if(jq('#'+encounterID+'centralLine').text()=="Yes"){
-                jq('#centralLineBoolSelect').val('1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                jq('#centralLineBoolSelect').val("1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             }
             else{
-                jq('#centralLineBoolSelect').val('1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+                jq('#centralLineBoolSelect').val("1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             }
             jq('#chemoStartDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'chemotherapyStartDate').text())));
             jq('#chemoEndDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'chemotherapyEndDate').text())));
