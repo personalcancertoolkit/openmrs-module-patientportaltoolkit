@@ -20,7 +20,7 @@
             <div class="modal-footer">
                 <div class="button-div pull-right">
                     <button type="button" class="btn btn-default cancelModal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="deleteTreatmentButton">Delete Treatement</button>
+                    <button type="button" class="btn btn-primary" id="deleteTreatmentButton">Delete Treatment</button>
                 </div>
             </div>
         </div>
