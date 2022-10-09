@@ -135,5 +135,9 @@
         }).on('changeDate', function () {
             genHistdatePicker.hide();
         }).data('datepicker');
+        jq('#edit-genHistory-modal').scroll(function(){
+            jq(".gen-history-date").datepicker("hide");
+            jq(".gen-history-date").blur();
+        });
     });
 </script>

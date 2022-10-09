@@ -194,5 +194,9 @@
         }).on('changeDate', function () {
             surgerydatePicker.hide();
         }).data('datepicker');
+        jq('#edit-surgeries-modal').scroll(function(){
+            jq("#surgeryDate").datepicker("hide");
+            jq("#surgeryDate").blur();
+        });
     });
 </script>

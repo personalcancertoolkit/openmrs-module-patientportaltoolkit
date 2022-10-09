@@ -176,5 +176,11 @@
                         }, 2000);
                 }
             });
+        jq('#edit-radiation-modal').scroll(function(){
+            jq("#radiationStartDate").datepicker("hide");
+            jq("#radiationStartDate").blur();
+            jq("#radiationEndDate").datepicker("hide");
+            jq("#radiationEndDate").blur();
+        });
     });
 </script>

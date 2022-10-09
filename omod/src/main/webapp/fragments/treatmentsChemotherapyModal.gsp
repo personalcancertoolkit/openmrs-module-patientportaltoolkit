@@ -196,5 +196,11 @@
         }).on('changeDate', function() {
             chemotherapyEnddatePicker.hide();
         }).data('datepicker');
+        jq('#edit-chemotherapies-modal').scroll(function(){
+            jq("#chemoStartDate").datepicker("hide");
+            jq("#chemoStartDate").blur();
+            jq("#chemoEndDate").datepicker("hide");
+            jq("#chemoEndDate").blur();
+        });
     });
 </script>
