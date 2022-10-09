@@ -4,17 +4,41 @@
 }
 
 </style>
+<div class="modal fade treatment_form_uniform_label_width delete-treatment-modal" id="delete-treatment-modal" role="dialog"
+     aria-labelledby="deleteTreatmentLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close cancelModal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="deleteTreatmentLabel">Delete Treatment?</h4>
+            </div>
+
+            <div class="modal-body">
+                <input id="treatmentEncounterHolder" type="hidden">
+                Are you sure you want to delete the treatment?
+            <div class="modal-footer">
+                <div class="button-div pull-right">
+                    <button type="button" class="btn btn-default cancelModal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="deleteTreatmentButton">Delete Treatement</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
 
 ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
 <div>
     <div class="clearfix">
+        <input id="treatmentsPatientUuidHolder" type="hidden" value="${patientUUID}">
 
 
         <h4>General History</h4>
 
 
         <div>
-            <% if (genhistory) { %>
+            <% if (genhistory  && genhistory !=null) { %>
             <% if(isACareGiver != 1) { %>
             <div class="pull-right">
                 <a id="${(genhistory.encounterUuid)}"
@@ -29,12 +53,6 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
                 </label>
                 <span>&emsp;<small id="${(genhistory.encounterUuid)}diagnosisDate">${pptutil.formatDate((genhistory.diagnosisDate))}</small></span>
             </div>
-            <% if (genhistory.hasGeneticOrPredisposingAbnormality) { %>
-            <div>
-                <label>Genetic or Predisposing Abnormality&emsp;</label>
-                <span id="${(genhistory.encounterUuid)}geneticOrPredisposingAbnormality" class="reformatText">${(genhistory.geneticOrPredisposingAbnormality)}</span>
-            </div>
-            <% } %>
             <div>
                 <label>Primary Care Provider&emsp;</label>
             <span><span id="${(genhistory.encounterUuid)}genHistoryCancerPcpName">${(genhistory.pcpName)}</span>
@@ -45,27 +63,29 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
             <% } %>
         </div>
     </div>
-
     <hr/>
     ${ ui.includeFragment("patientportaltoolkit", "treatmentsSurgeriesModal") }
     <div class="clearfix">
         <h4>Surgeries&emsp;
-            <a class="btn btn-primary btn-sm" onclick="logEvent('clicked_add_surgeries','')"  data-toggle="modal" data-target="#edit-surgeries-modal">Add</a>
+            <a class="btn btn-primary btn-sm addSurgeryButton" onclick="logEvent('clicked_add_surgeries','')"  data-toggle="modal" data-target="#edit-surgeries-modal">Add</a>
         </h4>
     </div>
 
     <div>
         <div>
-            <% if (surgeryencounters) { %>
+            <% if (surgeryencounters && surgeryencounters !=null) { %>
             <% surgeryencounters.each { surgery -> %>
             <% if(isACareGiver != 1) { %>
             <div class="pull-right">
                 <a id="${(surgery.encounterUuid)}" class="no-underline-edit fa fa-pencil fa-lg editSurgeryButton"  data-toggle="modal" data-target="#edit-surgeries-modal"></a>
+            &nbsp
+                <a id="${(surgery.encounterUuid)}" class="no-underline-edit fa fa-trash fa-lg deleteTreatmentButton" data-toggle="modal" data-target="#delete-treatment-modal"></a>
             </div>
             <% } %>
             <div class="clearfix">
                 <div class="pull-left">
                     <h5><label><% surgery.surgeryTypes.each { surgeryType -> %> <span class="${(surgery.encounterUuid)}surgeryType reformatText" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</span>; <% } %></label> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate"  >${pptutil.formatDate((surgery.surgeryDate))}</small></h5>
+                    <input id="${(surgery.encounterUuid)}surgeryMajorComplications" value="${surgery.hasMajorComplications}" type="hidden">
                     <% if (surgery.hasMajorComplications) { %>
                     <div>
                         <label>Major Complications&emsp;</label>
@@ -100,7 +120,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
     <div>
         <div class="clearfix">
             <h4>Chemotherapies&emsp;
-                <a class="btn btn-primary btn-sm" onclick="logEvent('clicked_add_chemotherapy','')" data-toggle="modal" data-target="#edit-chemotherapies-modal">Add</a>
+                <a class="btn btn-primary btn-sm addChemotherapyButton" onclick="logEvent('clicked_add_chemotherapy','')" data-toggle="modal" data-target="#edit-chemotherapies-modal">Add</a>
             </h4>
         </div>
 
@@ -111,6 +131,8 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
                 <% if(isACareGiver != 1) { %>
                 <div class="pull-right">
                     <a id="${(chemotherapy.encounterUuid)}" class="no-underline-edit fa fa-pencil fa-lg editChemotherapyButton"  data-toggle="modal" data-target="#edit-chemotherapies-modal"></a>
+                &nbsp
+                <a id="${(chemotherapy.encounterUuid)}" class="no-underline-edit fa fa-trash fa-lg deleteTreatmentButton" data-toggle="modal" data-target="#delete-treatment-modal"></a>
                 </div>
                 <% } %>
                 <div class="clearfix">
@@ -150,7 +172,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
     <div>
         <div class="clearfix">
             <h4>Radiation Therapy&emsp;
-                <a class="btn btn-primary btn-sm" onclick="logEvent('clicked_add_radiation','')" data-toggle="modal" data-target="#edit-radiation-modal">Add</a>
+                <a class="btn btn-primary btn-sm addRadiationButton" onclick="logEvent('clicked_add_radiation','')" data-toggle="modal" data-target="#edit-radiation-modal">Add</a>
             </h4>
         </div>
 
@@ -161,6 +183,8 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
                 <% if(isACareGiver != 1) { %>
                 <div class="pull-right">
                     <a id="${(radiation.encounterUuid)}" class="no-underline-edit fa fa-pencil fa-lg editRadiationButton" data-toggle="modal" data-target="#edit-radiation-modal"></a>
+                &nbsp
+                <a id="${(radiation.encounterUuid)}" class="no-underline-edit fa fa-trash fa-lg deleteTreatmentButton" data-toggle="modal" data-target="#delete-treatment-modal"></a>
                 </div>
                 <% } %>
                 <div class="clearfix">

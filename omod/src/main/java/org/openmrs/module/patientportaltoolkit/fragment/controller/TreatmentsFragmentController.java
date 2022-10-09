@@ -99,4 +99,13 @@ public class TreatmentsFragmentController {
         }
     }
 
+
+    public void deleteTreatment(@RequestParam(value = "treatmentId", required = true) String treatmentId,
+                                        HttpServletRequest servletRequest) throws ParseException {
+
+        log.info(PPTLogAppender.appendLog("Delete_treatment", servletRequest, "Treatment Id:", treatmentId));
+        Person person = Context.getAuthenticatedUser().getPerson();
+        Context.getEncounterService().voidEncounter(Context.getEncounterService().getEncounterByUuid(treatmentId),"Deleted By"+Context.getAuthenticatedUser());
+    }
+
 }

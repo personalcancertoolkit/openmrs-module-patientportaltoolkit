@@ -224,6 +224,16 @@ jq(document).ready(function(){
             jq("#radiologistInstitutionCity").val('');
             jq("#radiologistInstitutionState").val('');
         });
+    jq(".deleteTreatmentButton").click(
+        function () {
+            jq("#treatmentEncounterHolder").val(this.id);
+        });
+    jq("#deleteTreatmentButton").click(
+        function () {
+            jq.get("treatments/deleteTreatment.action", {treatmentId:  jq("#treatmentEncounterHolder").val()}, function(){
+                location.reload();
+            });
+        });
     jq(".removeRelationCloseButton").click(
         function () {
             jq("#remove-relationId").val(this.id.split("removeRelation")[1]);
