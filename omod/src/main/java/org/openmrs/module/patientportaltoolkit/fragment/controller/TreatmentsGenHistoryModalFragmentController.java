@@ -40,12 +40,12 @@ public class TreatmentsGenHistoryModalFragmentController {
         model.addAttribute("genHistoryConcepts", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.TREATMENTSUMMARY_ENCOUNTER));
     }
     public void saveNewGenHistoryForm(FragmentModel model,  @RequestParam(value = "patientUuid") String patientUuid,
-                                      @RequestParam(value = "cancerType") String cancerType,
-                                      @RequestParam(value = "cancerStage") String cancerStage,
-                                      @RequestParam(value = "cancerDate") String cancerDate,
-                                      @RequestParam(value = "genHistoryCancerPcpName") String genHistoryCancerPcpName,
-                                      @RequestParam(value = "genHistoryCancerPcpEmail") String genHistoryCancerPcpEmail,
-                                      @RequestParam(value = "genHistoryCancerPcpPhone") String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
+                                      @RequestParam(value = "cancerType", required = false) String cancerType,
+                                      @RequestParam(value = "cancerStage", required = false) String cancerStage,
+                                      @RequestParam(value = "cancerDate", required = false) String cancerDate,
+                                      @RequestParam(value = "genHistoryCancerPcpName", required = false) String genHistoryCancerPcpName,
+                                      @RequestParam(value = "genHistoryCancerPcpEmail", required = false) String genHistoryCancerPcpEmail,
+                                      @RequestParam(value = "genHistoryCancerPcpPhone", required = false) String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
 
         EncounterService encounterService= Context.getEncounterService();
         Encounter newGenHistoryEncounter = new Encounter();
@@ -129,12 +129,12 @@ public class TreatmentsGenHistoryModalFragmentController {
     }
 
     public void saveGenHistoryForm(FragmentModel model,  @RequestParam(value = "encounterId", required = true) String encounterId,
-                                   @RequestParam(value = "cancerType", required = true) String cancerType,
-                                   @RequestParam(value = "cancerStage", required = true) String cancerStage,
-                                   @RequestParam(value = "cancerDate", required = true) String cancerDate,
-                                   @RequestParam(value = "genHistoryCancerPcpName", required = true) String genHistoryCancerPcpName,
-                                   @RequestParam(value = "genHistoryCancerPcpEmail", required = true) String genHistoryCancerPcpEmail,
-                                   @RequestParam(value = "genHistoryCancerPcpPhone", required = true) String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
+                                   @RequestParam(value = "cancerType", required = false) String cancerType,
+                                   @RequestParam(value = "cancerStage", required = false) String cancerStage,
+                                   @RequestParam(value = "cancerDate", required = false) String cancerDate,
+                                   @RequestParam(value = "genHistoryCancerPcpName", required = false) String genHistoryCancerPcpName,
+                                   @RequestParam(value = "genHistoryCancerPcpEmail", required = false) String genHistoryCancerPcpEmail,
+                                   @RequestParam(value = "genHistoryCancerPcpPhone", required = false) String genHistoryCancerPcpPhone, HttpServletRequest servletRequest) throws ParseException {
 
         log.info(PPTLogAppender.appendLog("SAVE_GENERALHISTORY", servletRequest, "encounterId:", encounterId, "cancerType:", cancerType, "cancerStage:", cancerStage, "cancerDate:", cancerDate, "genHistoryCancerPcpName:", genHistoryCancerPcpName, "genHistoryCancerPcpEmail:", genHistoryCancerPcpEmail, "genHistoryCancerPcpPhone:", genHistoryCancerPcpPhone));
         EncounterService encounterService=Context.getEncounterService();

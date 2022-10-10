@@ -64,11 +64,14 @@ jq(document).ready(function(){
             dd.selectedIndex = [...dd.options].findIndex (option => option.text === jq('#' + encounterID + 'cancerType').text());
             const dd2 = document.getElementById ('genHistoryCancerStageSelect');
             dd2.selectedIndex = [...dd2.options].findIndex (option => option.text === jq('#' + encounterID + 'cancerStage').text());
-
-            jq("#genHistoryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'diagnosisDate').text())));
-            jq("#genHistoryCancerPcpName").val(jq('#' + encounterID + 'genHistoryCancerPcpName').text());
-            jq("#genHistoryCancerPcpEmail").val(jq('#' + encounterID + 'genHistoryCancerPcpEmail').text());
-            jq("#genHistoryCancerPcpPhone").val(jq('#' + encounterID + 'genHistoryCancerPcpPhone').text());
+            if(jq('#' + encounterID + 'diagnosisDate').text()!=null && jq('#' + encounterID + 'diagnosisDate').text()!=''&& jq('#' + encounterID + 'diagnosisDate').text()!="null") {
+                jq("#genHistoryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'diagnosisDate').text())))};
+            if(jq('#' + encounterID + 'genHistoryCancerPcpName').text()!=null && jq('#' + encounterID + 'genHistoryCancerPcpName').text()!=''&& jq('#' + encounterID + 'genHistoryCancerPcpName').text()!='null'){
+            jq("#genHistoryCancerPcpName").val(jq('#' + encounterID + 'genHistoryCancerPcpName').text())};
+            if(jq('#' + encounterID + 'genHistoryCancerPcpEmail').text()!=null && jq('#' + encounterID + 'genHistoryCancerPcpEmail').text()!=''&& jq('#' + encounterID + 'genHistoryCancerPcpEmail').text()!='null'){
+            jq("#genHistoryCancerPcpEmail").val(jq('#' + encounterID + 'genHistoryCancerPcpEmail').text())};
+            if(jq('#' + encounterID + 'genHistoryCancerPcpPhone').text()!=null && jq('#' + encounterID + 'genHistoryCancerPcpPhone').text()!='' && jq('#' + encounterID + 'genHistoryCancerPcpPhone').text()!='null'){
+            jq("#genHistoryCancerPcpPhone").val(jq('#' + encounterID + 'genHistoryCancerPcpPhone').text())};
         });
     jq('.editSurgeryButton').click(
         function () {
