@@ -64,8 +64,8 @@ jq(document).ready(function(){
             dd.selectedIndex = [...dd.options].findIndex (option => option.text === jq('#' + encounterID + 'cancerType').text());
             const dd2 = document.getElementById ('genHistoryCancerStageSelect');
             dd2.selectedIndex = [...dd2.options].findIndex (option => option.text === jq('#' + encounterID + 'cancerStage').text());
-            if(jq('#' + encounterID + 'diagnosisDate').text()!=null && jq('#' + encounterID + 'diagnosisDate').text()!=''&& jq('#' + encounterID + 'diagnosisDate').text()!="null") {
-                jq("#genHistoryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'diagnosisDate').text())))};
+            if(jq('#'+encounterID+'diagnosisDate').text())
+                jq("#genHistoryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'diagnosisDate').text())));
             if(jq('#' + encounterID + 'genHistoryCancerPcpName').text()!=null && jq('#' + encounterID + 'genHistoryCancerPcpName').text()!=''&& jq('#' + encounterID + 'genHistoryCancerPcpName').text()!='null'){
             jq("#genHistoryCancerPcpName").val(jq('#' + encounterID + 'genHistoryCancerPcpName').text())};
             if(jq('#' + encounterID + 'genHistoryCancerPcpEmail').text()!=null && jq('#' + encounterID + 'genHistoryCancerPcpEmail').text()!=''&& jq('#' + encounterID + 'genHistoryCancerPcpEmail').text()!='null'){
@@ -93,7 +93,8 @@ jq(document).ready(function(){
             } else {
                 jq('#majorComplicationsBoolSelect').val("1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             }
-            jq("#surgeryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'surgeryDate').text())));
+            if(jq('#'+encounterID+'surgeryDate').text())
+                jq("#surgeryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'surgeryDate').text())));
             // console.log($('#'+encounterID+'surgeryPCPName').text());
             jq("#surgeonPcpName").val(jq('#' + encounterID + 'surgeryPCPName').text());
             jq("#surgeonPcpEmail").val(jq('#' + encounterID + 'surgeryPCPEmail').text());
@@ -144,8 +145,10 @@ jq(document).ready(function(){
             else{
                 jq('#centralLineBoolSelect').val("1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
             }
-            jq('#chemoStartDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'chemotherapyStartDate').text())));
-            jq('#chemoEndDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'chemotherapyEndDate').text())));
+            if(jq('#'+encounterID+'chemotherapyStartDate').text())
+                jq('#chemoStartDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'chemotherapyStartDate').text())));
+            if(jq('#'+encounterID+'chemotherapyEndDate').text())
+                jq('#chemoEndDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'chemotherapyEndDate').text())));
             jq("#oncologistPcpName").val(jq('#'+encounterID+'chemotherapyPCPName').text());
             jq("#oncologistPcpEmail").val(jq('#'+encounterID+'chemotherapyPCPEmail').text());
             jq("#oncologistPcpPhone").val(jq('#'+encounterID+'chemotherapyPCPPhone').text());
@@ -199,9 +202,10 @@ jq(document).ready(function(){
                     jq(this).prop('checked', true);
                 }
             });
-            jq('#radiationStartDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'radStartDate').text())));
+            if(jq('#'+encounterID+'radStartDate').text())
+                jq('#radiationStartDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'radStartDate').text())));
             if(jq('#'+encounterID+'radEndDate').text())
-            jq('#radiationEndDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'radEndDate').text())));
+                jq('#radiationEndDate').val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#'+encounterID+'radEndDate').text())));
             jq("#radiologistPcpName").val(jq('#'+encounterID+'radPCPName').text());
             jq("#radiologistPcpEmail").val(jq('#'+encounterID+'radPCPEmail').text());
             jq("#radiologistPcpPhone").val(jq('#'+encounterID+'radPCPPhone').text());
