@@ -87,12 +87,6 @@ jq(document).ready(function(){
                     jq(this).prop('checked', true);
                 }
             });
-            if (jq('#' + encounterID + 'surgeryMajorComplications').val()=="true") {
-                jq('#majorComplicationsBoolSelect').val("1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                jq('#majorComplicationsTypeAnswer').val(jq('#' + encounterID + 'surgeryComplications').text());
-            } else {
-                jq('#majorComplicationsBoolSelect').val("1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-            }
             if(jq('#'+encounterID+'surgeryDate').text())
                 jq("#surgeryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'surgeryDate').text())));
             // console.log($('#'+encounterID+'surgeryPCPName').text());

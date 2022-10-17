@@ -195,8 +195,8 @@ public class TreatmentsSurgeriesModalFragmentController {
         HashMap<String, Object> observationsMap = new HashMap<>();
         List<String> allTheEnteredValues = new ArrayList<>();
         allTheEnteredValues.add("surgeryTypes");
-        allTheEnteredValues.add("surgeryComplications");//99ef1d68-05ed-4f37-b98b-c982e3574138
-        allTheEnteredValues.add("majorComplicationsTypeAnswer");
+       // allTheEnteredValues.add("surgeryComplications");//99ef1d68-05ed-4f37-b98b-c982e3574138
+       // allTheEnteredValues.add("majorComplicationsTypeAnswer");
         allTheEnteredValues.add("surgeryDate");
         allTheEnteredValues.add("surgeonPcpName");
         allTheEnteredValues.add("surgeonPcpEmail");
@@ -226,7 +226,7 @@ public class TreatmentsSurgeriesModalFragmentController {
                         for (Obs o : observationConceptUUIDToObsMap.get("d409122c-8a0b-4282-a17f-07abad81f278"))
                             existingSurgeryTypeConcepts.add(o.getValueCoded().getUuid());
                         break;
-                    case "surgeryComplications":
+                 /*   case "surgeryComplications":
                         if (observationConceptUUIDToObsMap.get("99ef1d68-05ed-4f37-b98b-c982e3574138") != null) {
                             Obs o = observationConceptUUIDToObsMap.get("99ef1d68-05ed-4f37-b98b-c982e3574138").get(0);
                             o.setValueCoded(conceptService.getConceptByUuid(surgeryComplications));
@@ -247,7 +247,7 @@ public class TreatmentsSurgeriesModalFragmentController {
                             o.setValueText(majorComplicationsTypeAnswer);
                             surgeryEncounter.addObs(o);
                         }
-                        break;
+                        break;*/
                     case "surgeryDate":
                         if (observationConceptUUIDToObsMap.get("87a69397-65ef-4576-a709-ae0a526afd85") != null) {
                             Obs o = observationConceptUUIDToObsMap.get("87a69397-65ef-4576-a709-ae0a526afd85").get(0);

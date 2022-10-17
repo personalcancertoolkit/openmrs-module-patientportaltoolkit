@@ -85,13 +85,6 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
             <div class="clearfix">
                 <div class="pull-left">
                     <h5><label><% surgery.surgeryTypes.each { surgeryType -> %> <span class="${(surgery.encounterUuid)}surgeryType reformatText" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</span>; <% } %></label> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate"  >${pptutil.formatDate((surgery.surgeryDate))}</small></h5>
-                    <input id="${(surgery.encounterUuid)}surgeryMajorComplications" value="${surgery.hasMajorComplications}" type="hidden">
-                    <% if (surgery.hasMajorComplications) { %>
-                    <div>
-                        <label>Major Complications&emsp;</label>
-                        <span id="${(surgery.encounterUuid)}surgeryComplications">${(surgery.majorComplications)}</span>
-                    </div>
-                    <% } %>
                     <div>
                     <label>Surgery Location&emsp;</label>
                         <span id="${(surgery.encounterUuid)}surgeryinstituteName">${(surgery.institutionName)}</span>
