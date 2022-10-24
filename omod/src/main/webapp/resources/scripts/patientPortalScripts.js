@@ -269,9 +269,10 @@ jq(document).ready(function(){
                     securityLayerType: checkboxValues
                 },
                 success : function() {
+                    jq("#connectionSaveSuccess").show();
                     setTimeout(function(){
                         location.reload();
-                    }, 2000);
+                    }, 4000);
                 },
                 error : function(e) {
                     alert('Error: ' + e);

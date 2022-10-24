@@ -30,7 +30,7 @@ public class ForgotPasswordFragmentController {
         ps.getPersonAttributeTypeByName("Email");
         List<Person> people = ps.getPeople(emailId,true);
         //ps.getPerson();
-        MailHelper.sendMail("Forgot Password", "Hello"+ people.get(0).getPersonName()+"\nyou have received a new message on your patient portal module please log into www.personalcancertoolkit.org to view the message", people.get(0).getAttribute("Email").toString());
+        MailHelper.sendMail("Forgot Password", "Hello"+ people.get(0).getPersonName()+"\nyou have received a new message on your patient portal module please log into www.sphere.regenstrief.org to view the message", people.get(0).getAttribute("Email").toString());
 
     }
 

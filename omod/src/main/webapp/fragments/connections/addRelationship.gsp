@@ -8,6 +8,10 @@
             </div>
 
             <div class="modal-body">
+                <div id="connectionSaveSuccess" class="alert alert-success" role="alert" style="display: none">
+                    <i class="fa fa-solid fa-address-card"></i> &nbsp;
+                Success: Your new connection has been saved
+                </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="personName">Person's name:</label>
