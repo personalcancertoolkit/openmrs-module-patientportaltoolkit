@@ -34,14 +34,14 @@ public class GenerateTreatmentClassesUtil {
                     generalHistory.setCancerStage(o.getValueCoded().getName().getName());
                 if(o.getConcept().getUuid().equals("cdf6d767-2aa3-40b6-ae78-0386eebe2411"))
                     generalHistory.setCancerType(o.getValueCoded().getName().getName());
-                if(o.getConcept().getUuid().equals("395878ae-5108-4aad-8ad8-9b88e812d278")){
+           /*     if(o.getConcept().getUuid().equals("395878ae-5108-4aad-8ad8-9b88e812d278")){
                     if(o.getValueCoded().getUuid().equals("1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"))
                         generalHistory.setHasGeneticOrPredisposingAbnormality(true);
                     else
                         generalHistory.setHasGeneticOrPredisposingAbnormality(false);
                 }
                 if(o.getConcept().getUuid().equals("8719adbe-0975-477f-a95f-2fae4d6cbdae"))
-                    generalHistory.setGeneticOrPredisposingAbnormality(o.getValueCoded().getName().getName());
+                    generalHistory.setGeneticOrPredisposingAbnormality(o.getValueCoded().getName().getName());*/
                 if(o.getConcept().getUuid().equals("654e32f0-8b57-4d1f-845e-500922e800f6"))
                     generalHistory.setDiagnosisDate(o.getValueDate());
                 //doctors name

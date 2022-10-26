@@ -20,8 +20,8 @@ public class ChangePasswordFragmentController {
         log.info(PPTLogAppender.appendLog("REQUEST_CHANGEPASSWORD_FRAGMENT", pageRequest.getRequest()));
     }
 
-    public void saveNewPassword(FragmentModel model, @RequestParam(value = "newPassword", required = true) String newPassword, HttpServletRequest servletRequest) {
+    public void saveNewPassword(FragmentModel model,@RequestParam(value = "currentPassword", required = true) String currentPassword,@RequestParam(value = "newPassword", required = true) String newPassword, HttpServletRequest servletRequest) {
         log.info(PPTLogAppender.appendLog("SAVE_NEW_PASSWORD", servletRequest));
-        Context.getUserService().changePassword(Context.getAuthenticatedUser(),newPassword);
+        Context.getUserService().changePassword(currentPassword,newPassword);
     }
 }
