@@ -24,6 +24,14 @@
                 <% } %>
                 <% } %>
                 <% chemotherapyConcepts.concepts.each { questions -> %>
+                <% /* other chemotherapy medication name*/ %>
+                <% if (questions.uuid=="3a49bfbb-df57-4c51-9f14-f05f848093e0") { %>
+                <form class="form-inline" role="form"> <label>Other Chemotherapy Medication Name </label>
+                    <input class="form-control" id="otherChemotherapyMedicationName" type="text"/>
+                </form>
+                <% } %>
+                <% } %>
+                <% chemotherapyConcepts.concepts.each { questions -> %>
                 <% /* central Line yes no*/ %>
                 <% if (questions.uuid=="361b7f9b-a985-4b18-9055-03af3b41b8b3") { %>
                 <form class="form-inline" role="form"> <label class="reformatText">${(questions.getName())} </label>
@@ -119,6 +127,7 @@
                 }
             });
             logData = '{"chemotherapyMeds":"' + existingChemotherapyMedTypesList + '", ' +
+                '"otherChemotherapyMedName":"' + jq("#otherChemotherapyMedicationName").val() + '", ' +
                 '"centralLine":"' + jq("#centralLineBoolSelect option:selected").text() + '", ' +
                 '"chemoStartDate":"' + jq("#chemoStartDate").val() + '", ' +
                 '"chemoEndDate":"' + jq("#chemoEndDate").val() + '",' +
@@ -147,6 +156,7 @@
                 else if(jq("#chemotherapyEncounterHolder").val() == null || jq("#chemotherapyEncounterHolder").val() == '') {
                     jq.get("treatmentsChemotherapyModal/saveNewChemotherapyForm.action", {
                         chemotherapyMeds: chemotherapyMedTypesList,
+                        otherChemotherapyMedicationName: jq("#otherChemotherapyMedicationName").val(),
                         centralLine: jq("#centralLineBoolSelect").val(),
                         chemoStartDate: jq("#chemoStartDate").val(),
                         chemoEndDate: jq("#chemoEndDate").val(),
@@ -168,6 +178,7 @@
                     jq.get("treatmentsChemotherapyModal/saveChemotherapyForm.action", {
                         encounterId: jq("#chemotherapyEncounterHolder").val(),
                         chemotherapyMeds: chemotherapyMedTypesList,
+                        otherChemotherapyMedicationName: jq("#otherChemotherapyMedicationName").val(),
                         centralLine: jq("#centralLineBoolSelect").val(),
                         chemoStartDate: jq("#chemoStartDate").val(),
                         chemoEndDate: jq("#chemoEndDate").val(),

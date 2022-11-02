@@ -21,6 +21,8 @@ public class Chemotherapy {
 
     private List<String> chemoMedications;
 
+    private String otherChemoMedicationName;
+
     private Date chemoStartDate;
 
     private Date chemoEndDate;
@@ -53,6 +55,14 @@ public class Chemotherapy {
 
     public void setChemoMedications(List<String> chemoMedications) {
         this.chemoMedications = chemoMedications;
+    }
+
+    public String getOtherChemoMedicationName() {
+        return otherChemoMedicationName;
+    }
+
+    public void setOtherChemoMedicationName(String otherChemoMedicationName) {
+        this.otherChemoMedicationName = otherChemoMedicationName;
     }
 
     public Date getChemoStartDate() {

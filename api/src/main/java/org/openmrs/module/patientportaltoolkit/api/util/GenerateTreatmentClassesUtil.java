@@ -114,6 +114,9 @@ public class GenerateTreatmentClassesUtil {
             for(Obs o: obsList){
                 if(o.getConcept().getUuid().equals("8481b9da-74e3-45a9-9124-d69ab572d636"))
                     chemomedications.add(o.getValueCoded().getName().getName());
+                if(o.getConcept().getUuid().equals("3a49bfbb-df57-4c51-9f14-f05f848093e0")) {
+                    chemotherapy.setOtherChemoMedicationName((o.getValueText()));
+                }
                 if(o.getConcept().getUuid().equals("85c3a99e-0598-4c63-912b-796dee9c75b2"))
                     chemotherapy.setChemoStartDate(o.getValueDate());
                 if(o.getConcept().getUuid().equals("7dd8b8aa-b0f1-4eb1-862d-b6d737bdd315"))

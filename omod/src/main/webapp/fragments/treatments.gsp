@@ -130,7 +130,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
                 <% } %>
                 <div class="clearfix">
                     <div class="pull-left">
-                        <h5> <label> <% chemotherapy.chemoMedications.each { chemotherapymed -> %> <span class="${(chemotherapy.encounterUuid)}chemotherapymed reformatText" id="${(chemotherapy.encounterUuid)}chemotherapymed${(chemotherapymed)}">${(chemotherapymed)}</span>; <% } %></label>
+                        <h5> <label> <% chemotherapy.chemoMedications.each { chemotherapymed -> %> <span class="${(chemotherapy.encounterUuid)}chemotherapymed reformatText" id="${(chemotherapy.encounterUuid)}chemotherapymed${(chemotherapymed)}">${(chemotherapymed)}</span>; <% } %></label> <% if (chemotherapy.otherChemoMedicationName) { %>&emsp;<span id="${(chemotherapy.encounterUuid)}otherChemotherapyMedicationName">${(chemotherapy.otherChemoMedicationName)}</span><% } %>
                             <small> <% if (chemotherapy.chemoStartDate) { %>&emsp;<span id="${(chemotherapy.encounterUuid)}chemotherapyStartDate">${pptutil.formatDate((chemotherapy.chemoStartDate))}</span><% } %>  <% if (chemotherapy.chemoEndDate) { %>&ndash;<span id="${(chemotherapy.encounterUuid)}chemotherapyEndDate" > ${pptutil.formatDate((chemotherapy.chemoEndDate))}</span><% } %></small>
                         </h5>
                         <div class="">

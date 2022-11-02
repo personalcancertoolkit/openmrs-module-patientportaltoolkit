@@ -42,6 +42,7 @@ public class TreatmentsChemotherapyModalFragmentController {
     }
 
     public void saveNewChemotherapyForm(FragmentModel model, @RequestParam(value = "chemotherapyMeds", required = false) String chemotherapyMeds,
+                                        @RequestParam(value = "otherChemotherapyMedicationName", required = false) String otherChemotherapyMedicationName,
                                         @RequestParam(value = "centralLine", required = false) String centralLine,
                                         @RequestParam(value = "chemoStartDate", required = false) String chemoStartDate,
                                         @RequestParam(value = "chemoEndDate", required = false) String chemoEndDate,
@@ -75,6 +76,7 @@ public class TreatmentsChemotherapyModalFragmentController {
 
 
         List<String> allTheEnteredValues = new ArrayList<>();
+        allTheEnteredValues.add("otherChemotherapyMedicationName");
         allTheEnteredValues.add("centralLine");
         allTheEnteredValues.add("chemoStartDate");
         allTheEnteredValues.add("chemoEndDate");
@@ -128,41 +130,48 @@ public class TreatmentsChemotherapyModalFragmentController {
                         }
                         break;
                     case "chemotherapyPcpName":
-                        Obs surgeonPcpNameObs = new Obs();
-                        surgeonPcpNameObs.setConcept(conceptService.getConceptByUuid("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"));
-                        surgeonPcpNameObs.setValueText(chemotherapyPcpName);
-                        oncologist.addGroupMember(surgeonPcpNameObs);
+                        Obs chemotherapyPcpNameObs = new Obs();
+                        chemotherapyPcpNameObs.setConcept(conceptService.getConceptByUuid("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"));
+                        chemotherapyPcpNameObs.setValueText(chemotherapyPcpName);
+                        oncologist.addGroupMember(chemotherapyPcpNameObs);
                         break;
                     case "chemotherapyPcpEmail":
-                        Obs surgeonPcpEmailObs = new Obs();
-                        surgeonPcpEmailObs.setConcept(conceptService.getConceptByUuid("898a0028-8c65-4db9-a802-1577fce59864"));
-                        surgeonPcpEmailObs.setValueText(chemotherapyPcpEmail);
-                        oncologist.addGroupMember(surgeonPcpEmailObs);
+                        Obs chemotherapyPcpEmailObs = new Obs();
+                        chemotherapyPcpEmailObs.setConcept(conceptService.getConceptByUuid("898a0028-8c65-4db9-a802-1577fce59864"));
+                        chemotherapyPcpEmailObs.setValueText(chemotherapyPcpEmail);
+                        oncologist.addGroupMember(chemotherapyPcpEmailObs);
                         break;
                     case "chemotherapyPcpPhone":
-                        Obs surgeonPcpPhoneObs = new Obs();
-                        surgeonPcpPhoneObs.setConcept(conceptService.getConceptByUuid("9285b227-4054-4830-ac32-5ea78462e8c4"));
-                        surgeonPcpPhoneObs.setValueText(chemotherapyPcpPhone);
-                        oncologist.addGroupMember(surgeonPcpPhoneObs);
+                        Obs chemotherapyPcpPhoneObs = new Obs();
+                        chemotherapyPcpPhoneObs.setConcept(conceptService.getConceptByUuid("9285b227-4054-4830-ac32-5ea78462e8c4"));
+                        chemotherapyPcpPhoneObs.setValueText(chemotherapyPcpPhone);
+                        oncologist.addGroupMember(chemotherapyPcpPhoneObs);
                         break;
                     case "chemotherapyInstitutionName":
-                        Obs surgeryInstitutionNameObs = new Obs();
-                        surgeryInstitutionNameObs.setConcept(conceptService.getConceptByUuid("47d58999-d3b5-4869-a52e-841e2e6bdbb3"));
-                        surgeryInstitutionNameObs.setValueText(chemotherapyInstitutionName);
-                        chemotherapyInstitution.addGroupMember(surgeryInstitutionNameObs);
+                        Obs chemotherapyInstitutionNameObs = new Obs();
+                        chemotherapyInstitutionNameObs.setConcept(conceptService.getConceptByUuid("47d58999-d3b5-4869-a52e-841e2e6bdbb3"));
+                        chemotherapyInstitutionNameObs.setValueText(chemotherapyInstitutionName);
+                        chemotherapyInstitution.addGroupMember(chemotherapyInstitutionNameObs);
                         break;
                     case "chemotherapyInstitutionCity":
-                        Obs surgeryInstitutionCityObs = new Obs();
-                        surgeryInstitutionCityObs.setConcept(conceptService.getConceptByUuid("bfa752d6-2037-465e-b0a2-c4c2d485ec32"));
-                        surgeryInstitutionCityObs.setValueText(chemotherapyInstitutionCity);
-                        chemotherapyInstitution.addGroupMember(surgeryInstitutionCityObs);
+                        Obs chemotherapyInstitutionCityObs = new Obs();
+                        chemotherapyInstitutionCityObs.setConcept(conceptService.getConceptByUuid("bfa752d6-2037-465e-b0a2-c4c2d485ec32"));
+                        chemotherapyInstitutionCityObs.setValueText(chemotherapyInstitutionCity);
+                        chemotherapyInstitution.addGroupMember(chemotherapyInstitutionCityObs);
                         break;
                     case "chemotherapyInstitutionState":
-                        Obs surgeryInstitutionStateobs = new Obs();
-                        surgeryInstitutionStateobs.setConcept(conceptService.getConceptByUuid("34489100-487e-443a-bf27-1b6869fb9332"));
-                        surgeryInstitutionStateobs.setValueText(chemotherapyInstitutionState);
-                        chemotherapyInstitution.addGroupMember(surgeryInstitutionStateobs);
+                        Obs chemotherapyInstitutionobs = new Obs();
+                        chemotherapyInstitutionobs.setConcept(conceptService.getConceptByUuid("34489100-487e-443a-bf27-1b6869fb9332"));
+                        chemotherapyInstitutionobs.setValueText(chemotherapyInstitutionState);
+                        chemotherapyInstitution.addGroupMember(chemotherapyInstitutionobs);
                         break;
+                    case "otherChemotherapyMedicationName":
+                        Obs otherChemotherapyMedicationNameObs = new Obs();
+                        otherChemotherapyMedicationNameObs.setConcept(conceptService.getConceptByUuid("3a49bfbb-df57-4c51-9f14-f05f848093e0"));
+                        otherChemotherapyMedicationNameObs.setValueText(otherChemotherapyMedicationName);
+                        newChemotherapyEncounter.addObs(otherChemotherapyMedicationNameObs);
+                        break;
+
                 }
             }
         }
@@ -173,6 +182,7 @@ public class TreatmentsChemotherapyModalFragmentController {
     }
 
     public void saveChemotherapyForm(FragmentModel model, @RequestParam(value = "encounterId", required = false) String encounterId,
+                                     @RequestParam(value = "otherChemotherapyMedicationName", required = false) String otherChemotherapyMedicationName,
                                      @RequestParam(value = "chemotherapyMeds", required = false) String chemotherapyMeds,
                                      @RequestParam(value = "centralLine", required = false) String centralLine,
                                      @RequestParam(value = "chemoStartDate", required = false) String chemoStartDate,
@@ -194,6 +204,7 @@ public class TreatmentsChemotherapyModalFragmentController {
         }
         List<String> existingChemotherapyMedictionConcepts = new ArrayList<>();
         List<String> allTheEnteredValues = new ArrayList<>();
+        allTheEnteredValues.add("otherChemotherapyMedicationName");
         allTheEnteredValues.add("chemotherapyMeds");
         allTheEnteredValues.add("centralLine");
         allTheEnteredValues.add("chemoStartDate");
@@ -357,6 +368,20 @@ public class TreatmentsChemotherapyModalFragmentController {
                                     o.setConcept(conceptService.getConceptByUuid("34489100-487e-443a-bf27-1b6869fb9332"));
                                     o.setValueText(chemotherapyInstitutionState);
                                     chemotherapyEncounter.addObs(o);
+                                }
+                            }
+                            break;
+                        case "otherChemotherapyMedicationName":
+                            if (observationConceptUUIDToObsMap.get("34489100-487e-443a-bf27-1b6869fb9332") != null) {
+                                Obs o = observationConceptUUIDToObsMap.get("3a49bfbb-df57-4c51-9f14-f05f848093e0").get(0);
+                                if (o.getValueText() != otherChemotherapyMedicationName)
+                                    o.setValueText(otherChemotherapyMedicationName);
+                            } else {
+                                if (chemotherapyInstitutionState != null && chemotherapyInstitutionState != "") {
+                            Obs otherChemotherapyMedicationNameObs = new Obs();
+                            otherChemotherapyMedicationNameObs.setConcept(conceptService.getConceptByUuid("3a49bfbb-df57-4c51-9f14-f05f848093e0"));
+                            otherChemotherapyMedicationNameObs.setValueText(otherChemotherapyMedicationName);
+                            chemotherapyEncounter.addObs(otherChemotherapyMedicationNameObs);
                                 }
                             }
                             break;

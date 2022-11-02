@@ -150,6 +150,7 @@ jq(document).ready(function(){
             jq("#chemotherapyInstitutionName").val(jq('#'+encounterID+'chemotherapyinstituteName').text());
             jq("#chemotherapyInstitutionCity").val(jq('#'+encounterID+'chemotherapyCity').text());
             jq("#chemotherapyInstitutionState").val(jq('#'+encounterID+'chemotherapyState').text());
+            jq("#otherChemotherapyMedicationName").val(jq('#'+encounterID+'otherChemotherapyMedicationName').text());
         });
 
     jq('.addChemotherapyButton').click(
