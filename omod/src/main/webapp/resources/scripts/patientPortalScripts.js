@@ -97,6 +97,7 @@ jq(document).ready(function(){
             jq("#surgeryInstitutionName").val(jq('#' + encounterID + 'surgeryinstituteName').text());
             jq("#surgeryInstitutionCity").val(jq('#' + encounterID + 'surgeryCity').text());
             jq("#surgeryInstitutionState").val(jq('#' + encounterID + 'surgeryState').text());
+            jq("#otherSurgeryName").val(jq('#'+encounterID+'otherSurgeryName').text());
         });
 
     jq('.addSurgeryButton').click(

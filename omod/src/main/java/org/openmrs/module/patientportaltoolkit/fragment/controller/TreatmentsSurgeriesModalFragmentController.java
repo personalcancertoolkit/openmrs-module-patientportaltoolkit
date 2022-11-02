@@ -43,6 +43,7 @@ public class TreatmentsSurgeriesModalFragmentController {
     }
 
     public void saveNewSurgeryForm(FragmentModel model, @RequestParam(value = "surgeryTypes", required = false) String surgeryTypes,
+                                   @RequestParam(value = "otherSurgeryName", required = false) String otherSurgeryName,
                                    @RequestParam(value = "surgeryComplications", required = false) String surgeryComplications,
                                    @RequestParam(value = "majorComplicationsTypeAnswer", required = false) String majorComplicationsTypeAnswer,
                                    @RequestParam(value = "surgeryDate", required = false) String surgeryDate,
@@ -87,6 +88,7 @@ public class TreatmentsSurgeriesModalFragmentController {
         surgeon.setConcept(conceptService.getConceptByUuid("292e2107-b909-4e4a-947f-ce2be8738137"));
 
         List<String> allTheEnteredValues = new ArrayList<>();
+        allTheEnteredValues.add("otherSurgeryName");
         allTheEnteredValues.add("surgeryComplications");//99ef1d68-05ed-4f37-b98b-c982e3574138
         allTheEnteredValues.add("majorComplicationsTypeAnswer");
         allTheEnteredValues.add("surgeryDate");
@@ -162,6 +164,12 @@ public class TreatmentsSurgeriesModalFragmentController {
                         surgeryInstitutionStateobs.setValueText(surgeryInstitutionState);
                         suregeryInstitution.addGroupMember(surgeryInstitutionStateobs);
                         break;
+                    case "otherSurgeryName":
+                        Obs otherSurgeryNameObs = new Obs();
+                        otherSurgeryNameObs.setConcept(conceptService.getConceptByUuid("683429f5-550a-463a-803b-a3efb6630c7f"));
+                        otherSurgeryNameObs.setValueText(otherSurgeryName);
+                        newSurgeryEncounter.addObs(otherSurgeryNameObs);
+                        break;
                 }
             }
         }
@@ -171,6 +179,7 @@ public class TreatmentsSurgeriesModalFragmentController {
         //log.info("Save New Surgery for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
     public void saveSurgeryForm(FragmentModel model,  @RequestParam(value = "encounterId", required = false) String encounterId,
+                                @RequestParam(value = "otherSurgeryName", required = false) String otherSurgeryName,
                          @RequestParam(value = "surgeryTypes", required = false) String surgeryTypes,
                          @RequestParam(value = "surgeryComplications", required = false) String surgeryComplications,
                          @RequestParam(value = "majorComplicationsTypeAnswer", required = false) String majorComplicationsTypeAnswer,
@@ -197,6 +206,7 @@ public class TreatmentsSurgeriesModalFragmentController {
         allTheEnteredValues.add("surgeryTypes");
        // allTheEnteredValues.add("surgeryComplications");//99ef1d68-05ed-4f37-b98b-c982e3574138
        // allTheEnteredValues.add("majorComplicationsTypeAnswer");
+        allTheEnteredValues.add("otherSurgeryName");
         allTheEnteredValues.add("surgeryDate");
         allTheEnteredValues.add("surgeonPcpName");
         allTheEnteredValues.add("surgeonPcpEmail");
@@ -332,6 +342,21 @@ public class TreatmentsSurgeriesModalFragmentController {
                             o.setConcept(conceptService.getConceptByUuid("34489100-487e-443a-bf27-1b6869fb9332"));
                             o.setValueText(surgeryInstitutionState);
                             surgeryEncounter.addObs(o);
+                        }
+                        break;
+                    case "otherSurgeryName":
+                        if (observationConceptUUIDToObsMap.get("683429f5-550a-463a-803b-a3efb6630c7f") != null) {
+                            Obs o = observationConceptUUIDToObsMap.get("683429f5-550a-463a-803b-a3efb6630c7f").get(0);
+                            if (o.getValueText() != otherSurgeryName)
+                                o.setValueText(otherSurgeryName);
+                        } else {
+                            if (otherSurgeryName != null && otherSurgeryName != "") {
+                                Obs otherSurgeryNameObs = new Obs();
+                                otherSurgeryNameObs.setConcept(conceptService.getConceptByUuid("683429f5-550a-463a-803b-a3efb6630c7f"));
+                                otherSurgeryNameObs.setValueText(otherSurgeryName);
+                                surgeryEncounter.addObs(otherSurgeryNameObs);
+                                break;
+                            }
                         }
                         break;
                 }

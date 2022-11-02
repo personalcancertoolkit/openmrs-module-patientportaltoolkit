@@ -377,7 +377,7 @@ public class TreatmentsChemotherapyModalFragmentController {
                                 if (o.getValueText() != otherChemotherapyMedicationName)
                                     o.setValueText(otherChemotherapyMedicationName);
                             } else {
-                                if (chemotherapyInstitutionState != null && chemotherapyInstitutionState != "") {
+                                if (otherChemotherapyMedicationName != null && otherChemotherapyMedicationName != "") {
                             Obs otherChemotherapyMedicationNameObs = new Obs();
                             otherChemotherapyMedicationNameObs.setConcept(conceptService.getConceptByUuid("3a49bfbb-df57-4c51-9f14-f05f848093e0"));
                             otherChemotherapyMedicationNameObs.setValueText(otherChemotherapyMedicationName);

@@ -96,6 +96,9 @@ public class GenerateTreatmentClassesUtil {
                     surgery.setInstitutionCity(o.getValueText());
                 if(o.getConcept().getUuid().equals("34489100-487e-443a-bf27-1b6869fb9332"))
                     surgery.setInstitutionState(o.getValueText());
+                if(o.getConcept().getUuid().equals("683429f5-550a-463a-803b-a3efb6630c7f")) {
+                    surgery.setOtherSurgeryName((o.getValueText()));
+                }
             }
             surgery.setSurgeryTypes(surgeryTypes);
             surgeriesList.add(surgery);

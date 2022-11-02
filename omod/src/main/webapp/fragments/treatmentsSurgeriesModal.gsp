@@ -28,6 +28,14 @@
                 <% } %>
                 <% } %>
                 <% surgeryConcepts.concepts.each { questions -> %>
+                <% /* other Surgery  name*/ %>
+                <% if (questions.uuid=="683429f5-550a-463a-803b-a3efb6630c7f") { %>
+                <form class="form-inline" role="form"> <label>Other Surgery Type Name </label>
+                    <input class="form-control" id="otherSurgeryName" type="text"/>
+                </form>
+                <% } %>
+                <% } %>
+                <% surgeryConcepts.concepts.each { questions -> %>
                 <% /* surgery Date*/ %>
                 <% if (questions.uuid == "87a69397-65ef-4576-a709-ae0a526afd85") { %>
                 <form class="form-inline" role="form"><label class="reformatText">${(questions.getName())}</label>
@@ -132,6 +140,7 @@
                 } else if (jq("#surgeryEncounterHolder").val() == null || jq("#surgeryEncounterHolder").val() == '') {
                     jq.get("treatmentsSurgeriesModal/saveNewSurgeryForm.action", {
                         surgeryTypes: surgeryTypeList,
+                        otherSurgeryName: jq("#otherSurgeryName").val(),
                         surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
                         majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
                         surgeryDate: jq("#surgeryDate").val(),
@@ -152,6 +161,7 @@
                     jq.get("treatmentsSurgeriesModal/saveSurgeryForm.action", {
                         encounterId: jq("#surgeryEncounterHolder").val(),
                         surgeryTypes: surgeryTypeList,
+                        otherSurgeryName: jq("#otherSurgeryName").val(),
                         surgeryComplications: jq("#majorComplicationsBoolSelect").val(),
                         majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
                         surgeryDate: jq("#surgeryDate").val(),

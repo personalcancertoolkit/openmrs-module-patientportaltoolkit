@@ -21,6 +21,8 @@ public class Surgery {
 
     private List<String> surgeryTypes;
 
+    private String otherSurgeryName;
+
     private Date surgeryDate;
 
     private String majorComplications;
@@ -77,6 +79,14 @@ public class Surgery {
 
     public void setHasMajorComplications(Boolean hasMajorComplications) {
         this.hasMajorComplications = hasMajorComplications;
+    }
+
+    public String getOtherSurgeryName() {
+        return otherSurgeryName;
+    }
+
+    public void setOtherSurgeryName(String otherSurgeryName) {
+        this.otherSurgeryName = otherSurgeryName;
     }
 
     public String getInstitutionName() {
