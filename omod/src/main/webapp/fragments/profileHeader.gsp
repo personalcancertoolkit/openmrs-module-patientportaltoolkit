@@ -1,11 +1,11 @@
 <div class="jumbotron">
-    <div class="container clearfix">
-        <div class="pull-left">
+    <div class="container" style="display: flex;align-items: center;">
+        <div>
             <a href="#">
                 <div class="profileBadgeHeader">${ (person.getGivenName()) } ${ (person.getFamilyName()) }</div>
             </a>
         </div>
-        <div class="pull-left" id="profile-name">
+        <div id="profile-name">
             <h2>${ (person.getGivenName()) } ${ (person.getFamilyName()) }
             </h2>
               <div>

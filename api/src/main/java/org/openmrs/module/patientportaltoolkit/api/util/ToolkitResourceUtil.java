@@ -26,11 +26,11 @@ public class ToolkitResourceUtil {
 
     public static final String PHONE_NUMBER_ATTRIBUTE = "Telephone Number";
     public static final String EMAIL_ATTRIBUTE = "Email";
-    public static Integer i=0;
+    public static Integer i = 0;
     public static PatientPortalUtil pptutil = new PatientPortalUtil();
 
     public static Date clearDate(Date dateTime) {
-        if(dateTime == null) {
+        if (dateTime == null) {
             return null;
         }
         Calendar cal = Calendar.getInstance();
@@ -43,11 +43,12 @@ public class ToolkitResourceUtil {
 
         return dateWithoutTime;
     }
+
     public static Map<String, Object> generatePerson(Person person) {
 
         PersonAddress personAddress = new PersonAddress();
 
-        //get the latest address
+        // get the latest address
         for (PersonAddress pa : person.getAddresses()) {
             if (personAddress.isBlank())
                 personAddress = pa;
@@ -70,7 +71,8 @@ public class ToolkitResourceUtil {
         personObject.put("FamilyName", person.getFamilyName());
         personObject.put("Age", person.getAge());
         if (person.getIsPatient())
-            personObject.put("MRN", Context.getPatientService().getPatientByUuid(person.getUuid()).getPatientIdentifier().getIdentifier());
+            personObject.put("MRN", Context.getPatientService().getPatientByUuid(person.getUuid())
+                    .getPatientIdentifier().getIdentifier());
         if (person.getBirthdate() != null)
             personObject.put("DOB", new SimpleDateFormat().format(new Date(person.getBirthdate().getTime())));
         personObject.put("Gender", person.getGender());
@@ -88,7 +90,7 @@ public class ToolkitResourceUtil {
         ObjectMapper mapper = new ObjectMapper();
         try {
 
-            //convert JSON string to Map
+            // convert JSON string to Map
             map = mapper.readValue(json,
                     new TypeReference<HashMap<String, Object>>() {
                     });
@@ -179,7 +181,7 @@ public class ToolkitResourceUtil {
         ObjectMapper mapper = new ObjectMapper();
         try {
 
-            //convert JSON string to Map
+            // convert JSON string to Map
             map = mapper.readValue(json,
                     new TypeReference<HashMap<String, Object>>() {
                     });
@@ -276,7 +278,6 @@ public class ToolkitResourceUtil {
 
     public static Object generateJournal(JournalEntry journalEntry) {
 
-
         Map<String, Object> personMap = generatePerson(journalEntry.getCreator().getPerson());
 
         Map<String, Object> journalEntryMap = new HashMap<String, Object>();
@@ -296,7 +297,7 @@ public class ToolkitResourceUtil {
         ObjectMapper mapper = new ObjectMapper();
         try {
 
-            //convert JSON string to Map
+            // convert JSON string to Map
             map = mapper.readValue(json,
                     new TypeReference<HashMap<String, Object>>() {
                     });
@@ -329,28 +330,27 @@ public class ToolkitResourceUtil {
 
     public static Object generateRelation(PatientPortalRelation patientPortalRelation) {
 
-
         Map<String, Object> relatedPersonMap = generatePerson(patientPortalRelation.getRelatedPerson());
         Map<String, Object> creatorPersonMap = generatePerson(patientPortalRelation.getCreator().getPerson());
         Map<String, Object> patientPersonMap = generatePerson(patientPortalRelation.getPerson());
-        Map<String, Object> relationshipTypeMap = (Map<String, Object>) generateRelationType(patientPortalRelation.getRelationType());
+        Map<String, Object> relationshipTypeMap = (Map<String, Object>) generateRelationType(
+                patientPortalRelation.getRelationType());
 
         Map<String, Object> patientRelationMap = new HashMap<String, Object>();
         patientRelationMap.put("id", patientPortalRelation.getUuid());
         patientRelationMap.put("relationType", relationshipTypeMap);
-        //patientRelationMap.put("shareType", patientPortalRelation.getShareType());
-        patientRelationMap.put("dateStarted", new SimpleDateFormat().format(new Date(patientPortalRelation.getStartDate().getTime())));
+        // patientRelationMap.put("shareType", patientPortalRelation.getShareType());
+        patientRelationMap.put("dateStarted",
+                new SimpleDateFormat().format(new Date(patientPortalRelation.getStartDate().getTime())));
         patientRelationMap.put("patient", patientPersonMap);
         patientRelationMap.put("creator", creatorPersonMap);
         patientRelationMap.put("relatedPerson", relatedPersonMap);
-       // patientRelationMap.put("relatedPerson", relatedPersonMap);
+        // patientRelationMap.put("relatedPerson", relatedPersonMap);
 
         return patientRelationMap;
     }
 
     public static Object generateRelationType(RelationshipType relationshipType) {
-
-
 
         Map<String, Object> relationTypeMap = new HashMap<String, Object>();
         relationTypeMap.put("id", relationshipType.getRelationshipTypeId());
@@ -361,8 +361,6 @@ public class ToolkitResourceUtil {
 
         return relationTypeMap;
     }
-
-
 
     public static Object generateEncounterTypes(List<EncounterType> encounterTypes) {
 
@@ -381,7 +379,8 @@ public class ToolkitResourceUtil {
         encounterTypeMap.put("id", encounterType.getUuid());
         encounterTypeMap.put("name", encounterType.getName());
         encounterTypeMap.put("description", encounterType.getDescription());
-        encounterTypeMap.put("dateCreated", new SimpleDateFormat().format(new Date(encounterType.getDateCreated().getTime())));
+        encounterTypeMap.put("dateCreated",
+                new SimpleDateFormat().format(new Date(encounterType.getDateCreated().getTime())));
         encounterTypeMap.put("creator", creatorPersonMap);
 
         return encounterTypeMap;
@@ -397,7 +396,6 @@ public class ToolkitResourceUtil {
     }
 
     public static Object generatePatientPortalForm(PatientPortalForm patientPortalForm) {
-
 
         Map<String, Object> patientPortalFormMap = new HashMap<String, Object>();
         patientPortalFormMap.put("id", patientPortalForm.getUuid());
@@ -424,7 +422,6 @@ public class ToolkitResourceUtil {
 
     public static Object generateSideEffect(SideEffect sideEffect) {
 
-
         Map<String, Object> sideEffectMap = new HashMap<String, Object>();
         sideEffectMap.put("id", sideEffect.getId());
         sideEffectMap.put("condition", sideEffect.getCondition());
@@ -437,6 +434,7 @@ public class ToolkitResourceUtil {
         }
         return sideEffectMap;
     }
+
     public static Object generateConcepts(List<Concept> concepts) {
 
         List<Object> conceptsMap = new ArrayList<Object>();
@@ -446,7 +444,7 @@ public class ToolkitResourceUtil {
         return conceptsMap;
     }
 
-    public static Object generateConcept (Concept concept) {
+    public static Object generateConcept(Concept concept) {
 
         Map<String, Object> conceptMap = generateBasicConcept(concept);
         if (concept.isSet()) {
@@ -454,30 +452,30 @@ public class ToolkitResourceUtil {
             for (Concept conceptSet : concept.getSetMembers()) {
                 conceptSetsMap.add(generateBasicConcept(conceptSet));
             }
-            conceptMap.put("conceptSets",conceptSetsMap) ;
+            conceptMap.put("conceptSets", conceptSetsMap);
         }
 
-        if (concept.getAnswers()!= null) {
+        if (concept.getAnswers() != null) {
             List<Object> conceptAnswerMap = new ArrayList<Object>();
             for (ConceptAnswer conceptAnswer : concept.getAnswers()) {
                 conceptAnswerMap.add(generateBasicConcept(conceptAnswer.getAnswerConcept()));
             }
-            conceptMap.put("conceptAnswers",conceptAnswerMap) ;
+            conceptMap.put("conceptAnswers", conceptAnswerMap);
         }
         return conceptMap;
     }
 
-    public static Map<String, Object> generateBasicConcept (Concept concept) {
+    public static Map<String, Object> generateBasicConcept(Concept concept) {
 
         Map<String, Object> creatorPersonMap = generatePerson(concept.getCreator().getPerson());
 
         Map<String, Object> basicConceptMap = new HashMap<String, Object>();
         basicConceptMap.put("id", concept.getUuid());
-        if(concept.getName()!=null)
+        if (concept.getName() != null)
             basicConceptMap.put("name", concept.getName().getName());
         else
             basicConceptMap.put("name", null);
-        if(concept.getDescription()!=null)
+        if (concept.getDescription() != null)
             basicConceptMap.put("description", concept.getDescription().getDescription());
         else
             basicConceptMap.put("description", null);
@@ -497,25 +495,22 @@ public class ToolkitResourceUtil {
 
     public static Object generateObservation(Obs observation) {
 
-
         Map<String, Object> observationMap = new HashMap<String, Object>();
         observationMap.put("id", observation.getUuid());
         observationMap.put("concept", generateConcept(observation.getConcept()));
-        ConceptDatatype conceptDatatype=observation.getConcept().getDatatype();
+        ConceptDatatype conceptDatatype = observation.getConcept().getDatatype();
 
-        if(conceptDatatype.isBoolean()) {
+        if (conceptDatatype.isBoolean()) {
             observationMap.put("type", "boolean");
             observationMap.put("value", observation.getValueBoolean());
-        }
-        else if(conceptDatatype.isText()) {
+        } else if (conceptDatatype.isText()) {
             observationMap.put("type", "text");
             observationMap.put("value", observation.getValueText());
-        }
-        else if(conceptDatatype.isDateTime()) {
+        } else if (conceptDatatype.isDateTime()) {
             observationMap.put("type", "datetime");
-            observationMap.put("value", new SimpleDateFormat().format(new Date(observation.getValueDatetime().getTime())));
-        }
-        else if(conceptDatatype.isCoded()) {
+            observationMap.put("value",
+                    new SimpleDateFormat().format(new Date(observation.getValueDatetime().getTime())));
+        } else if (conceptDatatype.isCoded()) {
             observationMap.put("type", "coded");
             observationMap.put("value", generateConcept(observation.getValueCoded()));
         }
@@ -533,13 +528,12 @@ public class ToolkitResourceUtil {
 
     public static Object generateEncounter(Encounter encounter) {
 
-
         Map<String, Object> encounterMap = new HashMap<String, Object>();
         encounterMap.put("id", encounter.getUuid());
-        List<Obs> obsevationList=new ArrayList<Obs>();
+        List<Obs> obsevationList = new ArrayList<Obs>();
         obsevationList.addAll(encounter.getAllObs());
-        encounterMap.put("observations",generateObservations(obsevationList));
-        encounterMap.put("datecreated",new SimpleDateFormat().format(new Date(encounter.getDateCreated().getTime())));
+        encounterMap.put("observations", generateObservations(obsevationList));
+        encounterMap.put("datecreated", new SimpleDateFormat().format(new Date(encounter.getDateCreated().getTime())));
         return encounterMap;
     }
 
@@ -554,15 +548,14 @@ public class ToolkitResourceUtil {
 
     public static Object generateGuideline(Guideline guideline) {
 
-
         Map<String, Object> guidelineMap = new HashMap<String, Object>();
-        List<Concept> conditionsList=new ArrayList<Concept>();
+        List<Concept> conditionsList = new ArrayList<Concept>();
         conditionsList.addAll(guideline.getConditionsSet());
         guidelineMap.put("id", guideline.getId());
-        guidelineMap.put("name",guideline.getName());
-        guidelineMap.put("followupTimeline",guideline.getFollowupTimline());
-        guidelineMap.put("followupProcedure",generateConcept(guideline.getFollowupProcedure()));
-        guidelineMap.put("conditions",generateConcepts(conditionsList));
+        guidelineMap.put("name", guideline.getName());
+        guidelineMap.put("followupTimeline", guideline.getFollowupTimline());
+        guidelineMap.put("followupProcedure", generateConcept(guideline.getFollowupProcedure()));
+        guidelineMap.put("conditions", generateConcepts(conditionsList));
         return guidelineMap;
     }
 
@@ -571,7 +564,7 @@ public class ToolkitResourceUtil {
         List<Object> remindersMap = new ArrayList<Object>();
         Integer fake_id = -1;
         for (Reminder reminder : reminders) {
-            fake_id=fake_id+1; // only used if reminder does not have a real id
+            fake_id = fake_id + 1; // only used if reminder does not have a real id
             remindersMap.add(generateReminder(reminder, fake_id));
         }
         return remindersMap;
@@ -580,55 +573,61 @@ public class ToolkitResourceUtil {
     public static Object generateReminder(Reminder reminder, Integer fake_id) {
         Map<String, Object> reminderMap = new HashMap<String, Object>();
 
-        //reminderMap.put("patient",generatePerson(reminder.getPatient()));
-        reminderMap.put("followProcedure",generateConcept(reminder.getFollowProcedure()));
-        reminderMap.put("followProcedureName",reminder.getFollowProcedureName());
-        reminderMap.put("targetDate",reminder.getTargetDate());
+        // reminderMap.put("patient",generatePerson(reminder.getPatient()));
+        reminderMap.put("followProcedure", generateConcept(reminder.getFollowProcedure()));
+        reminderMap.put("followProcedureName", reminder.getFollowProcedureName());
+        reminderMap.put("targetDate", reminder.getTargetDate());
         reminderMap.put("formatedTargetDate", pptutil.formatDate(reminder.getTargetDate()));
-        if(reminder.getId()==null){ 
-            reminderMap.put("id", "X" + Integer.toString(fake_id)); // X ensures that we never have a 'fake' ID with the same value as a real ID
+        if (reminder.getId() == null) {
+            reminderMap.put("id", "X" + Integer.toString(fake_id)); // X ensures that we never have a 'fake' ID with the
+                                                                    // same value as a real ID
         } else {
             reminderMap.put("id", reminder.getId());
         }
-        reminderMap.put("concept_id",reminder.getFollowProcedure().getConceptId());
-        //System.out.println("Here i am - util file");
-        if(reminder.getCompleteDate() != null){
+        reminderMap.put("concept_id", reminder.getFollowProcedure().getConceptId());
+        // System.out.println("Here i am - util file");
+        if (reminder.getCompleteDate() != null) {
             reminderMap.put("formatedCompletedDate", pptutil.formatDate(reminder.getCompleteDate()));
             reminderMap.put("completedDate", reminder.getCompleteDate());
             reminderMap.put("doctorName", reminder.getDoctorName());
             reminderMap.put("comments", reminder.getResponseComments());
         }
-        reminderMap.put("status",reminder.getStatus());
-        
-        //display date on calendar
+        reminderMap.put("status", reminder.getStatus());
+
+        // display date on calendar
         Date calendarDisplayDate = null;
-        if(reminder.getCompleteDate() != null){
+        if (reminder.getCompleteDate() != null) {
             calendarDisplayDate = reminder.getCompleteDate();
         } else {
             calendarDisplayDate = reminder.getTargetDate();
         }
-        reminderMap.put("startDate",calendarDisplayDate);
-        reminderMap.put("endDate",calendarDisplayDate);
-        
+        reminderMap.put("startDate", calendarDisplayDate);
+        reminderMap.put("endDate", calendarDisplayDate);
+
         ////
         switch (reminder.getFollowProcedure().getConceptId()) {
-            //Colonoscopy
-            case 162900: reminderMap.put("color", "orange");
+            // Colonoscopy
+            case 162900:
+                reminderMap.put("color", "orange");
                 break;
-            //H & E
-            case 162901 : reminderMap.put("color", "red");
+            // H & E
+            case 162901:
+                reminderMap.put("color", "red");
                 break;
-            //CEA Tests
-            case 162902 : reminderMap.put("color", "blue");
+            // CEA Tests
+            case 162902:
+                reminderMap.put("color", "blue");
                 break;
-            //CT Scans
-            case 162903 : reminderMap.put("color", "green");
+            // CT Scans
+            case 162903:
+                reminderMap.put("color", "green");
                 break;
-            //CT Scan Pelvis
-            case 162904 : reminderMap.put("color", "purple");
+            // CT Scan Pelvis
+            case 162904:
+                reminderMap.put("color", "purple");
                 break;
         }
-        //reminderMap.put("status",reminder.getStatus());
+        // reminderMap.put("status",reminder.getStatus());
         return reminderMap;
     }
 
@@ -637,47 +636,48 @@ public class ToolkitResourceUtil {
         List<Object> eventsMap = new ArrayList<Object>();
         Integer fake_id = -1;
         for (PreventativeCareEvent event : events) {
-            fake_id=fake_id+1; // only used if event does not have a real id
+            fake_id = fake_id + 1; // only used if event does not have a real id
             eventsMap.add(generatePreventiveCareEvent(event, fake_id));
         }
         return eventsMap;
     }
 
-    public static Object generatePreventiveCareEvent(PreventativeCareEvent event, Integer fake_id) throws ParseException {
+    public static Object generatePreventiveCareEvent(PreventativeCareEvent event, Integer fake_id)
+            throws ParseException {
         Map<String, Object> eventDataMap = new HashMap<String, Object>();
 
-        
-        
-        
-        
-    
         // General Data
-        eventDataMap.put("followProcedure",generateConcept(event.getFollowProcedure()));
-        eventDataMap.put("followProcedureName",event.getFollowProcedureName());
-        eventDataMap.put("concept_id",event.getFollowProcedure().getConceptId());
-        if(event.getId()==null){ 
-            eventDataMap.put("id", "X" + Integer.toString(fake_id)); // X ensures that we never have a 'fake' ID with the same value as a real ID
+        eventDataMap.put("followProcedure", generateConcept(event.getFollowProcedure()));
+        eventDataMap.put("followProcedureName", event.getFollowProcedureName());
+        eventDataMap.put("concept_id", event.getFollowProcedure().getConceptId());
+        if (event.getId() == null) {
+            eventDataMap.put("id", "X" + Integer.toString(fake_id)); // X ensures that we never have a 'fake' ID with
+                                                                     // the same value as a real ID
         } else {
             eventDataMap.put("id", event.getId());
         }
-        
+
         // Completed event data
-        if(event.getCompleteDate() != null){
+        if (event.getCompleteDate() != null) {
             eventDataMap.put("formatedCompletedDate", pptutil.formatDate(event.getCompleteDate()));
             eventDataMap.put("completedDate", event.getCompleteDate());
-            
-            // Create map of answered questions from the encounter associated with cthis preventivecareevent
+
+            // Create map of answered questions from the encounter associated with cthis
+            // preventivecareevent
             String encounterUuid = event.getEncounterUuid();
             Encounter encounter = Context.getEncounterService().getEncounterByUuid(encounterUuid);
             List<Object> questionsAnswered = new ArrayList<Object>();
             Set<Obs> obsList = encounter.getObs();
-            for(Obs o: obsList){
+            for (Obs o : obsList) {
                 Map<String, String> aQuestionAnswered = new HashMap<String, String>();
                 String datatype = o.getConcept().getDatatype().getHl7Abbreviation();
                 String value = null;
-                if(datatype.equals("DT")) value = pptutil.formatDate(o.getValueDate());
-                if(datatype.equals("NM")) value = o.getValueNumeric().toString();
-                if(datatype.equals("BIT")) value = o.getValueBoolean().toString();
+                if (datatype.equals("DT"))
+                    value = pptutil.formatDate(o.getValueDate());
+                if (datatype.equals("NM"))
+                    value = o.getValueNumeric().toString();
+                if (datatype.equals("BIT"))
+                    value = o.getValueBoolean().toString();
                 aQuestionAnswered.put("uuid", o.getConcept().getUuid());
                 aQuestionAnswered.put("answer", value);
                 aQuestionAnswered.put("datatype", datatype);
@@ -685,55 +685,53 @@ public class ToolkitResourceUtil {
             }
             eventDataMap.put("questionsAnswered", questionsAnswered);
         }
-        eventDataMap.put("status",event.getStatus());
-        
+        eventDataMap.put("status", event.getStatus());
+
         // Dates
         eventDataMap.put("targetDate", event.getTargetDate());
         eventDataMap.put("formatedTargetDate", pptutil.formatDate(event.getTargetDate()));
-        //display date on calendar
+        // display date on calendar
         Date calendarDisplayDate = null;
-        if(event.getCompleteDate() != null){
+        if (event.getCompleteDate() != null) {
             calendarDisplayDate = event.getCompleteDate();
         } else {
             calendarDisplayDate = event.getTargetDate();
         }
-        eventDataMap.put("startDate",calendarDisplayDate);
-        eventDataMap.put("endDate",calendarDisplayDate);
-        
-        
+        eventDataMap.put("startDate", calendarDisplayDate);
+        eventDataMap.put("endDate", calendarDisplayDate);
+
         // Calendar colors
         switch (event.getFollowProcedure().getConceptId()) {
-            //Influenza Vaccine
+            // Influenza Vaccine
             case 162938:
                 eventDataMap.put("color", "brown");
                 break;
-            //Pneumococcal Vaccine
+            // Pneumococcal Vaccine
             case 162939:
                 eventDataMap.put("color", "red");
                 break;
-            //Blood Pressure Screening
-            case 162941 :
+            // Blood Pressure Screening
+            case 162941:
                 eventDataMap.put("color", "blue");
                 break;
-            //HIV Screening
-            case 162942 : 
+            // HIV Screening
+            case 162942:
                 eventDataMap.put("color", "green");
                 break;
-            //Screening Mammography
-            case 162943 : 
+            // Screening Mammography
+            case 162943:
                 eventDataMap.put("color", "purple");
                 break;
-            //Cervical Cancer Screening
-            case 162944 : 
+            // Cervical Cancer Screening
+            case 162944:
                 eventDataMap.put("color", "orange");
                 break;
-            //Cholesterol Screening
-            case 162940 : 
+            // Cholesterol Screening
+            case 162940:
                 eventDataMap.put("color", "turquoise");
                 break;
         }
-        
-        
+
         return eventDataMap;
     }
 
@@ -743,11 +741,12 @@ public class ToolkitResourceUtil {
         surgeryEncounters = GenerateTreatmentClassesUtil.generateSurgeries(patient);
         if (!surgeryEncounters.isEmpty()) {
             for (Surgery surgery : surgeryEncounters) {
+                Date surgeryDate = surgery.getSurgeryDate();
                 if (firstSurgeryDate == null)
-                    firstSurgeryDate = surgery.getSurgeryDate();
+                    firstSurgeryDate = surgeryDate;
                 else {
-                    if (firstSurgeryDate.after(surgery.getSurgeryDate()))
-                        firstSurgeryDate = surgery.getSurgeryDate();
+                    if (surgeryDate != null && firstSurgeryDate.after(surgeryDate))
+                        firstSurgeryDate = surgeryDate;
                 }
             }
         }

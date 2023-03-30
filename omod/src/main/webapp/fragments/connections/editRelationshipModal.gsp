@@ -15,10 +15,10 @@
                     <div class="form-group ">
                         <div class="media">
                             <div class="media-left">
-                                <a href="#"> 
+                                <a href="#">
                                     <div class="profileBadge" id="editRelationProfileBadge">
                                         P B
-                                    </div> 
+                                    </div>
                                 </a>
                             </div>
 
