@@ -84,7 +84,18 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
             <% } %>
             <div class="clearfix">
                 <div class="pull-left">
-                    <h5><label><% surgery.surgeryTypes.each { surgeryType -> %> <span class="${(surgery.encounterUuid)}surgeryType reformatText" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</span>; <% } %></label> &emsp;<small id="${(surgery.encounterUuid)}surgeryDate"  >${pptutil.formatDate((surgery.surgeryDate))}</small> <% if (surgery.otherSurgeryName) { %>&emsp;<span id="${(surgery.encounterUuid)}otherSurgeryName">${(surgery.otherSurgeryName)}</span><% } %></h5>
+                    <h5>
+                        <label>
+                            <% surgery.surgeryTypes.each { surgeryType -> %> 
+                                <span class="${(surgery.encounterUuid)}surgeryType reformatText" id="${(surgery.encounterUuid)}surgeryType${(surgeryType)}">${(surgeryType)}</span>; <% } %>
+                        </label> 
+                        &emsp;<small id="${(surgery.encounterUuid)}surgeryDate">
+                            <%if(surgery.surgeryDate) {%>
+                                ${pptutil.formatDate((surgery.surgeryDate))}
+                            <% }%>
+                        </small> 
+                        <% if (surgery.otherSurgeryName) { %>&emsp;<span id="${(surgery.encounterUuid)}otherSurgeryName">${(surgery.otherSurgeryName)}</span><% } %>
+                    </h5>
                     <div>
                     <label>Surgery Location&emsp;</label>
                         <span id="${(surgery.encounterUuid)}surgeryinstituteName">${(surgery.institutionName)}</span>

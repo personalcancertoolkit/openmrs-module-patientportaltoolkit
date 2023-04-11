@@ -87,8 +87,9 @@ jq(document).ready(function(){
                     jq(this).prop('checked', true);
                 }
             });
-            if(jq('#'+encounterID+'surgeryDate').text())
+            if(jq('#'+encounterID+'surgeryDate').text().trim()) {
                 jq("#surgeryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'surgeryDate').text())));
+            }
             // console.log($('#'+encounterID+'surgeryPCPName').text());
             jq("#surgeonPcpName").val(jq('#' + encounterID + 'surgeryPCPName').text());
             jq("#surgeonPcpEmail").val(jq('#' + encounterID + 'surgeryPCPEmail').text());
