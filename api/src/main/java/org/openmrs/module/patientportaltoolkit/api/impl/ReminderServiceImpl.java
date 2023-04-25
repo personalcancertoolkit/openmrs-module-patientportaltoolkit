@@ -66,8 +66,9 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     public void setDao(ReminderDAO dao) {
         this.dao = dao;
     }
+
     @Override
-    public Reminder saveReminder(Reminder Reminder){
+    public Reminder saveReminder(Reminder Reminder) {
         return dao.saveReminder(Reminder);
     }
 
@@ -75,7 +76,6 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     public List<Reminder> getReminders(Patient pat) {
         return generateRemindersbyGuidelineConditions(pat);
     }
-    
 
     @Override
     public Reminder markCompletedReminder(Reminder reminder) {
@@ -85,9 +85,9 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         return dao.saveReminder(reminder);
     }
 
-    
     @Override
-    public Reminder markCompletedReminder(Reminder reminder, Date markCompleteDate, String doctorsName, String comments) {
+    public Reminder markCompletedReminder(Reminder reminder, Date markCompleteDate, String doctorsName,
+            String comments) {
         // Takes a reminder object, marks it completed, and saves it.
         System.out.println("Marking reminder completed ");
         Date today = new Date();
@@ -100,9 +100,10 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         System.out.println("Saving reminder with target date of " + reminder.getTargetDate());
         return dao.saveReminder(reminder);
     }
-    
+
     @Override
-    public Reminder modifyCompletedReminder(Reminder reminder, Date markCompleteDate, String doctorsName, String comments) {
+    public Reminder modifyCompletedReminder(Reminder reminder, Date markCompleteDate, String doctorsName,
+            String comments) {
         // Takes a reminder object, marks it completed, and saves it.
         Date today = new Date();
         reminder.setCompleteDate(markCompleteDate);
@@ -111,7 +112,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setModifiedDate(today);
         return dao.saveReminder(reminder);
     }
-    
+
     @Override
     public Reminder modifyTargetDate(Reminder reminder, Date newTargetDate) {
         // Takes a reminder object, marks it completed, and saves it.
@@ -120,7 +121,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setModifiedDate(today);
         return dao.saveReminder(reminder);
     }
-    
+
     @Override
     public Reminder removeReminder(Reminder reminder) {
         // Takes a reminder object, marks it completed, and saves it.
@@ -129,7 +130,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setModifiedDate(today);
         return dao.saveReminder(reminder);
     }
-    
+
     @Override
     public Reminder addReminder(Reminder reminder) {
         // Takes a reminder object and saves it into database
@@ -139,21 +140,22 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         return dao.saveReminder(reminder);
     }
 
-/*    
-    @Override
-    public Reminder markScheduledReminder(String reminderId, Date date) {
-        Date today = new Date();
-        Reminder reminder=getRemindersById(reminderId);
-        reminder.setResponseDate(date);
-        reminder.setStatus(2);
-        reminder.setResponseUser(Context.getAuthenticatedUser());
-        return dao.saveReminder(reminder);
-    }
-*/
-    
+    /*
+     * @Override
+     * public Reminder markScheduledReminder(String reminderId, Date date) {
+     * Date today = new Date();
+     * Reminder reminder=getRemindersById(reminderId);
+     * reminder.setResponseDate(date);
+     * reminder.setStatus(2);
+     * reminder.setResponseUser(Context.getAuthenticatedUser());
+     * return dao.saveReminder(reminder);
+     * }
+     */
+
     @Override
     public Reminder getRemindersById(String Id) {
-        // If id is not a valid integer, return null - like would be returned if no reminders with a valid integer id were found.
+        // If id is not a valid integer, return null - like would be returned if no
+        // reminders with a valid integer id were found.
         try {
             return dao.getReminder(Integer.parseInt(Id));
         } catch (NumberFormatException e) {
@@ -161,44 +163,42 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         }
     }
 
-    
     @Override
-    public Reminder getReminderByIdOrGuidelineData(String reminderId, Patient patient, String conceptId, Date targetDate) {
+    public Reminder getReminderByIdOrGuidelineData(String reminderId, Patient patient, String conceptId,
+            Date targetDate) {
         Reminder reminder = null;
         // attempt to get reminder by id
         reminder = getRemindersById(reminderId);
-        if(reminder == null){
-            //System.out.println("Reminder with that id is not found in database. Time to generate it by guideline data!"); 
-            //reminder = getReminderByConceptId(conceptId);   
+        if (reminder == null) {
+            // System.out.println("Reminder with that id is not found in database. Time to
+            // generate it by guideline data!");
+            // reminder = getReminderByConceptId(conceptId);
             Concept followUpConcept = Context.getConceptService().getConcept(conceptId);
-            reminder = generateReminderFromGuidelineData(patient, followUpConcept, targetDate); 
+            reminder = generateReminderFromGuidelineData(patient, followUpConcept, targetDate);
         }
         return reminder;
     }
-    
-    
+
     @Override
     public List<Reminder> getAllRemindersByPatient(Patient patient) {
         return dao.getAllRemindersByPatient(patient);
     }
 
+    /*
+     * private List<Reminder> findReminders(Patient pat) {
+     */
 
     /*
-    private List<Reminder>  findReminders(Patient pat) {
-    */
-
-
-    /*
-    private List<Reminder>  findAllReminders(Patient pat) {
-    */
+     * private List<Reminder> findAllReminders(Patient pat) {
+     */
 
     private List<Reminder> getRemindersByProvider(Patient pat) {
         return dao.getRemindersByProvider(pat);
     }
 
     /*
-    private Date findMidDate(Date refDate1, Date refDate2) {
-    */
+     * private Date findMidDate(Date refDate1, Date refDate2) {
+     */
 
     @Override
     public List<Reminder> getRemindersCompleted(Patient pat) {
@@ -207,17 +207,19 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     }
 
     /*
-    private Date[] findTargetDates(Date surgDate, Concept radiationType, String followYears) {
-    */  
+     * private Date[] findTargetDates(Date surgDate, Concept radiationType, String
+     * followYears) {
+     */
 
     /*
-    private Date findDate(Date startDate, String yearsAfter) {
-    }
-    */  
+     * private Date findDate(Date startDate, String yearsAfter) {
+     * }
+     */
 
     /*
-    private Date findScheduleDate(Patient patient, Concept careType, Date targetDate) {
-    */  
+     * private Date findScheduleDate(Patient patient, Concept careType, Date
+     * targetDate) {
+     */
 
     /**
      *
@@ -228,11 +230,18 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     private Obs findLatest(List<Obs> observations) {
         Obs latest = null;
 
-        if(observations != null) {
+        if (observations != null) {
             for (Obs obs : observations) {
-                if(obs != null && !obs.isVoided()) {
-                    if(latest == null || latest.getDateCreated().before(obs.getDateCreated())) {
+                if (obs != null && !obs.isVoided()) {
+                    if (latest == null) {
                         latest = obs;
+                    } else {
+                        Date latestCreatedDate = latest.getDateCreated();
+                        Date obsCreatedDate = obs.getDateCreated();
+                        if (latestCreatedDate != null && obsCreatedDate != null
+                                && latestCreatedDate.before(obsCreatedDate)) {
+                            latest = obs;
+                        }
                     }
 
                 }
@@ -243,33 +252,37 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     }
 
     @Override
-    public  GuidelineConditionSet generateGuidelineConditionSet(Patient patient) {
-        //find cancer type
+    public GuidelineConditionSet generateGuidelineConditionSet(Patient patient) {
+        // find cancer type
         Concept cancerTypeConcept = Context.getConceptService().getConcept(CANCER_TYPE);
-        Obs cancerType = findLatest(Context.getObsService().getObservationsByPersonAndConcept(patient, cancerTypeConcept));
-        Concept type = cancerType==null? null : cancerType.getValueCoded();
-        //find cancer stage
+        Obs cancerType = findLatest(
+                Context.getObsService().getObservationsByPersonAndConcept(patient, cancerTypeConcept));
+        Concept type = cancerType == null ? null : cancerType.getValueCoded();
+        // find cancer stage
         Concept cancerStageConcept = Context.getConceptService().getConcept(CANCER_STAGE);
-        Obs cancerStage = findLatest(Context.getObsService().getObservationsByPersonAndConcept(patient, cancerStageConcept));
-        Concept stage = cancerStage==null? null : cancerStage.getValueCoded();
+        Obs cancerStage = findLatest(
+                Context.getObsService().getObservationsByPersonAndConcept(patient, cancerStageConcept));
+        Concept stage = cancerStage == null ? null : cancerStage.getValueCoded();
 
         Set<Concept> conditionConcepts = new HashSet<>();
         conditionConcepts.add(type);
         conditionConcepts.add(stage);
-        GuidelineConditionSet guidelineConditionSet = Context.getService(GuidelineService.class).getGuidlineConditionSetbyConditions(conditionConcepts);
+        GuidelineConditionSet guidelineConditionSet = Context.getService(GuidelineService.class)
+                .getGuidlineConditionSetbyConditions(conditionConcepts);
 
         return guidelineConditionSet;
     }
-    public  List<Reminder> generateRemindersbyGuidelineConditions(Patient patient) {
+
+    public List<Reminder> generateRemindersbyGuidelineConditions(Patient patient) {
         ///////////////////////////////////////////////////////////////////////////////////////////
         // Ensure that this user satisfies conditions for having reminders
-        //      return null if they do not
+        // return null if they do not
         ///////////////////////////////////////////////////////////////////////////////////////////
-        //find genetic_abnormality flag and answer
-        //block any follow-up tests from appearing:
-        //	1)       IF the patient answers YES to genetic abnormality, and
-        //	2)       THEN answers FAP/HNPCC/or INFLAMMATORY BOWEL DISORDER
-        //find genetic abnormality flag
+        // find genetic_abnormality flag and answer
+        // block any follow-up tests from appearing:
+        // 1) IF the patient answers YES to genetic abnormality, and
+        // 2) THEN answers FAP/HNPCC/or INFLAMMATORY BOWEL DISORDER
+        // find genetic abnormality flag
         Concept cancerAbnormalityToldConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_TOLD);
         Concept cancerAbnormalityToldYesConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_TOLD_YES);
         Concept cancerAbnormalityConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY);
@@ -277,79 +290,85 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         Concept cancerAbnormalityHnpccConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_HNPCC);
         Concept cancerAbnormalityInflbdConcept = Context.getConceptService().getConcept(CANCER_ABNORMALITY_INFLBD);
 
-        Obs cancerAbnormalityToldObs = findLatest(Context.getObsService().getObservationsByPersonAndConcept(patient, cancerAbnormalityToldConcept));
-        Concept cancerAbnormalityToldAns = (cancerAbnormalityToldObs==null? null : cancerAbnormalityToldObs.getValueCoded());
-        if(cancerAbnormalityToldAns != null && cancerAbnormalityToldAns.equals(cancerAbnormalityToldYesConcept)) {
-            Obs cancerAbnormalityObs = findLatest(Context.getObsService().getObservationsByPersonAndConcept(patient, cancerAbnormalityConcept));
-            Concept cancerAbnormalityAns = (cancerAbnormalityObs==null? null : cancerAbnormalityObs.getValueCoded());
-            if(cancerAbnormalityAns != null &&
+        Obs cancerAbnormalityToldObs = findLatest(
+                Context.getObsService().getObservationsByPersonAndConcept(patient, cancerAbnormalityToldConcept));
+        Concept cancerAbnormalityToldAns = (cancerAbnormalityToldObs == null ? null
+                : cancerAbnormalityToldObs.getValueCoded());
+        if (cancerAbnormalityToldAns != null && cancerAbnormalityToldAns.equals(cancerAbnormalityToldYesConcept)) {
+            Obs cancerAbnormalityObs = findLatest(
+                    Context.getObsService().getObservationsByPersonAndConcept(patient, cancerAbnormalityConcept));
+            Concept cancerAbnormalityAns = (cancerAbnormalityObs == null ? null : cancerAbnormalityObs.getValueCoded());
+            if (cancerAbnormalityAns != null &&
                     (cancerAbnormalityAns.equals(cancerAbnormalityFapConcept) ||
                             cancerAbnormalityAns.equals(cancerAbnormalityHnpccConcept) ||
                             cancerAbnormalityAns.equals(cancerAbnormalityInflbdConcept))) {
                 return null;
             }
         }
-        //find surgery date
+        // find surgery date
         Concept surgeryDateConcept = Context.getConceptService().getConcept(SURGERY_DATE);
-        Obs surgeryDate = findLatest(Context.getObsService().getObservationsByPersonAndConcept(patient, surgeryDateConcept));
-        Date surgDate = surgeryDate==null? null : surgeryDate.getValueDatetime();
-        if(surgDate == null) {
+        Obs surgeryDate = findLatest(
+                Context.getObsService().getObservationsByPersonAndConcept(patient, surgeryDateConcept));
+        Date surgDate = surgeryDate == null ? null : surgeryDate.getValueDatetime();
+        if (surgDate == null) {
             log.warn("No surgery is found for this patient: " + patient);
             return null;
         }
 
-
-        
         ///////////////////////////////////////////////////////////////////////////////////////////
         // Build reminders list
         ///////////////////////////////////////////////////////////////////////////////////////////
         List<Reminder> reminders = new ArrayList<>();
-        
+
         // Get all reminders from database
         List<Reminder> databaseReminders = new ArrayList<>();
         databaseReminders = getAllRemindersByPatient(patient);
         reminders.addAll(databaseReminders);
-        
+
         // Get all guideline reminders
         GuidelineConditionSet guidelineConditionSet = generateGuidelineConditionSet(patient);
         Date firstSurgeryDate = ToolkitResourceUtil.getFirstSurgeryDate(patient);
-        LocalDate modifiableDate=null;
-        Date targetDate=null;
+        LocalDate modifiableDate = null;
+        Date targetDate = null;
         // For each guideline
-        for (Guideline g:  guidelineConditionSet.getGuidelines()) {
-            // and for each guideline's set of intervals (e.g., check up in 6mo, 12mo, and 24mo)
-            for (GuidelineInterval gi: g.getGuidelineIntervalSet()) {
+        for (Guideline g : guidelineConditionSet.getGuidelines()) {
+            // and for each guideline's set of intervals (e.g., check up in 6mo, 12mo, and
+            // 24mo)
+            for (GuidelineInterval gi : g.getGuidelineIntervalSet()) {
                 modifiableDate = new LocalDate(firstSurgeryDate);
                 targetDate = modifiableDate.plusMonths(gi.getIntervalLength()).toDate();
-                
-                // If this reminder, with same target date, was already found in database recorded reminders : don't duplicate it. Just continue. 
-                if(findReminderByFollowupCareAndDate(databaseReminders,g.getFollowupProcedure(),targetDate) != null)
+
+                // If this reminder, with same target date, was already found in database
+                // recorded reminders : don't duplicate it. Just continue.
+                if (findReminderByFollowupCareAndDate(databaseReminders, g.getFollowupProcedure(), targetDate) != null)
                     continue;
-                
-                // Create, on the fly, a new reminder with the followup procedure and target date required by guidelines.
+
+                // Create, on the fly, a new reminder with the followup procedure and target
+                // date required by guidelines.
                 Reminder reminder = generateReminderFromGuidelineData(patient, g.getFollowupProcedure(), targetDate);
-                reminders.add(reminder); 
+                reminders.add(reminder);
             }
         }
-        
-        // Now that guidelines are generated, remove all reminders from list which have a status of -1
+
+        // Now that guidelines are generated, remove all reminders from list which have
+        // a status of -1
         List<Reminder> valid_reminders = new ArrayList<>();
-        for (Reminder reminder:  reminders) {
-            if(reminder.getStatus() != -1) valid_reminders.add(reminder);
+        for (Reminder reminder : reminders) {
+            if (reminder.getStatus() != -1)
+                valid_reminders.add(reminder);
         }
-        
+
         return valid_reminders;
     } // end generateRemindersbyGuidelineConditions
-    
-    
+
     @Override
-    public Reminder generateReminderFromGuidelineData(Patient patient, String conceptId, Date targetDate){
-            Concept followUpConcept = Context.getConceptService().getConcept(conceptId);
-            return generateReminderFromGuidelineData(patient, followUpConcept, targetDate); 
+    public Reminder generateReminderFromGuidelineData(Patient patient, String conceptId, Date targetDate) {
+        Concept followUpConcept = Context.getConceptService().getConcept(conceptId);
+        return generateReminderFromGuidelineData(patient, followUpConcept, targetDate);
     }
-    
+
     @Override
-    public Reminder generateReminderFromGuidelineData(Patient patient, Concept followupConcept, Date targetDate){
+    public Reminder generateReminderFromGuidelineData(Patient patient, Concept followupConcept, Date targetDate) {
         Reminder reminder = new Reminder();
         reminder.setPatient(patient);
         reminder.setFollowProcedure(followupConcept);
@@ -358,15 +377,15 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setStatus(0);
         return reminder;
     }
-    
-    
-    Reminder findReminderByFollowupCareAndDate (List<Reminder> findInReminderList,Concept reminderProcedure,Date reminderDate){
+
+    Reminder findReminderByFollowupCareAndDate(List<Reminder> findInReminderList, Concept reminderProcedure,
+            Date reminderDate) {
         Reminder exactReminder = null;
-        for(Reminder r:findInReminderList) {
-            if(r.getTargetDate() == null)
+        for (Reminder r : findInReminderList) {
+            if (r.getTargetDate() == null)
                 continue;
-            if(r.getFollowProcedure().equals(reminderProcedure) && r.getOrigTargetDate().equals(reminderDate)){
-                exactReminder=r;
+            if (r.getFollowProcedure().equals(reminderProcedure) && r.getOrigTargetDate().equals(reminderDate)) {
+                exactReminder = r;
             }
         }
         return exactReminder;

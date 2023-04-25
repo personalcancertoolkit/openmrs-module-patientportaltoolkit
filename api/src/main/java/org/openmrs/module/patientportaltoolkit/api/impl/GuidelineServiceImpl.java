@@ -22,6 +22,7 @@ import org.openmrs.module.patientportaltoolkit.api.GuidelineService;
 import org.openmrs.module.patientportaltoolkit.api.db.GuidelineDAO;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,7 +53,6 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
         this.dao = dao;
     }
 
-
     @Override
     public List<Guideline> getAllGuidlines() {
         return dao.getAllGuidelines();
@@ -60,9 +60,9 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
 
     @Override
     public List<Guideline> getGuidlinesByConditions(Set<Concept> conditions) {
-        List<Guideline> allGuidelines=dao.getAllGuidelines();
+        List<Guideline> allGuidelines = dao.getAllGuidelines();
         List<Guideline> conditionGuidelines = new ArrayList<>();
-        for(Guideline guideline:allGuidelines){
+        for (Guideline guideline : allGuidelines) {
             Set<Concept> guidelinesConditions = guideline.getConditionsSet();
             if (guidelinesConditions.size() == conditions.size() && guidelinesConditions.containsAll(conditions)) {
                 conditionGuidelines.add(guideline);
@@ -77,37 +77,39 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
      * @param pat
      */
     @Override
-    public List<Guideline>  findGuidelines(Patient pat) {
-        //find cancer type
+    public List<Guideline> findGuidelines(Patient pat) {
+        // find cancer type
         Concept type = getCancerType(pat);
-        //find cancer stage
+        // find cancer stage
         Concept cancerStageConcept = Context.getConceptService().getConcept(CANCER_STAGE);
-        Obs cancerStage = findLatest(Context.getObsService().getObservationsByPersonAndConcept(pat, cancerStageConcept));
-        Concept stage = cancerStage==null? null : cancerStage.getValueCoded();
+        Obs cancerStage = findLatest(
+                Context.getObsService().getObservationsByPersonAndConcept(pat, cancerStageConcept));
+        Concept stage = cancerStage == null ? null : cancerStage.getValueCoded();
 
-        //find follow-up years guidelines
+        // find follow-up years guidelines
         List<Guideline> allguidelines = dao.getAllGuidelines();
 
         Set<Concept> conditionConcepts = new HashSet<>();
         conditionConcepts.add(type);
         conditionConcepts.add(cancerStageConcept);
         List<Guideline> guidelines = new ArrayList<>();
-        for (Guideline guidlineIterator: allguidelines){
-            if(guidlineIterator.getConditionsSet().equals(conditionConcepts))
+        for (Guideline guidlineIterator : allguidelines) {
+            if (guidlineIterator.getConditionsSet().equals(conditionConcepts))
                 guidelines.add(guidlineIterator);
-           // System.out.print(guidlineIterator.getFollowupProcedure().getConceptId());
+            // System.out.print(guidlineIterator.getFollowupProcedure().getConceptId());
         }
         return guidelines;
     }
 
     @Override
     public GuidelineConditionSet getGuidlineConditionSetbyConditions(Set<Concept> conditions) {
-        List<GuidelineConditionSet> allGuidelineConditionSet=dao.getAllGuidelineConditionSet();
+        List<GuidelineConditionSet> allGuidelineConditionSet = dao.getAllGuidelineConditionSet();
         GuidelineConditionSet guidelineConditionSet = new GuidelineConditionSet();
-        for(GuidelineConditionSet guidelineConditionSetIter:allGuidelineConditionSet){
+        for (GuidelineConditionSet guidelineConditionSetIter : allGuidelineConditionSet) {
             Set<Concept> guidelineConditionConcepts = guidelineConditionSetIter.getConceptSet();
-            if (guidelineConditionConcepts.size() == conditions.size() && guidelineConditionConcepts.containsAll(conditions)) {
-                guidelineConditionSet=guidelineConditionSetIter;
+            if (guidelineConditionConcepts.size() == conditions.size()
+                    && guidelineConditionConcepts.containsAll(conditions)) {
+                guidelineConditionSet = guidelineConditionSetIter;
             }
         }
         return guidelineConditionSet;
@@ -116,7 +118,7 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
     private Concept getCancerType(Patient pat) {
         Concept cancerTypeConcept = Context.getConceptService().getConcept(CANCER_TYPE);
         Obs cancerType = findLatest(Context.getObsService().getObservationsByPersonAndConcept(pat, cancerTypeConcept));
-        Concept type = cancerType==null? null : cancerType.getValueCoded();
+        Concept type = cancerType == null ? null : cancerType.getValueCoded();
         return type;
     }
 
@@ -129,11 +131,18 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
     private Obs findLatest(List<Obs> observations) {
         Obs latest = null;
 
-        if(observations != null) {
+        if (observations != null) {
             for (Obs obs : observations) {
-                if(obs != null && !obs.isVoided()) {
-                    if(latest == null || latest.getDateCreated().before(obs.getDateCreated())) {
+                if (obs != null && !obs.isVoided()) {
+                    if (latest == null) {
                         latest = obs;
+                    } else {
+                        Date latestCreatedDate = latest.getDateCreated();
+                        Date obsCreatedDate = obs.getDateCreated();
+                        if (latestCreatedDate != null && obsCreatedDate != null
+                                && latestCreatedDate.before(obsCreatedDate)) {
+                            latest = obs;
+                        }
                     }
 
                 }

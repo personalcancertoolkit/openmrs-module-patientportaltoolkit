@@ -26,16 +26,18 @@ import org.openmrs.ui.framework.page.PageRequest;
 public class EditprofilePageController {
 
     protected final Log log = LogFactory.getLog(getClass());
+
     public void controller(PageModel model, PageRequest pageRequest) {
-        Context.getService(PatientPortalMiscService.class).logEvent("USER_ACCOUNT_PAGE_VIEWED",null);
+        Context.getService(PatientPortalMiscService.class).logEvent("USER_ACCOUNT_PAGE_VIEWED", null);
         log.info(PPTLogAppender.appendLog("REQUEST_EDITPROFILE_PAGE", pageRequest.getRequest()));
-        Person person=Context.getAuthenticatedUser().getPerson();
+        Person person = Context.getAuthenticatedUser().getPerson();
         model.addAttribute("person", person);
-        model.addAttribute("pptutil",new PatientPortalUtil());
+        model.addAttribute("pptutil", new PatientPortalUtil());
         model.addAttribute("contextUser", Context.getAuthenticatedUser());
         if (person.getIsPatient())
-            model.addAttribute("personPreferences",Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person));
+            model.addAttribute("personPreferences",
+                    Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person));
         else
-            model.addAttribute("personPreferences",null);
+            model.addAttribute("personPreferences", null);
     }
 }

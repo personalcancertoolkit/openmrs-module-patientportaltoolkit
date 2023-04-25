@@ -69,7 +69,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         <div class="form-group">
             <label class="control-label col-xs-2" for="userprofilePostalCode"> Zipcode </label>
             <div class="col-xs-10">
-                <input class="form-control" id="userprofilePostalCode" type="text" value="${ (person.getPersonAddress().getPostalCode()) }"/>
+                <input class="form-control" id="userprofilePostalCode" type="text" value="${person.getPersonAddress() != null ? (person.getPersonAddress().getPostalCode()) : "" }"/>
             </div>
         </div>
         

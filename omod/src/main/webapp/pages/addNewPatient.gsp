@@ -9,7 +9,7 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
         // date.toISOString() returns a string similar to "2023-04-19T18:02:34.550Z"
         // The OpenMRS' API endpoint that creates a new patient requires the date to 
         // look like "2023-04-19", so we split on the "T" and take the fist part
-            jq(this).val(newPatientBirthDate.date.toISOString().split('T')[0]);
+            jq("#inputBD").val(newPatientBirthDate.date.toISOString().split('T')[0]);
 
         }).data('datepicker');
 
