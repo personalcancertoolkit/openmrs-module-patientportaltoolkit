@@ -58,6 +58,8 @@
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/jquery.mockjax.js") }"></script>
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-editable.min.js") }"></script>
+    <script type="text/javascript"
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/sessionTimeoutHandler.js") }"></script>
 
 
     <script type="text/javascript">
@@ -113,3 +115,5 @@
         </ul>
     </div>
 </div>
+
+${ui.includeFragment("patientportaltoolkit", "sessionTimeoutModals")}
