@@ -35,48 +35,52 @@ import java.util.List;
 public class PatientPortalRelationController {
     protected final Log log = LogFactory.getLog(getClass());
 
-    @RequestMapping( value = "/patientportaltoolkit/getrelationsforpatient/{patientId}")
-        @ResponseBody
-        public Object getPatientPortalRelationsForPatient( @PathVariable( "patientId" ) String patientId)
-            throws Exception
-    {
-        Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPatient(patient));
+    @RequestMapping(value = "/patientportaltoolkit/getrelationsforpatient/{patientId}")
+    @ResponseBody
+    public Object getPatientPortalRelationsForPatient(@PathVariable("patientId") String patientId)
+            throws Exception {
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
+        List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(
+                Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPatient(patient));
         return relations;
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/getallrelations")
+    @RequestMapping(value = "/patientportaltoolkit/getallrelations")
     @ResponseBody
     public Object getAllPatientPortalRelations()
-            throws Exception
-    {
-        List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations());
+            throws Exception {
+        List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(
+                Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations());
         return relations;
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/getrelations/{searchText}")
+    @RequestMapping(value = "/patientportaltoolkit/getrelations/{searchText}")
     @ResponseBody
-    public Object getPatientPortalRelationsForSearchText(@PathVariable( "searchText" ) String searchText)
-            throws Exception
-    {
-        List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations());
+    public Object getPatientPortalRelationsForSearchText(@PathVariable("searchText") String searchText)
+            throws Exception {
+        List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(
+                Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations());
         return relations;
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/hasaccess")
+    @RequestMapping(value = "/patientportaltoolkit/hasaccess")
     @ResponseBody
     public boolean getHasAccess(@RequestParam(value = "relationshipId", required = true) String relationshipId,
-                                @RequestParam(value = "shareType", required = true) String shareType, HttpServletRequest servletRequest) {
+            @RequestParam(value = "shareType", required = true) String shareType, HttpServletRequest servletRequest) {
 
-        PatientPortalRelationService pprService=Context.getService(PatientPortalRelationService.class);
-        PatientPortalRelation ppr=pprService.getPatientPortalRelation(relationshipId);
+        PatientPortalRelationService pprService = Context.getService(PatientPortalRelationService.class);
+        PatientPortalRelation ppr = pprService.getPatientPortalRelation(relationshipId);
         User user = Context.getAuthenticatedUser();
-        Person personGettingAccess=null;
+        Person personGettingAccess = null;
         if (ppr.getPerson().equals(user.getPerson()))
-            personGettingAccess=ppr.getRelatedPerson();
+            personGettingAccess = ppr.getRelatedPerson();
         else
-            personGettingAccess=ppr.getPerson();
+            personGettingAccess = ppr.getPerson();
 
-        return pprService.hasAccessToShareType(personGettingAccess,user.getPerson(),Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(shareType),user);
+        return pprService.hasAccessToShareType(
+                personGettingAccess,
+                user.getPerson(),
+                Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(shareType),
+                user);
     }
 }

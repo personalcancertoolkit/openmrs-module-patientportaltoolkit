@@ -62,8 +62,11 @@
                         <% securityLayers.each { securityLayer -> %>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input addRelationShareCheckbox" type="checkbox" id="addShareType${securityLayer.getUuid()}"
-                                       value="${securityLayer.getUuid()}"> Can see my ${securityLayer.getDescription()}
+                                <input class="form-check-input addRelationShareCheckbox" 
+                                type="checkbox" 
+                                id="addShareType${securityLayer.getUuid()}"
+                                value="${securityLayer.getUuid()}"
+                                data-security-layer-description="${securityLayer.getDescription()}"> Can see my ${securityLayer.getDescription()}
                             </label>
                         </div>
                         <% } %>
@@ -78,3 +81,25 @@
         </div>
     </div>
 </div>
+<script>
+    jq(document).ready(function() {
+
+        const addRelationshipModal = jq("#add-relationship-modal");
+        const addRelationshipSelect = addRelationshipModal.find("#addRelationshipSelect");
+        const canSeeMyPostsCheckbox = addRelationshipModal.find('.addRelationShareCheckbox[data-security-layer-description="Posts"]');
+
+        if (addRelationshipSelect.children("option:selected").text() === "Doctor") {
+            canSeeMyPostsCheckbox.prop("checked", false).prop("disabled", true).parents(".form-check").hide();
+        }
+
+        addRelationshipSelect.on('change', function () {
+            if(addRelationshipSelect.children("option:selected").text() === "Doctor") {
+                canSeeMyPostsCheckbox.prop("checked", false).prop("disabled", true).parents(".form-check").hide();
+            } else {
+                canSeeMyPostsCheckbox.prop("disabled", false).parents(".form-check").show();
+            }
+        });
+        
+    });
+
+</script>

@@ -1,5 +1,5 @@
 <!-- About to Expire Modal -->
-<div id="sessionAboutToExpireModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="sessionAboutToExpireModal" class="modal fade" tabindex="-1" role="dialog" style="z-index: 1000000">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -18,7 +18,7 @@
 </div><!-- /.modal -->
 
 <!-- Session Expired Modal -->
-<div id="sessionHasExpiredModal" class="modal fade" tabindex="-1" role="dialog">
+<div id="sessionHasExpiredModal" class="modal fade" tabindex="-1" role="dialog" style="z-index: 1000001">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">        
