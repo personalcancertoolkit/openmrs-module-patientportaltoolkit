@@ -24,6 +24,7 @@ public class Guideline {
     private Concept followupProcedure;
     private Set<Concept> conditionsSet = new HashSet<Concept>(0);
     private String followupTimline;
+    private String intervalDescription;
     private Set<GuidelineInterval> guidelineIntervalSet = new HashSet<GuidelineInterval>(0);
 
     public Integer getId() {
@@ -49,6 +50,7 @@ public class Guideline {
     public void setFollowupProcedure(Concept followupProcedure) {
         this.followupProcedure = followupProcedure;
     }
+
     public Set<Concept> getConditionsSet() {
         return conditionsSet;
     }
@@ -63,6 +65,14 @@ public class Guideline {
 
     public void setFollowupTimline(String followupTimline) {
         this.followupTimline = followupTimline;
+    }
+
+    public String getIntervalDescription() {
+        return intervalDescription;
+    }
+
+    public void setIntervalDescription(String intervalDescription) {
+        this.intervalDescription = intervalDescription;
     }
 
     public Set<GuidelineInterval> getGuidelineIntervalSet() {

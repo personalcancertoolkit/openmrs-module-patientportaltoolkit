@@ -39,121 +39,120 @@ import java.text.ParseException;
 @Controller
 public class EventDataController {
 
-    @RequestMapping( value = "/patientportaltoolkit/getremindersforpatient/{patientId}")
+    @RequestMapping(value = "/patientportaltoolkit/getremindersforpatient/{patientId}")
     @ResponseBody
-    public Object getAllRemindersforPatient(@PathVariable( "patientId" ) String patientId)
-    {
-        Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        List<Reminder> reminders = Context.getService(ReminderService.class).getReminders(patient); 
-        //List<Reminder> reminders = new ArrayList<Reminder>();
+    public Object getAllRemindersforPatient(@PathVariable("patientId") String patientId) {
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
+        List<Reminder> reminders = Context.getService(ReminderService.class).getReminders(patient);
+        // List<Reminder> reminders = new ArrayList<Reminder>();
         return ToolkitResourceUtil.generateReminders(reminders);
     }
-    
-    @RequestMapping( value = "/patientportaltoolkit/getpossiblenewremindersforpatient/{patientId}")
+
+    @RequestMapping(value = "/patientportaltoolkit/getpossiblenewremindersforpatient/{patientId}")
     @ResponseBody
-    public Object getPossibleNewRemindersForPatient(@PathVariable( "patientId" ) String patientId)
-    {
-        
+    public Object getPossibleNewRemindersForPatient(@PathVariable("patientId") String patientId) {
+
         // Define Possible Reminders for Patient
         List<Map<String, String>> data = new ArrayList<>();
         Map<String, String> map = new HashMap<String, String>();
 
-        /*
-        map.put("procedure_name", procedureName);
-        map.put("concept_id", Integer.toString(conceptID));
-        data.add(map.clone());
-        */
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
+        GuidelineConditionSet guidelineConditionSet = Context.getService(ReminderService.class)
+                .generateGuidelineConditionSet(patient);
+        for (Guideline g : guidelineConditionSet.getGuidelines()) {
 
-        Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        GuidelineConditionSet guidelineConditionSet = Context.getService(ReminderService.class).generateGuidelineConditionSet(patient);
-        for (Guideline g:  guidelineConditionSet.getGuidelines()) {
-            // and for each guideline's set of intervals (e.g., check up in 6mo, 12mo, and 24mo)
             String procedureName = g.getFollowupProcedure().getName().getName();
             Integer conceptID = g.getFollowupProcedure().getConceptId();
-            map.put("procedure_name", procedureName);
+            map.put("procedure_name", procedureName + " (" + g.getIntervalDescription() + ")");
             map.put("concept_id", Integer.toString(conceptID));
-            data.add(new HashMap<String,String>(map));
+            data.add(new HashMap<String, String>(map));
         }
-        
+
         return data;
     }
-    
 
-    @RequestMapping( value = "/patientportaltoolkit/getpreventivecareforpatient/{patientId}")
+    @RequestMapping(value = "/patientportaltoolkit/getpreventivecareforpatient/{patientId}")
     @ResponseBody
-    public Object getAllPreventiveCareforPatient(@PathVariable( "patientId" ) String patientId) throws ParseException {
+    public Object getAllPreventiveCareforPatient(@PathVariable("patientId") String patientId) throws ParseException {
         Patient patient = Context.getPatientService().getPatientByUuid(patientId);
-        List<PreventativeCareEvent> events = Context.getService(PreventativeCareService.class).getAllPreventativeCareEventByPatient(patient);
+        List<PreventativeCareEvent> events = Context.getService(PreventativeCareService.class)
+                .getAllPreventativeCareEventByPatient(patient);
         return ToolkitResourceUtil.generatePreventiveCareEvents(events);
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/getpossiblenewpreventivecareeventsforpatient/{patientId}")
+    @RequestMapping(value = "/patientportaltoolkit/getpossiblenewpreventivecareeventsforpatient/{patientId}")
     @ResponseBody
-    public Object getPossibleNewPreventiveCareEventsForPatient(@PathVariable( "patientId" ) String patientId)
-    {
+    public Object getPossibleNewPreventiveCareEventsForPatient(@PathVariable("patientId") String patientId) {
+
         // Define Possible Preventive Care Events for Patient
         List<Map<String, String>> data = new ArrayList<>();
         Map<String, String> map = new HashMap<String, String>();
 
-        Patient patient= Context.getPatientService().getPatientByUuid(patientId);
-        List<PreventiveCareGuideline> guidelineList = Context.getService(PreventativeCareService.class).getPreventativeCareGuideline(patient);
-        for (PreventiveCareGuideline g:  guidelineList) {
-            // and for each guideline's set of intervals (e.g., check up in 6mo, 12mo, and 24mo)
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
+        List<PreventiveCareGuideline> guidelineList = Context.getService(PreventativeCareService.class)
+                .getPreventativeCareGuideline(patient);
+
+        for (PreventiveCareGuideline g : guidelineList) {
+
             String procedureName = g.getFollowupProcedure().getName().getName();
             Integer conceptID = g.getFollowupProcedure().getConceptId();
-            map.put("procedure_name", procedureName);
+
+            map.put("procedure_name", procedureName + " (" + g.getIntervalDescription() + ")");
             map.put("concept_id", Integer.toString(conceptID));
-            data.add(new HashMap<String,String>(map));
+            data.add(new HashMap<String, String>(map));
         }
         return data;
     }
-    
-    
-    @RequestMapping( value = "/patientportaltoolkit/getRelevantPreventiveCareConcepts/{patientId}")
+
+    @RequestMapping(value = "/patientportaltoolkit/getRelevantPreventiveCareConcepts/{patientId}")
     @ResponseBody
-    public Object getRelevantPreventiveCareConcepts(@PathVariable( "patientId" ) String patientId) throws ParseException {
-        
-        // Build map of concept name and concepts 
-        PatientPortalFormService patientPortalFormService= Context.getService(PatientPortalFormService.class);
+    public Object getRelevantPreventiveCareConcepts(@PathVariable("patientId") String patientId) throws ParseException {
+
+        // Build map of concept name and concepts
+        PatientPortalFormService patientPortalFormService = Context.getService(PatientPortalFormService.class);
         Map<String, Set<Concept>> relevantConceptsSource = new HashMap<String, Set<Concept>>();
-        relevantConceptsSource.put("162938", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.INFLUENZA_VACCINE).getConcepts());
-        relevantConceptsSource.put("162939", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.PNEUMOCOCCAL_VACCINE).getConcepts());
-        relevantConceptsSource.put("162940", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHOLESTEROL_SCREENING).getConcepts());
-        relevantConceptsSource.put("162941", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.BP_SCREENING).getConcepts());
-        relevantConceptsSource.put("162942", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.HIV_SCREENING).getConcepts());
-        relevantConceptsSource.put("162943", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.MAMMOGRAPHY_SCREENING).getConcepts());
-        relevantConceptsSource.put("162944", patientPortalFormService.getPatientPortalFormByFormType(PatientPortalToolkitConstants.CERVICAL_CANCER_SCREENING).getConcepts());
-        
-        // Get data from concepts for each concept name and build an object to send to client
+        relevantConceptsSource.put("162938", patientPortalFormService
+                .getPatientPortalFormByFormType(PatientPortalToolkitConstants.INFLUENZA_VACCINE).getConcepts());
+        relevantConceptsSource.put("162939", patientPortalFormService
+                .getPatientPortalFormByFormType(PatientPortalToolkitConstants.PNEUMOCOCCAL_VACCINE).getConcepts());
+        relevantConceptsSource.put("162940", patientPortalFormService
+                .getPatientPortalFormByFormType(PatientPortalToolkitConstants.CHOLESTEROL_SCREENING).getConcepts());
+        relevantConceptsSource.put("162941", patientPortalFormService
+                .getPatientPortalFormByFormType(PatientPortalToolkitConstants.BP_SCREENING).getConcepts());
+        relevantConceptsSource.put("162942", patientPortalFormService
+                .getPatientPortalFormByFormType(PatientPortalToolkitConstants.HIV_SCREENING).getConcepts());
+        relevantConceptsSource.put("162943", patientPortalFormService
+                .getPatientPortalFormByFormType(PatientPortalToolkitConstants.MAMMOGRAPHY_SCREENING).getConcepts());
+        relevantConceptsSource.put("162944", patientPortalFormService
+                .getPatientPortalFormByFormType(PatientPortalToolkitConstants.CERVICAL_CANCER_SCREENING).getConcepts());
+
+        // Get data from concepts for each concept name and build an object to send to
+        // client
         List<Object> data = new ArrayList<Object>();
         Map<String, Object> map = new HashMap<String, Object>();
         Map<String, String> a_question = new HashMap<String, String>();
         for (Map.Entry<String, Set<Concept>> entry : relevantConceptsSource.entrySet()) {
             String key = entry.getKey();
             Set<Concept> concepts = entry.getValue();
-            
+
             map.put("concept_id", key);
             List<Object> questions = new ArrayList<Object>();
-            //map.put("concept_id", Integer.toString(conceptID));
-            for( Concept question : concepts ){
+            // map.put("concept_id", Integer.toString(conceptID));
+            for (Concept question : concepts) {
                 a_question.put("uuid", question.getUuid());
                 a_question.put("name", question.getName().getName());
                 a_question.put("datatype", question.getDatatype().getHl7Abbreviation());
-                questions.add(new HashMap<String,Object>(a_question));
+                questions.add(new HashMap<String, Object>(a_question));
             }
             map.put("questions", questions);
-            data.add(new HashMap<String,Object>(map));
+            data.add(new HashMap<String, Object>(map));
         }
         return data;
     }
 
-    
-    
-    
-    @RequestMapping( value = "/patientportaltoolkit/getsampledates")
+    @RequestMapping(value = "/patientportaltoolkit/getsampledates")
     @ResponseBody
-    public Object getSampleDates()
-    {
+    public Object getSampleDates() {
 
         return " [ {\n" +
                 "                id: 0,\n" +
@@ -226,10 +225,10 @@ public class EventDataController {
                 "                endDate: new Date(currentYear, 10, 17)\n" +
                 "            } ]";
     }
-    @RequestMapping( value = "/patientportaltoolkit/getsampledates2")
+
+    @RequestMapping(value = "/patientportaltoolkit/getsampledates2")
     @ResponseBody
-    public Object getSampleDates2()
-    {
+    public Object getSampleDates2() {
 
         return " [ \n" +
                 " {\n" +
@@ -301,8 +300,7 @@ public class EventDataController {
                 "                location: 'Los Angeles, CA',\n" +
                 "                startDate: new Date(currentYear, 10, 17),\n" +
                 "                endDate: new Date(currentYear, 10, 17)\n" +
-                "            } \n"+
-                "             ]"
-                ;
+                "            } \n" +
+                "             ]";
     }
 }

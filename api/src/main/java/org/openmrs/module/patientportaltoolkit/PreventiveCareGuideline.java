@@ -20,8 +20,10 @@ import java.util.Set;
 public class PreventiveCareGuideline {
     private Integer id;
     private String name;
+    private String intervalDescription;
     private Concept followupProcedure;
-    private Set<PreventiveCareGuidelineInterval> pcgguidelineIntervalSet = new HashSet<PreventiveCareGuidelineInterval>(0);
+    private Set<PreventiveCareGuidelineInterval> pcgguidelineIntervalSet = new HashSet<PreventiveCareGuidelineInterval>(
+            0);
 
     public Integer getId() {
         return id;
@@ -37,6 +39,14 @@ public class PreventiveCareGuideline {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIntervalDescription() {
+        return intervalDescription;
+    }
+
+    public void setIntervalDescription(String intervalDescription) {
+        this.intervalDescription = intervalDescription;
     }
 
     public Concept getFollowupProcedure() {

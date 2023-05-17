@@ -18,6 +18,7 @@
             <generator class="native" />
         </id>
         <property name="name" type="java.lang.String" column="pcg_name"/>
+        <property name="intervalDescription" type="java.lang.String" column="interval_description"/>
         <many-to-one name="followupProcedure" class="org.openmrs.Concept" column="followup_procedure" not-null="true"/>
 
         <set name="pcgguidelineIntervalSet" table="patientportal_pcg_interval" inverse="true" fetch="select">
