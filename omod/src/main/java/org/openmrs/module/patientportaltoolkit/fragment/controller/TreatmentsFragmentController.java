@@ -39,54 +39,63 @@ import java.util.Locale;
  */
 public class TreatmentsFragmentController {
 
-
     protected final Log log = LogFactory.getLog(getClass());
 
     public void controller(PageModel model, PageRequest pageRequest) {
-            log.info(PPTLogAppender.appendLog("REQUEST_TREATMENTS_FRAGMENT", pageRequest.getRequest()));
-            Patient patient = null;
-            Person person = (Person) model.get("person");
-            // if(Context.getAuthenticatedUser().getPerson().isPatient()){
-            if (person.getIsPatient()) {
-                Date firstSurgeryDate = null;
-                patient = Context.getPatientService().getPatientByUuid(person.getUuid());
-                PatientPortalFormService patientPortalFormService = Context.getService(PatientPortalFormService.class);
-                // PatientPortalPersonAttributes pptpersonAttributes = Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
-                // List<Surgery> surgeryEncounters = new ArrayList<>();
-                // surgeryEncounters = GenerateTreatmentClassesUtil.generateSurgeries(patient);
-                model.addAttribute("patientUUID",patient.getUuid());
-                model.addAttribute("genhistory", GenerateTreatmentClassesUtil.generateLatestGeneralHistory(patient));
-                model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
-                model.addAttribute("radiationencounters", GenerateTreatmentClassesUtil.generateRadiations(patient));
-                model.addAttribute("surgeryencounters", GenerateTreatmentClassesUtil.generateSurgeries(patient));
-                model.addAttribute("chemotherapyencounters", GenerateTreatmentClassesUtil.generateChemotherapies(patient));
-                // model.addAttribute("pptpersonAttributes", pptpersonAttributes)
-                firstSurgeryDate = ToolkitResourceUtil.getFirstSurgeryDate(patient);
-                model.addAttribute("firstSurgeryDate", firstSurgeryDate);
-            } else {
-                model.addAttribute("patientUUID",null);
-                model.addAttribute("genhistory", null);
-                model.addAttribute("surgeryConcepts", null);
-                model.addAttribute("chemotherapyConcepts", null);
-                model.addAttribute("radiationConcepts", null);
-                model.addAttribute("latestTreatmentSummary", null);
-                model.addAttribute("treatmentsummary", null);
-                model.addAttribute("radiationencounters", null);
-                model.addAttribute("surgeryencounters", null);
-                model.addAttribute("chemotherapyencounters", null);
-            }
-            //log.info("Treatments requested for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        log.info(PPTLogAppender.appendLog("REQUEST_TREATMENTS_FRAGMENT", pageRequest.getRequest()));
+        Patient patient = null;
+        Person person = (Person) model.get("person");
+        // if(Context.getAuthenticatedUser().getPerson().isPatient()){
+        if (person.getIsPatient()) {
+            Date firstSurgeryDate = null;
+            patient = Context.getPatientService().getPatientByUuid(person.getUuid());
+            PatientPortalFormService patientPortalFormService = Context.getService(PatientPortalFormService.class);
+            // PatientPortalPersonAttributes pptpersonAttributes =
+            // Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
+            // List<Surgery> surgeryEncounters = new ArrayList<>();
+            // surgeryEncounters = GenerateTreatmentClassesUtil.generateSurgeries(patient);
+            model.addAttribute("patientUUID", patient.getUuid());
+            model.addAttribute("genhistory", GenerateTreatmentClassesUtil.generateLatestGeneralHistory(patient));
+            model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
+            model.addAttribute("radiationencounters", GenerateTreatmentClassesUtil.generateRadiations(patient));
+            model.addAttribute("surgeryencounters", GenerateTreatmentClassesUtil.generateSurgeries(patient));
+            model.addAttribute("chemotherapyencounters", GenerateTreatmentClassesUtil.generateChemotherapies(patient));
+            // model.addAttribute("pptpersonAttributes", pptpersonAttributes)
+            firstSurgeryDate = ToolkitResourceUtil.getFirstSurgeryDate(patient);
+            model.addAttribute("firstSurgeryDate", firstSurgeryDate);
+        } else {
+            model.addAttribute("patientUUID", null);
+            model.addAttribute("genhistory", null);
+            model.addAttribute("surgeryConcepts", null);
+            model.addAttribute("chemotherapyConcepts", null);
+            model.addAttribute("radiationConcepts", null);
+            model.addAttribute("latestTreatmentSummary", null);
+            model.addAttribute("treatmentsummary", null);
+            model.addAttribute("radiationencounters", null);
+            model.addAttribute("surgeryencounters", null);
+            model.addAttribute("chemotherapyencounters", null);
+        }
+        // log.info("Treatments requested for -" +
+        // Context.getAuthenticatedUser().getPersonName() + "(id=" +
+        // Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" +
+        // Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by -
+        // " + Context.getAuthenticatedUser().getPersonName() + "(id=" +
+        // Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" +
+        // Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
     public void saveReminderTriggerDate(@RequestParam(value = "reminderTriggerDate") String reminderTriggerDate,
-                                               HttpServletRequest servletRequest) throws ParseException {
+            HttpServletRequest servletRequest) throws ParseException {
 
-        log.info(PPTLogAppender.appendLog("Save_TriggerData", servletRequest, "reminderTriggerDate:", reminderTriggerDate));
+        log.info(PPTLogAppender.appendLog("Save_TriggerData", servletRequest, "reminderTriggerDate:",
+                reminderTriggerDate));
         Person person = Context.getAuthenticatedUser().getPerson();
         Patient patient = null;
-        if(person.isPatient()) {
-            patient= Context.getPatientService().getPatientByUuid(person.getUuid());
-            PatientPortalPersonAttributes patientPortalPersonAttributes = Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
+        if (person.isPatient()) {
+            patient = Context.getPatientService().getPatientByUuid(person.getUuid());
+            PatientPortalPersonAttributes patientPortalPersonAttributes = Context
+                    .getService(PatientPortalPersonAttributesService.class)
+                    .getPatientPortalPersonAttributesByPatient(patient);
             DateFormat format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
             Date date = new Date();
             try {
@@ -95,17 +104,18 @@ public class TreatmentsFragmentController {
                 e.printStackTrace();
             }
             patientPortalPersonAttributes.setReminderTriggerDate(date);
-            Context.getService(PatientPortalPersonAttributesService.class).savePatientPortalPersonAttributes(patientPortalPersonAttributes);
+            Context.getService(PatientPortalPersonAttributesService.class)
+                    .savePatientPortalPersonAttributes(patientPortalPersonAttributes);
         }
     }
 
-
     public void deleteTreatment(@RequestParam(value = "treatmentId", required = true) String treatmentId,
-                                        HttpServletRequest servletRequest) throws ParseException {
+            HttpServletRequest servletRequest) throws ParseException {
 
         log.info(PPTLogAppender.appendLog("Delete_treatment", servletRequest, "Treatment Id:", treatmentId));
         Person person = Context.getAuthenticatedUser().getPerson();
-        Context.getEncounterService().voidEncounter(Context.getEncounterService().getEncounterByUuid(treatmentId),"Deleted By"+Context.getAuthenticatedUser());
+        Context.getEncounterService().voidEncounter(Context.getEncounterService().getEncounterByUuid(treatmentId),
+                "Deleted By" + Context.getAuthenticatedUser());
     }
 
 }

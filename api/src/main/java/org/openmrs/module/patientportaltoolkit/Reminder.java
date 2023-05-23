@@ -23,6 +23,10 @@ import java.util.Date;
  */
 public class Reminder {
 
+    public static final Integer COMPLETED_STATUS = 1;
+    public static final Integer REMOVED_STATUS = -1;
+    public static final Integer CREATED_STATUS = 0;
+
     private Integer id;
     private Patient patient;
     private Concept followProcedure;
@@ -35,7 +39,7 @@ public class Reminder {
     private Date completeDate;
     private Date modifiedDate;
     private String doctorName;
-    private Integer status; //0-not completed, 1-completed, -1-skipped/removed, 2-scheduled
+    private Integer status; // 0-not completed, 1-completed, -1-skipped/removed
     private String responseType;
     private String responseAttributes;
 
@@ -45,7 +49,7 @@ public class Reminder {
      * @return formated response date
      */
     public String getResponseDateFormated() {
-        return (responseDate==null? null : Context.getDateFormat().format(responseDate));
+        return (responseDate == null ? null : Context.getDateFormat().format(responseDate));
     }
 
     /**
@@ -54,10 +58,8 @@ public class Reminder {
      * @return formatted target date
      */
     public String getTargetDateFormated() {
-        return (targetDate==null? null : Context.getDateFormat().format(targetDate));
+        return (targetDate == null ? null : Context.getDateFormat().format(targetDate));
     }
-
-
 
     /**
      * Sort by start_date
@@ -67,10 +69,11 @@ public class Reminder {
     public static Comparator<Reminder> getDateComparator() {
         return new Comparator<Reminder>() {
 
-            //in ascending order
+            // in ascending order
             @Override
             public int compare(final Reminder g1, final Reminder g2) {
-                return (g2.getTargetDate()==null||g1.getTargetDate()==null) ? 1 : g1.getTargetDate().compareTo(g2.getTargetDate());
+                return (g2.getTargetDate() == null || g1.getTargetDate() == null) ? 1
+                        : g1.getTargetDate().compareTo(g2.getTargetDate());
             }
         };
     }
@@ -124,11 +127,9 @@ public class Reminder {
         return responseUser;
     }
 
-
     public Integer getStatus() {
         return status;
     }
-
 
     public void setStatus(Integer status) {
         this.status = status;
@@ -138,49 +139,45 @@ public class Reminder {
         this.responseUser = responseUser;
     }
 
-
     // Target Date
     public Date getTargetDate() {
         return ToolkitResourceUtil.clearDate(targetDate);
     }
+
     public void setTargetDate(Date targetDate) {
         this.targetDate = ToolkitResourceUtil.clearDate(targetDate);
     }
-    
 
     // Orig Target Date
     public Date getOrigTargetDate() {
         return ToolkitResourceUtil.clearDate(origTargetDate);
     }
+
     public void setOrigTargetDate(Date origTargetDate) {
         this.origTargetDate = ToolkitResourceUtil.clearDate(origTargetDate);
     }
-    
 
     // Completed Date
     public Date getCompleteDate() {
         return ToolkitResourceUtil.clearDate(completeDate);
     }
+
     public void setCompleteDate(Date completeDate) {
-       this.completeDate = ToolkitResourceUtil.clearDate(completeDate);
+        this.completeDate = ToolkitResourceUtil.clearDate(completeDate);
     }
-    
-    
-    
+
     // Modified Date
     public Date getModifiedDate() {
         return ToolkitResourceUtil.clearDate(modifiedDate);
     }
+
     public void setModifiedDate(Date modifiedDate) {
-       this.modifiedDate = ToolkitResourceUtil.clearDate(modifiedDate);
+        this.modifiedDate = ToolkitResourceUtil.clearDate(modifiedDate);
     }
 
-    
-    
     public String getDoctorName() {
         return doctorName;
     }
-
 
     public void setResponseType(String responseType) {
         this.responseType = responseType;
@@ -190,24 +187,20 @@ public class Reminder {
         return responseType;
     }
 
-
     public void setDoctorName(String doctorName) {
         this.doctorName = doctorName;
     }
 
-
     public String getFollowProcedureName() {
-        if(followProcedureName == null && followProcedure != null) {
+        if (followProcedureName == null && followProcedure != null) {
             followProcedureName = followProcedure.getName().getName();
         }
         return followProcedureName;
     }
 
-
     public void setFollowProcedureName(String followProcedureName) {
         this.followProcedureName = followProcedureName;
     }
-
 
     public String getResponseAttributes() {
         return responseAttributes;

@@ -81,7 +81,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     public Reminder markCompletedReminder(Reminder reminder) {
         Date today = new Date();
         reminder.setCompleteDate(today);
-        reminder.setStatus(1);
+        reminder.setStatus(Reminder.COMPLETED_STATUS);
         return dao.saveReminder(reminder);
     }
 
@@ -95,7 +95,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setDoctorName(doctorsName);
         reminder.setResponseComments(comments);
         reminder.setResponseDate(today);
-        reminder.setStatus(1);
+        reminder.setStatus(Reminder.COMPLETED_STATUS);
         reminder.setResponseUser(Context.getAuthenticatedUser());
         System.out.println("Saving reminder with target date of " + reminder.getTargetDate());
         return dao.saveReminder(reminder);
@@ -124,9 +124,9 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
 
     @Override
     public Reminder removeReminder(Reminder reminder) {
-        // Takes a reminder object, marks it completed, and saves it.
+        // Takes a reminder object, marks it removed, and saves it.
         Date today = new Date();
-        reminder.setStatus(-1);
+        reminder.setStatus(Reminder.REMOVED_STATUS);
         reminder.setModifiedDate(today);
         return dao.saveReminder(reminder);
     }
@@ -135,22 +135,10 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
     public Reminder addReminder(Reminder reminder) {
         // Takes a reminder object and saves it into database
         Date today = new Date();
-        reminder.setStatus(0);
+        reminder.setStatus(Reminder.CREATED_STATUS);
         reminder.setModifiedDate(today);
         return dao.saveReminder(reminder);
     }
-
-    /*
-     * @Override
-     * public Reminder markScheduledReminder(String reminderId, Date date) {
-     * Date today = new Date();
-     * Reminder reminder=getRemindersById(reminderId);
-     * reminder.setResponseDate(date);
-     * reminder.setStatus(2);
-     * reminder.setResponseUser(Context.getAuthenticatedUser());
-     * return dao.saveReminder(reminder);
-     * }
-     */
 
     @Override
     public Reminder getRemindersById(String Id) {
@@ -354,7 +342,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         // a status of -1
         List<Reminder> valid_reminders = new ArrayList<>();
         for (Reminder reminder : reminders) {
-            if (reminder.getStatus() != -1)
+            if (reminder.getStatus() != Reminder.REMOVED_STATUS)
                 valid_reminders.add(reminder);
         }
 
@@ -374,7 +362,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
         reminder.setFollowProcedure(followupConcept);
         reminder.setTargetDate(targetDate);
         reminder.setOrigTargetDate(targetDate);
-        reminder.setStatus(0);
+        reminder.setStatus(Reminder.CREATED_STATUS);
         return reminder;
     }
 

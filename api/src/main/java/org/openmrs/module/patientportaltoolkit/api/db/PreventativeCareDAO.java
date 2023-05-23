@@ -9,10 +9,12 @@
  */
 package org.openmrs.module.patientportaltoolkit.api.db;
 
+import org.openmrs.Concept;
 import org.openmrs.Patient;
 import org.openmrs.module.patientportaltoolkit.PreventativeCareEvent;
 import org.openmrs.module.patientportaltoolkit.PreventiveCareGuideline;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,7 +30,20 @@ public interface PreventativeCareDAO {
 
     PreventativeCareEvent getPreventativeCareEvent(Integer id);
 
-    List<PreventiveCareGuideline> getAllPreventativeCareGuidelines ();
+    PreventativeCareEvent getPreventativeCareEventInStatusFarthestAwayFromDateForProcedureAndPatient(
+            Patient patient,
+            Date startDate,
+            Integer numberOfMonthsIntoTheFuture,
+            Concept followupProcedure,
+            Integer status);
 
-    PreventiveCareGuideline getPreventativeCareGuidelinebyID (Integer id);
+    PreventativeCareEvent getMostRecentPreventativeCareEventInStatusPriorToDateForProcedureAndPatient(
+            Patient patient,
+            Date startDate,
+            Concept followupProcedure,
+            Integer status);
+
+    List<PreventiveCareGuideline> getAllPreventativeCareGuidelines();
+
+    PreventiveCareGuideline getPreventativeCareGuidelinebyID(Integer id);
 }

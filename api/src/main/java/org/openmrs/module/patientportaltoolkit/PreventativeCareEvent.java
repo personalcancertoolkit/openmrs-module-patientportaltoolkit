@@ -21,6 +21,10 @@ import java.util.Date;
  */
 public class PreventativeCareEvent {
 
+    public static final Integer COMPLETED_STATUS = 1;
+    public static final Integer REMOVED_STATUS = -1;
+    public static final Integer CREATED_STATUS = 0;
+
     private Integer id;
     private Patient patient;
     private Date responseDate;
@@ -31,7 +35,7 @@ public class PreventativeCareEvent {
     private String encounterUuid;
     private Date completeDate;
     private String doctorName;
-    private Integer status; //0-not completed, 1-completed, -1-skipped, 2-scheduled
+    private Integer status; // 0-not completed, 1-completed, -1-skipped
     private Concept followProcedure;
     private String followProcedureName;
 
@@ -77,45 +81,42 @@ public class PreventativeCareEvent {
         this.responseUser = responseUser;
     }
 
-   
     // Target Date
     public Date getTargetDate() {
         return ToolkitResourceUtil.clearDate(targetDate);
     }
+
     public void setTargetDate(Date targetDate) {
         this.targetDate = ToolkitResourceUtil.clearDate(targetDate);
     }
-    
 
     // Orig Target Date
     public Date getOrigTargetDate() {
         return ToolkitResourceUtil.clearDate(origTargetDate);
     }
+
     public void setOrigTargetDate(Date origTargetDate) {
         this.origTargetDate = ToolkitResourceUtil.clearDate(origTargetDate);
     }
-    
 
     // Completed Date
     public Date getCompleteDate() {
         return ToolkitResourceUtil.clearDate(completeDate);
     }
+
     public void setCompleteDate(Date completeDate) {
-       this.completeDate = ToolkitResourceUtil.clearDate(completeDate);
+        this.completeDate = ToolkitResourceUtil.clearDate(completeDate);
     }
-    
 
     // Completed Date
     public String getEncounterUuid() {
         return encounterUuid;
     }
-    public void setEncounterUuid(String encounterUuid) {
-       this.encounterUuid = encounterUuid;
-    }
-    
-    
 
-    
+    public void setEncounterUuid(String encounterUuid) {
+        this.encounterUuid = encounterUuid;
+    }
+
     public String getDoctorName() {
         return doctorName;
     }
@@ -149,7 +150,7 @@ public class PreventativeCareEvent {
     }
 
     public String getFollowProcedureName() {
-        if(followProcedureName == null && followProcedure != null) {
+        if (followProcedureName == null && followProcedure != null) {
             followProcedureName = followProcedure.getName().getName();
         }
         return followProcedureName;
