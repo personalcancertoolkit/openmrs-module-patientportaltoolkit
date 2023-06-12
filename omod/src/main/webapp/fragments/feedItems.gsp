@@ -8,7 +8,7 @@
             });
         jq(".editJournalButton").click(
             function () {
-                const journalId = this.id.split("journalEdit")[1];
+                const journalId = this.id.split("journalEdit")[1];                
                 logEvent('clicked_MyPosts_Edit_Post',JSON.stringify({'postid': journalId}));
                 jq("#edit-postId").val(journalId);
                 jq("#editPostTitle").val(jq("#journalTitle"+journalId).text());
@@ -76,7 +76,7 @@ ${ ui.includeFragment("patientportaltoolkit", "editPost") }
                                 <h5 class="media-heading">${(it.creator.getGivenName())}  - <span id="journalTitle${ it.uuid }">${(it.title)}</span> <small>&emsp; ${ pptutil.formatDate(it.dateCreated) }</small></h5>
                                 <% if(it.creator.person==person) { %>
                                 <div class="pull-right">
-                                    <a id="itEdit" class="no-underline-edit fa fa-pencil editJournalButton"  data-toggle="modal" data-target="#post-edit"></a>
+                                    <a id="journalEdit${ it.uuid }" class="no-underline-edit fa fa-pencil editJournalButton"  data-toggle="modal" data-target="#post-edit"></a>
                                 &nbsp;
                                      <a id="journalRemove${ it.uuid }" class="no-underline-edit fa fa-trash removeJournalButton"  data-toggle="modal" data-target="#confirm-post-remove"></a>
 

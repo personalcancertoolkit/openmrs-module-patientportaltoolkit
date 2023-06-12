@@ -3,7 +3,12 @@
         jq("#editPostUpdate").click(
             function () {
                 logEvent('clicked_MyPosts_Confirm_Update_Post',JSON.stringify({ 'postId': jq("#edit-postId").val() }));
-                jq.get("statusUpdater/editSavePost.action", { postId:  jq("#edit-postId").val(), title: jq("#editPostTitle").val(), content:jq("#editPostContent").val()}, function(){
+                
+                jq.get("statusUpdater/editSavePost.action", { 
+                    postId:  jq("#edit-postId").val(), 
+                    title: jq("#editPostTitle").val(), 
+                    content:jq("#editPostContent").val()
+                }, function() {
                     location.reload();
                 });
             });
