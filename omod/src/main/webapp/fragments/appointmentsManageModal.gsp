@@ -142,15 +142,6 @@
                 return false;
             } 
             
-            /*
-            jq.get("appointments/markCompleted.action", {
-                reminderId: reminder_id, 
-                markCompletedDate: completed_date, 
-                doctorName:  doctor_name,
-                comments:  comments,
-            }, function(text){ console.log('here i am!'); console.log(text);});
-            */
-            
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "appointmentsManageModal/markCompleted.action?" + parameters, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -366,11 +357,7 @@
                 }
             </style>
             <div class="modal-body" style = 'overflow-y:visible;'>
-                
-                
                 <div class="menu-part modal-part" style = 'padding: 0px 15px; '>
-                    
-
                     <div class="completed_event-part modal-part" style = ' '>
                         <div style = 'font-size:25px; margin-left:-10px;'>
                             Record 

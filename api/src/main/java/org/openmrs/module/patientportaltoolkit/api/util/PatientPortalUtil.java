@@ -17,31 +17,29 @@ import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * Created by maurya on 3/7/16.
  */
 public class PatientPortalUtil {
 
-    public String formatDate(Date date){
-        if (date!=null) {
+    public String formatDate(Date date) {
+        if (date != null) {
             return new SimpleDateFormat(PatientPortalToolkitConstants.DATE_FORMAT_MONTHDATEYEAR).format(date);
-        }
-        else
+        } else
             return null;
     }
 
-    public String formatDateWithSpecifiedFormat(Date date,String dateFormat){
+    public String formatDateWithSpecifiedFormat(Date date, String dateFormat) {
         return new SimpleDateFormat(dateFormat).format(date);
     }
 
-    public PatientPortalRelation getRelationbetweenTwoPeople(Person person, Person requestedPerson){
+    public PatientPortalRelation getRelationbetweenTwoPeople(Person person, Person requestedPerson) {
         PatientPortalRelationService pprs = Context.getService(PatientPortalRelationService.class);
-        PatientPortalRelation ppr=null;
-        ppr = pprs.getPatientPortalRelation(person,requestedPerson,Context.getAuthenticatedUser());
-        if (ppr!=null && ppr.getRetired()){
-            ppr=null;
+        PatientPortalRelation ppr = null;
+        ppr = pprs.getPatientPortalRelation(person, requestedPerson, Context.getAuthenticatedUser());
+        if (ppr != null && ppr.getRetired()) {
+            ppr = null;
         }
         return ppr;
     }
