@@ -455,16 +455,28 @@ jq(document).ready(function() {
             jq('#showDetailedList').hide();
             jq('.detailedMessageList').hide();
         });
-    jq('.messagelistLink').click(
-        function() {
-            jq(".messagelistLink").css("background", "#FFFFFF");
-            jq("#" + this.id).css("background", "#F8F8F8");
-            jq('#newMessageComposeDiv').hide();
-            jq('#showDetailedList').show();
-            // console.log(this.id);
-            jq('.detailedMessageList').hide();
-            jq('#mediaList' + this.id).show();
+    jq('#broadcastMessageButton').click( function() {
+        jq('#composeMessageButton').click();
+
+        jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/getallnonvoidedpatients",
+        function(data) {
+            // The returned data is an array of patients
+            jq("#sendingto").val("All Active Patients: " + data.map(patient => patient.GivenName + ' ' + patient.FamilyName).join(", "));
+            jq("#sendingPersonUUID").val(data.map(patient => patient.id).join(","));
         });
+    });
+
+    jq('.messagelistLink').click(function() {
+        const messageId = this.id;
+        jq(".messagelistLink").css("background", "#FFFFFF");
+        jq("#" + this.id).css("background", "#F8F8F8");
+        jq('#newMessageComposeDiv').hide();
+        jq('#showDetailedList').show();
+        // console.log(this.id);
+        jq('.detailedMessageList').hide();
+        jq('#mediaList' + this.id).show();
+        jq('#sendingReplyMessageSubject' + this.id).val('Re: ' + jq(this).data('messageTitle'));
+    });
     //------------------- Messages Page JS Ends ----------------------
     jq('.profileBadge').profileBadge();
     jq('.profileBadgeJournals').profileBadge({
@@ -546,7 +558,7 @@ jq(document).ready(function() {
     jq('#sendNewMessageButton').click(
         function() {
             jq.get("composeMessage/sendNewMessage.action", {
-                personUuid: jq("#sendingPersonUUID").val(),
+                personUuidStringList: jq("#sendingPersonUUID").val(),
                 subject: jq("#sendingNewMessageSubject").val(),
                 message: jq("#sendingNewMessageText").val(),
             }, function() {});

@@ -31,14 +31,13 @@ import java.util.Map;
 public class PatientPortalToolkitPatientController {
     protected final Log log = LogFactory.getLog(getClass());
 
-    @RequestMapping( value = "/patientportaltoolkit/getpatient/{patientId}")
+    @RequestMapping(value = "/patientportaltoolkit/getpatient/{patientId}")
     @ResponseBody
-    public Object getPatientPortalPatient( @PathVariable( "patientId" ) String patientId)
-            throws Exception
-    {
+    public Object getPatientPortalPatient(@PathVariable("patientId") String patientId)
+            throws Exception {
 
         PatientService patientService = Context.getService(PatientService.class);
-       Patient patient= Context.getPatientService().getPatientByUuid(patientId);
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
         Map<String, Object> patientObject = new HashMap<String, Object>();
         if (patient != null)
             patientObject = ToolkitResourceUtil.generatePerson(patientService.getPatient(patientId));
@@ -46,24 +45,35 @@ public class PatientPortalToolkitPatientController {
 
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/getallpatients")
+    @RequestMapping(value = "/patientportaltoolkit/getallpatients")
     @ResponseBody
     public Object getAllPatientPortalPatient()
-            throws Exception
-    {
-         List<Patient> omrspatients = Context.getPatientService().getAllPatients();
+            throws Exception {
+        List<Patient> omrspatients = Context.getPatientService().getAllPatients();
         List<Object> patients = new ArrayList<Object>();
-        for(Patient p: omrspatients){
+        for (Patient p : omrspatients) {
             patients.add(ToolkitResourceUtil.generatePerson(Context.getPatientService().getPatientByUuid(p.getUuid())));
         }
         return patients;
     }
-    @RequestMapping( value = "/patientportaltoolkit/getuser")
+
+    @RequestMapping(value = "/patientportaltoolkit/getallnonvoidedpatients")
+    @ResponseBody
+    public Object getAllPatientPortalNonVoidedPatients()
+            throws Exception {
+        List<Patient> omrspatients = Context.getPatientService().getAllPatients(false);
+        List<Object> patients = new ArrayList<Object>();
+        for (Patient p : omrspatients) {
+            patients.add(ToolkitResourceUtil.generatePerson(Context.getPatientService().getPatientByUuid(p.getUuid())));
+        }
+        return patients;
+    }
+
+    @RequestMapping(value = "/patientportaltoolkit/getuser")
     @ResponseBody
     public Object getPatientPortalUser()
-            throws Exception
-    {
-        User  user=Context.getAuthenticatedUser();
+            throws Exception {
+        User user = Context.getAuthenticatedUser();
         Map<String, Object> authenticatedUser = new HashMap<String, Object>();
         authenticatedUser.put("id", user.getUuid());
         authenticatedUser.put("Name", user.getDisplayString());
@@ -71,11 +81,10 @@ public class PatientPortalToolkitPatientController {
         return authenticatedUser;
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/updatepatient", method = RequestMethod.POST)
+    @RequestMapping(value = "/patientportaltoolkit/updatepatient", method = RequestMethod.POST)
     @ResponseBody
     public Object updatePatientPortalPatient(@RequestBody String patientObject)
-            throws Exception
-    {
+            throws Exception {
         PatientService patientService = Context.getService(PatientService.class);
         Object updatedPatientObject = patientService.updatePatient(patientObject);
         return updatedPatientObject;

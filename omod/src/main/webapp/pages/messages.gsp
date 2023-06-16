@@ -2,17 +2,31 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 <body>
 <div>
     <div class="container pull-left col-md-4">
-        <div class="clearfix">
-            <h5 class="pull-left">
+        <div style="display:flex; justify-content:space-between">
+            <h5>
                 Inbox
             </h5>
-            <div id="composeMessageButton" class="btn btn-default btn-sm pull-right" onclick="logEvent('clicked_Messages_ComposeMessage_Clicked','')">Compose Message</div>
+            <div style="display:flex; align-self:flex-end: align-items: center">
+                <% if(contextUser.isSuperUser()) { %>
+                    <button type="button" 
+                        id="broadcastMessageButton" 
+                        class="btn btn-primary btn-sm" 
+                        style="margin-right:4px"
+                        title="Broadcast Message To All Active Patients">
+                        <span class="fa fa-bullhorn fa-lg"></span>
+                    </button>
+                <% } %>
+                <button class="btn btn-default btn-sm pull-right" 
+                    onclick="logEvent('clicked_Messages_ComposeMessage_Clicked','')" 
+                    type="button" id="composeMessageButton">Compose Message
+                </button>            
+            </div>
         </div>
         <hr style= "marginTop: '8px'"/>
         <ul class="media-list">
-<% if (messages) { %>
-<% messages.each { message -> %>
-            <li class="media messagelistLink" id="${(message.uuid)}" >
+            <% if (messages) { %>
+            <% messages.each { message -> %>
+            <li class="media messagelistLink" id="${(message.uuid)}" data-message-title="${(message.title)}">
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object imagePlaceHolders" alt="Picture" width="40" height="40" />

@@ -21,6 +21,9 @@ import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -30,38 +33,52 @@ public class ComposeMessageFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    //PageRequest messagepageRequest;
+    // PageRequest messagepageRequest;
     public void controller(PageRequest pageRequest) {
         log.info(PPTLogAppender.appendLog("REQUEST_COMPOSEMESSAGE_FRAGMENT", pageRequest.getRequest()));
-        //messagepageRequest=pageRequest;
+        // messagepageRequest=pageRequest;
     }
 
-    public void sendNewMessage(@RequestParam(value = "personUuid", required = true) String personUuid,
-                                        @RequestParam(value = "subject", required = true) String subject,
-                                        @RequestParam(value = "message", required = true) String message, HttpServletRequest servletRequest) {
-        log.info(PPTLogAppender.appendLog("SEND_NEW_MESSAGE", servletRequest, "subject:", subject, "message:", message));
+    public void sendNewMessage(
+            @RequestParam(value = "personUuidStringList", required = true) String personUuidStringList,
+            @RequestParam(value = "subject", required = true) String subject,
+            @RequestParam(value = "message", required = true) String message, HttpServletRequest servletRequest) {
+
+        String[] personUuidList = personUuidStringList.split(",");
+
         User user = Context.getAuthenticatedUser();
-        org.openmrs.api.PersonService personService=Context.getPersonService();
-        Person person = personService.getPersonByUuid(personUuid);
-        Message newMessage= new Message(subject,message,user.getPerson(),person);
-        Context.getService(MessageService.class).saveMessage(newMessage);
-        MailHelper.sendMail("New Message", "Hello "+ person.getPersonName()+"\n you have received a new message on your patient portal module please log into www.personalcancertoolkit.org to view the message", person.getAttribute("Email").toString());
-        //log.info("Send New Message to -" + person.getPersonName() + "(id=" + person.getPersonId() + ",uuid=" + person.getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+        org.openmrs.api.PersonService personService = Context.getPersonService();
+
+        HashSet<String> personUuidMHashSet = new HashSet<>(Arrays.asList(personUuidList));
+        for (String personUuid : personUuidMHashSet) {
+            try {
+                Person person = personService.getPersonByUuid(personUuid);
+                Message newMessage = new Message(subject, message, user.getPerson(), person);
+                Context.getService(MessageService.class).saveMessage(newMessage);
+                MailHelper.sendMail("New Message", "Hello " + person.getPersonName()
+                        + "\n you have received a new message on your patient portal module please log into the portal to view the message",
+                        person.getAttribute("Email").toString());
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
+            }
+        }
     }
 
     public void sendReplyMessage(@RequestParam(value = "personUuid", required = true) String personUuid,
-                               @RequestParam(value = "subject", required = true) String subject,
-                               @RequestParam(value = "message", required = true) String message,
-                                 @RequestParam(value = "parentId", required = true) String parentId, HttpServletRequest servletRequest) {
-        log.info(PPTLogAppender.appendLog("SEND_REPLY_MESSAGE", servletRequest, "subject:", subject, "message:", message, "parentId:", parentId));
+            @RequestParam(value = "subject", required = true) String subject,
+            @RequestParam(value = "message", required = true) String message,
+            @RequestParam(value = "parentId", required = true) String parentId, HttpServletRequest servletRequest) {
+        log.info(PPTLogAppender.appendLog("SEND_REPLY_MESSAGE", servletRequest, "subject:", subject, "message:",
+                message, "parentId:", parentId));
         User user = Context.getAuthenticatedUser();
-        org.openmrs.api.PersonService personService=Context.getPersonService();
+        org.openmrs.api.PersonService personService = Context.getPersonService();
         Person person = personService.getPersonByUuid(personUuid);
-        Message newMessage= new Message(subject,message,user.getPerson(),person);
+        Message newMessage = new Message(subject, message, user.getPerson(), person);
         newMessage.setParentEntryId(Integer.valueOf(parentId));
         Context.getService(MessageService.class).saveMessage(newMessage);
-        //log.info("Send Reply Message to -" + person.getPersonName() + "(id=" + person.getPersonId() + ",uuid=" + person.getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
-        MailHelper.sendMail("New Message", "Hello"+ person.getPersonName()+"\nyou have received a new message on your patient portal module please log into www.personalcancertoolkit.org to view the message", person.getAttribute("Email").toString());
+        MailHelper.sendMail("New Message", "Hello" + person.getPersonName()
+                + "\nyou have received a new message on your patient portal module please log into www.personalcancertoolkit.org to view the message",
+                person.getAttribute("Email").toString());
 
     }
 
