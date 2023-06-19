@@ -18,6 +18,7 @@ import org.openmrs.Person;
 import org.openmrs.module.patientportaltoolkit.PersonPreferences;
 import org.openmrs.module.patientportaltoolkit.api.db.PersonPreferencesDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,7 +56,16 @@ public class HibernatePersonPreferencesDAO implements PersonPreferencesDAO {
     @Override
     public List<PersonPreferences> getAllPersonPreferences() {
         final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PersonPreferences.class);
-        return crit.list();
+        // Exclude voided patients
+        List<PersonPreferences> result = new ArrayList<>();
+        List<PersonPreferences> secondList = crit.list();
+        for (PersonPreferences item : secondList) {
+            if (!item.getPerson().getPersonVoided()) {
+                result.add(item);
+            }
+        }
+
+        return result;
     }
 
     @Override
