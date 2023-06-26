@@ -58,13 +58,13 @@ public class HibernatePersonPreferencesDAO implements PersonPreferencesDAO {
         final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PersonPreferences.class);
         // Exclude voided patients
         List<PersonPreferences> result = new ArrayList<>();
+        @SuppressWarnings("unchecked")
         List<PersonPreferences> secondList = crit.list();
         for (PersonPreferences item : secondList) {
             if (!item.getPerson().getPersonVoided()) {
                 result.add(item);
             }
         }
-
         return result;
     }
 

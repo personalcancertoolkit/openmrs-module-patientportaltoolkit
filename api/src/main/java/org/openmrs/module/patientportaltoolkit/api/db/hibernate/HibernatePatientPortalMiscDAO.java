@@ -27,7 +27,10 @@ public class HibernatePatientPortalMiscDAO implements PatientPortalMiscDAO {
     @Override
     public List<PasswordChangeRequest> getAllPasswordChangeRequests() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(PasswordChangeRequest.class);
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<PasswordChangeRequest> list = c.list();
+        return list;
     }
 
     @Override
@@ -48,6 +51,5 @@ public class HibernatePatientPortalMiscDAO implements PatientPortalMiscDAO {
         sessionFactory.getCurrentSession().saveOrUpdate(el);
         return el;
     }
-
 
 }

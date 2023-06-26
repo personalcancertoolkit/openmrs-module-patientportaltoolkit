@@ -12,7 +12,9 @@ public class EventLog extends BaseOpenmrsObject {
     private User user;
     private Date createdAt;
 
-    private EventLog(){}
+    @SuppressWarnings("unused")
+    private EventLog() {
+    }
 
     public EventLog(String event, User user, Date createdAt) {
         this.event = event;
@@ -34,8 +36,9 @@ public class EventLog extends BaseOpenmrsObject {
 
     @Override
     public void setId(Integer id) {
-        this.id=id;
+        this.id = id;
     }
+
     public String getEvent() {
         return event;
     }

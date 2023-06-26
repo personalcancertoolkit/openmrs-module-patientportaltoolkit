@@ -40,7 +40,10 @@ public class HibernatePatientPortalFormDAO implements PatientPortalFormDAO {
     @Override
     public List<PatientPortalForm> getAllPatientPortalForms() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(PatientPortalForm.class);
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<PatientPortalForm> list = c.list();
+        return list;
     }
 
     @Override

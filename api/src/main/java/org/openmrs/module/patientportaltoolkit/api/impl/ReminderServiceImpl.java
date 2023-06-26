@@ -42,14 +42,14 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
 
     private final static Integer CANCER_TYPE = 162869;
     private final static Integer CANCER_STAGE = 162875;
-    private final static Integer SURGERY_TYPE = 162876;
+    // private final static Integer SURGERY_TYPE = 162876;
     private final static Integer SURGERY_DATE = 162842;
-    private final static Integer DIAGNOSIS_DATE = 162825;
-    private final static Integer RADIATION_TYPE = 162878;
-    private final static Integer RADIATION_START_DATE = 6132;
-    private final static Integer CHEMOTHERAPY_MEDS = 6156;
-    private final static int ALERT_DAYS = 60;
-    private final static int MATCH_DAYS = 7;
+    // private final static Integer DIAGNOSIS_DATE = 162825;
+    // private final static Integer RADIATION_TYPE = 162878;
+    // private final static Integer RADIATION_START_DATE = 6132;
+    // private final static Integer CHEMOTHERAPY_MEDS = 6156;
+    // private final static int ALERT_DAYS = 60;
+    // private final static int MATCH_DAYS = 7;
 
     protected final Log log = LogFactory.getLog(this.getClass());
 
@@ -180,9 +180,9 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
      * private List<Reminder> findAllReminders(Patient pat) {
      */
 
-    private List<Reminder> getRemindersByProvider(Patient pat) {
-        return dao.getRemindersByProvider(pat);
-    }
+    // private List<Reminder> getRemindersByProvider(Patient pat) {
+    // return dao.getRemindersByProvider(pat);
+    // }
 
     /*
      * private Date findMidDate(Date refDate1, Date refDate2) {
@@ -220,7 +220,7 @@ public class ReminderServiceImpl extends BaseOpenmrsService implements ReminderS
 
         if (observations != null) {
             for (Obs obs : observations) {
-                if (obs != null && !obs.isVoided()) {
+                if (obs != null && !obs.getVoided()) {
                     if (latest == null) {
                         latest = obs;
                     } else {

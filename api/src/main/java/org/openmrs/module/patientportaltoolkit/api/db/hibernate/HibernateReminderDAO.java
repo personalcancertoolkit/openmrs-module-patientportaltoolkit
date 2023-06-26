@@ -40,7 +40,6 @@ public class HibernateReminderDAO implements ReminderDAO {
         this.sessionFactory = sessionFactory;
     }
 
-
     @Override
     public void deleteReminder(Reminder reminder) {
         Session sess = sessionFactory.openSession();
@@ -55,7 +54,10 @@ public class HibernateReminderDAO implements ReminderDAO {
     public List<Reminder> getAllRemindersByPatient(Patient patient) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(Reminder.class);
         c.add(Restrictions.eq("patient", patient));
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<Reminder> list = c.list();
+        return list;
     }
 
     @Override
@@ -63,32 +65,23 @@ public class HibernateReminderDAO implements ReminderDAO {
         return (Reminder) sessionFactory.getCurrentSession().get(Reminder.class, id);
     }
 
-    /**
-     *
-     */
     @Override
     public Reminder saveReminder(Reminder reminder) {
         sessionFactory.getCurrentSession().saveOrUpdate(reminder);
         return reminder;
     }
 
-
-
-    /**
-     *
-     */
     @Override
     public List<Reminder> getReminders(Patient pat) {
-        //Query query = sessionFactory.getCurrentSession().createQuery("from LafReminder where allowedUrl = :url ");
-        //query.setParameter("url", url);
-        //List list0 = query.list();
+
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(Reminder.class);
         crit.add(Restrictions.eq("patient", pat));
         crit.add(Restrictions.isNull("completeDate"));
         crit.add(Restrictions.isNotNull("targetDate"));
         crit.addOrder(Order.asc("targetDate"));
+
         @SuppressWarnings("unchecked")
-        List<Reminder> list = (List<Reminder>) crit.list();
+        List<Reminder> list = crit.list();
         if (list.size() >= 1)
             return list;
         else
@@ -103,8 +96,9 @@ public class HibernateReminderDAO implements ReminderDAO {
         crit.add(Restrictions.isNotNull("targetDate"));
         crit.add(Restrictions.eq("responseType", "PHR_PROVIDER"));
         crit.addOrder(Order.asc("targetDate"));
+
         @SuppressWarnings("unchecked")
-        List<Reminder> list = (List<Reminder>) crit.list();
+        List<Reminder> list = crit.list();
         if (list.size() >= 1)
             return list;
         else
@@ -113,15 +107,14 @@ public class HibernateReminderDAO implements ReminderDAO {
 
     @Override
     public List<Reminder> getRemindersCompleted(Patient pat) {
-        //Query query = sessionFactory.getCurrentSession().createQuery("from LafReminder where allowedUrl = :url ");
-        //query.setParameter("url", url);
-        //List list0 = query.list();
+
         Criteria crit = sessionFactory.getCurrentSession().createCriteria(Reminder.class);
         crit.add(Restrictions.eq("patient", pat));
         crit.add(Restrictions.isNotNull("completeDate"));
         crit.addOrder(Order.asc("completeDate"));
+
         @SuppressWarnings("unchecked")
-        List<Reminder> list = (List<Reminder>) crit.list();
+        List<Reminder> list = crit.list();
         if (list.size() >= 1)
             return list;
         else
@@ -134,25 +127,25 @@ public class HibernateReminderDAO implements ReminderDAO {
         crit.add(Restrictions.eq("patient", pat));
         crit.add(Restrictions.eq("followProcedure", careType));
         crit.add(Restrictions.eq("targetDate", clearDate(targetDate)));
-        //crit.add(Restrictions.lt("targetDate", oneDayLater(targetDate)));
+
         crit.add(Restrictions.isNull("completeDate"));
         crit.addOrder(Order.asc("targetDate"));
+
         @SuppressWarnings("unchecked")
-        List<Reminder> list = (List<Reminder>) crit.list();
+        List<Reminder> list = crit.list();
         if (list.size() == 1) {
             log.debug("One reminder is found: patient=" + pat + "|careType=" + careType + "|targetDate=" + targetDate);
             return list.get(0);
-        }
-        else if(list.size() > 1) {
-            log.error("More than one reminder is found: patient=" + pat + "|careType=" + careType + "|targetDate=" + targetDate);
+        } else if (list.size() > 1) {
+            log.error("More than one reminder is found: patient=" + pat + "|careType=" + careType + "|targetDate="
+                    + targetDate);
             return list.get(0);
-        }
-        else
+        } else
             return null;
     }
 
     public static Date clearDate(Date dateTime) {
-        if(dateTime == null) {
+        if (dateTime == null) {
             return null;
         }
         Calendar cal = Calendar.getInstance();

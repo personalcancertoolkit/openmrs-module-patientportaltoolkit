@@ -34,7 +34,8 @@ public class BaseCancerPortalController {
 
     private final int DEFAULT_ERROR_CODE = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 
-    private static final String DISABLE_WWW_AUTH_HEADER_NAME = "Disable-WWW-Authenticate";
+    // private static final String DISABLE_WWW_AUTH_HEADER_NAME =
+    // "Disable-WWW-Authenticate";
 
     private final String DEFAULT_ERROR_DETAIL = "";
 

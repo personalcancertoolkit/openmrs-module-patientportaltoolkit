@@ -55,7 +55,10 @@ public class HibernatePreventativeCareDAO implements PreventativeCareDAO {
     public List<PreventativeCareEvent> getAllPreventativeCareEventsByPatient(Patient patient) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(PreventativeCareEvent.class);
         c.add(Restrictions.eq("patient", patient));
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<PreventativeCareEvent> list = c.list();
+        return list;
     }
 
     @Override
@@ -77,9 +80,10 @@ public class HibernatePreventativeCareDAO implements PreventativeCareDAO {
         }
         c.add(Restrictions.eq("status", status));
 
-        List l = c.list();
-        if (l.size() > 0) {
-            return (PreventativeCareEvent) l.get(0);
+        @SuppressWarnings("unchecked")
+        List<PreventativeCareEvent> list = c.list();
+        if (list.size() > 0) {
+            return (PreventativeCareEvent) list.get(0);
         }
         return null;
     }
@@ -102,9 +106,10 @@ public class HibernatePreventativeCareDAO implements PreventativeCareDAO {
 
         c.addOrder(Order.desc("targetDate"));
 
-        List l = c.list();
-        if (l.size() > 0) {
-            return (PreventativeCareEvent) l.get(0);
+        @SuppressWarnings("unchecked")
+        List<PreventativeCareEvent> list = c.list();
+        if (list.size() > 0) {
+            return (PreventativeCareEvent) list.get(0);
         }
         return null;
     }
@@ -123,7 +128,10 @@ public class HibernatePreventativeCareDAO implements PreventativeCareDAO {
     @Override
     public List<PreventiveCareGuideline> getAllPreventativeCareGuidelines() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(PreventiveCareGuideline.class);
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<PreventiveCareGuideline> list = c.list();
+        return list;
     }
 
     @Override

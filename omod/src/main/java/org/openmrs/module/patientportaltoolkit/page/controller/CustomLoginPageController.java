@@ -11,7 +11,6 @@ package org.openmrs.module.patientportaltoolkit.page.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Location;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.context.ContextAuthenticationException;
@@ -33,17 +32,11 @@ import javax.servlet.http.HttpServletRequest;
 public class CustomLoginPageController {
 
     public void controller(PageModel model, PageRequest pageRequest, HttpServletRequest request) {
-        // Log Processing events
-        // HttpServletRequest request=pageRequest.getRequest();
 
-        // log.info(PPTLogAppender.appendLog(token, pageRequest.getRequest()));
         String login_status = (String) request.getSession().getAttribute("login_status");
         Boolean loggedInBoolean = false;
         if (Context.isAuthenticated()) {
             loggedInBoolean = true;
-            // System.out.println("Already logged in");
-        } else {
-            // System.out.println("Not logged in");
         }
         model.addAttribute("loggedInBoolean", loggedInBoolean);
         model.addAttribute("login_status", login_status);
@@ -76,14 +69,9 @@ public class CustomLoginPageController {
         ////////////////////////////////////////////
         // Define location as unknown location
         ////////////////////////////////////////////
-        int sessionLocationId = 1;
-        Location sessionLocation = null;
         try {
-            // TODO as above, grant this privilege to Anonymous instead of using a proxy
-            // privilege
             Context.addProxyPrivilege(VIEW_LOCATIONS);
             Context.addProxyPrivilege(GET_LOCATIONS);
-            sessionLocation = locationService.getLocation(sessionLocationId);
         } finally {
             Context.removeProxyPrivilege(VIEW_LOCATIONS);
             Context.removeProxyPrivilege(GET_LOCATIONS);

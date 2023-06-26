@@ -45,7 +45,10 @@ public class HibernateMessageDAO implements MessageDAO {
     @Override
     public List<Message> getAllMessages() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(Message.class);
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<Message> list = c.list();
+        return list;
     }
 
     @Override
@@ -63,10 +66,10 @@ public class HibernateMessageDAO implements MessageDAO {
     @Override
     public List<Message> getMessagesForPerson(Person p, Boolean orderByDateDesc) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(Message.class);
-        if(orderByDateDesc != null){
-            if(orderByDateDesc){
+        if (orderByDateDesc != null) {
+            if (orderByDateDesc) {
                 c.addOrder(Order.desc("dateCreated"));
-            }else{
+            } else {
                 c.addOrder(Order.asc("dateCreated"));
             }
         }
@@ -75,7 +78,10 @@ public class HibernateMessageDAO implements MessageDAO {
         LogicalExpression orExp = Restrictions.or(sender, receiver);
         c.add(orExp);
         c.add(Restrictions.eq("deleted", false));
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<Message> list = c.list();
+        return list;
     }
 
     @Override
@@ -85,10 +91,10 @@ public class HibernateMessageDAO implements MessageDAO {
 
     @Override
     public void softDelete(Message message) {
-        if(message.getParentEntryId()==null) {
+        if (message.getParentEntryId() == null) {
             List<Message> comments = findResponses(message);
-            if(comments != null) {
-                for(Message comment : comments) {
+            if (comments != null) {
+                for (Message comment : comments) {
                     softDelete(comment);
                 }
             }
@@ -105,6 +111,9 @@ public class HibernateMessageDAO implements MessageDAO {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(Message.class);
         c.add(Restrictions.eq("deleted", false));
         c.add(Restrictions.eq("parentEntryId", message.getEntryId()));
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<Message> list = c.list();
+        return list;
     }
 }

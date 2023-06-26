@@ -62,8 +62,12 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     public List<PatientPortalRelation> getAllPatientPortalRelation() {
         final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
         crit.addOrder(Order.asc("person"));
-        this.log.debug("HibernatePatientPortalRelationDAO:getAllPatientPortalRelation->" + " | token count=" + crit.list().size());
-        return crit.list();
+
+        @SuppressWarnings("unchecked")
+        List<PatientPortalRelation> list = crit.list();
+        this.log.debug("HibernatePatientPortalRelationDAO:getAllPatientPortalRelation->" + " | token count="
+                + list.size());
+        return list;
     }
 
     @Override
@@ -71,8 +75,12 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
         crit.add(Restrictions.eq("patient", patient));
         crit.addOrder(Order.desc("dateCreated"));
-        final List<PatientPortalRelation> list = crit.list();
-        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPatient->" + patient + " | token count=" + list.size());
+
+        @SuppressWarnings("unchecked")
+        List<PatientPortalRelation> list = crit.list();
+
+        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPatient->" + patient + " | token count="
+                + list.size());
         if (list.size() >= 1) {
             return list;
         } else {
@@ -86,8 +94,11 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         crit.add(Restrictions.eq("person", person));
         crit.add(Restrictions.eq("retired", false));
         crit.addOrder(Order.desc("dateCreated"));
-        final List<PatientPortalRelation> list = crit.list();
-        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPerson->" + person + " | token count=" + list.size());
+
+        @SuppressWarnings("unchecked")
+        List<PatientPortalRelation> list = crit.list();
+        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPerson->" + person + " | token count="
+                + list.size());
         if (list.size() >= 1) {
             return list;
         } else {
@@ -101,8 +112,11 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         crit.add(Restrictions.eq("relatedPerson", person));
         crit.add(Restrictions.eq("retired", false));
         crit.addOrder(Order.desc("dateCreated"));
-        final List<PatientPortalRelation> pptlist = crit.list();
-        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPerson->" + person + " | token count=" + pptlist.size());
+
+        @SuppressWarnings("unchecked")
+        List<PatientPortalRelation> pptlist = crit.list();
+        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPerson->" + person + " | token count="
+                + pptlist.size());
         if (pptlist.size() >= 1) {
             return pptlist;
         } else {
@@ -116,8 +130,11 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         crit.add(Restrictions.eq("relatedPerson", person));
         crit.add(Restrictions.eq("shareStatus", 1));
         crit.addOrder(Order.desc("dateCreated"));
-        final List<PatientPortalRelation> pptlist = crit.list();
-        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPerson->" + person + " | token count=" + pptlist.size());
+
+        @SuppressWarnings("unchecked")
+        List<PatientPortalRelation> pptlist = crit.list();
+        this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingTokenByPerson->" + person + " | token count="
+                + pptlist.size());
         if (pptlist.size() >= 1) {
             return pptlist;
         } else {
@@ -128,13 +145,12 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     @Override
     public PatientPortalRelation getPatientPortalRelation(Person person, Person relatedPerson, User requestingUser) {
 
-        Person user = requestingUser.getPerson();
-
         Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
         crit.add(Restrictions.eq("relatedPerson", relatedPerson));
         crit.add(Restrictions.eq("person", person));
         crit.addOrder(Order.desc("dateCreated"));
 
+        @SuppressWarnings("unchecked")
         List<PatientPortalRelation> list = crit.list();
 
         this.log.debug("HibernatePatientPortalSharingTokenDAO:getSharingToken->" + person + "|" + relatedPerson + "|"
@@ -148,6 +164,7 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
             criteria.add(Restrictions.eq("person", relatedPerson));
             criteria.addOrder(Order.desc("dateCreated"));
 
+            @SuppressWarnings("unchecked")
             List<PatientPortalRelation> secondList = criteria.list();
 
             if (secondList.size() >= 1) {
@@ -162,26 +179,28 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     public void updatePatientPortalRelation(User user, Person person, String uuid) {
         final PatientPortalRelation patientPortalRelation = getPatientPortalRelation(uuid);
         if (patientPortalRelation != null) {
-        final Date date = new Date();
+            final Date date = new Date();
 
-        if (patientPortalRelation.getExpireDate().after(date)) {
-            if (patientPortalRelation.getRelatedPerson() == null) {
-                patientPortalRelation.setRelatedPerson(person);
-                patientPortalRelation.setChangedBy(user);
-                patientPortalRelation.setDateChanged(date);
-                patientPortalRelation.setActivateDate(date);
-                savePatientPortalRelation(patientPortalRelation);
-                this.log.debug("Sharing token updated: " + patientPortalRelation.getId());
+            if (patientPortalRelation.getExpireDate().after(date)) {
+                if (patientPortalRelation.getRelatedPerson() == null) {
+                    patientPortalRelation.setRelatedPerson(person);
+                    patientPortalRelation.setChangedBy(user);
+                    patientPortalRelation.setDateChanged(date);
+                    patientPortalRelation.setActivateDate(date);
+                    savePatientPortalRelation(patientPortalRelation);
+                    this.log.debug("Sharing token updated: " + patientPortalRelation.getId());
+                } else {
+                    this.log.debug("Sharing token is igored because it was activated before by: "
+                            + patientPortalRelation.getChangedBy()
+                            + " at " + patientPortalRelation.getActivateDate());
+                }
             } else {
-                this.log.debug("Sharing token is igored because it was activated before by: " + patientPortalRelation.getChangedBy()
-                        + " at " + patientPortalRelation.getActivateDate());
+                this.log.debug(
+                        "Sharing token is ignored because it expired at " + patientPortalRelation.getExpireDate());
             }
         } else {
-            this.log.debug("Sharing token is ignored because it expired at " + patientPortalRelation.getExpireDate());
+            this.log.debug("Sharing token is ignored because it is invalid: " + uuid);
         }
-    } else {
-        this.log.debug("Sharing token is ignored because it is invalid: " + uuid);
-    }
 
     }
 
@@ -190,8 +209,10 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
         crit.add(Restrictions.eq("relatedPerson", relatedPerson));
         crit.add(Restrictions.eq("person", person));
-         crit.add(Restrictions.eq("shareType", shareType));
+        crit.add(Restrictions.eq("shareType", shareType));
         crit.add(Restrictions.eq("retired", false));
+
+        @SuppressWarnings("unchecked")
         List<PatientPortalShare> list = crit.list();
         if (list.size() >= 1) {
             return true;
@@ -207,6 +228,8 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         crit.add(Restrictions.eq("person", person));
         crit.add(Restrictions.eq("shareType", shareType));
         crit.add(Restrictions.eq("retired", false));
+
+        @SuppressWarnings("unchecked")
         List<PatientPortalShare> list = crit.list();
         if (list.size() >= 1) {
             return list.get(0);
@@ -220,10 +243,11 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
         Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalShare.class);
         crit.add(Restrictions.eq("relatedPerson", relatedPerson));
         crit.add(Restrictions.eq("person", person));
-        // crit.add(Restrictions.eq("shareType", shareType));
         crit.add(Restrictions.eq("retired", false));
-        //List<PatientPortalShare> list = crit.list();
-        return crit.list();
+
+        @SuppressWarnings("unchecked")
+        List<PatientPortalShare> list = crit.list();
+        return list;
     }
 
     @Override

@@ -41,6 +41,7 @@ public class PersonServiceTest extends BaseModuleContextSensitiveTest {
     public void shouldSetupContext() {
         assertNotNull(getService());
     }
+
     /**
      * @verifies not return null value
      * @see PersonService#getPerson(String)
@@ -50,8 +51,8 @@ public class PersonServiceTest extends BaseModuleContextSensitiveTest {
     public void getPerson_shouldNotReturnNullValue() throws Exception {
         String personUuid = "dagh524f-27ce-4bb2-86d6-6d1d05312bd5";
         Map<String, Object> personObject = getService().getPerson(personUuid);
-		assertNotNull(personObject);
-		assertEquals(personObject.get("id"), personUuid);
+        assertNotNull(personObject);
+        assertEquals(personObject.get("id"), personUuid);
     }
 
     /**
@@ -70,7 +71,7 @@ public class PersonServiceTest extends BaseModuleContextSensitiveTest {
     @Ignore
     @Test
     public void updatePerson_shouldNotReturnNull() throws Exception {
-        String json= "{\n" +
+        String json = "{\n" +
                 "\"id\": \"dagh524f-27ce-4bb2-86d6-6d1d05312bd5\",\n" +
                 "\"GivenName\": \"Alomnaa\",\n" +
                 "\"MiddleName\": null,\n" +
@@ -81,7 +82,7 @@ public class PersonServiceTest extends BaseModuleContextSensitiveTest {
                 "\"DOB\": null,\n" +
                 "\"Email\": null,\n" +
                 "\"Address\": {\n" +
-                //"\"id\": \"76ce88d3-4b09-42ee-8188-40f69379872b\",\n" +
+                // "\"id\": \"76ce88d3-4b09-42ee-8188-40f69379872b\",\n" +
                 "\"Address1\": \"address 1\",\n" +
                 "\"Address2\": \"Address 23\",\n" +
                 "\"City/Village\": \"Indianapolis\",\n" +
@@ -90,6 +91,8 @@ public class PersonServiceTest extends BaseModuleContextSensitiveTest {
                 "\"PostalCode\": \"46202\"\n" +
                 "}\n" +
                 "}";
+
+        @SuppressWarnings("unchecked")
         Map<String, Object> personObject = (Map<String, Object>) getService().updatePerson(json);
         assertNotNull(personObject);
         assertEquals(personObject.get("id"), "dagh524f-27ce-4bb2-86d6-6d1d05312bd5");

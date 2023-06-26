@@ -37,12 +37,15 @@ public class HibernateSecurityLayerDAO implements SecurityLayerDAO {
 
         Criteria c = sessionFactory.getCurrentSession().createCriteria(SecurityLayer.class);
         c.add(Restrictions.eq("uuid", uuid));
-        return (SecurityLayer)c.uniqueResult();
+        return (SecurityLayer) c.uniqueResult();
     }
 
     @Override
     public List<SecurityLayer> getAllSecurityLayers() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(SecurityLayer.class);
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<SecurityLayer> list = c.list();
+        return list;
     }
 }

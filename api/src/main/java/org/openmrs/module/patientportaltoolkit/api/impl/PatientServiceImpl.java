@@ -14,8 +14,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.patientportaltoolkit.api.PatientService;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,15 +22,14 @@ import java.util.List;
 public class PatientServiceImpl extends BaseOpenmrsService implements PatientService {
 
     @Override
-    public  Patient getPatient(String patientId){
-        Patient patient= Context.getPatientService().getPatientByUuid(patientId);
+    public Patient getPatient(String patientId) {
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
         return patient;
     }
 
     @Override
     public List<Patient> getAllPatients() {
-        List<Object> patientPortalPatients = new ArrayList<Object>();
-       return Context.getPatientService().getAllPatients();
+        return Context.getPatientService().getAllPatients();
     }
 
     @Override
@@ -40,4 +37,3 @@ public class PatientServiceImpl extends BaseOpenmrsService implements PatientSer
         return ToolkitResourceUtil.updatePatient(patientJson);
     }
 }
-

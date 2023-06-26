@@ -13,7 +13,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.User;
-import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.SecurityLayer;
@@ -36,92 +35,74 @@ public class ConnectionsFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(FragmentModel model,PageRequest pageRequest) {
-        model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(Context.getAuthenticatedUser().getPerson()));
-        model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
+    public void controller(FragmentModel model, PageRequest pageRequest) {
+        model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class)
+                .getPatientPortalRelationByPerson(Context.getAuthenticatedUser().getPerson()));
+        model.addAttribute("securityLayers", Context.getService(SecurityLayerService.class).getAllSecurityLayers());
         model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());
         model.addAttribute("user", Context.getAuthenticatedUser());
         log.info(PPTLogAppender.appendLog("REQUEST_CONNECTIONS_FRAGMENT", pageRequest.getRequest()));
 
     }
 
-    public void saveRelationshipfromEdit(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId,
-                                         @RequestParam(value = "personRelationType", required = true) Integer personRelationType,
-                                         @RequestParam(value = "personRelationSecurityLayer", required = true) String personRelationSecurityLayer, HttpServletRequest servletRequest) {
+    public void saveRelationshipfromEdit(FragmentModel model,
+            @RequestParam(value = "relationshipId", required = true) String relationshipId,
+            @RequestParam(value = "personRelationType", required = true) Integer personRelationType,
+            @RequestParam(value = "personRelationSecurityLayer", required = true) String personRelationSecurityLayer,
+            HttpServletRequest servletRequest) {
         User user = Context.getAuthenticatedUser();
-        UserService userService=Context.getUserService();
-        Person personGettingAccess=null;
-        PatientPortalRelationService pprService=Context.getService(PatientPortalRelationService.class);
 
-        PatientPortalRelation ppr=pprService.getPatientPortalRelation(relationshipId);
+        Person personGettingAccess = null;
+        PatientPortalRelationService pprService = Context.getService(PatientPortalRelationService.class);
+
+        PatientPortalRelation ppr = pprService.getPatientPortalRelation(relationshipId);
         ppr.setRelationType(Context.getPersonService().getRelationshipType(personRelationType));
 
         List<String> shareTypesList = Arrays.asList(personRelationSecurityLayer.split(","));
-        SecurityLayerService securityLayerService= Context.getService(SecurityLayerService.class);
-        List<SecurityLayer> shareTypes=new ArrayList<>();
+        SecurityLayerService securityLayerService = Context.getService(SecurityLayerService.class);
+        List<SecurityLayer> shareTypes = new ArrayList<>();
         if (ppr.getPerson().equals(user.getPerson()))
-            personGettingAccess=ppr.getRelatedPerson();
+            personGettingAccess = ppr.getRelatedPerson();
         else
-            personGettingAccess=ppr.getPerson();
-        for (String s:shareTypesList) {
+            personGettingAccess = ppr.getPerson();
+        for (String s : shareTypesList) {
             shareTypes.add(securityLayerService.getSecurityLayerByUuid(s));
         }
-        /*if(ppr.getPerson().equals(user.getPerson())) {
-            ppr.setShareTypeA(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(personRelationSecurityLayer));
-        }
-        if(ppr.getRelatedPerson().equals(user.getPerson())) {
-            ppr.setShareTypeB(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(personRelationSecurityLayer));
-        }*/
+
         pprService.savePatientPortalRelation(ppr);
-        pprService.saveShareTypes(user.getPerson(),personGettingAccess,shareTypes);
+        pprService.saveShareTypes(user.getPerson(), personGettingAccess, shareTypes);
 
         log.info(PPTLogAppender.appendLog("EDIT_RELATIONSHIP", servletRequest));
-        //log.info("Edit Relationship/Connection -"+ relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
-        //return "Success";
     }
 
-    public void acceptConnectionRequest(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId, HttpServletRequest servletRequest) {
+    public void acceptConnectionRequest(FragmentModel model,
+            @RequestParam(value = "relationshipId", required = true) String relationshipId,
+            HttpServletRequest servletRequest) {
         User user = Context.getAuthenticatedUser();
-        UserService userService=Context.getUserService();
 
-        PatientPortalRelation ppr=Context.getService(PatientPortalRelationService.class).getPatientPortalRelation(relationshipId);
+        PatientPortalRelation ppr = Context.getService(PatientPortalRelationService.class)
+                .getPatientPortalRelation(relationshipId);
         ppr.setRetired(false);
-        PatientPortalRelation pprNew = new PatientPortalRelation(user.getPerson(),ppr.getPerson());
+        PatientPortalRelation pprNew = new PatientPortalRelation(user.getPerson(), ppr.getPerson());
         pprNew.setShareStatus(1);
-        //Remove when adding relationtype to PatientPortalRelation Class
-       /* List<RelationshipType> relationTypes = Context.getPersonService().getAllRelationshipTypes();
-        for (RelationshipType rt: relationTypes){
-            if(rt.getaIsToB().equals(ppr.getRelationType())){
-                pprNew.setRelationType(rt.getbIsToA());
-            }
-        }
 
-        pprNew.setShareType(Context.getService(SecurityLayerService.class).getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_POSTS));
-
-        Calendar date = Calendar.getInstance();
-        date.setTime(new Date());
-        SimpleDateFormat f = new SimpleDateFormat("dd-MMMM-yyyy");
-        //System.out.println(f.format(date.getTime()));
-        date.add(Calendar.YEAR,20);
-        pprNew.setExpireDate(date.getTime());
-        Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(pprNew);*/
         ppr.setShareStatus(1);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
-        log.info(PPTLogAppender.appendLog("ACCEPT_RELATIONSHIP", servletRequest,"Relationship Id:", relationshipId));
-        //log.info("Accept Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
-        //return "Success";
+        log.info(PPTLogAppender.appendLog("ACCEPT_RELATIONSHIP", servletRequest, "Relationship Id:", relationshipId));
+
     }
 
-    public void ignoreConnectionRequest(FragmentModel model, @RequestParam(value = "relationshipId", required = true) String relationshipId, HttpServletRequest servletRequest) {
-        User user = Context.getAuthenticatedUser();
-        UserService userService=Context.getUserService();
-        PatientPortalRelation ppr=Context.getService(PatientPortalRelationService.class).getPatientPortalRelation(relationshipId);
+    public void ignoreConnectionRequest(FragmentModel model,
+            @RequestParam(value = "relationshipId", required = true) String relationshipId,
+            HttpServletRequest servletRequest) {
+
+        PatientPortalRelation ppr = Context.getService(PatientPortalRelationService.class)
+                .getPatientPortalRelation(relationshipId);
         ppr.setShareStatus(2);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
-        Context.getService(PatientPortalRelationService.class).deletePatientPortalRelation(relationshipId, Context.getAuthenticatedUser());
+        Context.getService(PatientPortalRelationService.class).deletePatientPortalRelation(relationshipId,
+                Context.getAuthenticatedUser());
         log.info(PPTLogAppender.appendLog("IGNORE_RELATIONSHIP", servletRequest, "Relationship Id:", relationshipId));
-        //log.info("Ignore Relationship/Connection -" + relationshipId + "Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
-
 
 }

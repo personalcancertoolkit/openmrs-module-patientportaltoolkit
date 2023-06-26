@@ -12,7 +12,6 @@ package org.openmrs.module.patientportaltoolkit.fragment.controller;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.*;
-import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.SecurityLayer;
@@ -33,32 +32,44 @@ import java.util.*;
 public class MyCancerBuddiesProfileThumbnailsFragmentController {
     protected final Log log = LogFactory.getLog(getClass());
 
-    public void controller(FragmentModel model, PageRequest pageRequest, @FragmentParam(value="person") Person person ) {
+    public void controller(FragmentModel model, PageRequest pageRequest,
+            @FragmentParam(value = "person") Person person) {
         log.info(PPTLogAppender.appendLog("REQUEST_MYCANCERBUDDIESTHUMBNAILS_FRAGMENT", pageRequest.getRequest()));
 
-        model.addAttribute("mycancerbuddiespreferences",Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person));
-        model.addAttribute("mycancerbuddiespeople",Context.getService(PersonPreferencesService.class).getAllEnrolledPersonPreferences());
-        model.addAttribute("securityLayers",Context.getService(SecurityLayerService.class).getAllSecurityLayers());
+        model.addAttribute("mycancerbuddiespreferences",
+                Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person));
+        model.addAttribute("mycancerbuddiespeople",
+                Context.getService(PersonPreferencesService.class).getAllEnrolledPersonPreferences());
+        model.addAttribute("securityLayers", Context.getService(SecurityLayerService.class).getAllSecurityLayers());
         model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());
     }
 
-    public void addRelationshipforFellowPatients(FragmentModel model, @RequestParam(value = "relationshipPersonId", required = true) String relationshipPersonId, @RequestParam(value = "relationshipNote", required = false) String relationshipNote, HttpServletRequest servletRequest) {
+    public void addRelationshipforFellowPatients(FragmentModel model,
+            @RequestParam(value = "relationshipPersonId", required = true) String relationshipPersonId,
+            @RequestParam(value = "relationshipNote", required = false) String relationshipNote,
+            HttpServletRequest servletRequest) {
         log.info(PPTLogAppender.appendLog("ADD_FellowPatientRelation", servletRequest));
 
         User user = Context.getAuthenticatedUser();
-        //check if person already exists in the system
+        // check if person already exists in the system
         Person relatedPerson = Context.getPersonService().getPersonByUuid(relationshipPersonId);
-        PatientPortalRelation ppr=new PatientPortalRelation(user.getPerson(),relatedPerson);
-        ppr.setRelationType(Context.getPersonService().getRelationshipType(10)); //for fellow patients
-        ppr.setShareTypeA(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid("c21b5749-5972-425b-a8dc-15dc8f899a96"));
-        ppr.setShareTypeB(Context.getService(SecurityLayerService.class).getSecurityLayerByUuid("c21b5749-5972-425b-a8dc-15dc8f899a96")); //share posts by default
+        PatientPortalRelation ppr = new PatientPortalRelation(user.getPerson(), relatedPerson);
+        ppr.setRelationType(Context.getPersonService().getRelationshipType(10)); // for fellow patients
+        ppr.setShareTypeA(
+                Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(SecurityLayer.CAN_SEE_POSTS));
+        // share posts by default
+        ppr.setShareTypeB(
+                Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(SecurityLayer.CAN_SEE_POSTS));
+
         ppr.setShareStatus(0);
         Calendar date = Calendar.getInstance();
         date.setTime(new Date());
         date.add(Calendar.YEAR, 20);
         ppr.setExpireDate(date.getTime());
-        if(relationshipNote!=null)
+
+        if (relationshipNote != null) {
             ppr.setAddConnectionNote(relationshipNote);
+        }
         PatientPortalRelationService pprService = Context.getService(PatientPortalRelationService.class);
         pprService.savePatientPortalRelation(ppr);
     }

@@ -15,9 +15,6 @@ import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalPersonAttributes;
-import org.openmrs.module.patientportaltoolkit.PatientPortalToolkitConstants;
-import org.openmrs.module.patientportaltoolkit.Surgery;
-import org.openmrs.module.patientportaltoolkit.api.PatientPortalFormService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalPersonAttributesService;
 import org.openmrs.module.patientportaltoolkit.api.util.GenerateTreatmentClassesUtil;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
@@ -29,9 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -49,11 +44,7 @@ public class TreatmentsFragmentController {
         if (person.getIsPatient()) {
             Date firstSurgeryDate = null;
             patient = Context.getPatientService().getPatientByUuid(person.getUuid());
-            PatientPortalFormService patientPortalFormService = Context.getService(PatientPortalFormService.class);
-            // PatientPortalPersonAttributes pptpersonAttributes =
-            // Context.getService(PatientPortalPersonAttributesService.class).getPatientPortalPersonAttributesByPatient(patient);
-            // List<Surgery> surgeryEncounters = new ArrayList<>();
-            // surgeryEncounters = GenerateTreatmentClassesUtil.generateSurgeries(patient);
+
             model.addAttribute("patientUUID", patient.getUuid());
             model.addAttribute("genhistory", GenerateTreatmentClassesUtil.generateLatestGeneralHistory(patient));
             model.addAttribute("treatmentsummary", GenerateTreatmentClassesUtil.generateGeneralHistory(patient));
@@ -75,13 +66,6 @@ public class TreatmentsFragmentController {
             model.addAttribute("surgeryencounters", null);
             model.addAttribute("chemotherapyencounters", null);
         }
-        // log.info("Treatments requested for -" +
-        // Context.getAuthenticatedUser().getPersonName() + "(id=" +
-        // Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" +
-        // Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by -
-        // " + Context.getAuthenticatedUser().getPersonName() + "(id=" +
-        // Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" +
-        // Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 
     public void saveReminderTriggerDate(@RequestParam(value = "reminderTriggerDate") String reminderTriggerDate,
@@ -91,7 +75,7 @@ public class TreatmentsFragmentController {
                 reminderTriggerDate));
         Person person = Context.getAuthenticatedUser().getPerson();
         Patient patient = null;
-        if (person.isPatient()) {
+        if (person.getIsPatient()) {
             patient = Context.getPatientService().getPatientByUuid(person.getUuid());
             PatientPortalPersonAttributes patientPortalPersonAttributes = Context
                     .getService(PatientPortalPersonAttributesService.class)
@@ -113,7 +97,7 @@ public class TreatmentsFragmentController {
             HttpServletRequest servletRequest) throws ParseException {
 
         log.info(PPTLogAppender.appendLog("Delete_treatment", servletRequest, "Treatment Id:", treatmentId));
-        Person person = Context.getAuthenticatedUser().getPerson();
+
         Context.getEncounterService().voidEncounter(Context.getEncounterService().getEncounterByUuid(treatmentId),
                 "Deleted By" + Context.getAuthenticatedUser());
     }

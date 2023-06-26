@@ -14,7 +14,11 @@ import org.openmrs.BaseOpenmrsObject;
 /**
  * Created by maurya on 3/21/16.
  */
-public class SecurityLayer extends BaseOpenmrsObject{
+public class SecurityLayer extends BaseOpenmrsObject {
+
+    public static final String CAN_SEE_POSTS = "c21b5749-5972-425b-a8dc-15dc8f899a96";
+    public static final String CAN_SEE_MEDICAL_PROFILE = "18e440a6-518b-4dbd-8057-dd0f88ee6d15";
+
     private Integer id;
     private String name;
 
@@ -36,7 +40,6 @@ public class SecurityLayer extends BaseOpenmrsObject{
 
     private String description;
 
-
     @Override
     public Integer getId() {
         return this.id;
@@ -44,9 +47,7 @@ public class SecurityLayer extends BaseOpenmrsObject{
 
     @Override
     public void setId(Integer id) {
-        this.id=id;
+        this.id = id;
     }
-
-
 
 }

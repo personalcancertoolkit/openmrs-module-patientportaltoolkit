@@ -30,55 +30,52 @@ import java.util.List;
 @Controller
 public class PatientPortalEncounterController {
 
-    private final static String  RADIATION_ENCOUNTER = "CANCER TREATMENT - RADIATION";
-    private final static String  CHEMOTHERAPY_ENCOUNTER = "CANCER TREATMENT - CHEMOTHERAPY";
-    private final static String  SURGERY_ENCOUNTER = "CANCER TREATMENT - SURGERY";
-    private final static String  TREATMENTSUMMARY_ENCOUNTER = "CANCER TREATMENT SUMMARY";
+    private final static String RADIATION_ENCOUNTER = "CANCER TREATMENT - RADIATION";
+    private final static String CHEMOTHERAPY_ENCOUNTER = "CANCER TREATMENT - CHEMOTHERAPY";
+    private final static String SURGERY_ENCOUNTER = "CANCER TREATMENT - SURGERY";
+    // private final static String TREATMENTSUMMARY_ENCOUNTER = "CANCER TREATMENT
+    // SUMMARY";
     protected final Log log = LogFactory.getLog(getClass());
-    @RequestMapping( value = "/patientportaltoolkit/getallencountertypes")
+
+    @RequestMapping(value = "/patientportaltoolkit/getallencountertypes")
     @ResponseBody
-    public Object getPatientPortalEncounterTypes()
-    {
+    public Object getPatientPortalEncounterTypes() {
         return ToolkitResourceUtil.generateEncounterTypes(Context.getEncounterService().getAllEncounterTypes());
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/getallencountersforpatient/{patientId}")
+    @RequestMapping(value = "/patientportaltoolkit/getallencountersforpatient/{patientId}")
     @ResponseBody
-    public Object getPatientPortalEncountersforPatient( @PathVariable( "patientId" ) String patientId)
-    {
-        Patient patient=Context.getPatientService().getPatientByUuid(patientId);
+    public Object getPatientPortalEncountersforPatient(@PathVariable("patientId") String patientId) {
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
         return ToolkitResourceUtil.generateEncounters(Context.getEncounterService().getEncountersByPatient(patient));
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/getchemotherapyencountersforpatient/{patientId}")
+    @RequestMapping(value = "/patientportaltoolkit/getchemotherapyencountersforpatient/{patientId}")
     @ResponseBody
-    public Object getPatientPortalChemotherapyEncountersforPatient( @PathVariable( "patientId" ) String patientId)
-    {
-        Patient patient=Context.getPatientService().getPatientByUuid(patientId);
+    public Object getPatientPortalChemotherapyEncountersforPatient(@PathVariable("patientId") String patientId) {
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
         return ToolkitResourceUtil.generateEncounters(getEncountersByTreatment(patient, CHEMOTHERAPY_ENCOUNTER));
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/getradiationencountersforpatient/{patientId}")
+    @RequestMapping(value = "/patientportaltoolkit/getradiationencountersforpatient/{patientId}")
     @ResponseBody
-    public Object getPatientPortalRadiationEncountersforPatient( @PathVariable( "patientId" ) String patientId)
-    {
-        Patient patient=Context.getPatientService().getPatientByUuid(patientId);
+    public Object getPatientPortalRadiationEncountersforPatient(@PathVariable("patientId") String patientId) {
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
         return ToolkitResourceUtil.generateEncounters(getEncountersByTreatment(patient, RADIATION_ENCOUNTER));
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/getsurgeryencountersforpatient/{patientId}")
+    @RequestMapping(value = "/patientportaltoolkit/getsurgeryencountersforpatient/{patientId}")
     @ResponseBody
-    public Object getPatientPortalSurgeryEncountersforPatient( @PathVariable( "patientId" ) String patientId)
-    {
-        Patient patient=Context.getPatientService().getPatientByUuid(patientId);
+    public Object getPatientPortalSurgeryEncountersforPatient(@PathVariable("patientId") String patientId) {
+        Patient patient = Context.getPatientService().getPatientByUuid(patientId);
         return ToolkitResourceUtil.generateEncounters(getEncountersByTreatment(patient, SURGERY_ENCOUNTER));
     }
 
-    public List<Encounter> getEncountersByTreatment(Patient patient,String treatmentType) {
+    public List<Encounter> getEncountersByTreatment(Patient patient, String treatmentType) {
         List<Encounter> encounters = Context.getEncounterService().getEncountersByPatient(patient);
         List<Encounter> treatmentEncounters = new ArrayList<Encounter>();
         for (Encounter encounter : encounters) {
-            if (!encounter.isVoided() && treatmentType.equals(encounter.getEncounterType().getName())) {
+            if (!encounter.getVoided() && treatmentType.equals(encounter.getEncounterType().getName())) {
                 treatmentEncounters.add(encounter);
             }
         }

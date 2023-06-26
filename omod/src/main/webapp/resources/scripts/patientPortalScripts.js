@@ -8,6 +8,11 @@ jq = jQuery;
 //////////////
 jq(document).ready(function() {
 
+    const SecurityLayer = {
+        CAN_SEE_POSTS: 'c21b5749-5972-425b-a8dc-15dc8f899a96',
+        CAN_SEE_MEDICAL_PROFILE: '18e440a6-518b-4dbd-8057-dd0f88ee6d15'
+    };
+
     // setting defaults for the editable
     jq.fn.editable.defaults.mode = 'inline';
     jq.fn.editable.defaults.showbuttons = true;
@@ -342,13 +347,13 @@ jq(document).ready(function() {
                 url: OpenMRSInstance.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/hasaccess",
                 data: {
                     relationshipId: relationshipID,
-                    shareType: "18e440a6-518b-4dbd-8057-dd0f88ee6d15"
+                    shareType: SecurityLayer.CAN_SEE_MEDICAL_PROFILE
                 },
                 success: function setChecked(response) {
                     if (response) {
-                        jq("#editShareType" + "18e440a6-518b-4dbd-8057-dd0f88ee6d15").prop('checked', true);
+                        jq("#editShareType" + SecurityLayer.CAN_SEE_MEDICAL_PROFILE).prop('checked', true);
                     } else {
-                        jq("#editShareType" + "18e440a6-518b-4dbd-8057-dd0f88ee6d15").prop('checked', false);
+                        jq("#editShareType" + SecurityLayer.CAN_SEE_MEDICAL_PROFILE).prop('checked', false);
                     }
                 },
                 error: function(e) {
@@ -360,13 +365,13 @@ jq(document).ready(function() {
                 url: OpenMRSInstance.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/hasaccess",
                 data: {
                     relationshipId: relationshipID,
-                    shareType: "c21b5749-5972-425b-a8dc-15dc8f899a96"
+                    shareType: SecurityLayer.CAN_SEE_POSTS
                 },
                 success: function setChecked(response) {
                     if (response) {
-                        jq("#editShareType" + "c21b5749-5972-425b-a8dc-15dc8f899a96").prop('checked', true);
+                        jq("#editShareType" + SecurityLayer.CAN_SEE_POSTS).prop('checked', true);
                     } else {
-                        jq("#editShareType" + "c21b5749-5972-425b-a8dc-15dc8f899a96").prop('checked', false);
+                        jq("#editShareType" + SecurityLayer.CAN_SEE_POSTS).prop('checked', false);
                     }
                 },
                 error: function(e) {
@@ -524,35 +529,34 @@ jq(document).ready(function() {
                     disabled: data[k]["relationType"]["aIsToB"] === "Doctor"
                 };
                 listOfRelationsData.push(relationitem);
-                //console.log(relationitem);
             });
         })).then(function() {
-        //console.log(listOfRelationsData);
-        jq("#sendingto").autocomplete({
+        const sendingToAutocomplete = jq("#sendingto").autocomplete({
             source: listOfRelationsData,
             minLength: 3,
             select: function(event, ui) {
-                //alert(ui.item.toString());
                 event.preventDefault();
 
                 jq("#sendingto").val(ui.item.value);
                 jq("#sendingPersonUUID").val(ui.item.id);
             },
-        }).data("ui-autocomplete")._renderItem = function(ul, item) {
-
-            let value = item.value;
-            let listItem;
-            if (item.disabled) {
-              listItem = jq('<li class="ui-state-disabled" title="Sorry, doctors cannot be directly messaged"><div>' + value + '</div></li>')
-                .appendTo(ul);
-            } else {
-              listItem = jq("<li>")
-                .append('<a>' + value + '</a>')
-                .appendTo(ul);
-            }
-            return listItem;
-        
-          };
+        });
+        if (sendingToAutocomplete.length) {
+            sendingToAutocomplete.data("ui-autocomplete")._renderItem = function(ul, item) {
+                
+                let value = item.value;
+                let listItem;
+                if (item.disabled) {
+                    listItem = jq('<li class="ui-state-disabled" title="Sorry, doctors cannot be directly messaged"><div>' + value + '</div></li>')
+                    .appendTo(ul);
+                } else {
+                    listItem = jq("<li>")
+                    .append('<a>' + value + '</a>')
+                    .appendTo(ul);
+                }
+                return listItem;                
+            };
+        }
     });
 
     jq('#sendNewMessageButton').click(
@@ -618,8 +622,8 @@ function logEvent(event, data) {
         success: function(response) {
             console.log(response);
         },
-        error: function(e) {
-            console.log('Error: ' + e);
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error({textStatus, errorThrown});
         }
     });
 }

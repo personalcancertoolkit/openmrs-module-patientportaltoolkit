@@ -21,7 +21,9 @@ import java.util.Set;
  */
 public class Message extends BaseOpenmrsObject {
 
-    private Message(){}
+    @SuppressWarnings("unused")
+    private Message() {
+    }
 
     private Integer entryId;
     private Integer parentEntryId;
@@ -36,12 +38,12 @@ public class Message extends BaseOpenmrsObject {
 
     private Set<Message> children = new HashSet<Message>(0);
 
-    public Message(String title, String content,Person sender,Person receiver) {
+    public Message(String title, String content, Person sender, Person receiver) {
         this.title = title;
         this.content = content;
         this.dateCreated = new Date();
-        this.sender=sender;
-        this.receiver=receiver;
+        this.sender = sender;
+        this.receiver = receiver;
     }
 
     /**
@@ -128,7 +130,6 @@ public class Message extends BaseOpenmrsObject {
         return receiver;
     }
 
-
     /**
      * @param dateCreated the dateCreated to set
      */
@@ -171,14 +172,13 @@ public class Message extends BaseOpenmrsObject {
         return dateDeleted;
     }
 
-
     /**
-     * @return id of parent entry (null: original entry; not null: comment to an original/parent entry)
+     * @return id of parent entry (null: original entry; not null: comment to an
+     *         original/parent entry)
      */
     public Integer getParentEntryId() {
         return parentEntryId;
     }
-
 
     /**
      * @param parentEntryId id of parent entry
@@ -188,12 +188,12 @@ public class Message extends BaseOpenmrsObject {
     }
 
     /**
-     * @return children of parent entry (null: original entry; not null: comment to an original/parent entry)
+     * @return children of parent entry (null: original entry; not null: comment to
+     *         an original/parent entry)
      */
     public Set<Message> getChildren() {
         return children;
     }
-
 
     /**
      * @param children id of parent entry

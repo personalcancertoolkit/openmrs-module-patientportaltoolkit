@@ -82,9 +82,6 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
         Concept type = getCancerType(pat);
         // find cancer stage
         Concept cancerStageConcept = Context.getConceptService().getConcept(CANCER_STAGE);
-        Obs cancerStage = findLatest(
-                Context.getObsService().getObservationsByPersonAndConcept(pat, cancerStageConcept));
-        Concept stage = cancerStage == null ? null : cancerStage.getValueCoded();
 
         // find follow-up years guidelines
         List<Guideline> allguidelines = dao.getAllGuidelines();
@@ -94,9 +91,9 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
         conditionConcepts.add(cancerStageConcept);
         List<Guideline> guidelines = new ArrayList<>();
         for (Guideline guidlineIterator : allguidelines) {
-            if (guidlineIterator.getConditionsSet().equals(conditionConcepts))
+            if (guidlineIterator.getConditionsSet().equals(conditionConcepts)) {
                 guidelines.add(guidlineIterator);
-            // System.out.print(guidlineIterator.getFollowupProcedure().getConceptId());
+            }
         }
         return guidelines;
     }
@@ -133,7 +130,7 @@ public class GuidelineServiceImpl extends BaseOpenmrsService implements Guidelin
 
         if (observations != null) {
             for (Obs obs : observations) {
-                if (obs != null && !obs.isVoided()) {
+                if (obs != null && !obs.getVoided()) {
                     if (latest == null) {
                         latest = obs;
                     } else {

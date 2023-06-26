@@ -37,20 +37,22 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
 
     private Date expireDate;
 
-   private SecurityLayer shareTypeA;
+    private SecurityLayer shareTypeA;
 
-     private SecurityLayer shareTypeB;
+    private SecurityLayer shareTypeB;
 
     // 0 - not yet accepted, 1 - accepted , 2 - Rejected, -1 - retired
     private int shareStatus;
 
     private String addConnectionNote;
 
-    private static final String STATUS_ACCEPTED="Yes";
-    private static final String STATUS_EXPIRED="Expired";
-    private static final String STATUS_NOT_ACCEPTED_YET="Not yet";
+    private static final String STATUS_ACCEPTED = "Yes";
+    private static final String STATUS_EXPIRED = "Expired";
+    private static final String STATUS_NOT_ACCEPTED_YET = "Not yet";
 
-    private PatientPortalRelation(){}
+    @SuppressWarnings("unused")
+    private PatientPortalRelation() {
+    }
 
     public PatientPortalRelation(Person person, Person relatedPerson) {
         super();
@@ -58,12 +60,6 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
         this.relatedPerson = relatedPerson;
         this.startDate = new Date();
     }
-
-   /* public PatientPortalRelation(Person person, Person relatedPersonperson, SecurityLayer shareTypeA, SecurityLayer shareTypeB) {
-        this(person,relatedPersonperson);
-        this.shareTypeA=shareTypeA;
-        this.shareTypeB=shareTypeB;
-    }*/
 
     @Override
     public int compareTo(PatientPortalRelation patientPortalRelation) {
@@ -99,7 +95,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
     }
 
     /**
-     * Get  a related Person
+     * Get a related Person
      *
      * @return a related Person
      */
@@ -220,7 +216,7 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      *
      * @param shareTypeB a sharing type
      */
-   public void setShareTypeB(final SecurityLayer shareTypeB) {
+    public void setShareTypeB(final SecurityLayer shareTypeB) {
         this.shareTypeB = shareTypeB;
     }
 
@@ -248,9 +244,9 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
      * @return status description
      */
     public String getStatus() {
-        if(activateDate != null) {
+        if (activateDate != null) {
             return STATUS_ACCEPTED;
-        } else if(expireDate.before(new Date())) {
+        } else if (expireDate.before(new Date())) {
             return STATUS_EXPIRED;
         } else {
             return STATUS_NOT_ACCEPTED_YET;

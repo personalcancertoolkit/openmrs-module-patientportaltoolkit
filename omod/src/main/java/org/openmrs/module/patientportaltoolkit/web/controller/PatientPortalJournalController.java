@@ -28,35 +28,38 @@ public class PatientPortalJournalController {
 
     protected final Log log = LogFactory.getLog(getClass());
 
-    @RequestMapping( value = "/patientportaltoolkit/getjournalsforpatient/{patientId}")
+    @RequestMapping(value = "/patientportaltoolkit/getjournalsforpatient/{patientId}")
     @ResponseBody
-    public Object getPatientPortalJournalsForPatient( @PathVariable( "patientId" ) String patientId)
-            throws Exception
-    {
-        Person person=Context.getPersonService().getPersonByUuid(patientId);
-        List<Object> entries = (List<Object>) ToolkitResourceUtil.generateJournals(Context.getService(JournalEntryService.class).getJournalEntryForPerson(Context.getUserService().getUsersByPerson(person,false).get(0), true));
+    public Object getPatientPortalJournalsForPatient(@PathVariable("patientId") String patientId)
+            throws Exception {
+        Person person = Context.getPersonService().getPersonByUuid(patientId);
+
+        @SuppressWarnings("unchecked")
+        List<Object> entries = (List<Object>) ToolkitResourceUtil
+                .generateJournals(Context.getService(JournalEntryService.class).getJournalEntryForPerson(
+                        Context.getUserService().getUsersByPerson(person, false).get(0), true));
         return entries;
 
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/getalljournals")
+    @RequestMapping(value = "/patientportaltoolkit/getalljournals")
     @ResponseBody
     public Object getAllPatientPortalJournals()
-            throws Exception
-    {
+            throws Exception {
 
-        List<Object> entries = (List<Object>) ToolkitResourceUtil.generateJournals(Context.getService(JournalEntryService.class).getAllJournalEntries());
+        @SuppressWarnings("unchecked")
+        List<Object> entries = (List<Object>) ToolkitResourceUtil
+                .generateJournals(Context.getService(JournalEntryService.class).getAllJournalEntries());
         return entries;
 
     }
 
-    @RequestMapping( value = "/patientportaltoolkit/createjournal", method = RequestMethod.POST)
+    @RequestMapping(value = "/patientportaltoolkit/createjournal", method = RequestMethod.POST)
     @ResponseBody
-    public void createPatientPortalJournals( @RequestBody String journalObject)
-            throws Exception
-    {
+    public void createPatientPortalJournals(@RequestBody String journalObject)
+            throws Exception {
         JournalEntryService journalEntryService = Context.getService(JournalEntryService.class);
-        JournalEntry journalEntry=ToolkitResourceUtil.transformJournal(journalObject);
+        JournalEntry journalEntry = ToolkitResourceUtil.transformJournal(journalObject);
         journalEntry.setCreator(Context.getAuthenticatedUser());
         journalEntryService.saveJournalEntry(journalEntry);
     }

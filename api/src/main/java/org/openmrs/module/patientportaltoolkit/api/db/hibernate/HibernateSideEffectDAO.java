@@ -31,7 +31,6 @@ public class HibernateSideEffectDAO implements SideEffectDAO {
         this.sessionFactory = sessionFactory;
     }
 
-
     @Override
     public void deleteSideEffect(SideEffect sideEffect) {
 
@@ -40,7 +39,10 @@ public class HibernateSideEffectDAO implements SideEffectDAO {
     @Override
     public List<SideEffect> getAllSideEffects() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(SideEffect.class);
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<SideEffect> list = c.list();
+        return list;
     }
 
     @Override

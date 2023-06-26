@@ -52,7 +52,7 @@ public class ToolkitResourceUtil {
         for (PersonAddress pa : person.getAddresses()) {
             if (personAddress.isBlank())
                 personAddress = pa;
-            else if (pa.isPreferred())
+            else if (pa.getPreferred())
                 personAddress = pa;
         }
         Map<String, Object> personAddressObject = new HashMap<String, Object>();
@@ -152,6 +152,7 @@ public class ToolkitResourceUtil {
 
         }
         if (map.get("Address") != null) {
+            @SuppressWarnings("unchecked")
             Map<String, Object> addressMap = (Map<String, Object>) map.get("Address");
             PersonAddress personAddress = new PersonAddress();
             personAddress.setAddress1(addressMap.get("Address1").toString());
@@ -160,6 +161,7 @@ public class ToolkitResourceUtil {
             personAddress.setStateProvince(addressMap.get("State/Province").toString());
             personAddress.setCountry(addressMap.get("Country").toString());
             personAddress.setPostalCode(addressMap.get("PostalCode").toString());
+
             boolean addressExists = false;
             Set<PersonAddress> personAddresses = person.getAddresses();
 
@@ -243,6 +245,7 @@ public class ToolkitResourceUtil {
 
         }
         if (map.get("Address") != null) {
+            @SuppressWarnings("unchecked")
             Map<String, Object> addressMap = (Map<String, Object>) map.get("Address");
             PersonAddress personAddress = new PersonAddress();
             personAddress.setAddress1(addressMap.get("Address1").toString());
@@ -251,6 +254,7 @@ public class ToolkitResourceUtil {
             personAddress.setStateProvince(addressMap.get("State/Province").toString());
             personAddress.setCountry(addressMap.get("Country").toString());
             personAddress.setPostalCode(addressMap.get("PostalCode").toString());
+
             boolean addressExists = false;
             Set<PersonAddress> personAddresses = patient.getAddresses();
 
@@ -333,6 +337,8 @@ public class ToolkitResourceUtil {
         Map<String, Object> relatedPersonMap = generatePerson(patientPortalRelation.getRelatedPerson());
         Map<String, Object> creatorPersonMap = generatePerson(patientPortalRelation.getCreator().getPerson());
         Map<String, Object> patientPersonMap = generatePerson(patientPortalRelation.getPerson());
+
+        @SuppressWarnings("unchecked")
         Map<String, Object> relationshipTypeMap = (Map<String, Object>) generateRelationType(
                 patientPortalRelation.getRelationType());
 
@@ -447,7 +453,7 @@ public class ToolkitResourceUtil {
     public static Object generateConcept(Concept concept) {
 
         Map<String, Object> conceptMap = generateBasicConcept(concept);
-        if (concept.isSet()) {
+        if (concept.getSet()) {
             List<Object> conceptSetsMap = new ArrayList<Object>();
             for (Concept conceptSet : concept.getSetMembers()) {
                 conceptSetsMap.add(generateBasicConcept(conceptSet));

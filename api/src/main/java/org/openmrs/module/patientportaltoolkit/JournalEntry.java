@@ -18,9 +18,11 @@ import java.util.Set;
 /**
  * Created by Maurya on 25/05/2015.
  */
-public class JournalEntry extends BaseOpenmrsData implements OpenmrsData {
+public class JournalEntry extends BaseOpenmrsData {
 
-    private JournalEntry(){}
+    @SuppressWarnings("unused")
+    private JournalEntry() {
+    }
 
     private Integer entryId;
     private Integer parentEntryId;
@@ -153,14 +155,13 @@ public class JournalEntry extends BaseOpenmrsData implements OpenmrsData {
         return dateDeleted;
     }
 
-
     /**
-     * @return id of parent entry (null: original entry; not null: comment to an original/parent entry)
+     * @return id of parent entry (null: original entry; not null: comment to an
+     *         original/parent entry)
      */
     public Integer getParentEntryId() {
         return parentEntryId;
     }
-
 
     /**
      * @param parentEntryId id of parent entry
@@ -170,12 +171,12 @@ public class JournalEntry extends BaseOpenmrsData implements OpenmrsData {
     }
 
     /**
-     * @return children of parent entry (null: original entry; not null: comment to an original/parent entry)
+     * @return children of parent entry (null: original entry; not null: comment to
+     *         an original/parent entry)
      */
     public Set<JournalEntry> getChildren() {
         return children;
     }
-
 
     /**
      * @param children id of parent entry

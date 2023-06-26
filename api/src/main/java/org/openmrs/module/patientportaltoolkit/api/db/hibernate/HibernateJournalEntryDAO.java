@@ -37,87 +37,82 @@ public class HibernateJournalEntryDAO implements JournalEntryDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    /**
-     *
-     */
     public List<JournalEntry> getAllJournalEntries() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(JournalEntry.class);
-        return c.list();
+        @SuppressWarnings("unchecked")
+        List<JournalEntry> list = c.list();
+        return list;
     }
 
-    /**
-     *
-     */
     public JournalEntry getJournalEntry(String uuid) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(JournalEntry.class);
         c.add(Restrictions.eq("uuid", uuid));
         return (JournalEntry) c.uniqueResult();
     }
 
-    /**
-     *
-     */
     public void saveJournalEntry(JournalEntry entry) {
         sessionFactory.getCurrentSession().saveOrUpdate(entry);
     }
 
-    /**
-     *
-     */
     public void deleteJournalEntry(JournalEntry entry) {
         sessionFactory.getCurrentSession().delete(entry);
     }
 
-    /**
-     *
-     */
     public List<JournalEntry> getJournalEntryForPerson(User user, Boolean orderByDateDesc) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(JournalEntry.class);
-        if(orderByDateDesc != null){
-            if(orderByDateDesc){
+        if (orderByDateDesc != null) {
+            if (orderByDateDesc) {
                 c.addOrder(Order.desc("dateCreated"));
-            }else{
+            } else {
                 c.addOrder(Order.asc("dateCreated"));
             }
         }
-        c.add(Restrictions.eq("creator",user));
+        c.add(Restrictions.eq("creator", user));
         c.add(Restrictions.eq("deleted", false));
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<JournalEntry> list = c.list();
+        return list;
     }
 
     public List<JournalEntry> findEntries(String searchText, Person p, Boolean orderByDateDesc) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(JournalEntry.class);
-        if(searchText != null && !searchText.trim().equals("")){
+        if (searchText != null && !searchText.trim().equals("")) {
             c.add(Restrictions.or(Restrictions.like("title", searchText, MatchMode.ANYWHERE),
-                    Restrictions.like("content", searchText,MatchMode.ANYWHERE)));
-
+                    Restrictions.like("content", searchText, MatchMode.ANYWHERE)));
         }
-        if(p != null){
-            c.add(Restrictions.eq("creator",p));
+        if (p != null) {
+            c.add(Restrictions.eq("creator", p));
         }
-        if(orderByDateDesc != null){
-            if(orderByDateDesc){
+        if (orderByDateDesc != null) {
+            if (orderByDateDesc) {
                 c.addOrder(Order.desc("dateCreated"));
-            }else{
+            } else {
                 c.addOrder(Order.asc("dateCreated"));
             }
         }
         c.add(Restrictions.eq("deleted", false));
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<JournalEntry> list = c.list();
+        return list;
     }
 
     public List<JournalEntry> findComments(JournalEntry entry) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(JournalEntry.class);
         c.add(Restrictions.eq("deleted", false));
         c.add(Restrictions.eq("parentEntryId", entry.getEntryId()));
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<JournalEntry> list = c.list();
+        return list;
     }
 
     public void softDelete(JournalEntry entry) {
-        if(entry.getParentEntryId()==null) {
+        if (entry.getParentEntryId() == null) {
             List<JournalEntry> comments = findComments(entry);
-            if(comments != null) {
-                for(JournalEntry comment : comments) {
+            if (comments != null) {
+                for (JournalEntry comment : comments) {
                     softDelete(comment);
                 }
             }

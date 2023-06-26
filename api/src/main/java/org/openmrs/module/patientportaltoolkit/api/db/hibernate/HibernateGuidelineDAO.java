@@ -33,7 +33,6 @@ public class HibernateGuidelineDAO implements GuidelineDAO {
         this.sessionFactory = sessionFactory;
     }
 
-
     @Override
     public void deleteGuideline(Guideline guideline) {
 
@@ -42,22 +41,30 @@ public class HibernateGuidelineDAO implements GuidelineDAO {
     @Override
     public List<Guideline> getAllGuidelines() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(Guideline.class);
-        return c.list();
+
+        @SuppressWarnings("unchecked")
+        List<Guideline> list = c.list();
+        return list;
     }
 
     @Override
     public void saveGuideline(Guideline guideline) {
 
     }
+
     @Override
-    public  List<Guideline> getGuidelinesbyConditions(List<Concept> conditions) {
+    public List<Guideline> getGuidelinesbyConditions(List<Concept> conditions) {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(Guideline.class);
-        return c.list();
+        @SuppressWarnings("unchecked")
+        List<Guideline> list = c.list();
+        return list;
     }
 
     @Override
     public List<GuidelineConditionSet> getAllGuidelineConditionSet() {
         Criteria c = sessionFactory.getCurrentSession().createCriteria(GuidelineConditionSet.class);
-        return c.list();
+        @SuppressWarnings("unchecked")
+        List<GuidelineConditionSet> list = c.list();
+        return list;
     }
 }

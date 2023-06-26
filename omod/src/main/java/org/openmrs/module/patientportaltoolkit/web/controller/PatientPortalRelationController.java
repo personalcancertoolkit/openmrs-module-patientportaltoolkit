@@ -40,6 +40,8 @@ public class PatientPortalRelationController {
     public Object getPatientPortalRelationsForPatient(@PathVariable("patientId") String patientId)
             throws Exception {
         Patient patient = Context.getPatientService().getPatientByUuid(patientId);
+
+        @SuppressWarnings("unchecked")
         List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(
                 Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPatient(patient));
         return relations;
@@ -49,6 +51,8 @@ public class PatientPortalRelationController {
     @ResponseBody
     public Object getAllPatientPortalRelations()
             throws Exception {
+
+        @SuppressWarnings("unchecked")
         List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(
                 Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations());
         return relations;
@@ -58,6 +62,8 @@ public class PatientPortalRelationController {
     @ResponseBody
     public Object getPatientPortalRelationsForSearchText(@PathVariable("searchText") String searchText)
             throws Exception {
+
+        @SuppressWarnings("unchecked")
         List<Object> relations = (List<Object>) ToolkitResourceUtil.generateRelations(
                 Context.getService(PatientPortalRelationService.class).getAllPatientPortalRelations());
         return relations;

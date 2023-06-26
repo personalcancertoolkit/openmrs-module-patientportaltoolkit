@@ -35,7 +35,8 @@ public class SideEffectServiceImpl extends BaseOpenmrsService implements SideEff
     private final static String CHEMOTHERAPY_MEDS_MITOMYCIN = "cd7db341-0e36-4669-bd1f-dc9c1a797ef2";
     private final static String CANCER_TYPE = "cdf6d767-2aa3-40b6-ae78-0386eebe2411";
 
-    private final static String CANCER_TREATMENT_SUMMARY_ENCOUNTER = "CANCER TREATMENT SUMMARY";
+    // private final static String CANCER_TREATMENT_SUMMARY_ENCOUNTER = "CANCER
+    // TREATMENT SUMMARY";
     private final static String RADIATION_ENCOUNTER = "CANCER TREATMENT - RADIATION";
     private final static String CHEMOTHERAPY_ENCOUNTER = "CANCER TREATMENT - CHEMOTHERAPY";
     private final static String SURGERY_ENCOUNTER = "CANCER TREATMENT - SURGERY";
@@ -137,7 +138,7 @@ public class SideEffectServiceImpl extends BaseOpenmrsService implements SideEff
         Date encDate = null;
         Encounter latestEncounter = null;
         for (Encounter encounter : encounters) {
-            if (!encounter.isVoided() && encounterType.equals(encounter.getEncounterType().getName())) {
+            if (!encounter.getVoided() && encounterType.equals(encounter.getEncounterType().getName())) {
                 if ((encId == null ||
                         (encDate != null && encounter.getEncounterDatetime() != null
                                 && encounter.getEncounterDatetime().after(encDate)))) {
@@ -167,7 +168,7 @@ public class SideEffectServiceImpl extends BaseOpenmrsService implements SideEff
 
         if (observations != null) {
             for (Obs obs : observations) {
-                if (obs != null && !obs.isVoided()) {
+                if (obs != null && !obs.getVoided()) {
                     if (latest == null) {
                         latest = obs;
                     } else {

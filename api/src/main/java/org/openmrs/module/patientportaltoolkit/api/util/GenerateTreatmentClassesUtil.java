@@ -200,7 +200,7 @@ public class GenerateTreatmentClassesUtil {
         List<Encounter> encounters = Context.getEncounterService().getEncountersByPatient(patient);
         List<Encounter> treatmentEncounters = new ArrayList<Encounter>();
         for (Encounter encounter : encounters) {
-            if (!encounter.isVoided() && treatmentType.equals(encounter.getEncounterType().getName())) {
+            if (!encounter.getVoided() && treatmentType.equals(encounter.getEncounterType().getName())) {
                 treatmentEncounters.add(encounter);
             }
         }

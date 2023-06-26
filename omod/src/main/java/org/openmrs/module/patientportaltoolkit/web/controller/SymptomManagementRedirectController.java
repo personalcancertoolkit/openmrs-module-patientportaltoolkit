@@ -35,11 +35,13 @@ public class SymptomManagementRedirectController {
         User user = Context.getAuthenticatedUser();
 
         // get the url, username and password
-        String url = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_URL);
-        String username = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_USERNAME);
-        String password = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_PASSWORD);
+        String url = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_URL);
+        String username = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_USERNAME);
+        String password = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_PASSWORD);
 
-        // TODO send a real response with a helpful UI message
         if (url == null || username == null || password == null) {
             throw new APIException("URL, username or password not configured yet.");
         }
@@ -50,21 +52,19 @@ public class SymptomManagementRedirectController {
         url += "&omrs_user=" + user.getUsername();
 
         return url;
-       /* try {
-            response.sendRedirect(url);
-        } catch (IOException e) {
-            throw new APIException("cannot redirect.", e);
-        }*/
     }
 
+    @SuppressWarnings("unused")
     private String respondUsingPOST(HttpServletRequest request, HttpServletResponse response, User user) {
 
         // get the url, username and password
-        String url = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_URL);
-        String username = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_USERNAME);
-        String password = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_PASSWORD);
+        String url = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_URL);
+        String username = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_USERNAME);
+        String password = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_PASSWORD);
 
-        // TODO send a real response with a helpful UI message
         if (url == null || username == null || password == null) {
             throw new APIException("URL, username or password not configured yet.");
         }
@@ -73,27 +73,21 @@ public class SymptomManagementRedirectController {
         request.setAttribute("username", username);
         request.setAttribute("password", password);
         request.setAttribute("omrs_user", user.getUsername());
-
-       // RequestDispatcher rd = request.getRequestDispatcher(url);
-      /*  try {
-            rd.forward(request, response);
-        } catch (ServletException e) {
-            throw new APIException("cannot redirect.", e);
-        } catch (IOException e) {
-            throw new APIException("cannot redirect.", e);
-        }*/
         return url;
     }
 
+    @SuppressWarnings("unused")
     private void respondUsingGET(HttpServletRequest request, HttpServletResponse response, User user) {
         HttpSession session = request.getSession();
 
         // get the url, username and password
-        String url = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_URL);
-        String username = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_USERNAME);
-        String password = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_PASSWORD);
+        String url = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_URL);
+        String username = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_USERNAME);
+        String password = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_PASSWORD);
 
-        // TODO send a real response with a helpful UI message
         if (url == null || username == null || password == null) {
             throw new APIException("URL, username or password not configured yet.");
         }

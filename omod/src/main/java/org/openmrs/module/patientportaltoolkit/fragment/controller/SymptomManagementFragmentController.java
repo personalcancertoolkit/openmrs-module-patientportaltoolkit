@@ -24,17 +24,18 @@ import org.openmrs.ui.framework.page.PageRequest;
  */
 public class SymptomManagementFragmentController {
 
-
     protected final Log log = LogFactory.getLog(getClass());
 
     public void controller(FragmentModel model, PageRequest pageRequest) {
         log.info(PPTLogAppender.appendLog("REQUEST_SYMPTOMMANAGEMENT_FRAGMENT", pageRequest.getRequest()));
         User user = Context.getAuthenticatedUser();
-        String url = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_URL);
-        String username = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_USERNAME);
-        String password = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_PASSWORD);
+        String url = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_URL);
+        String username = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_USERNAME);
+        String password = Context.getAdministrationService()
+                .getGlobalProperty(PatientPortalToolkitConstants.GP_SYMPTOM_MANAGEMENT_PASSWORD);
 
-        // TODO send a real response with a helpful UI message
         if (url == null || username == null || password == null) {
             throw new APIException("URL, username or password not configured yet.");
         }
@@ -44,6 +45,5 @@ public class SymptomManagementFragmentController {
         url += "&password=" + password;
         url += "&omrs_user=" + user.getUuid();
         model.addAttribute("SymptomManagementPortalUrl", url);
-        //log.info("Symptom Management for -" + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")" + " Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
     }
 }
