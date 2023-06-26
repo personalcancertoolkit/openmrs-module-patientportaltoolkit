@@ -47,7 +47,8 @@
                 jq("#bothentriesNotSameError").hide();
 
             jq.post("changePassword/saveNewPassword.action", {currentPassword: jq("#currentPassword").val(), newPassword: jq("#newPassword").val()}, function ( ) {})
-                .fail(function() {console.log( "error" );
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    console.error({textStatus, errorThrown});
             }).success(function(){
                 switch (response.status.toString()) {
                     case "200":
@@ -62,11 +63,6 @@
                 jq("#currentPassword").val('');
                 jq("#newPassword").val('');
                 jq("#confirmPassword").val('');
-
-            //alert("refreshing");
-            //setTimeout(function () {
-            //    location.reload();
-          //  }, 1000);
         }
         else {
                 jq("#bothentriesNotSameError").show();

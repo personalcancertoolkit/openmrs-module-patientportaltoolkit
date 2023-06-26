@@ -36,12 +36,7 @@ var communities_map_handler = {
     // Service and Map initialization
     ///////////////////////////////////////////////////////////
     initialize_map : function(visible) {
-        /*
-        //console.log("Initializing! " + visible);
-        if(visible == undefined) this.google_initialized = true;
-        if(visible && this.google_initialized == false) return // This means that the tab was initially loaded on. Dont let it continue because google object has not loaded yet.
-        if(visible && this.initialized_visible_already) return; // Used to trigger initialization on tab selection the first time. Google does not line display:hidden initialization
-        */
+        
         
         // Define and initialize the map object
         this.map_object = new google.maps.Map(this.map_element, {
@@ -77,7 +72,6 @@ var communities_map_handler = {
     },
     run_a_search : function(){
         if(this.bounds_were_set === false){ 
-            //console.log("Bounds have not been set yet on map, can not build request. A future call will set them."); 
             return; 
         }
 		var request = this.build_search_request_for_term(this.search_term);	
@@ -95,7 +89,6 @@ var communities_map_handler = {
         }
     },
 	build_search_request_for_term : function(search_term){
-        //console.log(search_term);
         var request = {
             bounds: this.map_object.getBounds(),
             name: search_term,
@@ -164,7 +157,6 @@ var communities_map_handler = {
         this_place.marker_index = this.marker_list.length-1;
         this_place.list_html = list_html;
 		this.mapped_places.push(this_place);
-        //console.log('added a place');
         
 
         this.places_waiting_to_be_listed -= 1; // required as places_search_service.getDetails is async
@@ -264,12 +256,10 @@ var communities_map_handler = {
 	},
     draw_full_list : function(){
         if(this.places_waiting_to_be_listed > 0){ // required as places_search_service.getDetails is async
-            //console.log('here i am' + this.places_waiting_to_be_listed);
             if(this.draw_full_list_timeout !== null) clearTimeout(this.draw_full_list_timeout);  
             this.draw_full_list_timeout = setTimeout(this.draw_full_list.bind(this), 500); // checkback in half a second to see if all places have received responses.
             return;
         }
-        //console.log('drawing list');
         
         
         // Empty Last List
@@ -288,15 +278,7 @@ var communities_map_handler = {
             var this_name = "Places of Interest";   
         }
         this.list_title_element.html(this_name);
-        /*
-            jq("#details").empty();
-            jq("#details").html("<h3>More Information</h3><p>Please select a location from the map or from the list for more information.</p>");
-            //clear out the #test div
-            jq("#test").empty();
-        */
         
-        //console.log('here i am!');
-        //console.log(this.mapped_places);
         // Generate Listings
         this.sort_places_by_distance();
         for(var i = 0; i < this.mapped_places.length; i++){
@@ -330,15 +312,10 @@ var communities_map_handler = {
             var position_vector = [this.current_position.lat, this.current_position.lng];
             var vector_A = [a.geometry.location.lat(), a.geometry.location.lng()];
             var vector_B = [b.geometry.location.lat(), b.geometry.location.lng()];
-            //console.log(position_vector);
-            //console.log(vector_A);
-            //console.log(vector_B);
             
             /// Note : Euclidean distance is only accurate for small geographical regions, where earth's curvature does not need to be taken into account
             var distanceA = this.euclidean_distance(position_vector, vector_A);
             var distanceB = this.euclidean_distance(position_vector, vector_B);
-            //console.log(distanceA);
-            //console.log(distanceB);
             
 			if (distanceA < distanceB){return -1;} //sort string ascending
 			if (distanceA > distanceB){return 1;}
@@ -380,7 +357,6 @@ var communities_map_handler = {
         jq("#"+this_id).addClass('hilite_item');
 	},
     build_info_content : function(placename,place_id,rating){
-        //console.log(rating);
         var stars_text = (rating) ? this.get_the_stars(rating) : ''; // ternary 
         var details_text = 'SEE MORE DETAILS';
 
@@ -478,14 +454,15 @@ var user_location_handler = {
     }, 
     handle_errors : function(error) {  
         switch(error.code)  {  
-            case error.PERMISSION_DENIED: console.log("User did not share geolocation data. " + this.default_location + " will be used as default location.");  break;
+            case error.PERMISSION_DENIED: 
+                console.log("User did not share geolocation data. " + this.default_location + " will be used as default location.");  
+                break;
             case error.POSITION_UNAVAILABLE: 
                 console.log("Geolocation could not detect current position.");
                 this.stop_watchlocation();
                 //this.initiate_watchlocation();
                 break;  
             case error.TIMEOUT: 
-                //alert("Geolocation Position Timeout");
                 this.stop_watchlocation();
                 this.initiate_watchlocation();
                 break; 
@@ -511,7 +488,6 @@ var search_options_handler = {
     
     
     initialize_map : function(){
-        //console.log("Initialize map was triggered");
         this.map_handler.initialize_map();
         this.geocoder_service = new google.maps.Geocoder();
     },
@@ -538,7 +514,7 @@ var search_options_handler = {
     // method of searching on user's position
     get_position_from_userlocation_and_search : function(){
         var last_found_user_position = this.user_location_handler.last_position;
-        //console.log(last_found_user_position);
+        
         if(last_found_user_position == null){
             alert("Geolocation has not detected current position yet. Map will be updated when data becomes available.");
             // note, we dont need to set a try again timeout because in this case either the request will soon respond and update the map on its own

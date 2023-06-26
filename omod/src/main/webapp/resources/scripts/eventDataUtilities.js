@@ -26,7 +26,7 @@ Calendar_Handler.prototype = { // Static Properties and Methods
             var the_colors = colors;
             //the_colors = ["red", "blue"];
             var c = this.blend_these_colors(the_colors);
-            //console.log(c);
+            
             jq(element).css('background-color', c);
             jq(element).css('color', 'white');
             jq(element).css('border-radius', '15px');
@@ -186,7 +186,6 @@ Event_Data_Manager.prototype = {
         }
     },
     set_possible_events : function(the_data){
-        //console.log(the_data);
         var added_reminders = [];
         var valid_reminders = [];
         for(var i = 0; i < the_data.length; i++){
@@ -197,7 +196,6 @@ Event_Data_Manager.prototype = {
             valid_reminders.push(this_data);
         }
         this.possible_events = valid_reminders.sort(this.reminder_sort_function);
-        //console.log(this.valid_reminders);
     },
     reminder_sort_function : function(a,b){
         if(a.procedure_name < b.procedure_name) return -1;
@@ -222,7 +220,7 @@ Event_New_Appointment_Dropdown_Handler.prototype = {
     },
     initialize_with_data : function(data){
         this.data = data;
-        //console.log("Initializing with data!");
+        
         for(var i = 0; i < data.length; i++){
             this_event = data[i];
             this_event.list_id = i;
@@ -260,8 +258,7 @@ function Event_Table_Handler(){
 }
 Event_Table_Handler.prototype = {
     setDataSource : function(the_data){
-        //console.log(the_data);
-        //console.log("Appending to table....");
+        
         the_data = the_data.sort(this.sorting_comparison_function);
         for(var i = 0; i < the_data.length; i++){
             var this_event = the_data[i];

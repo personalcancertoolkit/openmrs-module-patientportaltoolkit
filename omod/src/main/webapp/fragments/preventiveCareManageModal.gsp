@@ -39,7 +39,7 @@
                 return;
             }
             this.hide_all_parts();
-            //console.log(':  - ' + which_part);
+            
             this.modal.find("."+which_part+"-part").show(); 
             this.modal.find(".all-parts").show(); 
             this.modal.find("."+which_part+"-exclude-part").hide(); 
@@ -59,7 +59,6 @@
             if(event == null) return;
             var concept_id = event.concept_id + "";
             this.modal.find("."+concept_id+"-part").show();
-            //console.log(concept_id);
         },
         update_visible_data_for_event : function(){
             var event = this.data_manager.data[this.appointment_id];
@@ -70,8 +69,6 @@
             
             // update modify input defaults to current data
             this.input.modify.appointment_date.data('datepicker').setValue(event.targetDate);
-            
-            
             
             // update completion inputs to defaults 
             var questions = this.concepts[concept_id].questions;
@@ -163,10 +160,8 @@
         },
         
         attempt_mark_completed : function(){
-            //console.log(this.data_manager.data);
             var event = this.data_manager.data[this.appointment_id];
-            var concept_id = event.concept_id;
-            
+            var concept_id = event.concept_id;            
 
             //////////////
             // Get question responses 
@@ -208,7 +203,6 @@
         
         
         attempt_modify_completed : function(){
-            //console.log(this.data_manager.data);
             var event = this.data_manager.data[this.appointment_id];
             var concept_id = event.concept_id;
 
@@ -257,8 +251,6 @@
             xhr.open("GET", "preventiveCareManageModal/modifyAppointment.action?" + parameters, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onload = function(){
-                //console.log(this.responseText);
-                //console.log("Success!");
                 window.location.reload();
             };
             xhr.send(null);
@@ -278,8 +270,6 @@
             xhr.open("GET", "preventiveCareManageModal/removeAppointment.action?" + parameters, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onload = function(){
-                //console.log(this.responseText);
-                console.log("Success!");
                 window.location.reload();
             };
             xhr.send(null);
@@ -304,8 +294,6 @@
             xhr.open("GET", "preventiveCareManageModal/addAppointment.action?" + parameters, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onload = function(){
-                //console.log(this.responseText);
-                console.log("Success!");
                 window.location.reload();
             };
             xhr.send(null);
@@ -350,15 +338,12 @@
                 if(response_holder[0].checked) response = "true";
                 if(response_holder[1].checked) response = "false";
             }
-            //console.log("response: " + response);
             
             return response;
         },
         set_response_to : function(question_holder, question_datatype, new_value){
             // Grab input element(s)
             var response_holder = question_holder.find(".preventive_care_input");
-            //console.log(response_holder);
-            //console.log(response_holder[0]);
             
             if(new_value == false){
                 // default response
@@ -369,7 +354,6 @@
                     response_holder[1].checked = false;
                 }
             } else {
-                //console.log("Setting" + question_datatype + " to " + new_value);
                 if(question_datatype == "NM") response_holder[0].value = new_value;
                 if(question_datatype == "DT") response_holder.data('datepicker').setValue(new_value);
                 if(question_datatype == "BIT") {
@@ -385,13 +369,9 @@
         // Initialize concept data and generate input templates
         /////////////////////////////////////
         initialize_concepts : function(){
-            //console.log(jq("#personUuid").val());
             var OpenMRSInstance=window.location.href;
             //Load Reminder data, insert reminders into calendar and table
-            //console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
             jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getRelevantPreventiveCareConcepts/'+ jq("#personUuid").val(), function (relevantConcepts) {
-                //console.log(relevantConcepts);
-                // Set datasource for reminder table
                 this.setDataSource(relevantConcepts);
             }.bind(this));
         },
@@ -515,7 +495,6 @@
             // initialize all date time inputs
             //////////
             var datepicker_elements = this.modal.find(".openmrs_concept_datatype_DT");
-            //console.log(datepicker_elements);
             for(var i = 0; i < datepicker_elements.length; i++){
                 var element = this.modal.find(datepicker_elements[i]);
                 element.datepicker({ format: 'mm/dd/yyyy' }).on('changeDate', function(){ this.data('datepicker').hide() }.bind(element));
@@ -545,9 +524,6 @@
                     } else{
                         questions_queue.push(this_question);
                     }
-                    //console.log("Now system is at (for i = " + i + ") ....");
-                    //console.log(JSON.parse(JSON.stringify(final_questions)));
-                    //console.log(JSON.parse(JSON.stringify(questions_queue)));
                     
                     
                     // if something was added to the list, recheck all the queued elements (keep checking if a queued element was added, too)

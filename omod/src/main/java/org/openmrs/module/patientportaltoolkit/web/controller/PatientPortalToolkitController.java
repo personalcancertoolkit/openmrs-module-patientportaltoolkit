@@ -150,7 +150,7 @@ public class PatientPortalToolkitController {
         if (data.isEmpty())
             data = null;
         ppmService.logEvent(event, data);
-        return "success";
+        return "Logged event: " + event + " data: " + data;
     }
 
     @RequestMapping(value = "/patientportaltoolkit/createinitialpreferences/{personUUID}")
@@ -163,6 +163,6 @@ public class PatientPortalToolkitController {
         personPreferences.setMyCancerBuddiesDescription("Hello, I would like to be a part of My Cancer Buddies");
         personPreferences.setMyCancerBuddiesName(p.getGivenName() + p.getFamilyName());
         Context.getService(PersonPreferencesService.class).savePersonPreferences(personPreferences);
-        return "success";
+        return "Initial Preferences Successfully Created";
     }
 }

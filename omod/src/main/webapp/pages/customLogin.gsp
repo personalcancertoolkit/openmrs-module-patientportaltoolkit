@@ -1,6 +1,5 @@
 <script>
     var user_is_logged_in = ${loggedInBoolean};
-    //console.log(user_is_logged_in);
     if(user_is_logged_in) window.location.replace("/openmrs/patientportaltoolkit/home.page");
 </script>
 

@@ -45,7 +45,6 @@
             username:document.getElementById("username").value,
             password:document.getElementById("password").value
         }, function (response) {
-            //console.log(response);
             location.reload();
         });
     }

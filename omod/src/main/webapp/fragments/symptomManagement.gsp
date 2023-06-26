@@ -1,10 +1,6 @@
 <script>
 window.addEventListener("message", function(e){
-    //console.log("here is a message");
-    //console.log(e.data);
     var this_frame = document.getElementById("symptom_managment_iframe");
-    //console.log("Is our frame?");
-    //console.log(this_frame.contentWindow === e.source)
     if (this_frame.contentWindow === e.source) {
         console.log("updating smyp man height");
         this_frame.height = e.data.height + "px";

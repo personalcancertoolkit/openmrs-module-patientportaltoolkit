@@ -32,7 +32,6 @@
                 return;
             }
             this.hide_all_parts();
-            //console.log(':  - ' + which_part);
             this.modal.find("."+which_part+"-part").show(); 
             this.modal.find(".all-parts").show(); 
             this.modal.find("."+which_part+"-exclude-part").hide(); 
@@ -146,8 +145,6 @@
             xhr.open("GET", "appointmentsManageModal/markCompleted.action?" + parameters, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onload = function(){
-                //console.log(this.responseText);
-                console.log("Success!");
                 window.location.reload();
             };
             xhr.onerror = function(){
@@ -158,7 +155,6 @@
         attempt_modify_completed : function(){
             var event = this.data_manager.data[this.appointment_id]
              
-            //location.reload();
             var reminder_id         = encodeURIComponent(this.appointment_id);
             var completed_date      = encodeURIComponent(this.input.markCompleted.completed_date.val());
             var doctor_name         = encodeURIComponent(this.input.markCompleted.doctor_name.val());
@@ -170,8 +166,6 @@
             xhr.open("GET", "appointmentsManageModal/modifyCompleted.action?" + parameters, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onload = function(){
-                //console.log(this.responseText);
-                console.log("Success!");
                 window.location.reload();
             };
             xhr.send(null);
@@ -191,8 +185,6 @@
             xhr.open("GET", "appointmentsManageModal/modifyAppointment.action?" + parameters, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onload = function(){
-                //console.log(this.responseText);
-                console.log("Success!");
                 window.location.reload();
             };
             xhr.send(null);
@@ -200,8 +192,7 @@
         },
         attempt_remove_appointment : function(){
             var event = this.data_manager.data[this.appointment_id]
-             
-            //location.reload();
+            
             var reminder_id         = encodeURIComponent(this.appointment_id);
             var personUuid          = encodeURIComponent(jq("#personUuid").val());
             var formatedTargetDate  = encodeURIComponent(event.formatedTargetDate);
@@ -212,8 +203,6 @@
             xhr.open("GET", "appointmentsManageModal/removeAppointment.action?" + parameters, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onload = function(){
-                //console.log(this.responseText);
-                console.log("Success!");
                 window.location.reload();
             };
             xhr.send(null);
@@ -238,8 +227,6 @@
             xhr.open("GET", "appointmentsManageModal/addAppointment.action?" + parameters, true);
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.onload = function(){
-                //console.log(this.responseText);
-                console.log("Success!");
                 window.location.reload();
             };
             xhr.send(null);

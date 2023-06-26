@@ -2,7 +2,6 @@
     
     
     function load_preventive_data() {
-        //console.log(jq("#personUuid").val());
         var OpenMRSInstance=window.location.href;
         
         // use promises to ensure that all possible guidelines are loaded before we load reminder data. Because of this, we are able to remove non-valid reminders from the reminders we display.
@@ -14,7 +13,6 @@
         })
         var load_all_current_events = new Promise((resolve, reject)=>{
             //Load Reminder data, insert reminders into calendar and table
-            //console.log(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getremindersforpatient/'+ jq("#personUuid").val());
             jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getpreventivecareforpatient/'+ jq("#personUuid").val(), function (data) {
                 resolve(data);
             });

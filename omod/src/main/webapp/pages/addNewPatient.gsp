@@ -60,10 +60,9 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                                 "location": "8d6c993e-c2cc-11de-8d13-0010c6dffd0f"
                             }]
                         }
-                        console.log("Received Identifier");
                     },
-                    error: function (e) {
-                        console.log('Error: ' + e);
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error({textStatus, errorThrown});
                     },
                 }).promise();
                 //add a new patient
@@ -95,8 +94,8 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                         }
                         console.log("Added Patient");
                     },
-                    error: function (e) {
-                        console.log('Error: ' + e);
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error({textStatus, errorThrown});
                     },
                 }).promise();
                 //add a new user
@@ -109,8 +108,8 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                     success: function (response) {
                         console.log("Added User");
                     },
-                    error: function (e) {
-                        console.log('Error: ' + e);
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error({textStatus, errorThrown});
                     },
                 }).promise();
                 await jq.ajax({
@@ -119,8 +118,8 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                     success: function (response) {
                         console.log("Sent new account email");
                     },
-                    error: function (e) {
-                        console.log('Error: ' + e);
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error({textStatus, errorThrown});
                     },
                 }).promise();
                 await jq.ajax({
@@ -131,8 +130,8 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                         jq(".patInput").val("");
                         jq("#success-div").show();
                     },
-                    error: function (e) {
-                        console.log('Error: ' + e);
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error({textStatus, errorThrown});
                     },
                 }).promise();
             });

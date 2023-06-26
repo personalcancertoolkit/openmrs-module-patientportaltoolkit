@@ -6,7 +6,6 @@
         jq('#mycancerbuddiesSave').click(
                 function () {
                     logEvent('clicked_MyCancerBuddies_Thumbnail_save','');
-                    //console.log( jq("#mycancerbuddiesname").text()+"-------"+jq("#mycancerbuddiesdescription").text())
                     if(jq("#mycancerbuddiesname").text() != null || jq("#mycancerbuddiesdescription").text() != '') {
                         jq.get("myCancerBuddiesProfileCard/saveMyCancerBuddiesProfileCard.action", {
                             mycancerbuddiesname: jq("#mycancerbuddiesname").text(),
@@ -25,11 +24,9 @@
                     logEvent('clicked_MyCancerBuddies_addFellowPatient','');
                     var personId=this.id.split('addFellowPatient')[1];
                     logEvent('clicked_MyCancerBuddies_addFellowPatient',JSON.stringify({"personId": personId}));
-                    //console.log(personId);
+                    
                     jq("#addFellowPatientPersonIdHolder").val(personId);
-
-                   // console.log(jq('#addFellowPatientName'+personId).text());
-                   // console.log("hello");
+                    
                     jq("#mycancerbuddiesrelationshippersonNameInput").text(jq('#addFellowPatientName'+personId).text());
                     jq("#mycancerbuddiesrelationshipgenderInput").text(jq('#addFellowPatientGender'+personId).text());
                     jq("#mycancerbuddiesrelationshipAgeInput").text(jq('#addFellowPatientAge'+personId).text());
@@ -205,7 +202,6 @@
                     age : parseInt('${mycancerbuddiesperson.person.age}'),
                     gender : '${mycancerbuddiesperson.person.gender}',
                 };
-                //console.log(window['cancer_buddy_data']);
             </script>
         <% } %> <!-- END for mycancerbuddiespeople.each { mycancerbuddiesperson ->  -->
     <% } %> <!-- end if(mycancerbuddiespeople) -->
@@ -263,16 +259,13 @@
             ///////////
             // Run ascending sort on the keyValuePairs
             ///////////
-            //console.log(keyValuePairs);
             var sortedKeys = this.sortKeyValuePairsByValueAsc(keyValuePairs);
-            //console.log(sortedKeys);
             
             ///////////
             // If descending sort, reverse the list order
             ///////////
             if(type == 'desc' || type == 'furthest'){
-                sortedKeys = sortedKeys.reverse();   
-                //console.log(sortedKeys);
+                sortedKeys = sortedKeys.reverse();  
             }
             
             ///////////
@@ -284,7 +277,6 @@
                 this_element = document.getElementById(this.thumbnailHolderElementBaseID + this_key);
                 concatenatedSortedElements.appendChild(this_element);
             }
-            //console.log(concatenatedSortedElements);
             this.thumbnailSetHolderElement.innerHTML = null;
             this.thumbnailSetHolderElement.appendChild(concatenatedSortedElements);
             
@@ -329,8 +321,6 @@
             age : parseInt('${personPreferences.person.age}'),
             gender : '${personPreferences.person.gender}',
         }
-        
-        
         thumbnailSortingManager.sortBy("age", "closest");
     }
     window.addEventListener("load", theFunction);

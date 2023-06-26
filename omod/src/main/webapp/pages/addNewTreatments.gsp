@@ -46,8 +46,8 @@ ${ui.includeFragment("patientportaltoolkit", "treatmentsRadiationModal")}
 
                 });
             },
-            error: function (e) {
-                console.log('Error: ' + e);
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error({textStatus, errorThrown});
             },
         });
 

@@ -102,7 +102,7 @@ jq(document).ready(function() {
             if (jq('#' + encounterID + 'surgeryDate').text().trim()) {
                 jq("#surgeryDate").val(jq.datepicker.formatDate('mm/dd/yy', new Date(jq('#' + encounterID + 'surgeryDate').text())));
             }
-            // console.log($('#'+encounterID+'surgeryPCPName').text());
+            
             jq("#surgeonPcpName").val(jq('#' + encounterID + 'surgeryPCPName').text());
             jq("#surgeonPcpEmail").val(jq('#' + encounterID + 'surgeryPCPEmail').text());
             jq("#surgeonPcpPhone").val(jq('#' + encounterID + 'surgeryPCPPhone').text());
@@ -139,8 +139,8 @@ jq(document).ready(function() {
             }));
             jq("#chemotherapyEncounterHolder").val(encounterID);
             var chemotherapyMedList = [];
-            jq('.' + encounterID + 'chemotherapymed').each(function() {
-                // console.log(($( this ).attr('id').split('surgeryType')[1]));
+            
+            jq('.' + encounterID + 'chemotherapymed').each(function() {                
                 chemotherapyMedList.push((jq(this).attr('id').split('chemotherapymed')[1]));
             });
             jq('.chemotherapyMedTypesInModal').each(function() {
@@ -307,11 +307,8 @@ jq(document).ready(function() {
     jq('.editRelationButton').click(
         function() {
             var relationshipID = this.id.split('relationedit')[1];
-            //console.log(relationshipID);
             jq("#editRelationshipIdHolder").val(relationshipID);
-            //console.log($('#'+relationshipID+'relationPerson').text());
 
-            // console.log($('#'+encounterID+'surgeryPCPName').text());
             const editRelationshipModal = jq("#edit-relationship-modal");
             const editRelationshipSelect = editRelationshipModal.find("#editRelationshipSelect");
             const canSeeMyPostsCheckbox = editRelationshipModal.find('.editRelationShareCheckbox[data-security-layer-description="Posts"]');
@@ -477,7 +474,6 @@ jq(document).ready(function() {
         jq("#" + this.id).css("background", "#F8F8F8");
         jq('#newMessageComposeDiv').hide();
         jq('#showDetailedList').show();
-        // console.log(this.id);
         jq('.detailedMessageList').hide();
         jq('#mediaList' + this.id).show();
         jq('#sendingReplyMessageSubject' + this.id).val('Re: ' + jq(this).data('messageTitle'));
