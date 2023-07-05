@@ -91,7 +91,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         jq('#saveuserprofile').click(
             function () {
                 logEvent('clicked_EditProfile_save','');
-                var OpenMRSInstance=window.location.href;
+                
                 jq.get("profileEdit/saveProfileEditForm.action", {
                     personId: jq("#personIdHolder").val(),
                     givenName: jq("#userprofileGivenName").val(),

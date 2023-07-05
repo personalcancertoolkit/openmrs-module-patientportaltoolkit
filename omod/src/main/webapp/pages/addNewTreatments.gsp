@@ -26,11 +26,11 @@ ${ui.includeFragment("patientportaltoolkit", "treatmentsRadiationModal")}
 </body>
 <script>
     jq(document).ready(function () {
-        var OpenMRSInstance = window.location.href;
+        const baseUrl = window.location.href.split("/patientportaltoolkit")[0];
         jq.ajax({
             type: "GET",
             dataType: 'json',
-            url: window.location.href.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/getallpatients",
+            url:baseUrl + "/ws/patientportaltoolkit/getallpatients",
             success: function (response) {
                 var table = document.getElementById("allPatientTable");
                 response.forEach(obj => {
@@ -39,7 +39,7 @@ ${ui.includeFragment("patientportaltoolkit", "treatmentsRadiationModal")}
                     var cell1 = row.insertCell(1);
                     var cell2 = row.insertCell(2);
                     var cell3 = row.insertCell(3);
-                    cell0.innerHTML = "<a class='no-underline-edit patientViewLink' href ='"+OpenMRSInstance.split("/patientportaltoolkit")[0]+"/patientportaltoolkit/home.page?personId="+obj.id+"'>" + obj.GivenName + " " + obj.FamilyName+ "</a>";
+                    cell0.innerHTML = "<a class='no-underline-edit patientViewLink' href ='"+baseUrl+"/patientportaltoolkit/home.page?personId="+obj.id+"'>" + obj.GivenName + " " + obj.FamilyName+ "</a>";
                     cell1.innerHTML = obj.Age;
                     cell2.innerHTML = obj.MRN;
                     cell3.innerHTML = "<button class='btn btn-primary' onclick='updateGenHistPatientUuid(this)' id=" + obj.id + "addGen data-toggle='modal' data-target='#edit-genHistory-modal'>General History</button> <button class='btn btn-primary' onclick='updateSurgeryPatientUuid(this)'  id=" + obj.id + "addSurg data-toggle='modal' data-target='#edit-surgeries-modal'>Surgery</button> <button class='btn btn-primary' onclick='updateChemotherapyPatientUuid(this)'  id=" + obj.id + "addChemo data-toggle='modal' data-target='#edit-chemotherapies-modal'>Chemotherapy</button> <button class='btn btn-primary' onclick='updateRadiationPatientUuid(this)'  id=" + obj.id + "addRad data-toggle='modal' data-target='#edit-radiation-modal'>Radiation</button>";

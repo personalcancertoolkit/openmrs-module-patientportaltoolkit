@@ -18,9 +18,9 @@ jq(document).ready(function() {
     jq.fn.editable.defaults.showbuttons = true;
     jq.fn.editable.defaults.type = 'text';
 
-    var OpenMRSInstance = window.location.href;
-    jq("#navigationLogout").attr("href", OpenMRSInstance.split("/patientportaltoolkit")[0] + "/logout");
-    jq(".imagePlaceHolders").attr("src", OpenMRSInstance.split("/patientportaltoolkit")[0] + "/images/openmrs_logo_white.gif");
+    const baseUrl = window.location.href.split("/patientportaltoolkit")[0];
+    jq("#navigationLogout").attr("href", baseUrl + "/logout");
+    jq(".imagePlaceHolders").attr("src", baseUrl + "/images/openmrs_logo_white.gif");
     var nowTemp = new Date();
     var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
 
@@ -323,7 +323,7 @@ jq(document).ready(function() {
 
             jq.ajax({
                 type: "POST",
-                url: OpenMRSInstance.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/hasaccess",
+                url: baseUrl + "/ws/patientportaltoolkit/hasaccess",
                 data: {
                     relationshipId: relationshipID,
                     shareType: "6776d050-e2fe-47cc-8af4-de3fdeb1b76d"
@@ -341,7 +341,7 @@ jq(document).ready(function() {
             });
             jq.ajax({
                 type: "POST",
-                url: OpenMRSInstance.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/hasaccess",
+                url: baseUrl + "/ws/patientportaltoolkit/hasaccess",
                 data: {
                     relationshipId: relationshipID,
                     shareType: SecurityLayer.CAN_SEE_MEDICAL_PROFILE
@@ -359,7 +359,7 @@ jq(document).ready(function() {
             });
             jq.ajax({
                 type: "POST",
-                url: OpenMRSInstance.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/hasaccess",
+                url: baseUrl + "/ws/patientportaltoolkit/hasaccess",
                 data: {
                     relationshipId: relationshipID,
                     shareType: SecurityLayer.CAN_SEE_POSTS
@@ -460,7 +460,7 @@ jq(document).ready(function() {
     jq('#broadcastMessageButton').click( function() {
         jq('#composeMessageButton').click();
 
-        jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/getallnonvoidedpatients",
+        jq.get(baseUrl + "/ws/patientportaltoolkit/getallnonvoidedpatients",
         function(data) {
             // The returned data is an array of patients
             jq("#sendingto").val("All Active Patients: " + data.map(patient => patient.GivenName + ' ' + patient.FamilyName).join(", "));
@@ -514,7 +514,7 @@ jq(document).ready(function() {
 
     //------------------- compose message JS ----------------------
     var listOfRelationsData = [];
-    jq.when(jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/getallrelations",
+    jq.when(jq.get(baseUrl + "/ws/patientportaltoolkit/getallrelations",
         function(data, status) {
 
             jq.each(data, function(k, v) {

@@ -26,7 +26,7 @@
 
 <script>
 
-    var OpenMRSInstance=window.location.href;
+    var baseUrl = window.location.href.split("/openmrs")[0];
     function sendFogotPasswordEmail(){
         if(document.getElementById("forgotPasswordEmail").value == ""){
             jq("#forgotPasswordEmailError").show();
@@ -34,7 +34,7 @@
             return;
         }
         console.log(document.getElementById("forgotPasswordEmail").value);
-        jq.get(OpenMRSInstance.split("/openmrs")[0]+"/openmrs/ws/patientportaltoolkit/sendForgotPasswordEmail/"+document.getElementById("forgotPasswordEmail").value, function(){
+        jq.get(baseUrl + "/openmrs/ws/patientportaltoolkit/sendForgotPasswordEmail/ "+document.getElementById("forgotPasswordEmail").value, function(){
             jq("#forgotPasswordEmailSent").show();
         });
     }

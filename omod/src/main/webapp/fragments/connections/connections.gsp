@@ -1,10 +1,10 @@
 <script>
 
     jq(document).ready(function() {
-        var OpenMRSInstance = window.location.href;
+        const baseUrl = window.location.href.split("/patientportaltoolkit")[0];
         jq(".connectionlink").click(
             	        function () {
-                            document.location.href = OpenMRSInstance.split("/patientportaltoolkit")[0]+'/patientportaltoolkit/home.page?personId='+this.id.split("connectionlink")[1];
+                            document.location.href = baseUrl+'/patientportaltoolkit/home.page?personId='+this.id.split("connectionlink")[1];
             	        });
     });
 </script>

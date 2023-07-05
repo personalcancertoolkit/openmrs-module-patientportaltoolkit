@@ -369,9 +369,9 @@
         // Initialize concept data and generate input templates
         /////////////////////////////////////
         initialize_concepts : function(){
-            var OpenMRSInstance=window.location.href;
+            const baseUrl = window.location.href.split("/patientportaltoolkit")[0];
             //Load Reminder data, insert reminders into calendar and table
-            jq.get(OpenMRSInstance.split("/patientportaltoolkit")[0]+'/ws/patientportaltoolkit/getRelevantPreventiveCareConcepts/'+ jq("#personUuid").val(), function (relevantConcepts) {
+            jq.get(baseUrl+'/ws/patientportaltoolkit/getRelevantPreventiveCareConcepts/'+ jq("#personUuid").val(), function (relevantConcepts) {
                 this.setDataSource(relevantConcepts);
             }.bind(this));
         },
