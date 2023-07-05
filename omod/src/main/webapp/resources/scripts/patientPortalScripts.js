@@ -296,8 +296,8 @@ jq(document).ready(function() {
                         location.reload();
                     }, 4000);
                 },
-                error: function(e) {
-                    alert('Error: ' + e);
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error: '+ errorThrown);
                 },
             });
         });
@@ -335,8 +335,8 @@ jq(document).ready(function() {
                         jq("#editShareType" + "6776d050-e2fe-47cc-8af4-de3fdeb1b76d").prop('checked', false);
                     }
                 },
-                error: function(e) {
-                    alert('Error: ' + e);
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error: '+ errorThrown);
                 },
             });
             jq.ajax({
@@ -352,9 +352,9 @@ jq(document).ready(function() {
                     } else {
                         jq("#editShareType" + SecurityLayer.CAN_SEE_MEDICAL_PROFILE).prop('checked', false);
                     }
-                },
-                error: function(e) {
-                    alert('Error: ' + e);
+                },                
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error: '+ errorThrown);
                 },
             });
             jq.ajax({
@@ -371,8 +371,8 @@ jq(document).ready(function() {
                         jq("#editShareType" + SecurityLayer.CAN_SEE_POSTS).prop('checked', false);
                     }
                 },
-                error: function(e) {
-                    alert('Error: ' + e);
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error: '+ errorThrown);
                 },
             });
 
@@ -408,8 +408,8 @@ jq(document).ready(function() {
                         location.reload();
                     }, 2000);
                 },
-                error: function(e) {
-                    alert('Error: ' + e);
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Error: '+ errorThrown);
                 },
             });
             //$("#specialty").val( chkbxValues.join(",") );
