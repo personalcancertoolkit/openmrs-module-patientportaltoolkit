@@ -57,6 +57,7 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
                 <label>Primary Care Provider&emsp;</label>
             <span><span id="${(genhistory.encounterUuid)}genHistoryCancerPcpName">${(genhistory.pcpName)}</span>
                 &emsp; <small id="${(genhistory.encounterUuid)}genHistoryCancerPcpPhone">${(genhistory.pcpPhone)}</small>
+                    <small id="${(genhistory.encounterUuid)}genHistoryCancerPcpEmail">${(genhistory.pcpEmail)}</small>
                 </span>
             </div>
             <% } %>
