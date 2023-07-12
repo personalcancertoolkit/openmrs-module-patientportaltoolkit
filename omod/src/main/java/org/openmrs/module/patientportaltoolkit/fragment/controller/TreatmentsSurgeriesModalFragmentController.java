@@ -50,7 +50,6 @@ public class TreatmentsSurgeriesModalFragmentController {
             @RequestParam(value = "majorComplicationsTypeAnswer", required = false) String majorComplicationsTypeAnswer,
             @RequestParam(value = "surgeryDate", required = false) String surgeryDate,
             @RequestParam(value = "surgeonPcpName", required = false) String surgeonPcpName,
-            @RequestParam(value = "surgeonPcpEmail", required = false) String surgeonPcpEmail,
             @RequestParam(value = "surgeonPcpPhone", required = false) String surgeonPcpPhone,
             @RequestParam(value = "surgeryInstitutionName", required = false) String surgeryInstitutionName,
             @RequestParam(value = "surgeryInstitutionCity", required = false) String surgeryInstitutionCity,
@@ -61,7 +60,7 @@ public class TreatmentsSurgeriesModalFragmentController {
         log.info(PPTLogAppender.appendLog("NEW_SURGERY", servletRequestest, "surgeryTypes:", surgeryTypes,
                 "surgeryComplications:", surgeryComplications, "majorComplicationsTypeAnswer:",
                 majorComplicationsTypeAnswer, "surgeryDate:", surgeryDate, "surgeonPcpName:", surgeonPcpName,
-                "surgeonPcpEmail:", surgeonPcpEmail, "surgeonPcpPhone:", surgeonPcpPhone, "surgeryInstitutionName:",
+                "surgeonPcpPhone:", surgeonPcpPhone, "surgeryInstitutionName:",
                 surgeryInstitutionName, "surgeryInstitutionCity:", surgeryInstitutionCity, "surgeryInstitutionState:",
                 surgeryInstitutionState));
         EncounterService encounterService = Context.getEncounterService();
@@ -101,7 +100,6 @@ public class TreatmentsSurgeriesModalFragmentController {
         allTheEnteredValues.add("majorComplicationsTypeAnswer");
         allTheEnteredValues.add("surgeryDate");
         allTheEnteredValues.add("surgeonPcpName");
-        allTheEnteredValues.add("surgeonPcpEmail");
         allTheEnteredValues.add("surgeonPcpPhone");
         allTheEnteredValues.add("surgeryInstitutionName");
         allTheEnteredValues.add("surgeryInstitutionCity");
@@ -141,13 +139,6 @@ public class TreatmentsSurgeriesModalFragmentController {
                                 .setConcept(conceptService.getConceptByUuid("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"));
                         surgeonPcpNameObs.setValueText(surgeonPcpName);
                         surgeon.addGroupMember(surgeonPcpNameObs);
-                        break;
-                    case "surgeonPcpEmail":
-                        Obs surgeonPcpEmailObs = new Obs();
-                        surgeonPcpEmailObs
-                                .setConcept(conceptService.getConceptByUuid("898a0028-8c65-4db9-a802-1577fce59864"));
-                        surgeonPcpEmailObs.setValueText(surgeonPcpEmail);
-                        surgeon.addGroupMember(surgeonPcpEmailObs);
                         break;
                     case "surgeonPcpPhone":
                         Obs surgeonPcpPhoneObs = new Obs();
@@ -201,7 +192,6 @@ public class TreatmentsSurgeriesModalFragmentController {
             @RequestParam(value = "majorComplicationsTypeAnswer", required = false) String majorComplicationsTypeAnswer,
             @RequestParam(value = "surgeryDate", required = false) String surgeryDate,
             @RequestParam(value = "surgeonPcpName", required = false) String surgeonPcpName,
-            @RequestParam(value = "surgeonPcpEmail", required = false) String surgeonPcpEmail,
             @RequestParam(value = "surgeonPcpPhone", required = false) String surgeonPcpPhone,
             @RequestParam(value = "surgeryInstitutionName", required = false) String surgeryInstitutionName,
             @RequestParam(value = "surgeryInstitutionCity", required = false) String surgeryInstitutionCity,
@@ -211,7 +201,7 @@ public class TreatmentsSurgeriesModalFragmentController {
         log.info(PPTLogAppender.appendLog("UPDATE_SURGERY", servletRequest, "encounterId:", encounterId,
                 "surgeryTypes:", surgeryTypes, "surgeryComplications:", surgeryComplications,
                 "majorComplicationsTypeAnswer:", majorComplicationsTypeAnswer, "surgeryDate:", surgeryDate,
-                "surgeonPcpName:", surgeonPcpName, "surgeonPcpEmail:", surgeonPcpEmail, "surgeonPcpPhone:",
+                "surgeonPcpName:", surgeonPcpName, "surgeonPcpPhone:",
                 surgeonPcpPhone, "surgeryInstitutionName:", surgeryInstitutionName, "surgeryInstitutionCity:",
                 surgeryInstitutionCity, "surgeryInstitutionState:", surgeryInstitutionState));
         EncounterService encounterService = Context.getEncounterService();
@@ -229,7 +219,6 @@ public class TreatmentsSurgeriesModalFragmentController {
         allTheEnteredValues.add("otherSurgeryName");
         allTheEnteredValues.add("surgeryDate");
         allTheEnteredValues.add("surgeonPcpName");
-        allTheEnteredValues.add("surgeonPcpEmail");
         allTheEnteredValues.add("surgeonPcpPhone");
         allTheEnteredValues.add("surgeryInstitutionName");
         allTheEnteredValues.add("surgeryInstitutionCity");
@@ -286,18 +275,6 @@ public class TreatmentsSurgeriesModalFragmentController {
                                 Obs o = new Obs();
                                 o.setConcept(conceptService.getConceptByUuid("c2cb2220-c07d-47c6-a4df-e5918aac3fc2"));
                                 o.setValueText(surgeonPcpName);
-                                surgeryEncounter.addObs(o);
-                            }
-                            break;
-                        case "surgeonPcpEmail":
-                            if (observationConceptUUIDToObsMap.get("898a0028-8c65-4db9-a802-1577fce59864") != null) {
-                                Obs o = observationConceptUUIDToObsMap.get("898a0028-8c65-4db9-a802-1577fce59864")
-                                        .get(0);
-                                o.setValueText(surgeonPcpEmail);
-                            } else {
-                                Obs o = new Obs();
-                                o.setConcept(conceptService.getConceptByUuid("898a0028-8c65-4db9-a802-1577fce59864"));
-                                o.setValueText(surgeonPcpEmail);
                                 surgeryEncounter.addObs(o);
                             }
                             break;

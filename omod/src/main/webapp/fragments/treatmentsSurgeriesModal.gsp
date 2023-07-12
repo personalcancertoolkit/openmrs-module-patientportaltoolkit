@@ -53,10 +53,6 @@
                 <form class="form-inline" role="form"><label>Name</label>
                     <input class="form-control" id="surgeonPcpName" type="text"/>
                 </form>
-                <% } else if (conceptSet.concept.uuid == "898a0028-8c65-4db9-a802-1577fce59864") { %>
-                <form class="form-inline" role="form"><label>Email</label>
-                    <input class="form-control" id="surgeonPcpEmail" type="text"/>
-                </form>
                 <% } else if (conceptSet.concept.uuid == "9285b227-4054-4830-ac32-5ea78462e8c4") { %>
                 <form class="form-inline" role="form"><label>Phone</label>
                     <input class="form-control" id="surgeonPcpPhone" type="text"/>
@@ -117,7 +113,6 @@
                 '"majorComplicationsTypeAnswer":"' + jq("#majorComplicationsTypeAnswer").val() + '", ' +
                 '"surgeryDate":"' + jq("#surgeryDate").val() + '",' +
                 '"surgeonPcpName":"' + jq("#surgeonPcpName").val() + '",' +
-                '"surgeonPcpEmail":"' + jq("#surgeonPcpEmail").val() + '",' +
                 '"surgeonPcpPhone":"' + jq("#surgeonPcpPhone").val() + '",' +
                 '"surgeryInstitutionName":"' + jq("#surgeryInstitutionName").val() + '",' +
                 '"surgeryInstitutionCity":"' + jq("#surgeryInstitutionCity").val() + '",' +
@@ -145,7 +140,6 @@
                         majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
                         surgeryDate: jq("#surgeryDate").val(),
                         surgeonPcpName: jq("#surgeonPcpName").val(),
-                        surgeonPcpEmail: jq("#surgeonPcpEmail").val(),
                         surgeonPcpPhone: jq("#surgeonPcpPhone").val(),
                         surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
                         surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
@@ -166,7 +160,6 @@
                         majorComplicationsTypeAnswer: jq("#majorComplicationsTypeAnswer").val(),
                         surgeryDate: jq("#surgeryDate").val(),
                         surgeonPcpName: jq("#surgeonPcpName").val(),
-                        surgeonPcpEmail: jq("#surgeonPcpEmail").val(),
                         surgeonPcpPhone: jq("#surgeonPcpPhone").val(),
                         surgeryInstitutionName: jq("#surgeryInstitutionName").val(),
                         surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),

@@ -54,10 +54,6 @@
                 <form class="form-inline" role="form"><label>Name</label>
                     <input class="form-control" id="radiologistPcpName" type="text"/>
                 </form>
-                <% } else if (conceptSet.concept.uuid == "898a0028-8c65-4db9-a802-1577fce59864") { %>
-                <form class="form-inline" role="form"><label>Email</label>
-                    <input class="form-control" id="radiologistPcpEmail" type="text"/>
-                </form>
                 <% } else if (conceptSet.concept.uuid == "9285b227-4054-4830-ac32-5ea78462e8c4") { %>
                 <form class="form-inline" role="form"><label>Phone</label>
                     <input class="form-control" id="radiologistPcpPhone" type="text"/>
@@ -117,7 +113,6 @@
                 '"radiationStartDate":"' + jq("#radiationStartDate").val() + '", ' +
                 '"radiationEndDate":"' + jq("#radiationEndDate").val() + '", ' +
                 '"radiologistPcpName":"' + jq("#radiologistPcpName").val() + '",' +
-                '"radiologistPcpEmail":"' + jq("#radiologistPcpEmail").val() + '",' +
                 '"radiologistPcpPhone":"' + jq("#radiologistPcpPhone").val() + '",' +
                 '"radiationInstitutionName":"' + jq("#radiologistInstitutionName").val() + '",' +
                 '"radiationInstitutionCity":"' + jq("#radiologistInstitutionCity").val() + '",' +
@@ -143,7 +138,6 @@
                         radiationStartDate: jq("#radiationStartDate").val(),
                         radiationEndDate: jq("#radiationEndDate").val(),
                         radiationPcpName: jq("#radiologistPcpName").val(),
-                        radiationPcpEmail: jq("#radiologistPcpEmail").val(),
                         radiationPcpPhone: jq("#radiologistPcpPhone").val(),
                         radiationInstitutionName: jq("#radiologistInstitutionName").val(),
                         radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
@@ -162,7 +156,6 @@
                         radiationStartDate: jq("#radiationStartDate").val(),
                         radiationEndDate: jq("#radiationEndDate").val(),
                         radiationPcpName: jq("#radiologistPcpName").val(),
-                        radiationPcpEmail: jq("#radiologistPcpEmail").val(),
                         radiationPcpPhone: jq("#radiologistPcpPhone").val(),
                         radiationInstitutionName: jq("#radiologistInstitutionName").val(),
                         radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),

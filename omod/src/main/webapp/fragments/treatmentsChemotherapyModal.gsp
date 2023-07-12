@@ -68,11 +68,7 @@
                 <% if (conceptSet.concept.uuid=="c2cb2220-c07d-47c6-a4df-e5918aac3fc2") { %>
                 <form class="form-inline" role="form"> <label>Name </label>
                     <input class="form-control" id="oncologistPcpName" type="text"/>
-                </form>
-                <% } else if (conceptSet.concept.uuid=="898a0028-8c65-4db9-a802-1577fce59864") { %>
-                <form class="form-inline" role="form"> <label>Email </label>
-                    <input class="form-control" id="oncologistPcpEmail" type="text"/>
-                </form>
+                </form>                
                 <% } else if (conceptSet.concept.uuid=="9285b227-4054-4830-ac32-5ea78462e8c4") { %>
                 <form class="form-inline" role="form"> <label>Phone </label>
                     <input class="form-control" id="oncologistPcpPhone" type="text"/>
@@ -132,7 +128,6 @@
                 '"chemoStartDate":"' + jq("#chemoStartDate").val() + '", ' +
                 '"chemoEndDate":"' + jq("#chemoEndDate").val() + '",' +
                 '"chemotherapyPcpName":"' + jq("#oncologistPcpName").val() + '",' +
-                '"chemotherapyPcpEmail":"' + jq("#oncologistPcpEmail").val() + '",' +
                 '"chemotherapyPcpPhone":"' + jq("#oncologistPcpPhone").val() + '",' +
                 '"chemotherapyInstitutionName":"' + jq("#chemotherapyInstitutionName").val() + '",' +
                 '"chemotherapyInstitutionCity":"' + jq("#chemotherapyInstitutionCity").val() + '",' +
@@ -161,7 +156,6 @@
                         chemoStartDate: jq("#chemoStartDate").val(),
                         chemoEndDate: jq("#chemoEndDate").val(),
                         chemotherapyPcpName: jq("#oncologistPcpName").val(),
-                        chemotherapyPcpEmail: jq("#oncologistPcpEmail").val(),
                         chemotherapyPcpPhone: jq("#oncologistPcpPhone").val(),
                         chemotherapyInstitutionName: jq("#chemotherapyInstitutionName").val(),
                         chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
@@ -183,7 +177,6 @@
                         chemoStartDate: jq("#chemoStartDate").val(),
                         chemoEndDate: jq("#chemoEndDate").val(),
                         chemotherapyPcpName: jq("#oncologistPcpName").val(),
-                        chemotherapyPcpEmail: jq("#oncologistPcpEmail").val(),
                         chemotherapyPcpPhone: jq("#oncologistPcpPhone").val(),
                         chemotherapyInstitutionName: jq("#chemotherapyInstitutionName").val(),
                         chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),

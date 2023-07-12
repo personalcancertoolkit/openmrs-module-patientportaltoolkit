@@ -57,11 +57,7 @@
                 <form class="form-inline" role="form"><label>Name</label>
                     <input class="form-control" id="genHistoryCancerPcpName" type="text"/>
                 </form>
-                <% /* pcp email*/ %>
-                <% } else if (conceptSet.concept.uuid == "898a0028-8c65-4db9-a802-1577fce59864") { %>
-                <form class="form-inline" role="form"><label>Email</label>
-                    <input class="form-control" id="genHistoryCancerPcpEmail" type="text"/>
-                </form>
+                                
                 <% /* pcp phone*/ %>
                 <% } else if (conceptSet.concept.uuid == "9285b227-4054-4830-ac32-5ea78462e8c4") { %>
                 <form class="form-inline" role="form"><label>Phone</label>
@@ -93,7 +89,6 @@
                 '"cancerStage":"' + jq("#genHistoryCancerStageSelect option:selected").text() + '", ' +
                 '"cancerDate":"' + jq("#genHistoryDate").val() + '", ' +
                 '"genHistoryCancerPcpName":"' + jq("#genHistoryCancerPcpName").val() + '",' +
-                '"genHistoryCancerPcpEmail":"' + jq("#genHistoryCancerPcpEmail").val() + '",' +
                 '"genHistoryCancerPcpPhone":"' + jq("#genHistoryCancerPcpPhone").val() + '"}';
         });
         jq('#saveGeneralHistorybutton').click(
@@ -105,7 +100,6 @@
                         cancerStage: jq("#genHistoryCancerStageSelect").val(),
                         cancerDate: jq("#genHistoryDate").val(),
                         genHistoryCancerPcpName: jq("#genHistoryCancerPcpName").val(),
-                        genHistoryCancerPcpEmail: jq("#genHistoryCancerPcpEmail").val(),
                         genHistoryCancerPcpPhone: jq("#genHistoryCancerPcpPhone").val(),
                         patientUuid: jq("#genHistPatientUuidHolder").val()
                     }, function () {
@@ -120,7 +114,6 @@
                         cancerStage: jq("#genHistoryCancerStageSelect").val(),
                         cancerDate: jq("#genHistoryDate").val(),
                         genHistoryCancerPcpName: jq("#genHistoryCancerPcpName").val(),
-                        genHistoryCancerPcpEmail: jq("#genHistoryCancerPcpEmail").val(),
                         genHistoryCancerPcpPhone: jq("#genHistoryCancerPcpPhone").val(),
                         patientUuid: jq("#genHistPatientUuidHolder").val()
                     }, function () {
