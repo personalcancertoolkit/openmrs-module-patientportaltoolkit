@@ -62,7 +62,8 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.error({textStatus, errorThrown});
+                        const errorMessage = jqXHR.responseJSON.error.message;
+                        console.error({errorMessage, errorThrown})
                     },
                 }).promise();
                 //add a new patient
@@ -95,7 +96,8 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                         console.log("Added Patient");
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.error({textStatus, errorThrown});
+                        const errorMessage = jqXHR.responseJSON.error.message;
+                        console.error({errorMessage, errorThrown})
                     },
                 }).promise();
                 //add a new user
@@ -109,7 +111,11 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                         console.log("Added User");
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.error({textStatus, errorThrown});
+                        const errorMessage = jqXHR.responseJSON.error.message;
+                        if (errorMessage.includes('Username') && errorMessage.includes('is already in use')) {
+                            alert('Username '+jq("#patientUserName").val() + ' is already in use. Please pick another');
+                        }
+                        console.error({errorMessage, errorThrown})
                     },
                 }).promise();
                 await jq.ajax({
@@ -119,7 +125,8 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                         console.log("Sent new account email");
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.error({textStatus, errorThrown});
+                        const errorMessage = jqXHR.responseJSON.error.message;
+                        console.error({errorMessage, errorThrown})
                     },
                 }).promise();
                 await jq.ajax({
@@ -131,7 +138,8 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                         jq("#success-div").show();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.error({textStatus, errorThrown});
+                        const errorMessage = jqXHR.responseJSON.error.message;
+                        console.error({errorMessage, errorThrown})
                     },
                 }).promise();
             });

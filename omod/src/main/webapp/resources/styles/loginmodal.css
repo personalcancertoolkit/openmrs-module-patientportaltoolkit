@@ -72,6 +72,14 @@
   font-size: 14px;
   /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#4787ed)); */
 }
+.loginmodal-submit:disabled {
+  background-color: #aaa;
+  color: #555;
+  cursor: not-allowed;
+}
+.loginmodal-submit:disabled:hover {
+  background-color: #aaa;
+}
 
 .loginmodal-submit:hover {
   /* border: 1px solid #2f5bb7; */
@@ -90,3 +98,7 @@
   opacity: 0.6;
   transition: opacity ease 0.5s;
 } 
+
+a.go-back-btn:focus {
+  outline: solid #357ae8;
+}

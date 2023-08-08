@@ -47,7 +47,8 @@ ${ui.includeFragment("patientportaltoolkit", "treatmentsRadiationModal")}
                 });
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.error({textStatus, errorThrown});
+                        const errorMessage = jqXHR.responseJSON.error.message;
+                        console.error({errorMessage, errorThrown})
             },
         });
 

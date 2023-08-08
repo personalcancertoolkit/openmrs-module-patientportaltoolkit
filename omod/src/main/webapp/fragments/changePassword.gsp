@@ -48,7 +48,8 @@
 
             jq.post("changePassword/saveNewPassword.action", {currentPassword: jq("#currentPassword").val(), newPassword: jq("#newPassword").val()}, function ( ) {})
                 .fail(function(jqXHR, textStatus, errorThrown) {
-                    console.error({textStatus, errorThrown});
+                        const errorMessage = jqXHR.responseJSON.error.message;
+                        console.error({errorMessage, errorThrown})
             }).success(function(){
                 switch (response.status.toString()) {
                     case "200":

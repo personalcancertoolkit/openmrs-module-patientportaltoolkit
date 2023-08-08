@@ -618,8 +618,8 @@ function logEvent(event, data) {
         success: function(response) {
             console.log(response);
         },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.error({textStatus, errorThrown});
+        error: function(jqXHR, textStatus, errorThrown) {            
+            console.error({jqXHR, errorThrown})
         }
     });
 }
