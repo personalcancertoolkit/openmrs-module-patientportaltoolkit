@@ -38,6 +38,7 @@ public class PatientPortalToolkitController {
     public void getSendForgotPasswordEmail(@PathVariable("emailId") String emailId, HttpServletRequest httpRequest) {
         System.out.println("In Forgot Password Email method");
         try {
+            Context.getService(PatientPortalMiscService.class).logEvent("STARTING_SEND_FORGOT_PASSWORD_EMAIL", emailId);
             org.openmrs.api.PersonService ps = Context.getPersonService();
             List<Person> people = ps.getPeople(emailId, true);
             Person person = new Person();
@@ -64,6 +65,7 @@ public class PatientPortalToolkitController {
                         "If this was you, please click on this LINK to change your password -" + sendingRequestURL
                         + "\n\n(If the link on the line above is not clickable, you can copy it into your browser)\n\nIf you did not request a password change request, do not click on the link above. Please notify the study team at sphere@iupui.edu.",
                         emailId);
+                Context.getService(PatientPortalMiscService.class).logEvent("SENT_FORGOT_PASSWORD_EMAIL", emailId);
             }
         } catch (Exception e) {
             System.out.println(e);
@@ -76,6 +78,8 @@ public class PatientPortalToolkitController {
             @PathVariable("emailId") String emailId, HttpServletRequest httpRequest,
             HttpServletResponse httpServletResponse)
             throws Exception {
+        Context.getService(PatientPortalMiscService.class).logEvent("STARTING_SEND_PASSWORD_CHANGE_EMAIL", emailId);
+
         PatientPortalMiscService ppms = Context.getService(PatientPortalMiscService.class);
         PasswordChangeRequest pcr = ppms.getPasswordChangeRequests(uuid);
         UserService us = Context.getUserService();
@@ -102,6 +106,7 @@ public class PatientPortalToolkitController {
                             + "\n\nOnce you log in, please change your password to something you can easily remember by clicking on your username in the top banner and then clicking on the \"Change Password\" button."
                             + "\n\nIf this request was not made by you, please reply back to this email to report this issue.",
                             emailId);
+                    Context.getService(PatientPortalMiscService.class).logEvent("SENT_PASSWORD_CHANGE_EMAIL", emailId);
                 }
             } else {
                 pcr.setRetired(true);
