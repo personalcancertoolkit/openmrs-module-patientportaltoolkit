@@ -17,12 +17,15 @@
                 <% if (questions.uuid == "42fb7bb5-f840-4518-814c-893813211cba") { %>
                 <form class="form-inline" role="form"><label class="reformatText">${(questions.getName())}</label><br>
                     <% questions.answers.each { answers -> %>
-                    <div class="checkbox">
-                        <label><input type="checkbox" class="radiationTypesInModal"
+                    <% /* Exclude cobalt-based radiation */ %>
+                        <% if (answers.answerConcept.uuid != "66cc24f9-53e0-43fb-8f1a-d42607c25c00") { %>
+                        <div class="checkbox">
+                            <label><input type="checkbox" class="radiationTypesInModal"
                                       value="${(answers.answerConcept.uuid)}split${(answers.answerConcept.getName())}"><span
                                 class="reformatText">${(answers.answerConcept.getName())}</span></label>
-                    </div>
-                    <br>
+                        </div>
+                        <br>
+                        <% } %>
                     <% } %>
                 </form>
                 <% } %>

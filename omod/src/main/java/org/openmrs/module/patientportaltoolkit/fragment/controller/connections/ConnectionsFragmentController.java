@@ -16,6 +16,7 @@ import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PatientPortalRelation;
 import org.openmrs.module.patientportaltoolkit.SecurityLayer;
+import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
@@ -89,7 +90,8 @@ public class ConnectionsFragmentController {
         ppr.setShareStatus(1);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
         log.info(PPTLogAppender.appendLog("ACCEPT_RELATIONSHIP", servletRequest, "Relationship Id:", relationshipId));
-
+        Context.getService(PatientPortalMiscService.class).logEvent("ACCEPTED_CONNECTION_REQUEST",
+                "{\"relationshipPersonId\": \"" + relationshipId + "\"}");
     }
 
     public void ignoreConnectionRequest(FragmentModel model,
@@ -103,6 +105,8 @@ public class ConnectionsFragmentController {
         Context.getService(PatientPortalRelationService.class).deletePatientPortalRelation(relationshipId,
                 Context.getAuthenticatedUser());
         log.info(PPTLogAppender.appendLog("IGNORE_RELATIONSHIP", servletRequest, "Relationship Id:", relationshipId));
+        Context.getService(PatientPortalMiscService.class).logEvent("IGNORED_CONNECTION_REQUEST",
+                "{\"relationshipPersonId\": \"" + relationshipId + "\"}");
     }
 
 }

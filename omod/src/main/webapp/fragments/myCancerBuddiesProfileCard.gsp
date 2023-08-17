@@ -1,13 +1,27 @@
 <script>
     jq(document).ready(function(){
+        const currentProfileName = jq("#mycancerbuddiesname").text();
+        const currentProfileDesc = jq("#mycancerbuddiesdescription").text();
         jq('#mycancerbuddiesSave').click(
         function () {
-            logEvent('clicked_MyCancerBuddies_ProfileCard_save','');
-            
-            if(jq("#mycancerbuddiesname").text() != null || jq("#mycancerbuddiesdescription").text() != '') {
+            const mycancerbuddiesname = jq("#mycancerbuddiesname").text();
+            const mycancerbuddiesdescription = jq("#mycancerbuddiesdescription").text();
+            if(mycancerbuddiesname != null || mycancerbuddiesdescription != '') {
+
+                logEvent('clicked_MyCancerBuddies_ProfileCard_save', JSON.stringify({
+                    from: {
+                        name: currentProfileName,
+                        desc: currentProfileDesc,
+                    },
+                    to: {
+                        name: mycancerbuddiesname,
+                        desc: mycancerbuddiesdescription,
+                    } 
+                }));
+
                 jq.get("myCancerBuddiesProfileCard/saveMyCancerBuddiesProfileCard.action", {
-                    mycancerbuddiesname: jq("#mycancerbuddiesname").text(),
-                    mycancerbuddiesdescription: jq("#mycancerbuddiesdescription").text()
+                    mycancerbuddiesname: mycancerbuddiesname,
+                    mycancerbuddiesdescription: mycancerbuddiesdescription
                 }, function () {
                 });
                 setTimeout(

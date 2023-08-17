@@ -80,9 +80,6 @@ public class SideEffectServiceImpl extends BaseOpenmrsService implements SideEff
          * patientSideEffects.addAll(allSideEffectsMap.get("Female"));
          * }
          */
-        // Adding all side effects for all patients
-        patientSideEffects.addAll(allSideEffectsMap.get("Male"));
-        patientSideEffects.addAll(allSideEffectsMap.get("Female"));
         // Chemotherapy medication used side effects
         Encounter enc = findCancerTreatment(patient, CHEMOTHERAPY_ENCOUNTER);
         if (enc != null) {
@@ -126,6 +123,10 @@ public class SideEffectServiceImpl extends BaseOpenmrsService implements SideEff
                 System.out.println("Cancer Type is null");
             }
         }
+
+        // Adding all side effects for all patients
+        patientSideEffects.addAll(allSideEffectsMap.get("Male"));
+        patientSideEffects.addAll(allSideEffectsMap.get("Female"));
 
         return patientSideEffects;
     }
