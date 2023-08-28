@@ -279,6 +279,11 @@
             
             // check that user is sure they set the target date correctly
             var raw_formatedTargetDate = this.input.add_new.target_date.val(); 
+
+            if (!raw_formatedTargetDate) {
+                alert('Please include the Target Date');
+                return;
+            }
             if((new Date(raw_formatedTargetDate)).toDateString() === (new Date()).toDateString()){
                 response = confirm("Are you sure you want the target date for this new appointment to be today?"); 
                 if(!response) return;

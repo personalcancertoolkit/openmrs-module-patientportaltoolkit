@@ -35,7 +35,7 @@
           href="${ ui.resourceLink("patientportaltoolkit", "styles/datepicker.css") }"
           type="text/css">
     <link rel="stylesheet"
-          href="${ ui.resourceLink("patientportaltoolkit", "styles/styles.css") }"
+          href="${ ui.resourceLink("patientportaltoolkit", "styles/styles.css")}?v=1"
           type="text/css">
     <link rel="stylesheet"
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-editable.css") }"
@@ -47,7 +47,7 @@
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-year-calendar.min.css") }"
           type="text/css">
     <script type="text/javascript"
-            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}?v=3"></script>
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}?v=4"></script>
 
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-datepicker.js") }"></script>
@@ -72,6 +72,7 @@
         }
     </style>
 </head>
+<div id="uiActivityIndicator"></div>
 <div class="navbar navbar-default container headerForApp">
     <button type="button" class="navbar-toggle" data-toggle="collapse"
             data-target=".navbar-responsive-collapse">

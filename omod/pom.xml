@@ -16,7 +16,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>patientportaltoolkit</artifactId>
-		<version>1.10</version>
+		<version>1.11</version>
 	</parent>
 
 	<artifactId>patientportaltoolkit-omod</artifactId>

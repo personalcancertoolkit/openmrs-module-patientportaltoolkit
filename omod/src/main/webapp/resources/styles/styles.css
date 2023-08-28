@@ -292,3 +292,23 @@ a.no-underline-edit:hover {
   background-color: #ebebeb;
   border-color: rgba(0, 0, 0, 0.3);
 }
+
+#uiActivityIndicator {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    display: none;
+    z-index: 999999;
+
+    border: 5px solid #ffffff;
+    border-radius: 50%;
+    border-left: 5px solid #e08600;
+    width: 30px;
+    height: 30px;
+    animation: ui-activity-indicator-spin 1s linear infinite;
+}
+
+@keyframes ui-activity-indicator-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

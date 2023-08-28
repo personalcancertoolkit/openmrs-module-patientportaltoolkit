@@ -35,14 +35,14 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
             <input id="personIdHolder" type="hidden" value="${ (person.getId()) }">
             <label class="control-label col-xs-2" for="userprofileGivenName">Given Name </label>
             <div class="col-xs-10">
-                <input class="form-control" id="userprofileGivenName" type="text" value="${ (person.getGivenName()) }"/>
+                <input class="form-control" id="userprofileGivenName" type="text" value="${ (person.getGivenName()) }" required/>
             </div>
         </div>
         
         <div class="form-group">
             <label class="control-label col-xs-2" for="userprofileFamilyName">Family Name </label>
             <div class="col-xs-10">
-                <input class="form-control" id="userprofileFamilyName" type="text" value="${ (person.getFamilyName()) }"/>
+                <input class="form-control" id="userprofileFamilyName" type="text" value="${ (person.getFamilyName()) }" required/>
             </div>
         </div>
         
@@ -50,7 +50,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
             <label class="control-label col-xs-2" for="userprofileGenderSelect">Gender </label>
             <div class="col-xs-10">
 
-                <select class="form-control" id="userprofileGenderSelect">
+                <select class="form-control" id="userprofileGenderSelect"  required>
                     <option value="M"<% if (person.getGender()=="M"){%> selected <% }%>>Male</option>
                     <option value="F"<% if (person.getGender()=="F"){%> selected <% }%>>Female</option>
                 </select>
@@ -61,7 +61,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         <div class="form-group">
             <label class="control-label col-xs-2" for="userprofileDOB">Date of Birth </label>
             <div class="col-xs-10"> 
-                <input class="form-control" id="userprofileDOB" type="text" value="${pptutil.formatDate(person.birthdate)}"/>
+                <input class="form-control" id="userprofileDOB" type="text" value="${pptutil.formatDate(person.birthdate)}"  required/>
             </div>
         </div>
         
@@ -69,7 +69,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         <div class="form-group">
             <label class="control-label col-xs-2" for="userprofilePostalCode"> Zipcode </label>
             <div class="col-xs-10">
-                <input class="form-control" id="userprofilePostalCode" type="text" value="${person.getPersonAddress() != null ? (person.getPersonAddress().getPostalCode()) : "" }"/>
+                <input class="form-control" id="userprofilePostalCode" type="text" value="${person.getPersonAddress() != null ? (person.getPersonAddress().getPostalCode()) : "" }" required/>
             </div>
         </div>
         
@@ -84,26 +84,28 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 
         <div class="form-group pull-right">
             <button type="button" class="btn btn-default cancelModal">Cancel Changes</button>
-            <button type="button" class="btn btn-primary" id="saveuserprofile">Save</button>
+            <button type="submit" class="btn btn-primary" id="saveuserprofile">Save</button>
         </div>
     </form>
     <script>
-        jq('#saveuserprofile').click(
-            function () {
-                logEvent('clicked_EditProfile_save','');
-                
-                jq.get("profileEdit/saveProfileEditForm.action", {
-                    personId: jq("#personIdHolder").val(),
-                    givenName: jq("#userprofileGivenName").val(),
-                    familyName: jq("#userprofileFamilyName").val(),
-                    gender: jq("#userprofileGenderSelect").val(),
-                    birthDate: jq("#userprofileDOB").val(),
-                    postalCode: jq("#userprofilePostalCode").val(),
-                    myCancerBuddies: jq("#userprofileMyCancerBuddies").is(':checked')
-                }, function () {
-                    jq('#alertContainer').css('display','block');
-                });
+        jq('#editProfileForm').submit(function (e) {
+            logEvent('clicked_EditProfile_save','');
+            
+            jq.get("profileEdit/saveProfileEditForm.action", {
+                personId: jq("#personIdHolder").val(),
+                givenName: jq("#userprofileGivenName").val(),
+                familyName: jq("#userprofileFamilyName").val(),
+                gender: jq("#userprofileGenderSelect").val(),
+                birthDate: jq("#userprofileDOB").val(),
+                postalCode: jq("#userprofilePostalCode").val(),
+                myCancerBuddies: jq("#userprofileMyCancerBuddies").is(':checked')
+            }, function () {
+                jq('#alertContainer').css('display','block');
             });
+
+            e.preventDefault();
+            e.stopPropagation();
+        });
         jq('#changePassword').click(
             function () {
                 logEvent('clicked_EditProfile_changePassword','');

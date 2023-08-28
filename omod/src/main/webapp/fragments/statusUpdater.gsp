@@ -2,10 +2,21 @@
     jq(document).ready(function() {
         jq("#statusUpdaterButton").click(
             function () {
-                logEvent('clicked_MyPosts_Create_Post','');
-                jq.get("statusUpdater/savePost.action", {title: jq("#statusUpdaterTitle").val(), content:jq("#statusUpdaterContent").val()}, function(){
-                        location.reload();
-                });
+
+                const title = jq("#statusUpdaterTitle").val();
+                const content = jq("#statusUpdaterContent").val();
+
+                if (title && content) {
+                    logEvent('clicked_MyPosts_Create_Post','');
+                    jq.get("statusUpdater/savePost.action", {
+                        title: title, 
+                        content: content
+                        }, function() {
+                            location.reload();
+                    });
+                } else {
+                    alert('Posting requires both the title and content')
+                }
             });
     });
 </script>

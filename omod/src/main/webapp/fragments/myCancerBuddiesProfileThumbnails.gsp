@@ -3,21 +3,21 @@
     // Initialize buttons and actions on thumbnails
     /////////////////////////////////////////////////////
     jq(document).ready(function(){
-        jq('#mycancerbuddiesSave').click(
-                function () {
-                    logEvent('clicked_MyCancerBuddies_Thumbnail_save','');
-                    if(jq("#mycancerbuddiesname").text() != null || jq("#mycancerbuddiesdescription").text() != '') {
-                        jq.get("myCancerBuddiesProfileCard/saveMyCancerBuddiesProfileCard.action", {
-                            mycancerbuddiesname: jq("#mycancerbuddiesname").text(),
-                            mycancerbuddiesdescription: jq("#mycancerbuddiesdescription").text()
-                        }, function () {
-                        });
-                        setTimeout(
-                                function () {
-                                    location.reload();
-                                }, 1000);
-                    }
-                });
+        //jq('#mycancerbuddiesSave').click(
+                // function () {
+                //     logEvent('clicked_MyCancerBuddies_Thumbnail_save','');
+                //     if(jq("#mycancerbuddiesname").text() != null || jq("#mycancerbuddiesdescription").text() != '') {
+                //         jq.get("myCancerBuddiesProfileCard/saveMyCancerBuddiesProfileCard.action", {
+                //             mycancerbuddiesname: jq("#mycancerbuddiesname").text(),
+                //             mycancerbuddiesdescription: jq("#mycancerbuddiesdescription").text()
+                //         }, function () {
+                //         });
+                //         setTimeout(
+                //                 function () {
+                //                     location.reload();
+                //                 }, 1000);
+                //     }
+                // });
 
         jq('.addFellowPatient').click(
                 function () {

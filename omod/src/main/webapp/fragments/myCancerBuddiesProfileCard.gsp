@@ -6,7 +6,10 @@
         function () {
             const mycancerbuddiesname = jq("#mycancerbuddiesname").text();
             const mycancerbuddiesdescription = jq("#mycancerbuddiesdescription").text();
-            if(mycancerbuddiesname != null || mycancerbuddiesdescription != '') {
+
+            if (mycancerbuddiesname.includes("Empty") || !(mycancerbuddiesname.trim())) {
+                alert("Please provide a Screen Name");
+            } else if(mycancerbuddiesname !== null || mycancerbuddiesname.includes("Empty") || mycancerbuddiesdescription != '') {
 
                 logEvent('clicked_MyCancerBuddies_ProfileCard_save', JSON.stringify({
                     from: {

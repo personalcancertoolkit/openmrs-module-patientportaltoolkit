@@ -16,11 +16,11 @@
             });
         jq(".journalComment").keypress(
             function (event) {
-                if (event.which !== 13) {
-                } else {
+                const commentContent = this.value;
+                if (event.which === 13 && commentContent) {                    
                     logEvent('clicked_MyPosts_Add_Comment','');
                     const journalID = (this.id).split("commentbox")[1];
-                    console.log(journalID);
+                    
                     jq.get("commentBox/saveComment.action", {
                         commentContent: this.value,
                         parentId: journalID

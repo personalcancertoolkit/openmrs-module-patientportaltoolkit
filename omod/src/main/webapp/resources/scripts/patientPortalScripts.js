@@ -279,27 +279,31 @@ jq(document).ready(function() {
                 //checkboxValues=checkboxValues+$(this).val()+",";
             });
             var checkboxValues = checkboxValuesList.toString();
-            jq.ajax({
-                type: "GET",
-                url: "connections/addRelationship/addRelationshipfromForm.action",
-                data: {
-                    given: jq("#givenpersonName").val(),
-                    family: jq("#familypersonName").val(),
-                    gender: jq("#genderSelect").val(),
-                    personEmail: jq("#personEmail").val(),
-                    personRelationType: jq("#addRelationshipSelect").val(),
-                    securityLayerType: checkboxValues
-                },
-                success: function() {
-                    jq("#connectionSaveSuccess").show();
-                    setTimeout(function() {
-                        location.reload();
-                    }, 4000);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error: '+ errorThrown);
-                },
-            });
+            if (checkboxValuesList.length !== 0) { 
+                jq.ajax({
+                    type: "GET",
+                    url: "connections/addRelationship/addRelationshipfromForm.action",
+                    data: {
+                        given: jq("#givenpersonName").val(),
+                        family: jq("#familypersonName").val(),
+                        gender: jq("#genderSelect").val(),
+                        personEmail: jq("#personEmail").val(),
+                        personRelationType: jq("#addRelationshipSelect").val(),
+                        securityLayerType: checkboxValues
+                    },
+                    success: function() {
+                        jq("#connectionSaveSuccess").show();
+                        setTimeout(function() {
+                            location.reload();
+                        }, 4000);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: '+ errorThrown);
+                    },
+                });
+            } else {
+                alert('Please choose at least one access level for your new connection');
+            }
         });
     //------------- Add Relation Button save JS Ends ---------
 
@@ -394,29 +398,30 @@ jq(document).ready(function() {
                 checkboxValuesList.push(jq(this).val());
                 //checkboxValues=checkboxValues+$(this).val()+",";
             });
-            var checkboxValues = checkboxValuesList.toString();
-            jq.ajax({
-                type: "POST",
-                url: "connections/connections/saveRelationshipfromEdit.action",
-                data: {
-                    relationshipId: jq("#editRelationshipIdHolder").val(),
-                    personRelationType: jq("#editRelationshipSelect").val(),
-                    personRelationSecurityLayer: checkboxValues
-                },
-                success: function() {
-                    setTimeout(function() {
-                        location.reload();
-                    }, 2000);
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Error: '+ errorThrown);
-                },
-            });
-            //$("#specialty").val( chkbxValues.join(",") );
-            //jq.("connections/saveRelationshipfromEdit.action", {relationshipId:  jq("#editRelationshipIdHolder").val(),personRelationType:  jq("#editRelationshipSelect").val(),personRelationSecurityLayer:checkboxValues}, function(){
-            // setTimeout(function(){
-            //    location.reload();
-            // }, 10000);
+            if (checkboxValuesList.length !== 0) {
+                
+                var checkboxValues = checkboxValuesList.toString();
+                jq.ajax({
+                    type: "POST",
+                    url: "connections/connections/saveRelationshipfromEdit.action",
+                    data: {
+                        relationshipId: jq("#editRelationshipIdHolder").val(),
+                        personRelationType: jq("#editRelationshipSelect").val(),
+                        personRelationSecurityLayer: checkboxValues
+                    },
+                    success: function() {
+                        setTimeout(function() {
+                            location.reload();
+                        }, 2000);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Error: '+ errorThrown);
+                    },
+                });
+            } else {
+                alert('Please choose at least one access level for this connection');
+            }
+            
         });
 
     //------------------- Edit Relation Button save JS Ends -----
@@ -605,7 +610,17 @@ jq(document).ready(function() {
         });
     //------------------- Function to log events ----------------------
 
+    const uiActivityIndicator = jq("#uiActivityIndicator");
+    jq(document)
+        .ajaxStart(function () {
+            uiActivityIndicator.show();
+        })
+        .ajaxStop(function () {
+            uiActivityIndicator.fadeOut(200);
+        })
 });
+
+
 
 function logEvent(event, data) {
     jq.ajax({

@@ -4,13 +4,20 @@
             function () {
                 logEvent('clicked_MyPosts_Confirm_Update_Post',JSON.stringify({ 'postId': jq("#edit-postId").val() }));
                 
-                jq.get("statusUpdater/editSavePost.action", { 
-                    postId:  jq("#edit-postId").val(), 
-                    title: jq("#editPostTitle").val(), 
-                    content:jq("#editPostContent").val()
-                }, function() {
-                    location.reload();
-                });
+                const title = jq("#editPostTitle").val();
+                const content = jq("#editPostContent").val();
+
+                if (title && content) {
+                    jq.get("statusUpdater/editSavePost.action", { 
+                        postId:  jq("#edit-postId").val(), 
+                        title: title, 
+                        content: content
+                    }, function() {
+                        location.reload();
+                    });
+                } else {
+                    alert('Please include both title and content for the update');
+                }
             });
     });
 </script>
