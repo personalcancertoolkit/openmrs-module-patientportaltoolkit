@@ -5,6 +5,9 @@
                 <label htmlFor="sendingto">To</label>
                 <input id="sendingto" class="form-control" />
             </div>
+            <p id="recipientSuggestionsContainer" style="display:none">
+                Suggestions:
+            </p>
             <div class="form-group">
                 <input id="sendingNewMessageSubject" class="form-control" placeholder="Subject" />
             </div>
@@ -14,7 +17,7 @@
             <br />
             <div class="pull-right">
                 <div id="sendNewMessageButton" class="btn btn-primary btn-sm" onclick="logEvent('clicked_ComposeMessage_Send',JSON.stringify({'message': jq('#sendingNewMessageText').val()}))">Send</div>
-                <input type="hidden" id="sendingPersonUUID">
+                <input type="hidden" id="recipientPersonUUID">
             </div>
         </form>
     </div>

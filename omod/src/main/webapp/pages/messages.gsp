@@ -1,7 +1,7 @@
 ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 <body>
 <div>
-    <div class="container pull-left col-md-4">
+    <div id="inboxContainer" class="container pull-left col-md-4" data-sending-person-uuid="${(personUUID)}">
         <div style="display:flex; justify-content:space-between">
             <h5>
                 Inbox

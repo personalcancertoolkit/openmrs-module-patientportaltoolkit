@@ -33,10 +33,17 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
     <div class="clearfix">
         <input id="treatmentsPatientUuidHolder" type="hidden" value="${patientUUID}">
 
-
-        <h4>General History</h4>
-
-
+        <div class="clearfix">
+            <h4>
+                General History&emsp;
+                <% if (genhistory == null) { %>
+                    <a class="btn btn-primary btn-sm addGenHistButton" 
+                        onclick="logEvent('clicked_add_genhist','')"  
+                        data-toggle="modal" 
+                        data-target="#edit-genHistory-modal">Add</a>
+                <% }%>
+            </h4>
+        </div>
         <div>
             <% if (genhistory  && genhistory !=null) { %>
             <% if(isACareGiver != 1) { %>
@@ -55,9 +62,16 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
             </div>
             <div>
                 <label>Primary Care Provider&emsp;</label>
-            <span><span id="${(genhistory.encounterUuid)}genHistoryCancerPcpName">${(genhistory.pcpName)}</span>
-                &emsp; <small id="${(genhistory.encounterUuid)}genHistoryCancerPcpPhone">${(genhistory.pcpPhone)}</small>
+                <span>
+                <% if(genhistory.pcpName != null ) {%>
+                    <span id="${(genhistory.encounterUuid)}genHistoryCancerPcpName">${(genhistory.pcpName)}</span>
+                <%}%>
+                <% if(genhistory.pcpPhone != null ) {%>
+                    &emsp; <small id="${(genhistory.encounterUuid)}genHistoryCancerPcpPhone">${(genhistory.pcpPhone)}</small>
+                <%}%>
+                <% if(genhistory.pcpEmail != null ) {%>
                     <small id="${(genhistory.encounterUuid)}genHistoryCancerPcpEmail">${(genhistory.pcpEmail)}</small>
+                <%}%>
                 </span>
             </div>
             <% } %>

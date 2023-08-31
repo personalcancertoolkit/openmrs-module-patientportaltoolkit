@@ -26,15 +26,20 @@ import org.openmrs.ui.framework.page.PageRequest;
 public class MessagesPageController {
 
     protected final Log log = LogFactory.getLog(getClass());
-    public void controller(PageModel model,PageRequest pageRequest) {
-        Context.getService(PatientPortalMiscService.class).logEvent("MY_MESSAGES_PAGE_VIEWED",null);
+
+    public void controller(PageModel model, PageRequest pageRequest) {
+        Context.getService(PatientPortalMiscService.class).logEvent("MY_MESSAGES_PAGE_VIEWED", null);
         log.info(PPTLogAppender.appendLog("REQUEST_MESSAGES_PAGE", pageRequest.getRequest()));
-        //log.info("Messages Page Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
+
         Person person = null;
-        model.addAttribute("pptutil",new PatientPortalUtil());
-        person= Context.getPersonService().getPersonByUuid(Context.getAuthenticatedUser().getPerson().getUuid());
-        model.addAttribute("messages", Context.getService(MessageService.class).getMessageForPerson(person,true));
+        model.addAttribute("pptutil", new PatientPortalUtil());
+
+        String personUUID = Context.getAuthenticatedUser().getPerson().getUuid();
+        person = Context.getPersonService().getPersonByUuid(personUUID);
+
+        model.addAttribute("messages", Context.getService(MessageService.class).getMessageForPerson(person, true));
         model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
         model.addAttribute("contextUser", Context.getAuthenticatedUser());
+        model.addAttribute("personUUID", personUUID);
     }
 }

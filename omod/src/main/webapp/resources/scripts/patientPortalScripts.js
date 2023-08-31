@@ -83,6 +83,13 @@ jq(document).ready(function() {
                 jq("#genHistoryCancerPcpPhone").val(jq('#' + encounterID + 'genHistoryCancerPcpPhone').text())
             };
         });
+
+
+    jq('.addGenHistButton').click(
+        function() {
+            jq("#genHistPatientUuidHolder").val(jq("#treatmentsPatientUuidHolder").val());
+        });
+    
     jq('.editSurgeryButton').click(
         function() {
             var encounterID = this.id;
@@ -469,7 +476,7 @@ jq(document).ready(function() {
         function(data) {
             // The returned data is an array of patients
             jq("#sendingto").val("All Active Patients: " + data.map(patient => patient.GivenName + ' ' + patient.FamilyName).join(", "));
-            jq("#sendingPersonUUID").val(data.map(patient => patient.id).join(","));
+            jq("#recipientPersonUUID").val(data.map(patient => patient.id).join(","));
         });
     });
 
@@ -518,19 +525,48 @@ jq(document).ready(function() {
     //------------------- Reply message JS Ends ----------------------
 
     //------------------- compose message JS ----------------------
+
+    const inboxContainer = jq("#inboxContainer");
+    let messageSenderUUID = null;
+    if(inboxContainer.length) {
+        messageSenderUUID = inboxContainer.data("sendingPersonUuid");
+        console.log("messageSenderUUID: " + messageSenderUUID);
+    }
+
     var listOfRelationsData = [];
     jq.when(jq.get(baseUrl + "/ws/patientportaltoolkit/getallrelations",
         function(data, status) {
+            
+            const peopleDetails = {};
 
-            jq.each(data, function(k, v) {
-                //display the key
-                var relationitem = {
-                    id: data[k]["relatedPerson"]["id"],
-                    value: data[k]["relatedPerson"]["GivenName"] + " " + data[k]["relatedPerson"]["FamilyName"],
-                    disabled: data[k]["relationType"]["aIsToB"] === "Doctor"
-                };
-                listOfRelationsData.push(relationitem);
+            jq.each(data, function(index, v) {
+                const patientId = data[index]["patient"]["id"];
+                const patientName = data[index]["patient"]["GivenName"] + " " + data[index]["patient"]["FamilyName"];
+                const patientIsDoctor = data[index]["relationType"]["bIsToA"] === "Doctor"// It reads a bit hilariously, but please forgive us 🤣
+                
+                const relatedPersonId = data[index]["relatedPerson"]["id"];
+                const relatedPersonName = data[index]["relatedPerson"]["GivenName"] + " " + data[index]["relatedPerson"]["FamilyName"];
+                const relatedPersonIsADoctor = data[index]["relationType"]["aIsToB"] === "Doctor";
+
+                if (messageSenderUUID === patientId && !relatedPersonIsADoctor) {                 
+                    peopleDetails[relatedPersonId] = {
+                        id: relatedPersonId,
+                        value: relatedPersonName
+                    }
+                }
+                if(messageSenderUUID === relatedPersonId && !patientIsDoctor) {      
+                    peopleDetails[patientId] = {
+                        id: patientId,
+                        value: patientName,
+                    }
+                }
             });
+
+            listOfRelationsData = Object.values(peopleDetails);
+
+            console.log("messageSenderUUID: "+ messageSenderUUID);
+            console.log('relations: ', listOfRelationsData);
+
         })).then(function() {
         const sendingToAutocomplete = jq("#sendingto").autocomplete({
             source: listOfRelationsData,
@@ -539,7 +575,7 @@ jq(document).ready(function() {
                 event.preventDefault();
 
                 jq("#sendingto").val(ui.item.value);
-                jq("#sendingPersonUUID").val(ui.item.id);
+                jq("#recipientPersonUUID").val(ui.item.id);
             },
         });
         if (sendingToAutocomplete.length) {
@@ -547,23 +583,38 @@ jq(document).ready(function() {
                 
                 let value = item.value;
                 let listItem;
-                if (item.disabled) {
-                    listItem = jq('<li class="ui-state-disabled" title="Sorry, doctors cannot be directly messaged"><div>' + value + '</div></li>')
-                    .appendTo(ul);
-                } else {
-                    listItem = jq("<li>")
-                    .append('<a>' + value + '</a>')
-                    .appendTo(ul);
-                }
+                
+                listItem = jq("<li>")
+                .append('<a>' + value + '</a>')
+                .appendTo(ul);
+
                 return listItem;                
             };
+        }
+        const recipientSuggestionsContainer = jq('#recipientSuggestionsContainer');
+        if (recipientSuggestionsContainer.length) {
+
+            if (listOfRelationsData.length) {
+                recipientSuggestionsContainer.show();
+
+                listOfRelationsData.forEach((relationData, index) => {
+                    const button = jq('<button type="button" class="btn btn-default btn-xs recipient-suggestion-button" style="margin:2px" data-recipient-uuid="'
+                    + relationData.id +'" data-recipient-name="'+ relationData.value +'">'+ relationData.value +'</button>');
+                    button.appendTo(recipientSuggestionsContainer);
+                });
+                
+                jq('.recipient-suggestion-button').click(function (e){                    
+                    jq("#sendingto").val(jq(this).data('recipientName'));
+                    jq("#recipientPersonUUID").val(jq(this).data('recipientUuid'));
+                });
+            }
         }
     });
 
     jq('#sendNewMessageButton').click(
         function() {
             jq.get("composeMessage/sendNewMessage.action", {
-                personUuidStringList: jq("#sendingPersonUUID").val(),
+                personUuidStringList: jq("#recipientPersonUUID").val(),
                 subject: jq("#sendingNewMessageSubject").val(),
                 message: jq("#sendingNewMessageText").val(),
             }, function() {});
