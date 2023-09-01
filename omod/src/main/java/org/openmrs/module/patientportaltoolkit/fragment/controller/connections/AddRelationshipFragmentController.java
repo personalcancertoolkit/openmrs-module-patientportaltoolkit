@@ -55,7 +55,7 @@ public class AddRelationshipFragmentController {
                 "EMAIL:", personEmail, "RELATION_TYPE:", personRelationType.toString(), "SECURITY_TYPE:",
                 securityLayerType, "GENDER:", gender));
 
-        int checkIfPersonExists = 0;
+        Boolean personExists = false;
         User user = Context.getAuthenticatedUser();
         UserService userService = Context.getUserService();
 
@@ -68,26 +68,26 @@ public class AddRelationshipFragmentController {
             for (User u : previoususers) {
                 if (u.getPerson() != null && u.getPerson().getAttribute(paType) != null) {
                     if (u.getPerson().getAttribute(paType).getValue().equals(personEmail)) {
-                        checkIfPersonExists = 1;
+                        personExists = true;
                         person = u.getPerson();
                         break;
                     }
                 }
             }
         }
-        if (checkIfPersonExists == 0) {
-            Person p = new Person();
-            p.setPersonCreator(user);
-            p.setPersonDateCreated(new Date());
-            p.setPersonChangedBy(user);
-            p.setPersonDateChanged(new Date());
+        if (!personExists) {
+            Person newPerson = new Person();
+            newPerson.setPersonCreator(user);
+            newPerson.setPersonDateCreated(new Date());
+            newPerson.setPersonChangedBy(user);
+            newPerson.setPersonDateChanged(new Date());
 
             if (StringUtils.isEmpty(gender)) {
                 log.error("Gender cannot be null.");
             } else if (gender.toUpperCase().contains("M")) {
-                p.setGender("M");
+                newPerson.setGender("M");
             } else if (gender.toUpperCase().contains("F")) {
-                p.setGender("F");
+                newPerson.setGender("F");
             } else {
                 log.error("Gender must be 'M' or 'F'.");
             }
@@ -100,21 +100,21 @@ public class AddRelationshipFragmentController {
             name.setDateCreated(new Date());
             name.setChangedBy(user);
             name.setDateChanged(new Date());
-            p.addName(name);
+            newPerson.addName(name);
             try {
                 Date d = updateAge("", "", "");
-                p.setBirthdate(d);
+                newPerson.setBirthdate(d);
             } catch (java.text.ParseException pe) {
                 log.error(pe);
                 // return new String("Birthdate cannot be parsed.");
             }
-            p.setGender(gender);
+            newPerson.setGender(gender);
 
             Set<PersonAttribute> personAttributeSet = new TreeSet<>();
             PersonAttribute personAttributeEmail = new PersonAttribute(paType, personEmail);
             personAttributeSet.add(personAttributeEmail);
-            p.setAttributes(personAttributeSet);
-            person = Context.getPersonService().savePerson(p);
+            newPerson.setAttributes(personAttributeSet);
+            person = Context.getPersonService().savePerson(newPerson);
 
             User newUser = new User(person);
             newUser.setUsername(given + family);
@@ -133,6 +133,13 @@ public class AddRelationshipFragmentController {
             MailHelper.sendMail("Welcome", "Hello " + person.getPersonName()
                     + ", \n you have been added as a connection to one of the members of www.sphere.regenstrief.org, please log on to www.sphere.regenstrief.org to accept or ignore the connection request.",
                     person.getAttribute("Email").toString());
+
+            // Check for existing relationship between the person and the user
+            PatientPortalRelation existingPatientPortalRelation = Context.getService(PatientPortalRelationService.class)
+                    .getPatientPortalRelation(user.getPerson(), person, user);
+            if (existingPatientPortalRelation != null) {
+                return;
+            }
         }
 
         PatientPortalRelation ppr = new PatientPortalRelation(user.getPerson(), person);

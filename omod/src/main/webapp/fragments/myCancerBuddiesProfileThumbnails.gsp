@@ -40,11 +40,12 @@
                         checkboxValuesList.push(jq(this).val());
                     });
                     var checkboxValues=checkboxValuesList.toString();
-                    jq.get("myCancerBuddiesProfileThumbnails/addRelationshipforFellowPatients.action", {relationshipPersonId: jq("#addFellowPatientPersonIdHolder").val(),relationshipNote:jq("#mycancerbuddiesrelationshipnoteInput").val()}, function(){
-                    });
-                    setTimeout(function(){
+                    jq.get("myCancerBuddiesProfileThumbnails/addRelationshipforFellowPatients.action", {
+                        relationshipPersonId: jq("#addFellowPatientPersonIdHolder").val(),
+                        relationshipNote:jq("#mycancerbuddiesrelationshipnoteInput").val()
+                    }).done(function() {
                         location.reload();
-                    }, 3000);
+                    });
                 });
     });
 </script>

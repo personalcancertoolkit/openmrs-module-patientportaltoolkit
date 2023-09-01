@@ -23,6 +23,7 @@ import org.openmrs.ui.framework.annotation.FragmentParam;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -34,13 +35,16 @@ public class MyCancerBuddiesProfileThumbnailsFragmentController {
 
     public void controller(FragmentModel model, PageRequest pageRequest,
             @FragmentParam(value = "person") Person person) {
-        log.info(PPTLogAppender.appendLog("REQUEST_MYCANCERBUDDIESTHUMBNAILS_FRAGMENT", pageRequest.getRequest()));
+        log.info(PPTLogAppender.appendLog("REQUEST_MYCANCERBUDDIESTHUMBNAILS_FRAGMENT",
+                pageRequest.getRequest()));
 
         model.addAttribute("mycancerbuddiespreferences",
-                Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person));
+                Context.getService(PersonPreferencesService.class)
+                        .getPersonPreferencesByPerson(person));
         model.addAttribute("mycancerbuddiespeople",
                 Context.getService(PersonPreferencesService.class).getAllEnrolledPersonPreferences());
-        model.addAttribute("securityLayers", Context.getService(SecurityLayerService.class).getAllSecurityLayers());
+        model.addAttribute("securityLayers",
+                Context.getService(SecurityLayerService.class).getAllSecurityLayers());
         model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());
     }
 
@@ -51,15 +55,32 @@ public class MyCancerBuddiesProfileThumbnailsFragmentController {
         log.info(PPTLogAppender.appendLog("ADD_FellowPatientRelation", servletRequest));
 
         User user = Context.getAuthenticatedUser();
+
         // check if person already exists in the system
         Person relatedPerson = Context.getPersonService().getPersonByUuid(relationshipPersonId);
-        PatientPortalRelation ppr = new PatientPortalRelation(user.getPerson(), relatedPerson);
-        ppr.setRelationType(Context.getPersonService().getRelationshipType(10)); // for fellow patients
+        if (relatedPerson == null) {
+            return;
+        }
+
+        // Check if a relation between the two people already exists in either
+        // direction
+        PatientPortalRelation existingPatientPortalRelation = Context.getService(PatientPortalRelationService.class)
+                .getPatientPortalRelation(user.getPerson(), relatedPerson, user);
+        if (existingPatientPortalRelation != null) {
+            return;
+        }
+
+        PatientPortalRelation ppr = new PatientPortalRelation(user.getPerson(),
+                relatedPerson);
+        ppr.setRelationType(Context.getPersonService().getRelationshipType(10)); //
+        // for fellow patients
         ppr.setShareTypeA(
-                Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(SecurityLayer.CAN_SEE_POSTS));
+                Context.getService(SecurityLayerService.class)
+                        .getSecurityLayerByUuid(SecurityLayer.CAN_SEE_POSTS));
         // share posts by default
         ppr.setShareTypeB(
-                Context.getService(SecurityLayerService.class).getSecurityLayerByUuid(SecurityLayer.CAN_SEE_POSTS));
+                Context.getService(SecurityLayerService.class)
+                        .getSecurityLayerByUuid(SecurityLayer.CAN_SEE_POSTS));
 
         ppr.setShareStatus(0);
         Calendar date = Calendar.getInstance();
