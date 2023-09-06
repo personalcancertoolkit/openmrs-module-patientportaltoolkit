@@ -25,23 +25,18 @@
                 jq.get("myCancerBuddiesProfileCard/saveMyCancerBuddiesProfileCard.action", {
                     mycancerbuddiesname: mycancerbuddiesname,
                     mycancerbuddiesdescription: mycancerbuddiesdescription
-                }, function () {
+                }).done(function() {
+                    location.reload();
                 });
-                setTimeout(
-                        function () {
-                            location.reload();
-                        }, 1000);
             }
         });
         jq('#mycancerbuddiesRegister').click(
                 function () {
                     logEvent('clicked_MyCancerBuddiesRegister','');
-                        jq.get("myCancerBuddiesProfileCard/RegisterMyCancerBuddiesProfileCard.action", function () {
+                    jq.get("myCancerBuddiesProfileCard/RegisterMyCancerBuddiesProfileCard.action")
+                        .done(function() {
+                            location.reload();
                         });
-                        setTimeout(
-                                function () {
-                                    location.reload();
-                                }, 1000);
                 });
     });
 </script>

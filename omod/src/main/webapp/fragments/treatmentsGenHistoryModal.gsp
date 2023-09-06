@@ -102,11 +102,9 @@
                         genHistoryCancerPcpName: jq("#genHistoryCancerPcpName").val(),
                         genHistoryCancerPcpPhone: jq("#genHistoryCancerPcpPhone").val(),
                         patientUuid: jq("#genHistPatientUuidHolder").val()
-                    }, function () {
-                    });
-                    setTimeout(function () {
+                    }).done(function() {
                         location.reload();
-                    }, 1000);
+                    });
                 } else {
                     jq.get("treatmentsGenHistoryModal/saveGenHistoryForm.action", {
                         encounterId: jq("#genHistEncounterHolder").val(),
@@ -116,11 +114,9 @@
                         genHistoryCancerPcpName: jq("#genHistoryCancerPcpName").val(),
                         genHistoryCancerPcpPhone: jq("#genHistoryCancerPcpPhone").val(),
                         patientUuid: jq("#genHistPatientUuidHolder").val()
-                    }, function () {
-                    });
-                    setTimeout(function () {
+                    }).done(function() {
                         location.reload();
-                    }, 1000);
+                    });
                 }
             });
         var genHistdatePicker = jq(".gen-history-date").datepicker({

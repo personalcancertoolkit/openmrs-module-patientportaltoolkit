@@ -10,12 +10,9 @@
                 //         jq.get("myCancerBuddiesProfileCard/saveMyCancerBuddiesProfileCard.action", {
                 //             mycancerbuddiesname: jq("#mycancerbuddiesname").text(),
                 //             mycancerbuddiesdescription: jq("#mycancerbuddiesdescription").text()
-                //         }, function () {
-                //         });
-                //         setTimeout(
-                //                 function () {
-                //                     location.reload();
-                //                 }, 1000);
+                //        }).done(function() {
+                //              location.reload();
+                //          });
                 //     }
                 // });
 

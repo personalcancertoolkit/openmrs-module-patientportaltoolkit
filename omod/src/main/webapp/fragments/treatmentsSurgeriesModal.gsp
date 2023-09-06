@@ -145,12 +145,9 @@
                         surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
                         surgeryInstitutionState: jq("#surgeryInstitutionState").val(),
                         patientUuid: jq("#surgeryPatientUuidHolder").val()
-                    }, function () {
+                    }).done(function() {
+                        location.reload();
                     });
-                    setTimeout(
-                        function () {
-                            location.reload();
-                        }, 2000);
                 } else {
                     jq.get("treatmentsSurgeriesModal/saveSurgeryForm.action", {
                         encounterId: jq("#surgeryEncounterHolder").val(),
@@ -165,12 +162,9 @@
                         surgeryInstitutionCity: jq("#surgeryInstitutionCity").val(),
                         surgeryInstitutionState: jq("#surgeryInstitutionState").val(),
                         patientUuid: jq("#surgeryPatientUuidHolder").val()
-                    }, function () {
+                    }).done(function() {
+                        location.reload();
                     });
-                    setTimeout(
-                        function () {
-                            location.reload();
-                        }, 2000);
                 }
             });
         var surgerydatePicker = jq("#surgeryDate").datepicker({

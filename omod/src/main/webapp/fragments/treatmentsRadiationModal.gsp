@@ -146,12 +146,9 @@
                         radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
                         radiationInstitutionState: jq("#radiologistInstitutionState").val(),
                         patientUuid: jq("#radiationPatientUuidHolder").val()
-                    }, function () {
+                    }).done(function() {
+                        location.reload();
                     });
-                    setTimeout(
-                        function () {
-                            location.reload();
-                        }, 2000);
                 } else {
                     jq.get("treatmentsRadiationModal/saveRadiationForm.action", {
                         encounterId: jq("#radiationEncounterHolder").val(),
@@ -164,12 +161,9 @@
                         radiationInstitutionCity: jq("#radiologistInstitutionCity").val(),
                         radiationInstitutionState: jq("#radiologistInstitutionState").val(),
                         patientUuid: jq("#radiationPatientUuidHolder").val()
-                    }, function () {
+                    }).done(function() {
+                        location.reload();
                     });
-                    setTimeout(
-                        function () {
-                            location.reload();
-                        }, 2000);
                 }
             });
         jq('#edit-radiation-modal').scroll(function(){

@@ -417,9 +417,7 @@ jq(document).ready(function() {
                         personRelationSecurityLayer: checkboxValues
                     },
                     success: function() {
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
+                        location.reload();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert('Error: '+ errorThrown);
@@ -439,10 +437,9 @@ jq(document).ready(function() {
             var relationId = this.id.split("acceptConnectionRequest")[0];
             jq.get("connections/connections/acceptConnectionRequest.action", {
                 relationshipId: relationId
-            }, function() {});
-            setTimeout(function() {
+            }).done(function() {
                 location.reload();
-            }, 2000);
+            });
         });
     //------------------- accept connection request Button save JS Ends -----
 
@@ -452,10 +449,9 @@ jq(document).ready(function() {
             var relationId = this.id.split("ignoreConnectionRequest")[0];
             jq.get("connections/ignoreConnectionRequest.action", {
                 relationshipId: relationId
-            }, function() {});
-            setTimeout(function() {
+            }).done(function() {
                 location.reload();
-            }, 2000);
+            });
         });
     //------------------- ignore connection request Button save JS Ends -----
     //------------------- Messages Page JS ----------------------
@@ -560,9 +556,6 @@ jq(document).ready(function() {
             });
 
             listOfRelationsData = Object.values(peopleDetails);
-
-            console.log("messageSenderUUID: "+ messageSenderUUID);
-            console.log('relations: ', listOfRelationsData);
 
         })).then(function() {
         const sendingToAutocomplete = jq("#sendingto").autocomplete({

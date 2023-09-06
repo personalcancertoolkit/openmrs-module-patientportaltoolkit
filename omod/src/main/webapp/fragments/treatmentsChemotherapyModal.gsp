@@ -161,12 +161,9 @@
                         chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
                         chemotherapyInstitutionState: jq("#chemotherapyInstitutionState").val(),
                         patientUuid: jq("#chemotherapyPatientUuidHolder").val()
-                    }, function () {
+                    }).done(function() {
+                        location.reload();
                     });
-                    setTimeout(
-                        function () {
-                            location.reload();
-                        }, 2000);
                 }
                 else {
                     jq.get("treatmentsChemotherapyModal/saveChemotherapyForm.action", {
@@ -182,12 +179,9 @@
                         chemotherapyInstitutionCity: jq("#chemotherapyInstitutionCity").val(),
                         chemotherapyInstitutionState: jq("#chemotherapyInstitutionState").val(),
                         patientUuid: jq("#chemotherapyPatientUuidHolder").val()
-                    }, function () {
+                    }).done(function() {
+                        location.reload();
                     });
-                    setTimeout(
-                        function () {
-                            location.reload();
-                        }, 2000);
                 }
             });
         var chemotherapyStartdatePicker= jq( "#chemoStartDate" ).datepicker({
