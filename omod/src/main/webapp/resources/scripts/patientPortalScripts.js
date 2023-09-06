@@ -516,11 +516,9 @@ jq(document).ready(function() {
                 subject: jq("#sendingReplyMessageSubject" + messageid).val(),
                 message: jq("#sendingReplyMessageText" + messageid).val(),
                 parentId: jq("#replythreadparentid" + messageid).val()
-            }, function() {});
-            setTimeout(
-                function() {
-                    location.reload();
-                }, 2000);
+            }).done(function() {
+                location.reload();
+            });
         });
     //------------------- Reply message JS Ends ----------------------
 
@@ -530,7 +528,6 @@ jq(document).ready(function() {
     let messageSenderUUID = null;
     if(inboxContainer.length) {
         messageSenderUUID = inboxContainer.data("sendingPersonUuid");
-        console.log("messageSenderUUID: " + messageSenderUUID);
     }
 
     var listOfRelationsData = [];
@@ -617,11 +614,9 @@ jq(document).ready(function() {
                 personUuidStringList: jq("#recipientPersonUUID").val(),
                 subject: jq("#sendingNewMessageSubject").val(),
                 message: jq("#sendingNewMessageText").val(),
-            }, function() {});
-            setTimeout(
-                function() {
-                    location.reload();
-                }, 3000);
+            }).done(function() {
+                location.reload();
+            });
         });
 
     //------------------- compose message JS ENDS ----------------------
@@ -641,8 +636,9 @@ jq(document).ready(function() {
             jq.get("appointments/markScheduled.action", {
                 reminderId: jq("#markScheduledIdHolder").val(),
                 markScheduledDate: jq("#markScheduledDate").val()
-            }, function() {});
-            location.reload();
+            }).done(function() {
+                location.reload();
+            });
         });
     //JS for the Button Events END
 
@@ -676,6 +672,7 @@ jq(document).ready(function() {
 function logEvent(event, data) {
     jq.ajax({
         type: "POST",
+        async: false,
         url: window.location.href.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/logEvent",
         data: {
             event: event,

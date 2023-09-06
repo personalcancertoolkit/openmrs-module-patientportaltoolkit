@@ -1,7 +1,12 @@
 ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
 <script type="text/javascript">
-    \$(document).ready(function(){
-        \$('#patientPortalJournals').addClass('active');
+    jq(document).ready(function(){
+        jq('#patientPortalJournals').addClass('active');
+
+        jq(window).on('beforeunload', function(){   
+            logEvent('unloading_my_posts_page','');
+            return undefined;
+        });
     });
 </script>
 <body>
