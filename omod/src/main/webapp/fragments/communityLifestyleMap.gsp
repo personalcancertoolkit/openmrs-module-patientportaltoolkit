@@ -119,18 +119,28 @@ var communities_map_handler = {
     // Search Result Response Methods
     /////////////////////////////////////////////////////////////
     should_this_place_be_mapped : function(this_place){
-        if(this_place.permanently_closed) return false; // If this place is permanently closed, do not map it.
-        var mapped_place_ids = this.mapped_places.map(function(a) {return a.place_id;}); // return list of id's for all mapped places
-        if(mapped_place_ids.indexOf(this_place.place_id) != -1) return false; // If this place's id is in mapped_place_ids then we have already mapped it.
+        if(this_place.business_status && this_place.business_status === 'CLOSED_PERMANENTLY') {
+             return false; // If this place is permanently closed, do not map it.
+        }
+        
+        var mapped_place_ids = this.mapped_places.map(function(a) {return a.place_id;}); // return list of id's for all mapped places        
+        if(mapped_place_ids.indexOf(this_place.place_id) != -1) {
+            return false; // If this place's id is in mapped_place_ids then we have already mapped it.
+        }
+        
         if (this.search_term == "farmers market"){ 
             var place_score = this.rank_farmers_market(this_place); // rank this place 
-            if (place_score <= 1) return false; // if score is too low, dont map it.
+            if (place_score <= 1) { 
+                return false; // if score is too low, dont map it.
+            }
         }
         return true;
 	},   
     map_this_place : function(this_place){
         // Get details for this place, then with details we can map it.
-        var request = { placeId: this_place.place_id, };
+        var request = { 
+            placeId: this_place.place_id,
+        };
         var callback = function(place, status){ this.mark_place_on_map(place)}.bind(this);
 		this.places_search_service.getDetails(request, callback);
         this.places_waiting_to_be_listed += 1; // required as places_search_service.getDetails is async
@@ -205,7 +215,8 @@ var communities_map_handler = {
 			//get open_now
             var open_now = '';
 			if(this_place.opening_hours){
-                if(this_place.opening_hours.open_now) open_now += 'Open Now - ';
+                if(this_place.opening_hours.isOpen()) open_now += 'Open Now - ';
+                
                 var today = new Date();
                 var day_num = today.getDay();
                 if(this_place.opening_hours.weekday_text){
@@ -372,6 +383,7 @@ var communities_map_handler = {
         var website_text = '';
         var review_text = '<p>There are no reviews.</p>';
 		if(this_place.opening_hours){  //objects must be tested at each level
+
 			if(this_place.opening_hours.weekday_text){
 				weekdays = this_place.opening_hours.weekday_text;
 				hours = '<b>Hours</b><br/>';
@@ -379,9 +391,10 @@ var communities_map_handler = {
 					hours += weekdays[i]+'<br/>';
 				}
 				hours += '</p>';
-			}//end this_place.weekday_text
-			if(this_place.opening_hours.open_now){hours += '<p><b>Open Now</b></p>';}
-		}//end  if(this_place.opening_hours.weekday_text)
+			}
+            
+			if(this_place.opening_hours.isOpen()){hours += '<p><b>Open Now</b></p>';}
+		}
 		if(this_place.website){ 
 			website_text = '<p><b>Website:</b> <a href="'+this_place.website+'" target="_blank">'+this_place.website+'</a></p>'; 
 		}
@@ -391,8 +404,8 @@ var communities_map_handler = {
 				case 0:break;
 				case 1:review_text = '<p>There is '+num_reviews+' review.';break;
 				default:review_text = '<p>There are '+num_reviews+' reviews.';break;
-			}//switch
-		}//if
+			}
+		}
 		
 		modal_markup = 	hours+website_text+review_text;
 		return modal_markup;
@@ -437,34 +450,20 @@ var communities_map_handler = {
 }
 
 var user_location_handler = {
-    watchProcess : null,
     search_options_handler: null,
     default_location : null,
     last_position : null,
     
-    initiate_watchlocation : function() {  
-        if (this.watchProcess == null) {  
-            this.watchProcess = window.navigator.geolocation.watchPosition(this.handle_geolocation_query.bind(this), this.handle_errors.bind(this),{'enableHighAccuracy':true,'timeout':10000,'maximumAge':20000}); 
-        }  
-     },  
-    stop_watchlocation : function() {  
-        if (this.watchProcess == null) return;  
-        window.navigator.geolocation.clearWatch(watchProcess);  
-        this.watchProcess = null;  
-    }, 
     handle_errors : function(error) {  
         switch(error.code)  {  
             case error.PERMISSION_DENIED: 
                 console.log("User did not share geolocation data. " + this.default_location + " will be used as default location.");  
                 break;
             case error.POSITION_UNAVAILABLE: 
-                console.log("Geolocation could not detect current position.");
-                this.stop_watchlocation();
-                //this.initiate_watchlocation();
+                console.log("Geolocation could not detect current position.");                
                 break;  
             case error.TIMEOUT: 
-                this.stop_watchlocation();
-                this.initiate_watchlocation();
+                console.log("Geolocation timed out");
                 break; 
             default: alert("Unknown Geolocation Error");  break;  
         }  
@@ -472,7 +471,7 @@ var user_location_handler = {
     handle_geolocation_query : function(position) {  
         this.last_position = {lat: position.coords.latitude, lng: position.coords.longitude};
         this.search_options_handler.search_at_position(this.last_position, "near_you");
-    },   
+    }, 
 }
 
 
@@ -515,13 +514,19 @@ var search_options_handler = {
     get_position_from_userlocation_and_search : function(){
         var last_found_user_position = this.user_location_handler.last_position;
         
-        if(last_found_user_position == null){
-            alert("Geolocation has not detected current position yet. Map will be updated when data becomes available.");
-            // note, we dont need to set a try again timeout because in this case either the request will soon respond and update the map on its own
-            //                                                                        or there is a failure with the geolocation system and it will never come.
-            return;
+        if(last_found_user_position == null ){
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    this.user_location_handler.handle_geolocation_query,
+                    this.user_location_handler.handle_errors,
+                    {
+                        enableHighAccuracy:true,
+                        timeout: 15000,
+                        maximumAge :20000
+                    }
+                );
+            }
         }
-        this.search_at_position(last_found_user_position, "near_you");
     },
     
     // method of grabing position from user inputted zipcode and searching on it
@@ -551,7 +556,8 @@ window.addEventListener("load", function(){
     
     // Initialize communities_map_handler
     // Data
-    communities_map_handler.current_position = {lat:39.768549, lng:-86.158008};	//Starting at Monument Circle, update user_location_handler.default_location if updating initial location
+    //Starting at Monument Circle, update user_location_handler.default_location if updating initial location
+    communities_map_handler.current_position = {lat:39.768549, lng:-86.158008};	
     communities_map_handler.current_zoom = 12;	
     communities_map_handler.search_term = 'fitness';	
     communities_map_handler.template_html = document.getElementById('list_element_example').innerHTML;
@@ -570,8 +576,20 @@ window.addEventListener("load", function(){
     search_options_handler.current_active_request_type = "near_you"; 
     
     // initialize search option DOM elements
-    document.getElementById("community_lifestyle_map_search_option_button-you").addEventListener("click", function(){search_options_handler.search_near("near_you");});
-    document.getElementById("community_lifestyle_map_search_option_button-zipcode").addEventListener("click", function(){search_options_handler.search_near("near_zipcode");});
+    document
+        .getElementById("community_lifestyle_map_search_option_button-you")
+        .addEventListener("click", function (){
+            search_options_handler.search_near("near_you");
+            logEvent('clicked_Near_You_Location_Search', '');
+        });
+    
+    
+    document
+        .getElementById("community_lifestyle_map_search_option_button-zipcode")
+        .addEventListener("click", function (){
+            search_options_handler.search_near("near_zipcode");
+            logEvent('clicked_ZipCode_Location_Search', '');
+        });
     search_options_handler.input = { search_option_zipcode : document.getElementById("community_lifestyle_map_search_option_zipcode")};
     
     
@@ -579,9 +597,8 @@ window.addEventListener("load", function(){
     user_location_handler.search_options_handler = search_options_handler;
     user_location_handler.default_location = "Monument Circle in Indianapolis";
     window.addEventListener('unload', function(){
-        user_location_handler.stop_watchlocation();
+        
     });
-   // user_location_handler.initiate_watchlocation();
 
     
     
