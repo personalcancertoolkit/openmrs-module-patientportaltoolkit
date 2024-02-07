@@ -83,13 +83,13 @@ public class AddRelationshipFragmentController {
             newPerson.setPersonDateChanged(new Date());
 
             if (StringUtils.isEmpty(gender)) {
-                log.error("Gender cannot be null.");
+                log.error("Biological Sex cannot be null.");
             } else if (gender.toUpperCase().contains("M")) {
                 newPerson.setGender("M");
             } else if (gender.toUpperCase().contains("F")) {
                 newPerson.setGender("F");
             } else {
-                log.error("Gender must be 'M' or 'F'.");
+                log.error("Biological Sex must be 'M' or 'F'.");
             }
             if ("".equals(given) || "".equals(family)) {
                 log.error("Given name and family name cannot be null.");

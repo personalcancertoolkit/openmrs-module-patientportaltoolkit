@@ -10,7 +10,6 @@
             </h2>
               <div>
                 <span class="gender-age">
-                    <span>${ui.message("coreapps.gender." + person.gender)}&nbsp;</span>
                         <% if (person.birthdate && !person.getBirthdate().is(null) ){ %>
                         <% if (person.age > 0) { %>
                         ${ui.message("coreapps.ageYears", person.age)}

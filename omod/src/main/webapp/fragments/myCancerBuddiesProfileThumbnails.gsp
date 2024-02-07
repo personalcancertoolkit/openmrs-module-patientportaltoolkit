@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="mycancerbuddiesrelationshipgender">Gender:</label>
+                        <label class="control-label col-sm-2" for="mycancerbuddiesrelationshipgender">Biological Sex:</label>
                         <div class="col-sm-10" id="mycancerbuddiesrelationshipgender">
                             <label id="mycancerbuddiesrelationshipgenderInput"></label>
                         </div>
@@ -123,9 +123,6 @@
         <li><a href="#" onclick = 'thumbnailSortingManager.sortBy("age", "closest");'>Age - Closest to You</a></li>
         <li><a href="#" onclick = 'thumbnailSortingManager.sortBy("age", "desc");'>Age - Oldest to Youngest</a></li>
         <li><a href="#" onclick = 'thumbnailSortingManager.sortBy("age", "asc");'>Age - Youngest to Oldest</a></li>
-        <li role="separator" class="divider"></li>
-        <li><a href="#" onclick = 'thumbnailSortingManager.sortBy("gender", "asc");'>Gender - Female then Male</a></li>
-        <li><a href="#" onclick = 'thumbnailSortingManager.sortBy("gender", "desc");'>Gender - Male then Female</a></li>
       </ul>
     </div>
 </div>        
@@ -179,8 +176,6 @@
                                     <% } %>
                                 <% } %>
                             </span>
-                                ~
-                            <span id="addFellowPatientGender${mycancerbuddiesperson.person.uuid}">${ui.message("coreapps.gender." + mycancerbuddiesperson.person.gender)}</span>
                         </p>
                         <hr>
                         <p id="addFellowPatientDesc${mycancerbuddiesperson.person.uuid}">${ (mycancerbuddiesperson.myCancerBuddiesDescription) } </p>

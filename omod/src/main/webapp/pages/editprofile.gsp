@@ -47,7 +47,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         </div>
         
         <div class="form-group">
-            <label class="control-label col-xs-2" for="userprofileGenderSelect">Gender </label>
+            <label class="control-label col-xs-2" for="userprofileGenderSelect">Biological Sex </label>
             <div class="col-xs-10">
 
                 <select class="form-control" id="userprofileGenderSelect"  required>

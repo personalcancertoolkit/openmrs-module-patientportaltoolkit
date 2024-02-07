@@ -211,7 +211,7 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
         </div>
 
         <div class="form-group col-md-6">
-            <label for="inputGender">Gender *</label>
+            <label for="inputGender">Biological Sex *</label>
             <select class="form-control patInput" id="inputGender" required>
                 <option value="M">Male</option>
                 <option value="F">Female</option>

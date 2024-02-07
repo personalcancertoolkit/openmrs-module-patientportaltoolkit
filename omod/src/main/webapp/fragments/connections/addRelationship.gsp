@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="gender">Gender:</label>
+                        <label class="control-label col-sm-2" for="gender">Biological Sex:</label>
                         <div class="col-sm-10" id="gender">
                             <select id="genderSelect" class="form-control">
                                 <option value="M" selected>Male</option>
