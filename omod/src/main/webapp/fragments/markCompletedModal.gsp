@@ -16,7 +16,7 @@
                 <form class="form-inline" role="form"> <label>Doctor</label>
                     <input class="form-control " id="markCompletedDoctor" type="text" value=""/>
                 </form>
-                <form class="form-inline" role="form"> <label>Comments</label>
+                <form class="form-inline" role="form"> <label>Results</label>
                     <textarea class="form-control" id="markCompletedComments"></textarea>
                 </form>
             </div>

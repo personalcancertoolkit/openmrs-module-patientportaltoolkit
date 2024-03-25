@@ -364,7 +364,7 @@
                             <span id = 'doctor_name_recorded'></span>
                         </form>
                         <form class="form-inline" role="form"> 
-                            <label class = 'manageAppointmentModalLabel'>Comments</label>
+                            <label class = 'manageAppointmentModalLabel'>Results</label>
                             <span id = 'comments_recorded'></span>
                         </form>
                         <br>
@@ -432,7 +432,7 @@
                         <input class="form-control " id="doctor_name" type="text" value=""/>
                     </form>
                     <form class="form-inline" role="form"> 
-                        <label class = 'manageAppointmentModalLabel'>Comments</label>
+                        <label class = 'manageAppointmentModalLabel'>Results</label>
                         <textarea class="form-control" id="comments"></textarea>
                     </form>
                 </div>

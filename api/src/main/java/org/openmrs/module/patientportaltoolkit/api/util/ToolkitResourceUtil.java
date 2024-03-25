@@ -632,6 +632,10 @@ public class ToolkitResourceUtil {
             case 162904:
                 reminderMap.put("color", "purple");
                 break;
+            // CT Scan Chest Abdomen Pelvis
+            case 163171:
+                reminderMap.put("color", "gold");
+                break;
         }
         // reminderMap.put("status",reminder.getStatus());
         return reminderMap;

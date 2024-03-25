@@ -270,12 +270,13 @@ Event_Table_Handler.prototype = {
 
     should_append_to_list : function(this_event){
         var today_timestamp = new Date().getTime();
-        var time_difference_90_days = (90 * 24 * 60 * 60 * 1000)
-        var forward_90_timestamp  = today_timestamp  + time_difference_90_days;
-        var backward_90_timestamp = today_timestamp  - time_difference_90_days;
+        var forward_one_year_timestamp  = today_timestamp  + (365 * 24 * 60 * 60 * 1000);
         var event_timestamp = new Date(this_event.targetDate).getTime();  
-        if(event_timestamp > forward_90_timestamp || event_timestamp < backward_90_timestamp) return false;
-        return true;
+
+        if(event_timestamp >= today_timestamp && event_timestamp <= forward_one_year_timestamp ) {
+            return true;
+        }
+        return false;
     },
 
     sorting_comparison_function :  function(a, b){

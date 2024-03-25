@@ -26,7 +26,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         console.log("test : ${person}"  )
     </script>
     <!-- eventDataUtilities used in appointments (follow up care) and preventiveCare -->
-    <script type="text/javascript" src="${ ui.resourceLink("patientportaltoolkit", "/scripts/eventDataUtilities.js")}"></script>
+    <script type="text/javascript" src="${ ui.resourceLink("patientportaltoolkit", "/scripts/eventDataUtilities.js?v=1")}"></script>
 
     <div class="tab-content">
         <div id="treatments" class="tab-pane fade in active">

@@ -122,7 +122,6 @@ ${ ui.includeFragment("patientportaltoolkit", "treatmentsGenHistoryModal") }
                         <label>Surgeon&emsp;</label>
                         <span><span id="${(surgery.encounterUuid)}surgeryPCPName">${(surgery.pcpName)}</span>
                         &emsp;<small id="${(surgery.encounterUuid)}surgeryPCPPhone">${(surgery.pcpPhone)}</small>
-                        &emsp;<small id="${(surgery.encounterUuid)}surgeryPCPEmail">${(surgery.pcpEmail)}</small>
                         </span>
                     </div>
                 </div>
