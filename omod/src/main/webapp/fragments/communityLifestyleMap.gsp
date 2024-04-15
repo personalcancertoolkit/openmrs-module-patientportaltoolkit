@@ -542,6 +542,18 @@ var search_options_handler = {
                 lat = results[0].geometry.location.lat();
                 lng = results[0].geometry.location.lng();
                 this.search_at_position({lat:lat, lng:lng}, "near_zipcode")
+            } else if(status == google.maps.GeocoderStatus.ZERO_RESULTS){
+                alert("We did not find any results for this zipcode. Try looking elsewhere");
+            } else if(status == google.maps.GeocoderStatus.ERROR){
+                alert("There was a problem connecting to the Google servers");
+            } else if(status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT){
+                alert("Too many requests in too short a time period");
+            } else if(status == google.maps.GeocoderStatus.REQUEST_DENIED){
+                alert("Google is refusing to show any results without telling us why");
+            } else if(status == google.maps.GeocoderStatus.INVALID_REQUEST){
+                alert("This GeocoderRequest was invalid");
+            } else if(status == google.maps.GeocoderStatus.UNKNOWN_ERROR){
+                alert("We encountered an error. This may succeed if you try again");
             } else {
                 alert("Geocode was not successful for the following reason: " + status);
             }
