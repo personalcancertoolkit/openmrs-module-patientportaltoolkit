@@ -65,14 +65,6 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
             </div>
         </div>
         
-        
-        <div class="form-group">
-            <label class="control-label col-xs-2" for="userprofilePostalCode"> Zipcode </label>
-            <div class="col-xs-10">
-                <input class="form-control" id="userprofilePostalCode" type="text" value="${person.getPersonAddress() != null ? (person.getPersonAddress().getPostalCode()) : "" }" required/>
-            </div>
-        </div>
-        
         <% if (personPreferences!=null){%>
             <div class="form-group">
                 <label class="control-label col-xs-2" for="userprofileMyCancerBuddies">My Cancer Buddies Status</label>
@@ -83,7 +75,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
         <% }%>
 
         <div class="form-group pull-right">
-            <button type="button" class="btn btn-default cancelModal">Cancel Changes</button>
+            <button type="button" class="btn btn-default" id="cancelEditProfile">Cancel</button>
             <button type="submit" class="btn btn-primary" id="saveuserprofile">Save</button>
         </div>
     </form>
@@ -97,7 +89,6 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                 familyName: jq("#userprofileFamilyName").val(),
                 gender: jq("#userprofileGenderSelect").val(),
                 birthDate: jq("#userprofileDOB").val(),
-                postalCode: jq("#userprofilePostalCode").val(),
                 myCancerBuddies: jq("#userprofileMyCancerBuddies").is(':checked')
             }, function () {
                 jq('#alertContainer').css('display','block');
@@ -106,12 +97,22 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
             e.preventDefault();
             e.stopPropagation();
         });
+
         jq('#changePassword').click(
             function () {
                 logEvent('clicked_EditProfile_changePassword','');
                 jq('#editProfileForm').hide();
                 jq('#changePasswordForm').show();
             });
+
+        jq('#cancelEditProfile').click(
+            function () {
+                logEvent('clicked_EditProfile_cancel','');
+                if (window.confirm("Are you sure? Any changes you made will not be saved")) {
+                    history.back();
+                }
+            });
+
         jq('#saveNewPasswordCancel').click(
             function () {
                 logEvent('clicked_EditProfile_savePassword_cancel','');
