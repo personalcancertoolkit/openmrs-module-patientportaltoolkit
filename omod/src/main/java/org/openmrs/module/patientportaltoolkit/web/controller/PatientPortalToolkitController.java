@@ -59,12 +59,19 @@ public class PatientPortalToolkitController {
                 System.out.println("Before Sending request to mailhelper");
                 System.out.println("Name= " + person.getPersonName() + "sending request uri = " + sendingRequestURL
                         + "emailid= " + emailId);
-                MailHelper.sendMail("Sphere - Forgot Password", "Hello " + person.getPersonName()
+
+                String content = "Hello " + person.getPersonName()
                         + ", \n\nWe have received a password change request for your SPHERE personal cancer toolkit account.\n\n"
                         +
-                        "If this was you, please click on this LINK to change your password -" + sendingRequestURL
-                        + "\n\n(If the link on the line above is not clickable, you can copy it into your browser)\n\nIf you did not request a password change request, do not click on the link above. Please notify the study team at sphere@iupui.edu.",
-                        emailId);
+                        "If this was you, please click on this LINK to change your password -"
+                        + sendingRequestURL
+                        + "\n\n(If the link on the line above is not clickable, you can copy it into your browser)\n\nIf you did not request a password change request, do not click on the link above. Please notify the study team at sphere@iupui.edu.";
+
+                MailHelper.sendMail(
+                        "Sphere - Forgot Password",
+                        content,
+                        emailId,
+                        false);
 
             }
         } catch (Exception e) {
@@ -99,12 +106,18 @@ public class PatientPortalToolkitController {
                 pcr.setRetired(true);
 
                 if (forgotPasswordPerson != null) {
-                    MailHelper.sendMail("Sphere - Forgot Password", "Hello " + forgotPasswordPerson.getPersonName()
+
+                    String content = "Hello " + forgotPasswordPerson.getPersonName()
                             + "\n\nYour password has been changed based on your request. Your new credentials are:\n\nUsername: "
                             + u.getUsername() + "\n Password: " + newPassword
                             + "\n\nOnce you log in, please change your password to something you can easily remember by clicking on your username in the top banner and then clicking on the \"Change Password\" button."
-                            + "\n\nIf this request was not made by you, please reply back to this email to report this issue.",
-                            emailId);
+                            + "\n\nIf this request was not made by you, please reply back to this email to report this issue.";
+
+                    MailHelper.sendMail(
+                            "Sphere - Forgot Password",
+                            content,
+                            emailId,
+                            false);
 
                 }
             } else {
@@ -135,12 +148,17 @@ public class PatientPortalToolkitController {
         Context.getUserService().changePassword(u, newPassword);
 
         if (forgotPasswordPerson != null) {
-            MailHelper.sendMail("Sphere - New Account", "Hello " + forgotPasswordPerson.getPersonName()
+            String content = "Hello " + forgotPasswordPerson.getPersonName()
                     + "\n\nAn account has been created in the SPHERE portal - https://sphere.regenstrief.org/. Your login credentials are:\n\nUsername: "
                     + u.getUsername() + "\nPassword: " + newPassword
                     + "\n\nOnce you log in, please change your password to something you can easily remember by clicking on your username in the top banner and then clicking on the \"Change Password\" button."
-                    + "\n\nIf this request was not made by you, please reply back to this email to report this issue.",
-                    emailId);
+                    + "\n\nIf this request was not made by you, please reply back to this email to report this issue.";
+
+            MailHelper.sendMail(
+                    "Sphere - New Account",
+                    content,
+                    emailId,
+                    false);
         }
     }
 

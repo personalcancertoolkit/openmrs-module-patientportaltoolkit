@@ -22,32 +22,46 @@ import java.util.Properties;
  */
 public class MailHelper {
 
-    public static void sendMail (String subject, String content, String toEmail) {
+    public static void sendMail(String subject, String content, String toEmail, boolean contentIsHTML) {
 
         System.out.println("Starting to send email");
 
         Properties props = new Properties();
-        props.put("mail.smtp.host", Context.getAdministrationService().getGlobalProperty("patientportaltoolkit.smtpHost"));
-        props.put("mail.smtp.socketFactory.port", Context.getAdministrationService().getGlobalProperty("patientportaltoolkit.smtpPort"));
-      //  props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.host",
+                Context.getAdministrationService().getGlobalProperty("patientportaltoolkit.smtpHost"));
+        props.put("mail.smtp.socketFactory.port",
+                Context.getAdministrationService().getGlobalProperty("patientportaltoolkit.smtpPort"));
+        // props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", Context.getAdministrationService().getGlobalProperty("patientportaltoolkit.smtpPort"));
+        props.put("mail.smtp.port",
+                Context.getAdministrationService().getGlobalProperty("patientportaltoolkit.smtpPort"));
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         System.out.println("Properties for email setup");
         Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SENDING_EMAIL), Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SENDING_EMAIL_PASSWORD));
+                return new PasswordAuthentication(
+                        Context.getAdministrationService()
+                                .getGlobalProperty(PatientPortalToolkitConstants.GP_SENDING_EMAIL),
+                        Context.getAdministrationService()
+                                .getGlobalProperty(PatientPortalToolkitConstants.GP_SENDING_EMAIL_PASSWORD));
             }
         });
         System.out.println("Password authenticated");
         try {
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_SENDING_EMAIL)));
+            message.setFrom(new InternetAddress(Context.getAdministrationService()
+                    .getGlobalProperty(PatientPortalToolkitConstants.GP_SENDING_EMAIL)));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(toEmail));
             message.setSubject(subject);
-            message.setText(content);
+
+            if (contentIsHTML) {
+                message.setContent(content, "text/html");
+            } else {
+                message.setText(content);
+            }
+
             System.out.println("Message details ready");
             Transport.send(message);
             System.out.println("Email sent");

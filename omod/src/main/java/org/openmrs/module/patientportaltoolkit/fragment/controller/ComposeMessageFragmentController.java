@@ -55,9 +55,15 @@ public class ComposeMessageFragmentController {
                 Person person = personService.getPersonByUuid(personUuid);
                 Message newMessage = new Message(subject, message, user.getPerson(), person);
                 Context.getService(MessageService.class).saveMessage(newMessage);
-                MailHelper.sendMail("New Message", "Hello " + person.getPersonName()
-                        + "\n you have received a new message on your patient portal module please log into the portal to view the message",
-                        person.getAttribute("Email").toString());
+                String content = "Hello " + person.getPersonName()
+                        + "\n\nYou have received a new message on the SPHERE portal. Please login to view the message";
+                String destinationEmailAddress = person.getAttribute("Email").toString();
+
+                MailHelper.sendMail(
+                        "New Message",
+                        content,
+                        destinationEmailAddress,
+                        false);
             } catch (Exception e) {
                 System.out.println(e.getStackTrace());
             }
@@ -72,13 +78,20 @@ public class ComposeMessageFragmentController {
                 message, "parentId:", parentId));
         User user = Context.getAuthenticatedUser();
         org.openmrs.api.PersonService personService = Context.getPersonService();
+
         Person person = personService.getPersonByUuid(personUuid);
         Message newMessage = new Message(subject, message, user.getPerson(), person);
         newMessage.setParentEntryId(Integer.valueOf(parentId));
         Context.getService(MessageService.class).saveMessage(newMessage);
-        MailHelper.sendMail("New Message", "Hello" + person.getPersonName()
-                + "\nyou have received a new message on your patient portal module please log into www.personalcancertoolkit.org to view the message",
-                person.getAttribute("Email").toString());
+        String content = "Hello" + person.getPersonName()
+                + "\n\nYou have received a new message on the SPHERE portal. Please login to view the message";
+        String destinationEmailAddress = person.getAttribute("Email").toString();
+
+        MailHelper.sendMail(
+                "New Message",
+                content,
+                destinationEmailAddress,
+                false);
 
     }
 

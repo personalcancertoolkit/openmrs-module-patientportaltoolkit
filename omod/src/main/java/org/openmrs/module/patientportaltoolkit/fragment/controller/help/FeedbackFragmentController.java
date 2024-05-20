@@ -31,54 +31,73 @@ public class FeedbackFragmentController {
         log.info(PPTLogAppender.appendLog("REQUEST_SEND_FEEDBACK", pageRequest.getRequest()));
     }
 
-    public void sendFeedback(FragmentModel model, @RequestParam(value = "feedbackMessage", required = true) String feedback, HttpServletRequest servletRequest) {
+    public void sendFeedback(FragmentModel model,
+            @RequestParam(value = "feedbackMessage", required = true) String feedback,
+            HttpServletRequest servletRequest) {
 
-
-       /* String to = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_CONTACT_US_EMAIL);
-        ;
-
-        String from = Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_CONTACT_US_FROM_EMAIL);
-
-
-        try {
-            Context.getService(MessageService.class).sendMessage(to,from,"Contact Form Results", feedback);
-        } catch (MessageException e) {
-            e.printStackTrace();
-        }*/
+        /*
+         * String to = Context.getAdministrationService().getGlobalProperty(
+         * PatientPortalToolkitConstants.GP_CONTACT_US_EMAIL);
+         * ;
+         * 
+         * String from = Context.getAdministrationService().getGlobalProperty(
+         * PatientPortalToolkitConstants.GP_CONTACT_US_FROM_EMAIL);
+         * 
+         * 
+         * try {
+         * Context.getService(MessageService.class).sendMessage(to,
+         * from,"Contact Form Results", feedback);
+         * } catch (MessageException e) {
+         * e.printStackTrace();
+         * }
+         */
 
         log.info(PPTLogAppender.appendLog("SEND_FEEDBACK", servletRequest, "Feedback:", feedback));
-       /* Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.socketFactory.port", "465");
-        props.put("mail.smtp.socketFactory.class",
-                "javax.net.ssl.SSLSocketFactory");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
-
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("patientportaltoolkit@gmail.com", "OpenMRS12#");
-            }
-        });
-
-        try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_CONTACT_US_FROM_EMAIL)));
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_CONTACT_US_EMAIL)));
-            message.setSubject("Testing Subject");
-            message.setText(feedback);
-
-            Transport.send(message);
-
-            System.out.println("Done");
-
-            //log.info("Feedback/Contact message sent by - " + Context.getAuthenticatedUser().getPersonName() + "(id=" + Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" + Context.getAuthenticatedUser().getPerson().getUuid() + ")");
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }*/
-        MailHelper.sendMail("Testing Subject",feedback, Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_CONTACT_US_EMAIL));
+        /*
+         * Properties props = new Properties();
+         * props.put("mail.smtp.host", "smtp.gmail.com");
+         * props.put("mail.smtp.socketFactory.port", "465");
+         * props.put("mail.smtp.socketFactory.class",
+         * "javax.net.ssl.SSLSocketFactory");
+         * props.put("mail.smtp.auth", "true");
+         * props.put("mail.smtp.port", "465");
+         * 
+         * Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+         * protected PasswordAuthentication getPasswordAuthentication() {
+         * return new PasswordAuthentication("patientportaltoolkit@gmail.com",
+         * "OpenMRS12#");
+         * }
+         * });
+         * 
+         * try {
+         * 
+         * Message message = new MimeMessage(session);
+         * message.setFrom(new
+         * InternetAddress(Context.getAdministrationService().getGlobalProperty(
+         * PatientPortalToolkitConstants.GP_CONTACT_US_FROM_EMAIL)));
+         * message.setRecipients(Message.RecipientType.TO,
+         * InternetAddress.parse(Context.getAdministrationService().getGlobalProperty(
+         * PatientPortalToolkitConstants.GP_CONTACT_US_EMAIL)));
+         * message.setSubject("Testing Subject");
+         * message.setText(feedback);
+         * 
+         * Transport.send(message);
+         * 
+         * System.out.println("Done");
+         * 
+         * //log.info("Feedback/Contact message sent by - " +
+         * Context.getAuthenticatedUser().getPersonName() + "(id=" +
+         * Context.getAuthenticatedUser().getPerson().getPersonId() + ",uuid=" +
+         * Context.getAuthenticatedUser().getPerson().getUuid() + ")");
+         * } catch (MessagingException e) {
+         * throw new RuntimeException(e);
+         * }
+         */
+        MailHelper.sendMail(
+                "Testing Subject",
+                feedback,
+                Context.getAdministrationService().getGlobalProperty(PatientPortalToolkitConstants.GP_CONTACT_US_EMAIL),
+                false);
 
     }
 }
