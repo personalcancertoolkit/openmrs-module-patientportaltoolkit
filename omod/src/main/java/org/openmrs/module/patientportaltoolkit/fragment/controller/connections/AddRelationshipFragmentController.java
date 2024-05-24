@@ -122,10 +122,9 @@ public class AddRelationshipFragmentController {
             String newPassword = String.valueOf(PasswordUtil.getNewPassword());
 
             User savedUser = Context.getUserService().createUser(newUser, newPassword);
-
             String content = getResearchInformation();
             String bodyText = "Hello " + person.getPersonName() + ", <br/><br/>"
-                    + user.getGivenName()
+                    + user.getPersonName()
                     + " added you as a connection on www.sphere.regenstrief.org. Please visit www.sphere.regenstrief.org to access your account and accept or ignore the connection request. The username for your account is "
                     + savedUser.getUsername() + " and the password is " + newPassword
                     + " . Please change your password after you log in" + content;
@@ -139,7 +138,7 @@ public class AddRelationshipFragmentController {
         } else {
             String destinationEmailAddress = person.getAttribute("Email").toString();
             String content = "Hello " + person.getPersonName() + ",\n\n"
-                    + user.getGivenName()
+                    + user.getPersonName()
                     + " added you as a connection on www.sphere.regenstrief.org. Please login at www.sphere.regenstrief.org to accept or ignore the connection request.";
 
             MailHelper.sendMail(
