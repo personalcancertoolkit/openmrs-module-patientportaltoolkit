@@ -47,7 +47,7 @@
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-year-calendar.min.css") }"
           type="text/css">
     <script type="text/javascript"
-            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}?v=6"></script>
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}?v=7"></script>
 
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-datepicker.js") }"></script>

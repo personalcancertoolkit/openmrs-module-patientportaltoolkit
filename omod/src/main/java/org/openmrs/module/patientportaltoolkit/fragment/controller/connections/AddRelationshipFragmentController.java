@@ -125,7 +125,7 @@ public class AddRelationshipFragmentController {
             String content = getResearchInformation();
             String bodyText = "Hello " + person.getPersonName() + ", <br/><br/>"
                     + user.getPersonName()
-                    + " added you as a connection on www.sphere.regenstrief.org. Please visit www.sphere.regenstrief.org to access your account and accept or ignore the connection request. The username for your account is "
+                    + " added you as a connection on www.sphere.regenstrief.org. Please visit https://sphere.regenstrief.org to access your account and accept or ignore the connection request. The username for your account is "
                     + savedUser.getUsername() + " and the password is " + newPassword
                     + " . Please change your password after you log in" + content;
             String destinationEmailAddress = person.getAttribute("Email").toString();
@@ -139,7 +139,7 @@ public class AddRelationshipFragmentController {
             String destinationEmailAddress = person.getAttribute("Email").toString();
             String content = "Hello " + person.getPersonName() + ",\n\n"
                     + user.getPersonName()
-                    + " added you as a connection on www.sphere.regenstrief.org. Please login at www.sphere.regenstrief.org to accept or ignore the connection request.";
+                    + " added you as a connection on www.sphere.regenstrief.org. Please login at https://sphere.regenstrief.org to accept or ignore the connection request.";
 
             MailHelper.sendMail(
                     "Welcome",

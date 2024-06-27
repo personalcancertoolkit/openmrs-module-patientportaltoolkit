@@ -2,6 +2,7 @@ package org.openmrs.module.patientportaltoolkit.api.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.EventLog;
 import org.openmrs.module.patientportaltoolkit.PasswordChangeRequest;
@@ -18,7 +19,6 @@ public class PatientPortalMiscServiceImpl implements PatientPortalMiscService {
 
     protected PatientPortalMiscDAO dao;
 
-
     protected final Log log = LogFactory.getLog(this.getClass());
 
     /**
@@ -34,7 +34,6 @@ public class PatientPortalMiscServiceImpl implements PatientPortalMiscService {
     public void setDao(PatientPortalMiscDAO dao) {
         this.dao = dao;
     }
-
 
     @Override
     public List<PasswordChangeRequest> getAllPasswordChangeRequests() {
@@ -53,7 +52,23 @@ public class PatientPortalMiscServiceImpl implements PatientPortalMiscService {
 
     @Override
     public EventLog logEvent(String event, String eventData) {
-        EventLog el = new EventLog(event,eventData, Context.getAuthenticatedUser(),new Date());
+        EventLog el = new EventLog(event, eventData, Context.getAuthenticatedUser(), new Date());
         return dao.logEvent(el);
+    }
+
+    @Override
+    public EventLog logAppointmentReminderNotificationSentEvent(User user) {
+        EventLog el = new EventLog(EventLog.APPOINTMENT_REMINDER_NOTIFICATION_SENT, null, user, new Date());
+        return dao.logEvent(el);
+    }
+
+    @Override
+    public EventLog getLatestAppointmentReminderHasRunEventLog() {
+        return dao.getLatestAppointmentReminderHasRunEventLog();
+    }
+
+    @Override
+    public EventLog getLatestAppointmentReminderNotificationSentForUser(User user) {
+        return dao.getLatestAppointmentReminderNotificationSentForUser(user);
     }
 }

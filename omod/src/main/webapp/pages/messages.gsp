@@ -15,7 +15,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                         title="Broadcast Message To All Active Patients">
                         <span class="fa fa-bullhorn fa-lg"></span>
                     </button>
-                <% } %>
+                <% } %>     
                 <button class="btn btn-default btn-sm pull-right" 
                     onclick="logEvent('clicked_Messages_ComposeMessage_Clicked','')" 
                     type="button" id="composeMessageButton">Compose Message
@@ -39,7 +39,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                     <h5 class="media-heading">
                         <strong>${(message.title)}</strong>
                         <br />
-                        <small><strong>${(message.receiver.getPersonName())}</strong></small>
+                        <small><strong>${(message.receiver.getPersonName())}</strong> - ${(message.getDateCreatedFormatedAsDateTime())}</small>
                         <br />
                         <small>${(message.content)}</small>
                     </h5>
@@ -51,7 +51,7 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                     <h5 class="media-heading">
                         <strong>${(messageChild.title)}</strong>
                         <br />
-                        <small><strong>${(message.receiver.getPersonName())}</strong></small>
+                        <small><strong>${(message.receiver.getPersonName())}</strong> - ${(message.getDateCreatedFormatedAsDateTime())}</small>
                         <br />
                         <small>${(messageChild.content)}</small>
                     </h5>

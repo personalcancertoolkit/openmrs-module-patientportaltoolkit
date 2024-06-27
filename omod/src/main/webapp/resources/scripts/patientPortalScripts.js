@@ -46,12 +46,39 @@ jq(document).ready(function() {
         var newStr = str[0].toUpperCase() + str.slice(1).toLowerCase();
         jq(this).text(newStr);
     });
+
+    // Automatically return the user to the last tab they visited on the 
+    // Medical Profile
     jq(function() {
         jq('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
             localStorage.setItem('lastTab', jq(this).attr('href'));
         });
+
         var lastTab = localStorage.getItem('lastTab');
-        if (lastTab) {
+
+        // Got to a specific tab
+        const url = window.location.href;
+        const [pageUrl, possibleTab] = url.split("#");
+        
+        const medicalProfileTabList = [
+            "treatments",
+            "sideEffects",
+            "followUpCare",
+            "community",
+            "symptomManagement",
+            "preventiveCare"
+        ];
+
+        // Prefer a direct link to a tab over showing the lastTab
+        if(possibleTab && medicalProfileTabList.includes(possibleTab)) {
+            jq('[href="' + "#" + possibleTab + '"]').tab('show');
+            
+            // Remove the #tab from page history so that on page reload
+            // the correct "last tab" will not get squashed by this one
+            // repeating
+            window.history.replaceState(null, "", pageUrl);
+        }
+        else if (lastTab) {
             jq('[href="' + lastTab + '"]').tab('show');
         }
     });

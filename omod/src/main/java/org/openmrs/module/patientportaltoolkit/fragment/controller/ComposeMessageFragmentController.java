@@ -56,7 +56,7 @@ public class ComposeMessageFragmentController {
                 Message newMessage = new Message(subject, message, user.getPerson(), person);
                 Context.getService(MessageService.class).saveMessage(newMessage);
                 String content = "Hello " + person.getPersonName()
-                        + "\n\nYou have received a new message on the SPHERE portal. Please login to view the message";
+                        + "\n\nYou have received a new message on the SPHERE portal. Please login at https://sphere.regenstrief.org to view the message";
                 String destinationEmailAddress = person.getAttribute("Email").toString();
 
                 MailHelper.sendMail(
@@ -84,7 +84,7 @@ public class ComposeMessageFragmentController {
         newMessage.setParentEntryId(Integer.valueOf(parentId));
         Context.getService(MessageService.class).saveMessage(newMessage);
         String content = "Hello" + person.getPersonName()
-                + "\n\nYou have received a new message on the SPHERE portal. Please login to view the message";
+                + "\n\nYou have received a new message on the SPHERE portal. Please login at https://sphere.regenstrief.org to view the message";
         String destinationEmailAddress = person.getAttribute("Email").toString();
 
         MailHelper.sendMail(

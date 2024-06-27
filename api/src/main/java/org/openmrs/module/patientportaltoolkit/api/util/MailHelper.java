@@ -22,7 +22,7 @@ import java.util.Properties;
  */
 public class MailHelper {
 
-    public static void sendMail(String subject, String content, String toEmail, boolean contentIsHTML) {
+    public static boolean sendMail(String subject, String content, String toEmail, boolean contentIsHTML) {
 
         System.out.println("Starting to send email");
 
@@ -47,6 +47,8 @@ public class MailHelper {
             }
         });
         System.out.println("Password authenticated");
+
+        boolean successfullySent = false;
         try {
 
             Message message = new MimeMessage(session);
@@ -65,8 +67,11 @@ public class MailHelper {
             System.out.println("Message details ready");
             Transport.send(message);
             System.out.println("Email sent");
+            successfullySent = true;
         } catch (Exception e) {
             System.out.println(e);
         }
+
+        return successfullySent;
     }
 }

@@ -11,6 +11,7 @@ package org.openmrs.module.patientportaltoolkit;
 
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.Person;
+import org.openmrs.api.context.Context;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -142,6 +143,10 @@ public class Message extends BaseOpenmrsObject {
      */
     public Date getDateCreated() {
         return dateCreated;
+    }
+
+    public String getDateCreatedFormatedAsDateTime() {
+        return (dateCreated == null ? null : Context.getDateTimeFormat().format(dateCreated));
     }
 
     /**

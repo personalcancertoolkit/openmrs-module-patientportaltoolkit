@@ -1,5 +1,6 @@
 package org.openmrs.module.patientportaltoolkit.api;
 
+import org.openmrs.User;
 import org.openmrs.module.patientportaltoolkit.EventLog;
 import org.openmrs.module.patientportaltoolkit.PasswordChangeRequest;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,5 +23,14 @@ public interface PatientPortalMiscService {
 
     @Transactional(readOnly = false)
     EventLog logEvent(String event, String data);
+
+    @Transactional(readOnly = false)
+    EventLog logAppointmentReminderNotificationSentEvent(User user);
+
+    @Transactional(readOnly = true)
+    EventLog getLatestAppointmentReminderHasRunEventLog();
+
+    @Transactional(readOnly = true)
+    EventLog getLatestAppointmentReminderNotificationSentForUser(User user);
 
 }

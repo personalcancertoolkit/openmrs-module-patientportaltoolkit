@@ -6,6 +6,10 @@ import org.openmrs.User;
 import java.util.Date;
 
 public class EventLog extends BaseOpenmrsObject {
+
+    public final static String APPOINTMENT_REMINDER_RUN = "APPOINTMENT_REMINDER_RUN";
+    public final static String APPOINTMENT_REMINDER_NOTIFICATION_SENT = "APPOINTMENT_REMINDER_NOTIFICATION_SENT";
+
     private Integer id;
     private String event;
     private String eventData;

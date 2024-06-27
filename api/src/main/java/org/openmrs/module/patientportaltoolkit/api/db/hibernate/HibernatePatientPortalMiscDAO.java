@@ -4,7 +4,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.User;
 import org.openmrs.module.patientportaltoolkit.EventLog;
 import org.openmrs.module.patientportaltoolkit.PasswordChangeRequest;
 import org.openmrs.module.patientportaltoolkit.api.db.PatientPortalMiscDAO;
@@ -50,6 +52,35 @@ public class HibernatePatientPortalMiscDAO implements PatientPortalMiscDAO {
     public EventLog logEvent(EventLog el) {
         sessionFactory.getCurrentSession().saveOrUpdate(el);
         return el;
+    }
+
+    @Override
+    public EventLog getLatestAppointmentReminderHasRunEventLog() {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(EventLog.class);
+        c.add(Restrictions.eq("event", EventLog.APPOINTMENT_REMINDER_RUN));
+        c.addOrder(Order.desc("createdAt"));
+
+        @SuppressWarnings("unchecked")
+        List<EventLog> list = c.list();
+        if (list.size() > 0)
+            return list.get(0);
+        else
+            return null;
+    }
+
+    @Override
+    public EventLog getLatestAppointmentReminderNotificationSentForUser(User user) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(EventLog.class);
+        c.add(Restrictions.eq("event", EventLog.APPOINTMENT_REMINDER_NOTIFICATION_SENT));
+        c.add(Restrictions.eq("user", user));
+        c.addOrder(Order.desc("createdAt"));
+
+        @SuppressWarnings("unchecked")
+        List<EventLog> list = c.list();
+        if (list.size() > 0)
+            return list.get(0);
+        else
+            return null;
     }
 
 }
