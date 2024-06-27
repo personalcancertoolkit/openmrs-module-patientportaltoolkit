@@ -15,7 +15,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>patientportaltoolkit</artifactId>
-	<version>1.17</version>
+	<version>1.18</version>
 	<packaging>pom</packaging>
 	<name>Patient Portal Toolkit Module</name>
 	<description>A disease specific patient portal</description>
