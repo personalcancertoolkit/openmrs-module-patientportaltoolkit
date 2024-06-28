@@ -143,25 +143,6 @@ public class AppointmentReminderUtil {
         return apptReminders;
     }
 
-    // private static List<PatientWithVisit> getTestPatientWithVisits() {
-
-    // Patient patient =
-    // Context.getPatientService().getPatientByUuid("cb2618ed-ebbc-429c-8d20-f282d2fe61fb");
-    // List<PatientWithVisit> patientsWithVisits = new ArrayList<>();
-
-    // try {
-    // List<VisitDetail> visits = generateVisits(patient);
-    // PatientWithVisit pwv = new PatientWithVisit(patient, visits);
-    // patientsWithVisits.add(pwv);
-    // } catch (Exception e) {
-    // // generateVisits usually throws an exception if the patient does not have a
-    // // surgery date. If a patient does not have a surgery date, the visit dates
-    // // cannot be computed, and as such, we will ignore that patient
-    // }
-
-    // return patientsWithVisits;
-    // }
-
     private static List<PatientWithVisit> getPatientsWithTheirVisits() {
 
         List<Patient> patients = Context.getPatientService().getAllPatients(false);
@@ -193,6 +174,10 @@ public class AppointmentReminderUtil {
         if (latest == null || startOfCheckWindow.toDate().after(latest.getCreatedAt())) {
             return false;
         }
+        System.out.println((new Date()).toString() + "| AppointmentReminderUtil. Patient with Id: "
+                + patient.getPersonId()
+                + " and UUID: " + patient.getUuid()
+                + " has already been notified");
         return true;
     }
 
