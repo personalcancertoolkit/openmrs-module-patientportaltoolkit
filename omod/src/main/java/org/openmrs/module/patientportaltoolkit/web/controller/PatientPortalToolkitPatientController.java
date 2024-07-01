@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
 import org.openmrs.User;
+import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.api.PatientService;
 import org.openmrs.module.patientportaltoolkit.api.util.ToolkitResourceUtil;
@@ -57,14 +58,26 @@ public class PatientPortalToolkitPatientController {
         return patients;
     }
 
-    @RequestMapping(value = "/patientportaltoolkit/getallnonvoidedpatients")
+    @RequestMapping(value = "/patientportaltoolkit/getallnonvoidedspherepatients")
     @ResponseBody
-    public Object getAllPatientPortalNonVoidedPatients()
+    public Object getAllPatientPortalNonVoidedSHPEREPatients()
             throws Exception {
-        List<Patient> omrspatients = Context.getPatientService().getAllPatients(false);
+
+        org.openmrs.api.PatientService patientService = Context.getPatientService();
+        UserService userService = Context.getUserService();
+
+        List<Patient> omrspatients = patientService.getAllPatients(false);
         List<Object> patients = new ArrayList<Object>();
         for (Patient p : omrspatients) {
-            patients.add(ToolkitResourceUtil.generatePerson(Context.getPatientService().getPatientByUuid(p.getUuid())));
+            try {
+                User user = userService.getUsersByPerson(p, false).get(0);
+                if (user.getUsername().toUpperCase().startsWith("SPHERE")) {
+                    System.out.println(user.getUsername());
+                    patients.add(ToolkitResourceUtil.generatePerson(p));
+                }
+            } catch (Exception e) {
+
+            }
         }
         return patients;
     }

@@ -495,11 +495,15 @@ jq(document).ready(function() {
     jq('#broadcastMessageButton').click( function() {
         jq('#composeMessageButton').click();
 
-        jq.get(baseUrl + "/ws/patientportaltoolkit/getallnonvoidedpatients",
+        jq.get(baseUrl + "/ws/patientportaltoolkit/getallnonvoidedspherepatients",
         function(data) {
             // The returned data is an array of patients
-            jq("#sendingto").val("All Active Patients: " + data.map(patient => patient.GivenName + ' ' + patient.FamilyName).join(", "));
-            jq("#recipientPersonUUID").val(data.map(patient => patient.id).join(","));
+            if(data.length > 0) {
+                jq("#sendingto").val("All Active SPHERE Patients: " + data.map(patient => patient.GivenName + ' ' + patient.FamilyName).join(", "));
+                jq("#recipientPersonUUID").val(data.map(patient => patient.id).join(","));
+            } else {
+                jq("#sendingto").val("No patients to broadcast to");
+            }
         });
     });
 

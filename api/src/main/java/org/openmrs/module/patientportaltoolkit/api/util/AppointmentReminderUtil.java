@@ -194,7 +194,7 @@ public class AppointmentReminderUtil {
                 "potential upcoming follow-up appointments. <br/><br/>" +
                 "While there, you can mark any appointments as Completed and adjust the dates on upcoming ones so " +
                 "that they match your actual calendar. <br/><br/>" +
-                "<a href='http://sphere.regenstrief.org/openmrs/patientportaltoolkit/home.page#followUpCare'>View Follow-up Care Calendar</a><br/><br/>"
+                "<a href='https://sphere.regenstrief.org/openmrs/patientportaltoolkit/home.page#followUpCare'>View Follow-up Care Calendar</a><br/><br/>"
                 +
 
                 "Thank you,<br/>" +
@@ -222,7 +222,7 @@ public class AppointmentReminderUtil {
                 "Or, you may have visited your doctor recently for a recommended follow-up appointment.\n\n" +
                 "Please know that we don't have access to your medical records, so we don't know specific details.\n\n"
                 +
-                "Log in to the SPHERE website (sphere.regenstrief.org) and check your Messages for more information about these appointments.\n\n"
+                "Please log in to the SPHERE website (https://sphere.regenstrief.org) and check your Messages for more information about these potential appointments.\n\n"
                 +
                 "Thank you,\n" +
                 "The SPHERE Team";
