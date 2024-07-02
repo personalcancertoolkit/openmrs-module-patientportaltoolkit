@@ -72,7 +72,6 @@ public class PatientPortalToolkitPatientController {
             try {
                 User user = userService.getUsersByPerson(p, false).get(0);
                 if (user.getUsername().toUpperCase().startsWith("SPHERE")) {
-                    System.out.println(user.getUsername());
                     patients.add(ToolkitResourceUtil.generatePerson(p));
                 }
             } catch (Exception e) {
