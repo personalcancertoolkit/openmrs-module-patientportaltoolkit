@@ -131,15 +131,9 @@ public class AppointmentReminderUtil {
         r2.description = "One Week";
         r2.numberOfDays = 7;
 
-        AppointmentReminder r3 = new AppointmentReminder();
-        r3.type = AppointmentReminder.HISTORICAL;
-        r3.description = "Two Weeks";
-        r3.numberOfDays = 14;
-
         List<AppointmentReminder> apptReminders = new ArrayList<AppointmentReminder>();
         apptReminders.add(r1);
         apptReminders.add(r2);
-        apptReminders.add(r3);
         return apptReminders;
     }
 
@@ -219,7 +213,6 @@ public class AppointmentReminderUtil {
         boolean successfullySent = false;
         String content = "Hello " + patient.getGivenName() + ",\n\n" +
                 "You may be due for a recommended follow-up appointment with your doctor in a week to a month.\n\n" +
-                "Or, you may have visited your doctor recently for a recommended follow-up appointment.\n\n" +
                 "Please know that we don't have access to your medical records, so we don't know specific details.\n\n"
                 +
                 "Please log in to the SPHERE website (https://sphere.regenstrief.org) and check your Messages for more information about these potential appointments.\n\n"
