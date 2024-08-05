@@ -85,6 +85,26 @@ public class HibernateMessageDAO implements MessageDAO {
     }
 
     @Override
+    public List<Message> getUnreadMessagesForPerson(Person p, Boolean orderByDateDesc) {
+        Criteria c = sessionFactory.getCurrentSession().createCriteria(Message.class);
+        if (orderByDateDesc != null) {
+            if (orderByDateDesc) {
+                c.addOrder(Order.desc("dateCreated"));
+            } else {
+                c.addOrder(Order.asc("dateCreated"));
+            }
+        }
+
+        c.add(Restrictions.eq("receiver", p));
+        c.add(Restrictions.isNull("receiverViewedAt"));
+        c.add(Restrictions.eq("deleted", false));
+
+        @SuppressWarnings("unchecked")
+        List<Message> list = c.list();
+        return list;
+    }
+
+    @Override
     public List<Message> findMessage(String searchText, Person p, Boolean orderByDateDesc) {
         return null;
     }

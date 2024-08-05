@@ -29,6 +29,8 @@ public interface MessageDAO {
 
     List<Message> getMessagesForPerson(Person p, Boolean orderByDateDesc);
 
+    List<Message> getUnreadMessagesForPerson(Person p, Boolean orderByDateDesc);
+
     List<Message> findMessage(String searchText, Person p, Boolean orderByDateDesc);
 
     void softDelete(Message message);

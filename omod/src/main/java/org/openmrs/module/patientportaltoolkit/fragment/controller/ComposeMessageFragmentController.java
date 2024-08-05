@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.User;
+import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.Message;
 import org.openmrs.module.patientportaltoolkit.api.MessageService;
@@ -22,6 +23,7 @@ import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +49,7 @@ public class ComposeMessageFragmentController {
         String[] personUuidList = personUuidStringList.split(",");
 
         User user = Context.getAuthenticatedUser();
-        org.openmrs.api.PersonService personService = Context.getPersonService();
+        PersonService personService = Context.getPersonService();
 
         HashSet<String> personUuidMHashSet = new HashSet<>(Arrays.asList(personUuidList));
         for (String personUuid : personUuidMHashSet) {
@@ -70,29 +72,67 @@ public class ComposeMessageFragmentController {
         }
     }
 
-    public void sendReplyMessage(@RequestParam(value = "personUuid", required = true) String personUuid,
+    public void sendReplyMessage(@RequestParam(value = "parentUuid", required = true) String parentUuid,
             @RequestParam(value = "subject", required = true) String subject,
-            @RequestParam(value = "message", required = true) String message,
-            @RequestParam(value = "parentId", required = true) String parentId, HttpServletRequest servletRequest) {
+            @RequestParam(value = "message", required = true) String message, HttpServletRequest servletRequest) {
         log.info(PPTLogAppender.appendLog("SEND_REPLY_MESSAGE", servletRequest, "subject:", subject, "message:",
-                message, "parentId:", parentId));
+                message));
+
         User user = Context.getAuthenticatedUser();
-        org.openmrs.api.PersonService personService = Context.getPersonService();
+        Person person = user.getPerson();
 
-        Person person = personService.getPersonByUuid(personUuid);
-        Message newMessage = new Message(subject, message, user.getPerson(), person);
-        newMessage.setParentEntryId(Integer.valueOf(parentId));
-        Context.getService(MessageService.class).saveMessage(newMessage);
-        String content = "Hello" + person.getPersonName()
-                + "\n\nYou have received a new message on the SPHERE portal. Please login at https://sphere.regenstrief.org to view the message";
-        String destinationEmailAddress = person.getAttribute("Email").toString();
+        // Get original message
+        MessageService messageService = Context.getService(MessageService.class);
+        Message originalMessage = messageService.getMessage(parentUuid);
 
-        MailHelper.sendMail(
-                "New Message",
-                content,
-                destinationEmailAddress,
-                false);
+        if (originalMessage != null) {
+            Person originalSender = originalMessage.getSender();
+            Person originalReceiver = originalMessage.getReceiver();
 
+            Person replyReceiver = (person.equals(originalReceiver) ? originalSender : originalReceiver);
+
+            Message newMessage = new Message(subject, message, person, replyReceiver);
+            newMessage.setParentEntryId(originalMessage.getEntryId());
+
+            messageService.saveMessage(newMessage);
+
+            String content = "Hello" + person.getPersonName()
+                    + "\n\nYou have received a new message on the SPHERE portal. Please login at https://sphere.regenstrief.org to view the message";
+            String destinationEmailAddress = person.getAttribute("Email").toString();
+
+            MailHelper.sendMail(
+                    "New Message",
+                    content,
+                    destinationEmailAddress,
+                    false);
+        }
+
+    }
+
+    public void markMessageAsRead(@RequestParam(value = "messageUuid", required = true) String messageUuid,
+            HttpServletRequest servletRequest) {
+        log.info(PPTLogAppender.appendLog("MARK_MESSAGE_AS_READ", servletRequest, "messageUuid:", messageUuid));
+
+        MessageService messageService = Context.getService(MessageService.class);
+        User user = Context.getAuthenticatedUser();
+        Person person = user.getPerson();
+
+        Message message = messageService.getMessage(messageUuid);
+        Date todayDate = new Date();
+
+        if (message != null) {
+            if (!message.hasBeenViewedByReceiver() && message.getReceiver().equals(person)) {
+                message.setReceiverViewedAt(todayDate);
+                messageService.saveMessage(message);
+            }
+
+            for (Message childMessage : message.getChildren()) {
+                if (!childMessage.hasBeenViewedByReceiver() && childMessage.getReceiver().equals(person)) {
+                    childMessage.setReceiverViewedAt(todayDate);
+                    messageService.saveMessage(childMessage);
+                }
+            }
+        }
     }
 
 }

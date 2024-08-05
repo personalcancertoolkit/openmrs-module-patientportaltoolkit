@@ -26,11 +26,11 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
     <% } else {%>
     <div class="panel panel-info">
         <div class="panel-heading">
-                <h3 class="panel-title">CancerBuddies and family connections</h3>
+                <h3 class="panel-title">My Connections</h3>
             </div>
             <div class="panel-body">
                 <p>
-                CancerBuddies and family connections outside SPHERE  are listed below.
+                Family connections and SPHERE CancerBuddies are listed here.
                 </p>
                 <p>Click "Add Connections" to invite more family members or caregivers to view your profile</p>
             </div>

@@ -507,6 +507,24 @@ jq(document).ready(function() {
         });
     });
 
+    jq(function() {
+
+        // The following is intended to facilitate updating the screen with the contents
+        // after a message reply is sent. After replying to a message, the page is reloaded.
+        // To view a specific message, the message has to be clicked on. The following finds
+        // the message that was most recently viewed, and clicks on it. The idea is that the
+        // most recently viewed message was the one that was replied to before the page got 
+        // reloaded.
+
+        const shouldShowLastViewedMessage = localStorage.getItem("shouldShowLastViewedMessage");
+        const lastViewedMessageId = localStorage.getItem("lastViewedMessageId");
+        if (shouldShowLastViewedMessage === "true" && lastViewedMessageId) {
+            jq(`#${lastViewedMessageId}`).click();
+        }
+        localStorage.removeItem("shouldShowLastViewedMessage");
+        localStorage.removeItem("lastViewedMessageId");
+    });
+
     jq('.messagelistLink').click(function() {
         const messageId = this.id;
         jq(".messagelistLink").css("background", "#FFFFFF");
@@ -515,7 +533,19 @@ jq(document).ready(function() {
         jq('#showDetailedList').show();
         jq('.detailedMessageList').hide();
         jq('#mediaList' + this.id).show();
-        jq('#sendingReplyMessageSubject' + this.id).val('Re: ' + jq(this).data('messageTitle'));
+        jq('#sendingReplyMessageSubject' + this.id).val(jq(this).data('messageTitle'));
+
+        // Fire off POST to mark message as read if the reader is the receiver
+        // At this level, we don't know for sure if the reader is the receiver, but
+        // the server will verify that
+        jq.get("composeMessage/markMessageAsRead.action", {
+            messageUuid: messageId
+        }).done(function() {
+        });
+
+        // Save this as the last read message so that it automatically opens
+        // when the page is reloaded after a message is replied to
+        localStorage.setItem("lastViewedMessageId", messageId);
     });
     //------------------- Messages Page JS Ends ----------------------
     jq('.profileBadge').profileBadge();
@@ -537,13 +567,20 @@ jq(document).ready(function() {
     //------------------- Reply message JS ----------------------
     jq('.sendReplyMessageButton').click(
         function() {
-            var messageid = this.id.split("sendReplyMessageButton")[1];
+            const messageid = this.id.split("sendReplyMessageButton")[1];
+            jq("#sendingReplyMessageText" + messageid).prop("disabled", true);
+
+            localStorage.setItem("shouldShowLastViewedMessage", "true");
+
             jq.get("composeMessage/sendReplyMessage.action", {
-                personUuid: jq("#replypersonId" + messageid).val(),
+                parentUuid: messageid,
                 subject: jq("#sendingReplyMessageSubject" + messageid).val(),
                 message: jq("#sendingReplyMessageText" + messageid).val(),
-                parentId: jq("#replythreadparentid" + messageid).val()
             }).done(function() {
+                jq("#sendingReplyMessageText" + messageid).prop("disabled", false);
+                logEvent('clicked_Messages_Reply', JSON.stringify({
+                    'messageId': messageid
+                }))
                 location.reload();
             });
         });
@@ -634,11 +671,25 @@ jq(document).ready(function() {
 
     jq('#sendNewMessageButton').click(
         function() {
+            // Disable the message compose
+            jq("#newMessageComposeDiv fieldset").prop("disabled", true);
+            
+            // Send the message
             jq.get("composeMessage/sendNewMessage.action", {
                 personUuidStringList: jq("#recipientPersonUUID").val(),
                 subject: jq("#sendingNewMessageSubject").val(),
                 message: jq("#sendingNewMessageText").val(),
             }).done(function() {
+                
+                // Log that the message was sent
+                logEvent('clicked_ComposeMessage_Send', JSON.stringify({
+                    'message': jq('#sendingNewMessageText').val()
+                }));
+
+                // Re-enable the message compose
+                jq("#newMessageComposeDiv fieldset").prop("disabled", false);
+                
+                // Reload the page
                 location.reload();
             });
         });

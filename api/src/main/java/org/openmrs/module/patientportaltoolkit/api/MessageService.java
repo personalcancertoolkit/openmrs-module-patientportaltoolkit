@@ -41,8 +41,11 @@ public interface MessageService {
     @Transactional(readOnly = true)
     List<Message> getMessageForPerson(Person p, Boolean orderByDateDesc);
 
+    @Transactional(readOnly = true)
+    List<Message> getUnreadMessagesForPerson(Person p, Boolean orderByDateDesc);
+
     /**
-     * @param p the person who wrote the journal entries
+     * @param p          the person who wrote the journal entries
      * @param searchText the text to searc hfor
      * @return all journal entries written by person p
      * @should return entries written by supplied person
@@ -72,6 +75,7 @@ public interface MessageService {
 
     /**
      * find all comments of a given entry
+     * 
      * @param entry parent entry of comments
      * @return all comments of a given entry
      */

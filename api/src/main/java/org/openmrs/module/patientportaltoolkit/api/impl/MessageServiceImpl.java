@@ -43,7 +43,6 @@ public class MessageServiceImpl extends BaseOpenmrsService implements MessageSer
         this.dao = dao;
     }
 
-
     @Override
     public List<Message> getAllMessages() {
         return dao.getAllMessages();
@@ -56,15 +55,15 @@ public class MessageServiceImpl extends BaseOpenmrsService implements MessageSer
 
     @Override
     public List<Message> getMessageForPerson(Person p, Boolean orderByDateDesc) {
-        List<Message> totalMessageList= dao.getMessagesForPerson(p, orderByDateDesc);
+        List<Message> totalMessageList = dao.getMessagesForPerson(p, orderByDateDesc);
         List<Message> returnMessageList = new ArrayList<Message>();
-        for(Message je: totalMessageList){
-            if(je.getParentEntryId() ==null)
+        for (Message je : totalMessageList) {
+            if (je.getParentEntryId() == null)
                 returnMessageList.add(je);
         }
-        for(Message je:returnMessageList){
-            if(je.getChildren() !=null){
-                Set<Message> journalEntriesSet= new TreeSet<Message>(new Comparator<Message>() {
+        for (Message je : returnMessageList) {
+            if (je.getChildren() != null) {
+                Set<Message> journalEntriesSet = new TreeSet<Message>(new Comparator<Message>() {
                     public int compare(Message je1, Message je2) {
                         return je1.getDateCreated().compareTo(je2.getDateCreated());
                     }
@@ -75,6 +74,11 @@ public class MessageServiceImpl extends BaseOpenmrsService implements MessageSer
             }
         }
         return returnMessageList;
+    }
+
+    @Override
+    public List<Message> getUnreadMessagesForPerson(Person p, Boolean orderByDateDesc) {
+        return dao.getUnreadMessagesForPerson(p, orderByDateDesc);
     }
 
     @Override

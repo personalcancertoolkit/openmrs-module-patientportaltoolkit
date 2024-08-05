@@ -35,6 +35,7 @@ public class Message extends BaseOpenmrsObject {
     private Person receiver;
     private Date dateCreated;
     private boolean deleted;
+    private Date receiverViewedAt;
     private Date dateDeleted;
 
     private Set<Message> children = new HashSet<Message>(0);
@@ -129,6 +130,24 @@ public class Message extends BaseOpenmrsObject {
      */
     public Person getReceiver() {
         return receiver;
+    }
+
+    /**
+     * @param receiverViewedAt the receiverViewedAt to set
+     */
+    public void setReceiverViewedAt(Date receiverViewedAt) {
+        this.receiverViewedAt = receiverViewedAt;
+    }
+
+    /**
+     * @return the receiverViewedAt
+     */
+    public Date getReceiverViewedAt() {
+        return receiverViewedAt;
+    }
+
+    public boolean hasBeenViewedByReceiver() {
+        return this.receiverViewedAt != null;
     }
 
     /**

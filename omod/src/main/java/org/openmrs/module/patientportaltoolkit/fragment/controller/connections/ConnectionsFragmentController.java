@@ -19,6 +19,7 @@ import org.openmrs.module.patientportaltoolkit.SecurityLayer;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalRelationService;
 import org.openmrs.module.patientportaltoolkit.api.SecurityLayerService;
+import org.openmrs.module.patientportaltoolkit.api.util.MailHelper;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
 import org.openmrs.ui.framework.page.PageRequest;
@@ -84,11 +85,30 @@ public class ConnectionsFragmentController {
         PatientPortalRelation ppr = Context.getService(PatientPortalRelationService.class)
                 .getPatientPortalRelation(relationshipId);
         ppr.setRetired(false);
-        PatientPortalRelation pprNew = new PatientPortalRelation(user.getPerson(), ppr.getPerson());
-        pprNew.setShareStatus(1);
+
+        Person personWhoRequestedConnection = ppr.getPerson();
+        String destinationEmailAddress = personWhoRequestedConnection.getAttribute("Email").toString();
+
+        Person authenticatedUserPerson = user.getPerson();
+        String message = authenticatedUserPerson.getPersonName()
+                + " has accepted your SPHERE connection request. Login to SPHERE at https://sphere.regenstrief.org to view their profile";
+
+        boolean successfullySent = MailHelper.sendMail(
+                "SPHERE Connection Request Accepted",
+                message,
+                destinationEmailAddress,
+                false);
+
+        if (!successfullySent) {
+            System.out.println(
+                    "Unable to send connection request acceptance email to personID "
+                            + personWhoRequestedConnection.getId() + " from personID " + authenticatedUserPerson.getId()
+                            + " in ConnectionsFragementController:acceptConnectionRequest");
+        }
 
         ppr.setShareStatus(1);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
+
         log.info(PPTLogAppender.appendLog("ACCEPT_RELATIONSHIP", servletRequest, "Relationship Id:", relationshipId));
         Context.getService(PatientPortalMiscService.class).logEvent("ACCEPTED_CONNECTION_REQUEST",
                 "{\"relationshipPersonId\": \"" + relationshipId + "\"}");

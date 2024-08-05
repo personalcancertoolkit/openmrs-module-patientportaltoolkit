@@ -47,7 +47,7 @@
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-year-calendar.min.css") }"
           type="text/css">
     <script type="text/javascript"
-            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}?v=8"></script>
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}?v=9"></script>
 
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-datepicker.js") }"></script>
@@ -81,27 +81,69 @@
     </button>
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-            <li id="patientPortalJournals" onclick="logEvent('MY_POSTS_MENU_CLICKED','')"> <a href="/openmrs/patientportaltoolkit/journals.page"><span class="fa fa-comments-o  fa-lg"></span> &nbsp; My Posts</a></li>
+            <li id="patientPortalJournals" onclick="logEvent('MY_POSTS_MENU_CLICKED','')"> 
+                <a href="/openmrs/patientportaltoolkit/journals.page">
+                    <span class="fa fa-comments-o  fa-lg"></span> &nbsp; My Posts
+                </a>
+            </li>
             <% if(contextUser.person.isPatient()) { %>
-                <li id="patientPortalNavHome" onclick="logEvent('MY_MEDICAL_PROFILE_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/home.page"> <span class="fa fa-medkit fa-lg"></span>  &nbsp; My Medical Profile</a></li>
+                <li id="patientPortalNavHome" onclick="logEvent('MY_MEDICAL_PROFILE_MENU_CLICKED','')">
+                    <a href="/openmrs/patientportaltoolkit/home.page"> 
+                        <span class="fa fa-medkit fa-lg"></span>  &nbsp; My Medical Profile
+                    </a>
+                </li>
             <% } %>
-            <li id="patientPortalConnections" onclick="logEvent('MY_CONNECTIONS_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/patientconnections.page"><span class="fa fa-address-book-o  fa-lg"></span>  &nbsp; My Connections</a></li>
+            <li id="patientPortalConnections" onclick="logEvent('MY_CONNECTIONS_MENU_CLICKED','')">
+                <a href="/openmrs/patientportaltoolkit/patientconnections.page">
+                    <span class="fa fa-address-book-o  fa-lg"></span>  &nbsp; My Connections 
+                    <% if(numberOfConnectionRequests > 0) { %>
+                        <span class="badge badge-info" style="margin-top: -2px"> +${(numberOfConnectionRequests)} New</span>
+                    <% } %>
+                </a>
+            </li>
             <% if(contextUser.person.isPatient()) { %>
-                <li id="patientPortalMyCancerBuddies" onclick="logEvent('MY_CANCER_BUDDIES_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/myCancerBuddies.page"> <span class="fa fa-users fa-lg" ></span>  &nbsp; My CancerBuddies</a></li>
+                <li id="patientPortalMyCancerBuddies" onclick="logEvent('MY_CANCER_BUDDIES_MENU_CLICKED','')">
+                    <a href="/openmrs/patientportaltoolkit/myCancerBuddies.page"> 
+                        <span class="fa fa-users fa-lg" ></span>  &nbsp; My CancerBuddies
+                    </a>
+                </li>
             <% } %>
             <% if(contextUser.isSuperUser()) { %>
-            <li onclick="logEvent('ADD_NEW_PATIENT_CLICKED','')"><a href="/openmrs/patientportaltoolkit/addNewPatient.page"><span class="fa fa-user-plus fa-lg"></span> &nbsp; Add New Patient</a></li>
+                <li onclick="logEvent('ADD_NEW_PATIENT_CLICKED','')">
+                    <a href="/openmrs/patientportaltoolkit/addNewPatient.page">
+                        <span class="fa fa-user-plus fa-lg"></span> &nbsp; Add New Patient
+                    </a>
+                </li>
             <% } %>
             <% if(contextUser.isSuperUser()) { %>
-            <li onclick="logEvent('ADD_NEW_TREATMENT_CLICKED','')"><a href="/openmrs/patientportaltoolkit/addNewTreatments.page"><span class="fa fa-medkit fa-lg"></span> &nbsp; Add New Treatment</a></li>
+                <li onclick="logEvent('ADD_NEW_TREATMENT_CLICKED','')">
+                    <a href="/openmrs/patientportaltoolkit/addNewTreatments.page">
+                        <span class="fa fa-medkit fa-lg"></span> &nbsp; Add New Treatment
+                    </a>
+                </li>
             <% } %>
             </ul>
         <ul class="nav navbar-nav navbar-right">
             <% if(contextUser.isSuperUser()) { %>
-            <li><a href="/openmrs/admin/modules/module.list"><span class="fa fa-upload fa-lg"></span> Update Module</a></li>
+                <li>
+                    <a href="/openmrs/admin/modules/module.list">
+                        <span class="fa fa-upload fa-lg"></span> Update Module
+                    </a>
+                </li>
             <% } %>
-            <li id="patientPortalUserName" onclick="logEvent('USER_ACCOUNT_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/editprofile.page"><span class="fa fa-user-circle fa-lg"></span> &nbsp; ${ (username) }</a></li>
-            <li onclick="logEvent('MESSAGES_MENU_CLICKED','')"><a href="/openmrs/patientportaltoolkit/messages.page"><span class="fa fa-envelope fa-lg"></span> &nbsp; Messages</a></li>
+            <li id="patientPortalUserName" onclick="logEvent('USER_ACCOUNT_MENU_CLICKED','')">
+                <a href="/openmrs/patientportaltoolkit/editprofile.page">
+                    <span class="fa fa-user-circle fa-lg"></span> &nbsp; ${ (username) }
+                </a>
+            </li>
+            <li onclick="logEvent('MESSAGES_MENU_CLICKED','')">
+                <a href="/openmrs/patientportaltoolkit/messages.page">
+                    <span class="fa fa-envelope fa-lg"></span> &nbsp; Messages
+                    <% if(numberOfUnreadMessages > 0) { %>
+                        <span class="badge badge-info" style="margin-top: -2px"> +${(numberOfUnreadMessages)} New</span>
+                    <% } %>
+                </a>
+            </li>
             <li class="dropdown" onclick="logEvent('HELP_MENU_CLICKED','')">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle"><span class="fa fa-life-ring fa-lg"></span>  &nbsp; Help <b class="caret"></b></a>
                 <ul class="dropdown-menu" id="menu1">

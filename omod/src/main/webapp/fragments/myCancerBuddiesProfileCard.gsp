@@ -48,7 +48,7 @@
         <h4 class="panel-title">Join MyCancerBuddies?</h4>
     </div>
     <div class="panel-body">
-        <p>If you would like to participate in MyCancerBuddies, please click on Register</p>
+        <p>Would you like to join My CancerBuddies - to interact with patients in this program in similar situations?</p>
     </div>
     <div class="panel-footer">
         <button id="mycancerbuddiesRegister" type="button" class="btn-primary btn-sm">Register</button>

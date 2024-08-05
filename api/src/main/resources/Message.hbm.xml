@@ -27,6 +27,7 @@
         <property name="dateCreated" column="date_created" type="java.util.Date" length="19"/>
         <property name="deleted" type="boolean" length="1"/>
         <property name="dateDeleted" column="date_deleted" type="java.util.Date" length="19"/>
+        <property name="receiverViewedAt" column="receiver_viewed_at" type="java.util.Date" length="19"/>
         <set name="children" table="patientportal_messages"
              inverse="true" lazy="true" fetch="select">
             <key>

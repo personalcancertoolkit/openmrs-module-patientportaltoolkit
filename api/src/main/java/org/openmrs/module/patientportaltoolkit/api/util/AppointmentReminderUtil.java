@@ -210,7 +210,6 @@ public class AppointmentReminderUtil {
     }
 
     private static boolean sendEmailNotificationTo(Patient patient) {
-        boolean successfullySent = false;
         String content = "Hello " + patient.getGivenName() + ",\n\n" +
                 "You may be due for a recommended follow-up appointment with your doctor in a week to a month.\n\n" +
                 "Please know that we don't have access to your medical records, so we don't know specific details.\n\n"
@@ -220,20 +219,17 @@ public class AppointmentReminderUtil {
                 "Thank you,\n" +
                 "The SPHERE Team";
 
-        try {
-            String destinationEmailAddress = patient.getAttribute("Email").toString();
-            MailHelper.sendMail(
-                    "SPHERE Appointment Reminder",
-                    content,
-                    destinationEmailAddress,
-                    false);
-            successfullySent = true;
-
-        } catch (Exception e) {
+        String destinationEmailAddress = patient.getAttribute("Email").toString();
+        boolean successfullySent = MailHelper.sendMail(
+                "SPHERE Appointment Reminder",
+                content,
+                destinationEmailAddress,
+                false);
+        if (!successfullySent) {
             System.out.println(
                     "Patient with UUID: " + patient.getUuid() + " could not send email in AppointmentReminderUtil");
-
         }
+
         return successfullySent;
     }
 

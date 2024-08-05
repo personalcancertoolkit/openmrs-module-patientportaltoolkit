@@ -14,9 +14,15 @@ import org.openmrs.ui.framework.page.PageRequest;
  */
 public class ConnectionsTwoDirectionFragmentController {
     protected final Log log = LogFactory.getLog(getClass());
-    public void controller(FragmentModel model, @FragmentParam(value="twoDirectionFragmentPerson") Person twoDirectionFragmentPerson, @FragmentParam(value="twoDirectionFragmentRelation") PatientPortalRelation twoDirectionFragmentRelation, @FragmentParam(value="twoDirectionFragmentSide") String twoDirectionFragmentSide,@FragmentParam(value="twoDirectionFragmentAccepted") boolean twoDirectionFragmentAccepted , PageRequest pageRequest) {
+
+    public void controller(FragmentModel model,
+            @FragmentParam(value = "twoDirectionFragmentPerson") Person twoDirectionFragmentPerson,
+            @FragmentParam(value = "twoDirectionFragmentRelation") PatientPortalRelation twoDirectionFragmentRelation,
+            @FragmentParam(value = "twoDirectionFragmentSide") String twoDirectionFragmentSide,
+            @FragmentParam(value = "twoDirectionFragmentAccepted") boolean twoDirectionFragmentAccepted,
+            PageRequest pageRequest) {
         model.addAttribute("twoDirectionFragmentPerson", twoDirectionFragmentPerson);
-        model.addAttribute("twoDirectionFragmentRelation",twoDirectionFragmentRelation);
+        model.addAttribute("twoDirectionFragmentRelation", twoDirectionFragmentRelation);
         model.addAttribute("twoDirectionFragmentSide", twoDirectionFragmentSide);
         model.addAttribute("twoDirectionFragmentAccepted", twoDirectionFragmentAccepted);
         log.info(PPTLogAppender.appendLog("REQUEST_RELATIONSHIPSELECT_FRAGMENT", pageRequest.getRequest()));
