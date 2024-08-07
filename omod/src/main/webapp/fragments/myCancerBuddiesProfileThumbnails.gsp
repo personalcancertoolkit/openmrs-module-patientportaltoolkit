@@ -137,6 +137,10 @@
             <%   
                 // Determine whether a button, and if so which button, should be displayed
                 the_button_to_display = "";
+                SHARE_STATUS_PENDING = 0;
+                SHARE_STATUS_ACCEPTED = 1;
+                SHARE_STATUS_REJECTED = 2;                
+
                 if (mycancerbuddiespreferences.myCancerBuddies==true) { 
                     ///////////////
                     // Define pptrelation
@@ -150,13 +154,13 @@
                         pptrelation = pptutil.getRelationbetweenTwoPeople(mycancerbuddiesperson.person, person)
                     }
 
-                    if (pptrelation && pptrelation.shareStatus==0) {
+                    if (pptrelation && pptrelation.shareStatus == SHARE_STATUS_PENDING) {
                         the_button_to_display = '<hr/><span class="fa fa-hourglass-half text-warning"></span> <label class="text-warning"> Request Pending</label>';
                     }
-                    if (pptrelation && pptrelation.shareStatus==1) {
+                    if (pptrelation && pptrelation.shareStatus == SHARE_STATUS_ACCEPTED) {
                         the_button_to_display = '<hr/><span class="fa fa-smile-o text-success"></span> <label class="text-success">Connected</label>';
                     }
-                    if (pptrelation==null || pptrelation.getShareStatus()==2) {
+                    if (pptrelation==null || pptrelation.getShareStatus() == SHARE_STATUS_REJECTED) {
                        the_button_to_display = '<hr/><button id="addFellowPatient'+mycancerbuddiesperson.person.uuid+'" class="btn btn-info btn-xs addFellowPatient" role="button" data-toggle="modal" data-target="#add-mycancerbuddies-relationship-modal">Add Connection</button>';
                     }
                 } 

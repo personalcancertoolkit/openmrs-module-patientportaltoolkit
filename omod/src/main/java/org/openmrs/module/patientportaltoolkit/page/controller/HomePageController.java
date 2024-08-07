@@ -46,7 +46,7 @@ public class HomePageController {
                     Context.getAuthenticatedUser().getPerson(), Context.getAuthenticatedUser());
 
             if (ppr != null
-                    && ppr.getShareStatus() == 1
+                    && ppr.getShareStatus() == PatientPortalRelation.SHARE_STATUS_ACCEPTED
                     && (patientPortalRelationService.hasAccessToShareType(Context.getAuthenticatedUser().getPerson(),
                             person,
                             securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_MEDICAL),

@@ -46,12 +46,12 @@ public class HeaderForAppFragmentController {
             (authenticatedUserPerson.getIsPatient()
                     && relationship.getRelatedPerson().equals(authenticatedUserPerson)
                     && relationship.getPerson().getIsPatient()
-                    && relationship.getShareStatus() == 0)
+                    && relationship.getShareStatus() == PatientPortalRelation.SHARE_STATUS_PENDING)
                     ||
                     // A request where the authenticated user is not a patient and the
                     // request has not been responded to
                     (!authenticatedUserPerson.getIsPatient()
-                            && relationship.getShareStatus() == 0)) {
+                            && relationship.getShareStatus() == PatientPortalRelation.SHARE_STATUS_PENDING)) {
                 numberOfConnectionRequests++;
             }
         }

@@ -174,7 +174,7 @@ public class AddRelationshipFragmentController {
                 .getSecurityLayerByUuid(SecurityLayer.CAN_SEE_POSTS));
         ppr.setShareTypeB(Context.getService(SecurityLayerService.class)
                 .getSecurityLayerByUuid(SecurityLayer.CAN_SEE_POSTS)); // share posts by default
-        ppr.setShareStatus(0);
+        ppr.setShareStatus(PatientPortalRelation.SHARE_STATUS_PENDING);
         Calendar date = Calendar.getInstance();
         date.setTime(new Date());
 

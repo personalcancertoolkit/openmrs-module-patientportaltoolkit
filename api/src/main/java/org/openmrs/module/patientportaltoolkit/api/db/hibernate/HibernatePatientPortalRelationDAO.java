@@ -128,7 +128,7 @@ public class HibernatePatientPortalRelationDAO implements PatientPortalRelationD
     public List<PatientPortalRelation> getAcceptedPatientPortalRelationByRelatedPerson(Person person) {
         final Criteria crit = this.sessionFactory.getCurrentSession().createCriteria(PatientPortalRelation.class);
         crit.add(Restrictions.eq("relatedPerson", person));
-        crit.add(Restrictions.eq("shareStatus", 1));
+        crit.add(Restrictions.eq("shareStatus", PatientPortalRelation.SHARE_STATUS_ACCEPTED));
         crit.addOrder(Order.desc("dateCreated"));
 
         @SuppressWarnings("unchecked")

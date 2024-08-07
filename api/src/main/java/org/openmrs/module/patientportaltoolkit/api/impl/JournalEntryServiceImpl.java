@@ -50,7 +50,6 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
         this.dao = dao;
     }
 
-
     /**
      *
      */
@@ -86,42 +85,43 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
     /**
      *
      */
-    public List<JournalEntry> getJournalEntryForPerson(User user, Boolean orderByDateDesc ) {
-        List<JournalEntry> totalJournalList = new ArrayList<JournalEntry>();
-        if(dao.getJournalEntryForPerson(user, orderByDateDesc)!=null)
-        totalJournalList.addAll(dao.getJournalEntryForPerson(user, orderByDateDesc));
-        List<PatientPortalRelation>  pprlist= new ArrayList<PatientPortalRelation>();
-        PatientPortalRelationService patientPortalRelationService=Context.getService(PatientPortalRelationService.class);
-        SecurityLayerService securityLayerService=Context.getService(SecurityLayerService.class);
-        Person personCheckingAccess=user.getPerson();
-        Person personWhoMightHaveGivenAccess=null;
-        if(patientPortalRelationService.getPatientPortalRelationByPerson(user.getPerson())!=null) {
-            pprlist.addAll(Context.getService(PatientPortalRelationService.class).getPatientPortalRelationByPerson(user.getPerson()));
-            for (PatientPortalRelation ppr : pprlist) {
-                if (ppr.getShareStatus()==1) {
-                    if(ppr.getPerson().equals(personCheckingAccess))
-                        personWhoMightHaveGivenAccess=ppr.getRelatedPerson();
-                    else
-                        personWhoMightHaveGivenAccess=ppr.getPerson();
+    public List<JournalEntry> getJournalEntryForPerson(User user, Boolean orderByDateDesc) {
 
-                    if(patientPortalRelationService.hasAccessToShareType(personCheckingAccess,personWhoMightHaveGivenAccess,securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_POSTS),user))
-                        totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getService(UserService.class).getUsersByPerson(personWhoMightHaveGivenAccess, false).get(0), orderByDateDesc));
-                    /*if (ppr.getPerson().equals(user.getPerson())) {
-                        if (ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeB().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
-                            totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getRelatedPerson(), false).get(0), orderByDateDesc));
-                        }
-                        if (patientPortalRelationService.hasAccessToShareType(ppr.getRelatedPerson(),ppr.getPerson(),securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_POSTS),user)){
-                            totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getRelatedPerson(), false).get(0), orderByDateDesc));
-                        }
+        List<JournalEntry> totalJournalList = new ArrayList<JournalEntry>();
+
+        if (dao.getJournalEntryForPerson(user, orderByDateDesc) != null)
+            totalJournalList.addAll(dao.getJournalEntryForPerson(user, orderByDateDesc));
+
+        List<PatientPortalRelation> pprlist = new ArrayList<PatientPortalRelation>();
+        PatientPortalRelationService patientPortalRelationService = Context
+                .getService(PatientPortalRelationService.class);
+        SecurityLayerService securityLayerService = Context.getService(SecurityLayerService.class);
+
+        Person personCheckingAccess = user.getPerson();
+        Person personWhoMightHaveGivenAccess = null;
+
+        if (patientPortalRelationService.getPatientPortalRelationByPerson(user.getPerson()) != null) {
+            pprlist.addAll(Context.getService(PatientPortalRelationService.class)
+                    .getPatientPortalRelationByPerson(user.getPerson()));
+
+            for (PatientPortalRelation ppr : pprlist) {
+                if (ppr.getShareStatus() == PatientPortalRelation.SHARE_STATUS_ACCEPTED) {
+
+                    if (ppr.getPerson().equals(personCheckingAccess))
+                        personWhoMightHaveGivenAccess = ppr.getRelatedPerson();
+                    else
+                        personWhoMightHaveGivenAccess = ppr.getPerson();
+
+                    if (patientPortalRelationService.hasAccessToShareType(
+                            personCheckingAccess,
+                            personWhoMightHaveGivenAccess,
+                            securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_POSTS),
+                            user)) {
+                        totalJournalList.addAll(dao.getJournalEntryForPerson(
+                                Context.getService(UserService.class)
+                                        .getUsersByPerson(personWhoMightHaveGivenAccess, false).get(0),
+                                orderByDateDesc));
                     }
-                    if (ppr.getRelatedPerson().equals(user.getPerson())) {
-                        if (ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_POSTS) || ppr.getShareTypeA().getName().equals(PatientPortalToolkitConstants.CAN_SEE_BOTH)) {
-                            totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getPerson(), false).get(0), orderByDateDesc));
-                        }
-                        if (patientPortalRelationService.hasAccessToShareType(ppr.getPerson(),ppr.getRelatedPerson(),securityLayerService.getSecurityLayerByName(PatientPortalToolkitConstants.CAN_SEE_POSTS),user)){
-                            totalJournalList.addAll(dao.getJournalEntryForPerson(Context.getUserService().getUsersByPerson(ppr.getPerson(), false).get(0), orderByDateDesc));
-                        }
-                    }*/
                 }
             }
         }
@@ -132,25 +132,24 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
             }
         });
 
-
         List<JournalEntry> returnJournalList = new ArrayList<JournalEntry>();
-        for(JournalEntry je: totalJournalList){
-            if(je.getParentEntryId() ==null)
+        for (JournalEntry je : totalJournalList) {
+            if (je.getParentEntryId() == null)
                 returnJournalList.add(je);
         }
-        for(JournalEntry je:returnJournalList){
-            if(je.getChildren() !=null){
-                Set<JournalEntry> journalEntriesSet= new TreeSet<JournalEntry>(new Comparator<JournalEntry>() {
+        for (JournalEntry je : returnJournalList) {
+            if (je.getChildren() != null) {
+                Set<JournalEntry> journalEntriesSet = new TreeSet<JournalEntry>(new Comparator<JournalEntry>() {
                     public int compare(JournalEntry je1, JournalEntry je2) {
                         return je1.getDateCreated().compareTo(je2.getDateCreated());
                     }
                 });
-                for (JournalEntry jeChild:je.getChildren()){
-                    if(!jeChild.isDeleted()){
+                for (JournalEntry jeChild : je.getChildren()) {
+                    if (!jeChild.isDeleted()) {
                         journalEntriesSet.add(jeChild);
                     }
                 }
-                //journalEntriesSet.addAll(je.getChildren());
+                // journalEntriesSet.addAll(je.getChildren());
 
                 je.setChildren(journalEntriesSet);
             }
@@ -162,14 +161,14 @@ public class JournalEntryServiceImpl extends BaseOpenmrsService implements Journ
      *
      */
     public List<JournalEntry> findEntries(String searchText, Person p, Boolean orderByDateDesc) {
-        return dao.findEntries(searchText,p,orderByDateDesc);
+        return dao.findEntries(searchText, p, orderByDateDesc);
     }
 
     public void softDelete(JournalEntry entry) {
         dao.softDelete(entry);
     }
 
-    public List<JournalEntry> findComments(JournalEntry entry){
+    public List<JournalEntry> findComments(JournalEntry entry) {
         return dao.findComments(entry);
     }
 }

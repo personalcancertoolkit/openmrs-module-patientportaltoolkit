@@ -63,30 +63,30 @@ ${ ui.includeFragment("patientportaltoolkit", "editPost") }
 
                 <ul class="media-list feed-subitems clearfix">
                     <% if (journal.children) { %>
-                    <% journal.children.each { %>
-                    <li class="media feed-item">
-                        <div>
-                            <div class="media-left">
-                                <a href="#">
-                                    <div class="profileBadgeJournals">${ (it.creator.getGivenName()) } ${ (it.creator.getFamilyName()) }</div>
-                                </a>
-                            </div>
+                        <% journal.children.each { %>
+                            <li class="media feed-item">
+                                <div>
+                                    <div class="media-left">
+                                        <a href="#">
+                                            <div class="profileBadgeJournals">${ (it.creator.getGivenName()) } ${ (it.creator.getFamilyName()) }</div>
+                                        </a>
+                                    </div>
 
-                            <div class="media-body">
-                                <h5 class="media-heading">${(it.creator.getGivenName())}  - <span id="journalTitle${ it.uuid }">${(it.title)}</span> <small>&emsp; ${ pptutil.formatDate(it.dateCreated) }</small></h5>
-                                <% if(it.creator.person==person) { %>
-                                <div class="pull-right">
-                                    <a id="journalEdit${ it.uuid }" class="no-underline-edit fa fa-pencil editJournalButton"  data-toggle="modal" data-target="#post-edit"></a>
-                                &nbsp;
-                                     <a id="journalRemove${ it.uuid }" class="no-underline-edit fa fa-trash removeJournalButton"  data-toggle="modal" data-target="#confirm-post-remove"></a>
+                                    <div class="media-body">
+                                        <h5 class="media-heading">${(it.creator.getGivenName())}  - <span id="journalTitle${ it.uuid }">${(it.title)}</span> <small>&emsp; ${ pptutil.formatDate(it.dateCreated) }</small></h5>
+                                        <% if(it.creator.person==person) { %>
+                                        <div class="pull-right">
+                                            <a id="journalEdit${ it.uuid }" class="no-underline-edit fa fa-pencil editJournalButton"  data-toggle="modal" data-target="#post-edit"></a>
+                                        &nbsp;
+                                            <a id="journalRemove${ it.uuid }" class="no-underline-edit fa fa-trash removeJournalButton"  data-toggle="modal" data-target="#confirm-post-remove"></a>
 
+                                        </div>
+                                        <% } %>
+                                        <p id="journalContent${ it.uuid }">${(it.content)}</p>
+                                    </div>
                                 </div>
-                                <% } %>
-                                <p id="journalContent${ it.uuid }">${(it.content)}</p>
-                            </div>
-                        </div>
-                    </li>
-                    <% } %>
+                            </li>
+                        <% } %>
                     <% } %>
                     <li class="media feed-comment">
                         <div class="separator">
@@ -99,7 +99,7 @@ ${ ui.includeFragment("patientportaltoolkit", "editPost") }
 
                                 ${ ui.includeFragment("patientportaltoolkit", "commentBox",[parentId: (journal.uuid)]) }
                                 </div>
-                            <label><small><span class="fa fa-info-circle fa-lg"></span> &nbsp;Your comments will be shared with all the people who the patient has provided access to this post, such as doctors or family members</small></label>
+                            <label><small><span class="fa fa-info-circle fa-lg"></span> &nbsp;Comments are visible to anyone who can see this post (including doctors or family members)</small></label>
                         </div>
                     </li>
                 </ul>

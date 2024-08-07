@@ -27,17 +27,23 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class CommentBoxFragmentController {
     protected final Log log = LogFactory.getLog(getClass());
+
     public void controller(FragmentModel model,
-                           @FragmentParam(value="parentId", required=true) String parentId, PageRequest pageRequest) {
-        log.info(PPTLogAppender.appendLog("REQUEST_COMMENTBOX_FRAGMENT", pageRequest.getRequest(), "parentId:",parentId));
-        model.addAttribute("parentId",parentId);
+            @FragmentParam(value = "parentId", required = true) String parentId, PageRequest pageRequest) {
+        log.info(PPTLogAppender.appendLog("REQUEST_COMMENTBOX_FRAGMENT", pageRequest.getRequest(), "parentId:",
+                parentId));
+        model.addAttribute("parentId", parentId);
     }
 
-    public void saveComment(FragmentModel model,@RequestParam(value = "commentContent", required = true) String content,@RequestParam(value = "parentId", required = true) String parentId, HttpServletRequest servletRequest) {
-        log.info(PPTLogAppender.appendLog("SAVE_NEW_COMMENT", servletRequest, "commentContent:", content, "parentId:",parentId));
-        //log.info("Save New Comment by -" + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
-        String title=Context.getAuthenticatedUser().getGivenName()+" "+Context.getAuthenticatedUser().getFamilyName();
-        JournalEntry journalEntry = new JournalEntry(title,content);
+    public void saveComment(FragmentModel model,
+            @RequestParam(value = "commentContent", required = true) String content,
+            @RequestParam(value = "parentId", required = true) String parentId, HttpServletRequest servletRequest) {
+        log.info(PPTLogAppender.appendLog("SAVE_NEW_COMMENT", servletRequest, "commentContent:", content, "parentId:",
+                parentId));
+
+        String title = Context.getAuthenticatedUser().getGivenName() + " "
+                + Context.getAuthenticatedUser().getFamilyName();
+        JournalEntry journalEntry = new JournalEntry(title, content);
         journalEntry.setParentEntryId(Context.getService(JournalEntryService.class).getJournalEntry(parentId).getId());
         Context.getService(JournalEntryService.class).saveJournalEntry(journalEntry);
     }

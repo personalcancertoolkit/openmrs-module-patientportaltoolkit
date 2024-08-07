@@ -43,6 +43,10 @@ public class PatientPortalRelation extends BaseOpenmrsMetadata implements Compar
 
     // 0 - not yet accepted, 1 - accepted , 2 - Rejected, -1 - retired
     private int shareStatus;
+    public static final int SHARE_STATUS_PENDING = 0;
+    public static final int SHARE_STATUS_ACCEPTED = 1;
+    public static final int SHARE_STATUS_REJECTED = 2;
+    public static final int SHARE_STATUS_RETIRED = -1;
 
     private String addConnectionNote;
 

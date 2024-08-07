@@ -40,7 +40,8 @@ public class ConnectionsFragmentController {
     public void controller(FragmentModel model, PageRequest pageRequest) {
         model.addAttribute("relationships", Context.getService(PatientPortalRelationService.class)
                 .getPatientPortalRelationByPerson(Context.getAuthenticatedUser().getPerson()));
-        model.addAttribute("securityLayers", Context.getService(SecurityLayerService.class).getAllSecurityLayers());
+        model.addAttribute("securityLayers",
+                Context.getService(SecurityLayerService.class).getAllSecurityLayers());
         model.addAttribute("relationshipTypes", Context.getPersonService().getAllRelationshipTypes());
         model.addAttribute("user", Context.getAuthenticatedUser());
         log.info(PPTLogAppender.appendLog("REQUEST_CONNECTIONS_FRAGMENT", pageRequest.getRequest()));
@@ -102,14 +103,16 @@ public class ConnectionsFragmentController {
         if (!successfullySent) {
             System.out.println(
                     "Unable to send connection request acceptance email to personID "
-                            + personWhoRequestedConnection.getId() + " from personID " + authenticatedUserPerson.getId()
+                            + personWhoRequestedConnection.getId() + " from personID "
+                            + authenticatedUserPerson.getId()
                             + " in ConnectionsFragementController:acceptConnectionRequest");
         }
 
-        ppr.setShareStatus(1);
+        ppr.setShareStatus(PatientPortalRelation.SHARE_STATUS_ACCEPTED);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
 
-        log.info(PPTLogAppender.appendLog("ACCEPT_RELATIONSHIP", servletRequest, "Relationship Id:", relationshipId));
+        log.info(PPTLogAppender.appendLog("ACCEPT_RELATIONSHIP", servletRequest, "Relationship Id:",
+                relationshipId));
         Context.getService(PatientPortalMiscService.class).logEvent("ACCEPTED_CONNECTION_REQUEST",
                 "{\"relationshipPersonId\": \"" + relationshipId + "\"}");
     }
@@ -120,11 +123,12 @@ public class ConnectionsFragmentController {
 
         PatientPortalRelation ppr = Context.getService(PatientPortalRelationService.class)
                 .getPatientPortalRelation(relationshipId);
-        ppr.setShareStatus(2);
+        ppr.setShareStatus(PatientPortalRelation.SHARE_STATUS_REJECTED);
         Context.getService(PatientPortalRelationService.class).savePatientPortalRelation(ppr);
         Context.getService(PatientPortalRelationService.class).deletePatientPortalRelation(relationshipId,
                 Context.getAuthenticatedUser());
-        log.info(PPTLogAppender.appendLog("IGNORE_RELATIONSHIP", servletRequest, "Relationship Id:", relationshipId));
+        log.info(PPTLogAppender.appendLog("IGNORE_RELATIONSHIP", servletRequest, "Relationship Id:",
+                relationshipId));
         Context.getService(PatientPortalMiscService.class).logEvent("IGNORED_CONNECTION_REQUEST",
                 "{\"relationshipPersonId\": \"" + relationshipId + "\"}");
     }
