@@ -47,7 +47,7 @@
           href="${ ui.resourceLink("patientportaltoolkit", "styles/bootstrap-year-calendar.min.css") }"
           type="text/css">
     <script type="text/javascript"
-            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}?v=9"></script>
+            src="${ ui.resourceLink("patientportaltoolkit", "/scripts/patientPortalScripts.js")}?v=10"></script>
 
     <script type="text/javascript"
             src="${ ui.resourceLink("patientportaltoolkit", "/scripts/bootstrap-datepicker.js") }"></script>
@@ -82,8 +82,8 @@
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
             <li id="patientPortalJournals" onclick="logEvent('MY_POSTS_MENU_CLICKED','')"> 
-                <a href="/openmrs/patientportaltoolkit/journals.page">
-                    <span class="fa fa-comments-o  fa-lg"></span> &nbsp; My Posts
+                <a href="/openmrs/patientportaltoolkit/journals.page" title="My Posts">                    
+                    <span class="fa fa-comments-o  fa-lg"></span> &nbsp; My Posts                    
                 </a>
             </li>
             <% if(contextUser.person.isPatient()) { %>

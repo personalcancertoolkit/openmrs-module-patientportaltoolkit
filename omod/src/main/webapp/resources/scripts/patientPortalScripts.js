@@ -491,6 +491,12 @@ jq(document).ready(function() {
             jq('#newMessageComposeDiv').show();
             jq('#showDetailedList').hide();
             jq('.detailedMessageList').hide();
+
+            // Bring the compose elements into view if the aren't in the viewport
+            jq('body').animate({
+                    scrollTop: jq("#sendNewMessageButton").offset().top,
+                }, 300
+            );
         });
     jq('#broadcastMessageButton').click( function() {
         jq('#composeMessageButton').click();
@@ -525,13 +531,16 @@ jq(document).ready(function() {
         localStorage.removeItem("lastViewedMessageId");
     });
 
+    // When a message in the list of messages is clicked
     jq('.messagelistLink').click(function() {
         const messageId = this.id;
         jq(".messagelistLink").css("background", "#FFFFFF");
         jq("#" + this.id).css("background", "#F8F8F8");
+
         jq('#newMessageComposeDiv').hide();
         jq('#showDetailedList').show();
         jq('.detailedMessageList').hide();
+
         jq('#mediaList' + this.id).show();
         jq('#sendingReplyMessageSubject' + this.id).val(jq(this).data('messageTitle'));
 
@@ -540,8 +549,13 @@ jq(document).ready(function() {
         // the server will verify that
         jq.get("composeMessage/markMessageAsRead.action", {
             messageUuid: messageId
-        }).done(function() {
-        });
+        }).done(function() { });
+
+        // Scroll to the message view
+        jq('body').animate({
+            scrollTop: jq("#mediaList"+ this.id).offset().top,
+            }, 300
+        );
 
         // Save this as the last read message so that it automatically opens
         // when the page is reloaded after a message is replied to

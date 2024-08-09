@@ -104,6 +104,13 @@ public class Message extends BaseOpenmrsObject {
         return content;
     }
 
+    public String getContentPreview() {
+        if (content.length() > 49) {
+            return content.substring(0, 46) + "...";
+        }
+        return content;
+    }
+
     /**
      * @param sender the creator to set
      */
