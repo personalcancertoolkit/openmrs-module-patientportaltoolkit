@@ -113,9 +113,11 @@ public class ProfileEditFragmentController {
         // Update person preferences
         //////////////////////////////////////////////////////////////////////////////////
         PersonPreferences pp = Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person);
-        boolean mycancerBuddiesValue = Boolean.parseBoolean(myCancerBuddies);
-        pp.setMyCancerBuddies(mycancerBuddiesValue);
-        Context.getService(PersonPreferencesService.class).savePersonPreferences(pp);
+        if (pp != null) {
+            boolean mycancerBuddiesValue = Boolean.parseBoolean(myCancerBuddies);
+            pp.setMyCancerBuddies(mycancerBuddiesValue);
+            Context.getService(PersonPreferencesService.class).savePersonPreferences(pp);
+        }
     }
 
 }
