@@ -142,15 +142,21 @@ public class AppointmentReminderUtil {
         List<Patient> patients = Context.getPatientService().getAllPatients(false);
         List<PatientWithVisit> patientsWithVisits = new ArrayList<>();
 
+        ArrayList<Integer> unsubscribedPatientIds = new ArrayList<>();
+        unsubscribedPatientIds.add(164); // SPHERE092
+
         for (Patient patient : patients) {
-            try {
-                List<VisitDetail> visits = generateVisits(patient);
-                PatientWithVisit pwv = new PatientWithVisit(patient, visits);
-                patientsWithVisits.add(pwv);
-            } catch (Exception e) {
-                // generateVisits usually throws an exception if the patient does not have a
-                // surgery date. If a patient does not have a surgery date, the visit dates
-                // cannot be computed, and as such, we will ignore that patient
+            if (!unsubscribedPatientIds.contains(patient.getPersonId().intValue())) {
+
+                try {
+                    List<VisitDetail> visits = generateVisits(patient);
+                    PatientWithVisit pwv = new PatientWithVisit(patient, visits);
+                    patientsWithVisits.add(pwv);
+                } catch (Exception e) {
+                    // generateVisits usually throws an exception if the patient does not have a
+                    // surgery date. If a patient does not have a surgery date, the visit dates
+                    // cannot be computed, and as such, we will ignore that patient
+                }
             }
         }
         return patientsWithVisits;
