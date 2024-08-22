@@ -70,16 +70,25 @@ public class ToolkitResourceUtil {
         personObject.put("MiddleName", person.getMiddleName());
         personObject.put("FamilyName", person.getFamilyName());
         personObject.put("Age", person.getAge());
-        if (person.getIsPatient())
-            personObject.put("MRN", Context.getPatientService().getPatientByUuid(person.getUuid())
-                    .getPatientIdentifier().getIdentifier());
+
+        if (person.getIsPatient()) {
+            Patient pp = Context.getPatientService().getPatientByUuid(person.getUuid());
+            if (pp != null && pp.getPatientIdentifier() != null) {
+                personObject.put("MRN", pp.getPatientIdentifier().getIdentifier());
+            }
+        }
+
         if (person.getBirthdate() != null)
             personObject.put("DOB", new SimpleDateFormat().format(new Date(person.getBirthdate().getTime())));
+
         personObject.put("Gender", person.getGender());
+
         if (person.getAttribute(PHONE_NUMBER_ATTRIBUTE) != null)
             personObject.put("Phone", person.getAttribute(PHONE_NUMBER_ATTRIBUTE).getValue());
+
         if (person.getAttribute(EMAIL_ATTRIBUTE) != null)
             personObject.put("Email", person.getAttribute(EMAIL_ATTRIBUTE).getValue());
+
         personObject.put("Address", personAddressObject);
 
         return personObject;
@@ -334,25 +343,30 @@ public class ToolkitResourceUtil {
 
     public static Object generateRelation(PatientPortalRelation patientPortalRelation) {
 
-        Map<String, Object> relatedPersonMap = generatePerson(patientPortalRelation.getRelatedPerson());
-        Map<String, Object> creatorPersonMap = generatePerson(patientPortalRelation.getCreator().getPerson());
-        Map<String, Object> patientPersonMap = generatePerson(patientPortalRelation.getPerson());
-
-        @SuppressWarnings("unchecked")
-        Map<String, Object> relationshipTypeMap = (Map<String, Object>) generateRelationType(
-                patientPortalRelation.getRelationType());
-
         Map<String, Object> patientRelationMap = new HashMap<String, Object>();
-        patientRelationMap.put("id", patientPortalRelation.getUuid());
-        patientRelationMap.put("relationType", relationshipTypeMap);
-        // patientRelationMap.put("shareType", patientPortalRelation.getShareType());
-        patientRelationMap.put("dateStarted",
-                new SimpleDateFormat().format(new Date(patientPortalRelation.getStartDate().getTime())));
-        patientRelationMap.put("patient", patientPersonMap);
-        patientRelationMap.put("creator", creatorPersonMap);
-        patientRelationMap.put("relatedPerson", relatedPersonMap);
-        // patientRelationMap.put("relatedPerson", relatedPersonMap);
+        try {
 
+            Map<String, Object> relatedPersonMap = generatePerson(patientPortalRelation.getRelatedPerson());
+            Map<String, Object> creatorPersonMap = generatePerson(patientPortalRelation.getCreator().getPerson());
+            Map<String, Object> patientPersonMap = generatePerson(patientPortalRelation.getPerson());
+
+            @SuppressWarnings("unchecked")
+            Map<String, Object> relationshipTypeMap = (Map<String, Object>) generateRelationType(
+                    patientPortalRelation.getRelationType());
+            patientRelationMap.put("id", patientPortalRelation.getUuid());
+            patientRelationMap.put("relationType", relationshipTypeMap);
+            // patientRelationMap.put("shareType", patientPortalRelation.getShareType());
+            patientRelationMap.put("dateStarted",
+                    new SimpleDateFormat().format(new Date(patientPortalRelation.getStartDate().getTime())));
+            patientRelationMap.put("patient", patientPersonMap);
+            patientRelationMap.put("creator", creatorPersonMap);
+            patientRelationMap.put("relatedPerson", relatedPersonMap);
+            // patientRelationMap.put("relatedPerson", relatedPersonMap);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
         return patientRelationMap;
     }
 
