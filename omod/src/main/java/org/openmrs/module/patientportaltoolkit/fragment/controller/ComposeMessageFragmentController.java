@@ -16,12 +16,15 @@ import org.openmrs.User;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.Message;
+import org.openmrs.module.patientportaltoolkit.PatientEmailSubscription;
 import org.openmrs.module.patientportaltoolkit.api.MessageService;
+import org.openmrs.module.patientportaltoolkit.api.PatientEmailSubscriptionService;
 import org.openmrs.module.patientportaltoolkit.api.util.MailHelper;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
@@ -50,24 +53,48 @@ public class ComposeMessageFragmentController {
 
         User user = Context.getAuthenticatedUser();
         PersonService personService = Context.getPersonService();
-
         HashSet<String> personUuidMHashSet = new HashSet<>(Arrays.asList(personUuidList));
+
+        // If messages are being sent to more than one recipient, this is a broadcast
+        // message, and as of 2024, only admins are allowed to send broadcasts
+        boolean messageIsABroadcast = personUuidMHashSet.size() > 1;
+
         for (String personUuid : personUuidMHashSet) {
+            Person person = personService.getPersonByUuid(personUuid);
             try {
-                Person person = personService.getPersonByUuid(personUuid);
+
                 Message newMessage = new Message(subject, message, user.getPerson(), person);
                 Context.getService(MessageService.class).saveMessage(newMessage);
+
                 String content = "Hello " + person.getPersonName()
                         + "\n\nYou have received a new message on the SPHERE portal. Please login at https://sphere.regenstrief.org to view the message";
                 String destinationEmailAddress = person.getAttribute("Email").toString();
 
-                MailHelper.sendMail(
-                        "New Message",
-                        content,
-                        destinationEmailAddress,
-                        false);
+                // If the message is a broadcast, check if the patient is subscribed to receive
+                // broadcast emails
+                if (messageIsABroadcast) {
+                    PatientEmailSubscription subscription = Context.getService(PatientEmailSubscriptionService.class)
+                            .getSubscriptionForPerson(person);
+                    if (subscription != null && subscription.getBroadcastEmail()) {
+                        MailHelper.sendMail(
+                                "New Message",
+                                content,
+                                destinationEmailAddress,
+                                false);
+                    }
+                }
+                // If the message is not a broadcast, send the email without checking
+                else {
+                    MailHelper.sendMail(
+                            "New Message",
+                            content,
+                            destinationEmailAddress,
+                            false);
+                }
+
             } catch (Exception e) {
-                System.out.println(e.getStackTrace());
+                System.out.println("Unable to send SPHERE Message to " + person.getPersonName()
+                        + ". They may not have an email address");
             }
         }
     }

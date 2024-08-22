@@ -128,6 +128,7 @@
 		PatientPortalPersonAttributes.hbm.xml
 		PasswordChangeRequest.hbm.xml
 		PatientPortalShare.hbm.xml
+		PatientEmailSubscription.hbm.xml
 	</mappingFiles>
 
 	<!-- Internationalization -->

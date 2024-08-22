@@ -13,6 +13,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.PatientEmailSubscription;
+import org.openmrs.module.patientportaltoolkit.api.PatientEmailSubscriptionService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
@@ -30,6 +32,7 @@ public class EditprofilePageController {
     public void controller(PageModel model, PageRequest pageRequest) {
         Context.getService(PatientPortalMiscService.class).logEvent("USER_ACCOUNT_PAGE_VIEWED", null);
         log.info(PPTLogAppender.appendLog("REQUEST_EDITPROFILE_PAGE", pageRequest.getRequest()));
+
         Person person = Context.getAuthenticatedUser().getPerson();
         model.addAttribute("person", person);
         model.addAttribute("pptutil", new PatientPortalUtil());
@@ -39,5 +42,14 @@ public class EditprofilePageController {
                     Context.getService(PersonPreferencesService.class).getPersonPreferencesByPerson(person));
         else
             model.addAttribute("personPreferences", null);
+
+        PatientEmailSubscription emailSubscription = Context.getService(PatientEmailSubscriptionService.class)
+                .getSubscriptionForPerson(person);
+        if (emailSubscription != null) {
+            model.addAttribute("emailSubscription", emailSubscription);
+        } else {
+            model.addAttribute("emailSubscription", null);
+        }
+
     }
 }

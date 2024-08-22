@@ -70,10 +70,11 @@ public class PatientPortalToolkitPatientController {
         List<Object> patients = new ArrayList<Object>();
         for (Patient p : omrspatients) {
             try {
-                User user = userService.getUsersByPerson(p, false).get(0);
-                if (user.getUsername().toUpperCase().startsWith("SPHERE")) {
-                    patients.add(ToolkitResourceUtil.generatePerson(p));
-                }
+
+                // User user = userService.getUsersByPerson(p, false).get(0);
+                // if (user.getUsername().toUpperCase().startsWith("SPHERE")) {
+                patients.add(ToolkitResourceUtil.generatePerson(p));
+                // }
             } catch (Exception e) {
 
             }

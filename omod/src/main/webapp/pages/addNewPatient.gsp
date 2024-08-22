@@ -162,8 +162,13 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
                 },
             }).promise();
             await jq.ajax({
-                type: "GET",
-                url: window.location.href.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/createinitialpreferences/" + personUUID,
+                type: "POST",
+                url: window.location.href.split("/patientportaltoolkit")[0] + "/ws/patientportaltoolkit/createinitialpreferences",
+                data: {
+                    personUUID: personUUID,
+                    getsBroadcastEmails: jq("#newPatientBroadcastEmail").is(':checked'),
+                    getsAppointmentReminderEmails: jq("#newPatientApprReminderEmail").is(':checked')
+                },
                 success: function (response) {
                     console.log("Added person Preferences");
                     jq(".patInput").val("");
@@ -254,9 +259,33 @@ ${ui.includeFragment("patientportaltoolkit", "headerForApp")}
             <input type="text" class="form-control patInput" id="patientUserName" placeholder="Enter username" required>
         </div>
     </div>
-
-
     <div class="form-row row">
+        <div class="form-group">
+                <div class="col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" 
+                                id="newPatientBroadcastEmail"
+                                value="broadcastEmail" checked /> Gets Broadcast Emails
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                id="newPatientApprReminderEmail"
+                                value="appointmentReminderEmail"  checked /> Gets Appointment Reminder Emails
+                        </label>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+    <div class="form-row row" style="margin-top:24px">
         <div class="form-group col-md-6">
             <button type="submit" class="btn btn-primary">Save</button>
         </div>

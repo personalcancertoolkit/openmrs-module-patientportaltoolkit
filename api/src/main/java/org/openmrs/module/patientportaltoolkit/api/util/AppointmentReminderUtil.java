@@ -18,8 +18,10 @@ import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.EventLog;
 import org.openmrs.module.patientportaltoolkit.Message;
+import org.openmrs.module.patientportaltoolkit.PatientEmailSubscription;
 import org.openmrs.module.patientportaltoolkit.Reminder;
 import org.openmrs.module.patientportaltoolkit.api.MessageService;
+import org.openmrs.module.patientportaltoolkit.api.PatientEmailSubscriptionService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.ReminderService;
 
@@ -49,6 +51,9 @@ public class AppointmentReminderUtil {
 
         // Get a list of all active patients with their appointments/visits
         List<PatientWithVisit> patientsWithVisits = getPatientsWithTheirVisits();
+
+        PatientEmailSubscriptionService emailSubscriptionService = Context
+                .getService(PatientEmailSubscriptionService.class);
 
         for (PatientWithVisit patientWithVisit : patientsWithVisits) {
             Patient patient = patientWithVisit.patient;
@@ -98,8 +103,22 @@ public class AppointmentReminderUtil {
 
             // Check if the patient has already been notified
             if (hasVisitThatRequiresNotification && !isPatientAlreadyNotified(patient)) {
-                boolean emailSuccessfullySent = sendEmailNotificationTo(patient);
-                if (emailSuccessfullySent) {
+
+                PatientEmailSubscription pes = emailSubscriptionService.getSubscriptionForPerson(patient.getPerson());
+                boolean patientDeclinedEmails = false;
+                boolean successfullySent = false;
+
+                if (pes == null || (pes != null && !pes.getAppointmentReminderEmail())) {
+                    patientDeclinedEmails = true;
+                }
+                if (pes != null && pes.getAppointmentReminderEmail()) {
+                    successfullySent = sendEmailNotificationTo(patient);
+                }
+
+                // Only put the message in the users inbox and mark as notified if
+                // the email has been successfully sent OR the patient declined to
+                // get an email
+                if (successfullySent || patientDeclinedEmails) {
                     sendSphereNotificationTo(patient);
                     markPatientAsNotified(patient);
                 } else {

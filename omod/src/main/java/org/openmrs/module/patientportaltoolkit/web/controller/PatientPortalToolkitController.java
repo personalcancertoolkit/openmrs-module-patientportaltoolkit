@@ -9,7 +9,9 @@ import org.openmrs.User;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.patientportaltoolkit.PasswordChangeRequest;
+import org.openmrs.module.patientportaltoolkit.PatientEmailSubscription;
 import org.openmrs.module.patientportaltoolkit.PersonPreferences;
+import org.openmrs.module.patientportaltoolkit.api.PatientEmailSubscriptionService;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
 import org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService;
 import org.openmrs.module.patientportaltoolkit.api.util.MailHelper;
@@ -164,7 +166,8 @@ public class PatientPortalToolkitController {
 
     @RequestMapping(value = "/patientportaltoolkit/logEvent")
     @ResponseBody
-    public String logEvent(@RequestParam(value = "event", required = true) String event,
+    public String logEvent(
+            @RequestParam(value = "event", required = true) String event,
             @RequestParam(value = "data", required = false) String data) {
 
         PatientPortalMiscService ppmService = Context.getService(PatientPortalMiscService.class);
@@ -175,16 +178,30 @@ public class PatientPortalToolkitController {
         return "Logged event: " + event + " data: " + data;
     }
 
-    @RequestMapping(value = "/patientportaltoolkit/createinitialpreferences/{personUUID}")
+    @RequestMapping(value = "/patientportaltoolkit/createinitialpreferences")
     @ResponseBody
-    public String createInitialPreferences(@PathVariable("personUUID") String personUUID) {
+    public String createInitialPreferences(
+            @RequestParam(value = "personUUID", required = true) String personUUID,
+            @RequestParam(value = "getsBroadcastEmails", required = true) String getsBroadcastEmails,
+            @RequestParam(value = "getsAppointmentReminderEmails", required = true) String getsAppointmentReminderEmails) {
+
         Person p = Context.getPersonService().getPersonByUuid(personUUID);
         PersonPreferences personPreferences = new PersonPreferences();
+
         personPreferences.setPerson(p);
         personPreferences.setMyCancerBuddies(false);
         personPreferences.setMyCancerBuddiesDescription("Hello, I would like to be a part of My Cancer Buddies");
         personPreferences.setMyCancerBuddiesName(p.getGivenName() + p.getFamilyName());
+
         Context.getService(PersonPreferencesService.class).savePersonPreferences(personPreferences);
+
+        PatientEmailSubscription subscription = new PatientEmailSubscription();
+        subscription.setPerson(p);
+        subscription.setBroadcastEmail(Boolean.parseBoolean(getsBroadcastEmails));
+        subscription.setAppointmentReminderEmail(Boolean.parseBoolean(getsAppointmentReminderEmails));
+        subscription.setDateCreated(new Date());
+        Context.getService(PatientEmailSubscriptionService.class).save(subscription);
+
         return "Initial Preferences Successfully Created";
     }
 }

@@ -14,7 +14,9 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Person;
 import org.openmrs.PersonName;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.patientportaltoolkit.PatientEmailSubscription;
 import org.openmrs.module.patientportaltoolkit.PersonPreferences;
+import org.openmrs.module.patientportaltoolkit.api.PatientEmailSubscriptionService;
 import org.openmrs.module.patientportaltoolkit.api.PersonPreferencesService;
 import org.openmrs.module.patientportaltoolkit.api.util.PPTLogAppender;
 import org.openmrs.ui.framework.fragment.FragmentModel;
@@ -45,6 +47,8 @@ public class ProfileEditFragmentController {
             @RequestParam(value = "gender", required = true) String gender,
             @RequestParam(value = "birthDate", required = true) String birthDate,
             @RequestParam(value = "myCancerBuddies", required = true) String myCancerBuddies,
+            @RequestParam(value = "getsBroadcastEmails", required = true) String getsBroadcastEmails,
+            @RequestParam(value = "getsAppointmentReminderEmails", required = true) String getsAppointmentReminderEmails,
             HttpServletRequest servletRequest) {
 
         log.info(PPTLogAppender.appendLog("SAVE_PROFILEEDIT", servletRequest, "personId:", personId + "", "givenName:",
@@ -118,6 +122,15 @@ public class ProfileEditFragmentController {
             pp.setMyCancerBuddies(mycancerBuddiesValue);
             Context.getService(PersonPreferencesService.class).savePersonPreferences(pp);
         }
+
+        PatientEmailSubscriptionService pess = Context.getService(PatientEmailSubscriptionService.class);
+        PatientEmailSubscription subscription = pess.getSubscriptionForPerson(person);
+        if (subscription == null) {
+            subscription = new PatientEmailSubscription();
+        }
+        subscription.setBroadcastEmail(Boolean.parseBoolean(getsBroadcastEmails));
+        subscription.setAppointmentReminderEmail(Boolean.parseBoolean(getsAppointmentReminderEmails));
+        pess.save(subscription);
     }
 
 }

@@ -74,6 +74,31 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
             </div>
         <% }%>
 
+        <% if (emailSubscription != null && person.isPatient()){%>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" 
+                                id="userprofileBroadcastEmail"
+                                value="broadcastEmail" <% if (emailSubscription.getBroadcastEmail()){%> checked <% }%> /> Get Broadcast Emails
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                id="userprofileApprReminderEmail"
+                                value="appointmentReminderEmail" <% if (emailSubscription.getAppointmentReminderEmail()){ %> checked <% }%> /> Get Appointment Reminder Emails
+                        </label>
+                    </div>
+                </div>
+            </div>
+        <% }%>
+
         <div class="form-group pull-right">
             <button type="button" class="btn btn-default" id="cancelEditProfile">Cancel</button>
             <button type="submit" class="btn btn-primary" id="saveuserprofile">Save</button>
@@ -89,7 +114,9 @@ ${ ui.includeFragment("patientportaltoolkit", "headerForApp") }
                 familyName: jq("#userprofileFamilyName").val(),
                 gender: jq("#userprofileGenderSelect").val(),
                 birthDate: jq("#userprofileDOB").val(),
-                myCancerBuddies: jq("#userprofileMyCancerBuddies").is(':checked')
+                myCancerBuddies: jq("#userprofileMyCancerBuddies").is(':checked'),
+                getsBroadcastEmails: jq("#userprofileBroadcastEmail").is(':checked'),
+                getsAppointmentReminderEmails: jq("#userprofileApprReminderEmail").is(':checked')
             }, function () {
                 jq('#alertContainer').css('display','block');
             });

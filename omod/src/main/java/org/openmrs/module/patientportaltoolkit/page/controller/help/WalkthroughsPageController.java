@@ -23,13 +23,13 @@ import org.openmrs.ui.framework.page.PageRequest;
  */
 public class WalkthroughsPageController {
     protected final Log log = LogFactory.getLog(getClass());
-    public void controller(PageModel model, PageRequest pageRequest) {
-        Context.getService(PatientPortalMiscService.class).logEvent("VIDEO_WALKTHROUGHS_PAGE_VIEWED",null);
-        log.info(PPTLogAppender.appendLog("REQUEST_FEEDBACK_PAGE", pageRequest.getRequest()));
-        //log.info("Feedback/Contact Page Requested by - " + Context.getAuthenticatedUser().getPersonName() + "(id="+Context.getAuthenticatedUser().getPerson().getPersonId()+",uuid="+Context.getAuthenticatedUser().getPerson().getUuid()+")");
-        model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
-        model.addAttribute("pptutil",new PatientPortalUtil());
-        model.addAttribute("contextUser", Context.getAuthenticatedUser());
 
+    public void controller(PageModel model, PageRequest pageRequest) {
+        Context.getService(PatientPortalMiscService.class).logEvent("VIDEO_WALKTHROUGHS_PAGE_VIEWED", null);
+        log.info(PPTLogAppender.appendLog("REQUEST_FEEDBACK_PAGE", pageRequest.getRequest()));
+
+        model.addAttribute("person", Context.getAuthenticatedUser().getPerson());
+        model.addAttribute("pptutil", new PatientPortalUtil());
+        model.addAttribute("contextUser", Context.getAuthenticatedUser());
     }
 }
