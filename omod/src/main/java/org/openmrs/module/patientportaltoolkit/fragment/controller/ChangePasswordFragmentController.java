@@ -16,12 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 public class ChangePasswordFragmentController {
 
     protected final Log log = LogFactory.getLog(getClass());
+
     public void controller(FragmentModel model, PageRequest pageRequest) {
         log.info(PPTLogAppender.appendLog("REQUEST_CHANGEPASSWORD_FRAGMENT", pageRequest.getRequest()));
     }
 
-    public void saveNewPassword(FragmentModel model,@RequestParam(value = "currentPassword", required = true) String currentPassword,@RequestParam(value = "newPassword", required = true) String newPassword, HttpServletRequest servletRequest) {
+    public void saveNewPassword(FragmentModel model,
+            @RequestParam(value = "currentPassword", required = true) String currentPassword,
+            @RequestParam(value = "newPassword", required = true) String newPassword,
+            HttpServletRequest servletRequest) {
         log.info(PPTLogAppender.appendLog("SAVE_NEW_PASSWORD", servletRequest));
-        Context.getUserService().changePassword(currentPassword,newPassword);
+        Context.getUserService().changePassword(currentPassword, newPassword);
     }
 }

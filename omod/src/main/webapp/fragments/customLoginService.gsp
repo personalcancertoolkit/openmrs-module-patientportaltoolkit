@@ -17,7 +17,8 @@
         <% if (passwordChange){ %>
         <div id="forgotPasswordReset" class="alert alert-success" role="alert">
             <span class="fa fa-exclamation-circle fa-lg"></span>
-            Your password has been successfully changed
+            We created a temporary password for you. Check your email for it.
+            <br><br>Log in with the temporary password and change it to one you prefer
         </div>
         <% } %>
         <input type="text" id = 'username' name="user" placeholder="Username">

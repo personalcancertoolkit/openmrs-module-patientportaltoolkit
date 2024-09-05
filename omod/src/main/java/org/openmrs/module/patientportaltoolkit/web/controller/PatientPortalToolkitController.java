@@ -181,9 +181,7 @@ public class PatientPortalToolkitController {
     @RequestMapping(value = "/patientportaltoolkit/createinitialpreferences")
     @ResponseBody
     public String createInitialPreferences(
-            @RequestParam(value = "personUUID", required = true) String personUUID,
-            @RequestParam(value = "getsBroadcastEmails", required = true) String getsBroadcastEmails,
-            @RequestParam(value = "getsAppointmentReminderEmails", required = true) String getsAppointmentReminderEmails) {
+            @RequestParam(value = "personUUID", required = true) String personUUID) {
 
         Person p = Context.getPersonService().getPersonByUuid(personUUID);
         PersonPreferences personPreferences = new PersonPreferences();
@@ -197,8 +195,8 @@ public class PatientPortalToolkitController {
 
         PatientEmailSubscription subscription = new PatientEmailSubscription();
         subscription.setPerson(p);
-        subscription.setBroadcastEmail(Boolean.parseBoolean(getsBroadcastEmails));
-        subscription.setAppointmentReminderEmail(Boolean.parseBoolean(getsAppointmentReminderEmails));
+        subscription.setBroadcastEmail(true);
+        subscription.setAppointmentReminderEmail(true);
         subscription.setDateCreated(new Date());
         Context.getService(PatientEmailSubscriptionService.class).save(subscription);
 
