@@ -26,6 +26,8 @@ import org.openmrs.Encounter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.Calendar;
 
 /**
@@ -113,9 +115,40 @@ public class PreventativeCareServiceImpl extends BaseOpenmrsService implements P
             } else if (mostRecentCompleted != null) {
                 anchorDate = mostRecentCompleted.getCompleteDate();
             }
+            Set<PreventiveCareGuidelineInterval> giSet = g.getPcgguidelineIntervalSet();
 
-            for (PreventiveCareGuidelineInterval gi : g.getPcgguidelineIntervalSet()) { // and for each guideline's set
-                                                                                        // of intervals (e.g., check
+            // If the number of intervals for this preventive care guideline is only 1, this
+            // means that the preventive care procedure happens "at least once". For
+            // preventive care guidelines that happen at least once, if a
+            // mostRecentCompleted OR farthestUpcomingWithinAYear... exists, that one counts
+            // as the "at least once".
+
+            // However, if none like that exists, create 5 intervals for the guideline:
+            // 2 at 12 months, 3 at 24 months, 4 at 36 months, 5 at 48 months, and 6 at 60
+            // months.
+
+            // We are only creating 5 because the first one (1 at 0 months) already exists
+            if (giSet.size() == 1) {
+
+                // If none of mostRecentlyCompleted AND farthestUpcomingWithinAYear... exist,
+                // this means that no occurences of this preventive care guideline have occured
+                // in the past (COMPLETED_STATUS) or have been deliberately scheduled
+                // (CREATED_STATUS)
+                if (farthestUpcomingWithinAYearThatWasEitherModifiedOrCreated == null && mostRecentCompleted == null) {
+
+                    // Get a random integer to use as the id. We won't be storing it, so it's only
+                    // for object integrity
+                    int randomInt = ThreadLocalRandom.current().nextInt(10000, 20000);
+                    giSet.add(new PreventiveCareGuidelineInterval(randomInt, g, 2, 12));
+                    giSet.add(new PreventiveCareGuidelineInterval(randomInt + 1, g, 3, 24));
+                    giSet.add(new PreventiveCareGuidelineInterval(randomInt + 2, g, 4, 36));
+                    giSet.add(new PreventiveCareGuidelineInterval(randomInt + 3, g, 5, 48));
+                    giSet.add(new PreventiveCareGuidelineInterval(randomInt + 4, g, 6, 60));
+                }
+            }
+
+            for (PreventiveCareGuidelineInterval gi : giSet) {
+                // and for each guideline's set of intervals (e.g., check
                 // up in 6mo, 12mo, and 24mo)
                 modifiableDate = new LocalDate(anchorDate);
                 targetDate = modifiableDate.plusMonths(gi.getIntervalLength()).toDate();

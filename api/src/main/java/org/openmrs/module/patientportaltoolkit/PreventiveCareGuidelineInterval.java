@@ -18,6 +18,21 @@ public class PreventiveCareGuidelineInterval {
     private Integer intervalNumber;
     private Integer intervalLength;
 
+    @SuppressWarnings("unused")
+    private PreventiveCareGuidelineInterval() {
+    }
+
+    public PreventiveCareGuidelineInterval(
+            Integer id,
+            PreventiveCareGuideline pCareGuideline,
+            Integer intervalNumber,
+            Integer intervalLengthInMonths) {
+        this.id = id;
+        this.pcgguideline = pCareGuideline;
+        this.intervalLength = intervalLengthInMonths;
+        this.intervalNumber = intervalNumber;
+    }
+
     public Integer getId() {
         return id;
     }
