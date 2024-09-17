@@ -11,7 +11,10 @@ package org.openmrs.module.patientportaltoolkit.page.controller;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Person;
 import org.openmrs.api.LocationService;
+import org.openmrs.api.PersonService;
+import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.context.ContextAuthenticationException;
 import org.openmrs.module.patientportaltoolkit.api.PatientPortalMiscService;
@@ -21,6 +24,8 @@ import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -62,10 +67,6 @@ public class CustomLoginPageController {
             UiUtils ui,
             PageRequest pageRequest) {
 
-        // System.out.println("Here i am");
-        // System.out.println(username);
-        // System.out.println(password);
-
         ////////////////////////////////////////////
         // Define location as unknown location
         ////////////////////////////////////////////
@@ -77,25 +78,51 @@ public class CustomLoginPageController {
             Context.removeProxyPrivilege(GET_LOCATIONS);
         }
 
-        /////////////////////////////////
-        // Attempt to log user in
-        /////////////////////////////////
+        // Try to log the user in with username / password combo.
+        // Context.authenticate will throw an exception if the username and password
+        // combo is not right. We will catch the exception and check if the username is
+        // actually an email, and then call Context.authenticate again to try again
+
         Boolean login_success = false;
         String login_status = "0"; // 0-default, 1-success, 2-login failed
         try {
+            // First try as a username
             Context.authenticate(username, password);
             if (Context.isAuthenticated()) {
-                if (log.isDebugEnabled())
-                    log.debug("User has successfully authenticated");
                 login_success = true;
                 login_status = "1";
-
                 Context.getService(PatientPortalMiscService.class).logEvent("USER_LOGIN", null);
             }
+
         } catch (ContextAuthenticationException ex) {
-            if (log.isDebugEnabled())
-                log.debug("Failed to authenticate user");
-            login_status = "2";
+            // If authentication did not work
+            // Try getting the username from the email
+            String emailAddress = username;
+            List<Person> people = Context.getPersonService().getPeople(emailAddress, true);
+            Person person = null;
+            for (Person p : people) {
+                if (p.getAttribute("Email").getValue().equals(emailAddress)) {
+                    person = p;
+                }
+            }
+            if (person != null) {
+                String personUsername = Context.getService(UserService.class).getUsersByPerson(person, false).get(0)
+                        .getUsername();
+
+                // Try to authenticate with the username we got from the person
+                try {
+                    Context.authenticate(personUsername, password);
+                    if (Context.isAuthenticated()) {
+                        login_success = true;
+                        login_status = "1";
+                        Context.getService(PatientPortalMiscService.class).logEvent("USER_LOGIN", null);
+                    }
+                } catch (ContextAuthenticationException e) {
+                    login_status = "2";
+                }
+            } else {
+                login_status = "2";
+            }
         }
         pageRequest.getSession().setAttribute("login_status", login_status);
 
