@@ -73,15 +73,9 @@ ${ui.includeFragment("patientportaltoolkit", "communityLifestyleMap")}
         </td>
     </tr>
     <tr>
-        <td>NPR - "My Cancer" blog</td>
-        <td></td>
-        <td><a href="http://www.npr.org/blogs/mycancer/" target="_blank"><u onclick="logEvent('clicked_community_link',JSON.stringify({'link': 'http://www.npr.org/blogs/mycancer/'}))">http://www.npr.org/blogs/mycancer/</u></a>
-        </td>
-    </tr>
-    <tr>
         <td>The Wellness Community</td>
         <td>888-793-WELL</td>
-        <td><a href="http://www.thewellnesscommunity.org/" target="_blank"><u onclick="logEvent('clicked_community_link',JSON.stringify({'link': 'http://www.thewellnesscommunity.org/'}))">www.thewellnesscommunity.org</u></a>
+        <td><a href="https://www.cancersupportcommunity.org/" target="_blank"><u onclick="logEvent('clicked_community_link',JSON.stringify({'link': 'https://www.cancersupportcommunity.org/'}))">www.thewellnesscommunity.org</u></a>
         </td>
     </tr>
     <tr>
@@ -112,7 +106,7 @@ ${ui.includeFragment("patientportaltoolkit", "communityLifestyleMap")}
     <tr>
         <td>CURE magazine</td>
         <td>800-210-CURE</td>
-        <td><a href="http://www.curetoday.com/subscribe"  target="_blank"><u onclick="logEvent('clicked_community_link',JSON.stringify({'link': 'www.curetoday.com/subscribe'}))">www.curetoday.com/subscribe</u></a>
+        <td><a href="https://www.curetoday.com/"  target="_blank"><u onclick="logEvent('clicked_community_link',JSON.stringify({'link': 'https://www.curetoday.com/'}))">www.curetoday.com</u></a>
         </td>
     </tr>
     </tbody>
