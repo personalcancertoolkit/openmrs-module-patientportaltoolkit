@@ -14,13 +14,19 @@
 <div id="loginSnippet" class="modal-dialog" style = 'margin:auto;  '>
     <div class="loginmodal-container" style = 'min-width:400px;'>
         <h1 style = ''> <div style = 'margin-top:-15px;'></div>Login <Br> <div style = 'font-size:16px; margin-top:10px;'> to your Personal Cancer Toolkit</div></h1><br> 
-        <% if (passwordChange){ %>
-        <div id="forgotPasswordReset" class="alert alert-success" role="alert">
-            <span class="fa fa-exclamation-circle fa-lg"></span>
-            We created a temporary password for you. Check your email for it.
-            <br><br>Log in with the temporary password and change it to one you prefer
-        </div>
-        <% } %>
+        <% if (passwordChange == "Success"){ %>
+            <div id="forgotPasswordReset" class="alert alert-success" role="alert">
+                <span class="fa fa-exclamation-circle fa-lg"></span>
+                We created a temporary password for you. Check your email for it.
+                <br><br>Log in with the temporary password and change it to one you prefer
+            </div>
+        <% } else if(passwordChange == "Failure"){%>
+            <div id="forgotPasswordReset" class="alert alert-danger" role="alert">
+                <span class="fa fa-exclamation-circle fa-lg"></span>
+                A problem occurred when trying to change your password. Please try again or contact the study team if this never works
+            </div>
+        <% }%>
+
         <input type="text" id = 'username' name="user" placeholder="Username">
         <input type="password" id = 'password' name="pass" placeholder="Password">
         <input type="submit" name="login" class="login loginmodal-submit" value="Login" onclick = 'attempt_login()'>

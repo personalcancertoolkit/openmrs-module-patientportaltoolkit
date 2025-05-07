@@ -20,15 +20,19 @@ public class CustomLoginServiceFragmentController {
 
     public void controller(PageRequest pageRequest, FragmentModel model) {
 
-       String passwordChangeRequest= pageRequest.getRequest().getParameter("passwordChangeRequest");
-       if (passwordChangeRequest!=null && passwordChangeRequest.equals("Success")){
-           model.addAttribute("passwordChange", true);
-       }
-       else
-           model.addAttribute("passwordChange", false);
-        
+        String passwordChangeRequest = pageRequest.getRequest().getParameter("passwordChangeRequest");
+        if (passwordChangeRequest != null) {
+            if (passwordChangeRequest.equals("Success")) {
+                model.addAttribute("passwordChange", "Success");
+            } else if (passwordChangeRequest.equals("Failure")) {
+                model.addAttribute("passwordChange", "Failure");
+            } else {
+                model.addAttribute("passwordChange", "");
+            }
+        } else {
+            model.addAttribute("passwordChange", "");
+        }
+
     }
 
 }
-
-

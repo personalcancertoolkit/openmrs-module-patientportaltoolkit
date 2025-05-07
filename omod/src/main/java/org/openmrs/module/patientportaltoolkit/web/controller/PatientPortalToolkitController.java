@@ -38,7 +38,7 @@ public class PatientPortalToolkitController {
     @RequestMapping(value = "/patientportaltoolkit/sendForgotPasswordEmail/{emailId:.+}")
     @ResponseBody
     public void getSendForgotPasswordEmail(@PathVariable("emailId") String emailId, HttpServletRequest httpRequest) {
-        System.out.println("In Forgot Password Email method");
+        System.out.println("In Forgot Password Email method for emailId: " + emailId);
         try {
 
             org.openmrs.api.PersonService ps = Context.getPersonService();
@@ -49,25 +49,28 @@ public class PatientPortalToolkitController {
                     person = p;
             }
             if (person != null) {
-                PasswordChangeRequest passwordChangeRequest = new PasswordChangeRequest(new Date(),
-                        UUID.randomUUID().toString(), Context.getUserService().getUsersByPerson(person, false).get(0));
+                PasswordChangeRequest passwordChangeRequest = new PasswordChangeRequest(
+                        new Date(),
+                        UUID.randomUUID().toString(),
+                        Context.getUserService().getUsersByPerson(person, false).get(0));
+
                 PatientPortalMiscService ppms = Context.getService(PatientPortalMiscService.class);
                 PasswordChangeRequest savedPasswordChangeRequest = ppms
                         .savePasswordChangeRequest(passwordChangeRequest);
                 String sendingRequestURL = "https://sphere.regenstrief.org/openmrs/ws/patientportaltoolkit/";
-                // sendingReuqestURL = sendingReuqestURL.split("sendForgotPasswordEmail")[0];
                 sendingRequestURL = sendingRequestURL + "confirmForgotPasswordEmail/"
-                        + savedPasswordChangeRequest.getUuid() + "/" + emailId;
+                        + savedPasswordChangeRequest.getUuid();
+
                 System.out.println("Before Sending request to mailhelper");
                 System.out.println("Name= " + person.getPersonName() + "sending request uri = " + sendingRequestURL
-                        + "emailid= " + emailId);
+                        + " with emailid= " + emailId);
 
                 String content = "Hello " + person.getPersonName()
                         + ", \n\nWe have received a password change request for your SPHERE personal cancer toolkit account.\n\n"
                         +
                         "If this was you, please click on this LINK to change your password -"
                         + sendingRequestURL
-                        + "\n\n(If the link on the line above is not clickable, you can copy it into your browser)\n\nIf you did not request a password change request, do not click on the link above. Please notify the study team at sphere@iupui.edu.";
+                        + "\n\n(If the link on the line above is not clickable, you can copy it into your browser)\n\nIf you did not request a password change request, do not click on the link above. Please notify the study team at spherecs@iu.edu.";
 
                 MailHelper.sendMail(
                         "Sphere - Forgot Password",
@@ -75,39 +78,53 @@ public class PatientPortalToolkitController {
                         emailId,
                         false);
 
+            } else {
+                System.out.println("No one found for:" + emailId);
             }
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    @RequestMapping(value = "/patientportaltoolkit/confirmForgotPasswordEmail/{uuid}/{emailId:.+}")
+    @RequestMapping(value = "/patientportaltoolkit/confirmForgotPasswordEmail/{uuid}")
     @ResponseBody
     public void getConfirmForgotPasswordEmail(@PathVariable("uuid") String uuid,
-            @PathVariable("emailId") String emailId, HttpServletRequest httpRequest,
+            HttpServletRequest httpRequest,
             HttpServletResponse httpServletResponse)
             throws Exception {
 
         PatientPortalMiscService ppms = Context.getService(PatientPortalMiscService.class);
         PasswordChangeRequest pcr = ppms.getPasswordChangeRequests(uuid);
-        UserService us = Context.getUserService();
-        if (pcr == null) {
+        String passwordChangeSuccessStatus = "Failure";
 
+        UserService us = Context.getUserService();
+        Person forgotPasswordPerson = null;
+        User u = null;
+
+        if (pcr == null || pcr.getUser() == null) {
+            System.out.println("Failed Attempt to change password with Password Change Request UUID: " + uuid
+                    + ". Either no password change request available or no user is associated with the password change request");
         } else {
-            if ((Days.daysBetween(new DateTime(pcr.getDateTime()), DateTime.now()).getDays() < 1) && !pcr.isRetired()) {
-                org.openmrs.api.PersonService ps = Context.getPersonService();
-                Person forgotPasswordPerson = null;
-                List<Person> people = ps.getPeople(emailId, false);
-                for (Person p : people) {
-                    if (p.getAttribute("Email").getValue().equals(emailId))
-                        forgotPasswordPerson = p;
-                }
-                User u = us.getUsersByPerson(forgotPasswordPerson, false).get(0);
-                String newPassword = String.valueOf(PasswordUtil.getNewPassword());
-                Context.getUserService().changePassword(u, newPassword);
+            u = pcr.getUser();
+            DateTime changePasswordRequestedAt = new DateTime(pcr.getDateTime());
+
+            // If the number of days between when the password change request was made and
+            // the current time is less than 1 AND
+            // the password change request is not retired
+            if ((Days.daysBetween(changePasswordRequestedAt, DateTime.now()).getDays() < 1)
+                    && !pcr.isRetired()) {
+
                 pcr.setRetired(true);
+                forgotPasswordPerson = u.getPerson();
 
                 if (forgotPasswordPerson != null) {
+                    String newPassword = String.valueOf(PasswordUtil.getNewPassword());
+                    Context.getUserService().changePassword(u, newPassword);
+                    passwordChangeSuccessStatus = "Success";
+
+                    String emailId = forgotPasswordPerson.getAttribute("Email").getValue();
+                    System.out.println("Changing password for user: " + u.getUsername() + " with email: " + emailId);
+                    // System.out.println("New password: " + newPassword);
 
                     String content = "Hello " + forgotPasswordPerson.getPersonName()
                             + "\n\nYour password has been changed based on your request. Your new credentials are:\n\nUsername: "
@@ -121,16 +138,20 @@ public class PatientPortalToolkitController {
                             emailId,
                             false);
 
+                } else {
+                    System.out.println("Unable to change password for user: " + u.getUsername()
+                            + " due to no person associated with the user");
                 }
             } else {
+                System.out.println("The password change request was either expired or was out of date");
                 pcr.setRetired(true);
             }
             ppms.savePasswordChangeRequest(pcr);
         }
         String sendingRequestURL = httpRequest.getRequestURL().toString();
-        sendingRequestURL = sendingRequestURL.split("ws")[0] + "login.htm?passwordChangeRequest=Success";
+        sendingRequestURL = sendingRequestURL.split("ws")[0] + "login.htm?passwordChangeRequest="
+                + passwordChangeSuccessStatus;
         httpServletResponse.sendRedirect(sendingRequestURL);
-
     }
 
     @RequestMapping(value = "/patientportaltoolkit/newPatientUser/{emailId:.+}")
